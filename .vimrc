@@ -15,7 +15,8 @@ call plug#begin('~/.vim/plugged')
 " utilities
 Plug 'scrooloose/nerdtree', " workspace tree view
 Plug 'jistr/vim-nerdtree-tabs', " keep NERDTree layout the same between tabs
-Plug 'ctrlpvim/ctrlp.vim' " fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy finder
+Plug 'junegunn/fzf.vim' " fzf for vim
 Plug 'tpope/vim-surround' " surround mappings
 Plug 'tpope/vim-commentary' " commenting mappings
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
@@ -82,6 +83,9 @@ set backspace=indent,eol,start
 " gvim GUI settings - turn off toolbar, GUI tabline and right & left scrollbars
 set guioptions-=T guioptions-=r guioptions-=L guioptions-=e
 
+" startify bookmarks
+let g:startify_bookmarks = [ {'V': $MYVIMRC} ]
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Vim Appearance
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -117,9 +121,7 @@ set background=dark
 colorscheme PaperColor
 
 " configure lightline (PaperColor theme)
-let g:lightline = {
-    \ 'colorscheme': 'PaperColor',
-    \ }
+let g:lightline = { 'colorscheme': 'PaperColor' }
 
 " function to refresh lightline
 function! g:LightlineRefresh()
@@ -139,7 +141,7 @@ endfunction
 map <silent> <c-n> :NERDTreeTabsToggle<cr>
 
 " configure vim-fswitch keybinds
-nmap <silent> <leader>of :FSHere<cr>
+nmap <silent> <leader>oo :FSHere<cr>
 nmap <silent> <leader>ol :FSRight<cr>
 nmap <silent> <leader>oL :FSSplitRight<cr>
 nmap <silent> <leader>oh :FSLeft<cr>
@@ -148,6 +150,26 @@ nmap <silent> <leader>ok :FSAbove<cr>
 nmap <silent> <leader>oK :FSSplitAbove<cr>
 nmap <silent> <leader>oj :FSBelow<cr>
 nmap <silent> <leader>oJ :FSSplitBelow<cr>
+
+" configure fzf.vim fuzzy-finder keybinds
+" git tracked files, all files
+nmap <silent> <leader>ff :GFiles<cr>
+nmap <silent> <leader>fF :Files<cr>
+" open buffers, buffer history
+nmap <silent> <leader>fb :Buffers<cr>
+nmap <silent> <leader>fB :History<cr>
+" tags in current buffer, all project tags
+nmap <silent> <leader>ft :BTags<cr>
+nmap <silent> <leader>fT :Tags<cr>
+" lines in current buffer, lines in all buffers, marked lines
+nmap <silent> <leader>fl :BLines<cr>
+nmap <silent> <leader>fL :Lines<cr>
+nmap <silent> <leader>f' :Marks<cr>
+" commands, command history, search history, help docs
+nmap <silent> <leader>fc :Commands<cr>
+nmap <silent> <leader>f: :History:<cr>
+nmap <silent> <leader>f/ :History/<cr>
+nmap <silent> <leader>fh :Helptags<cr>
 
 " allow toggling between rnu and nu mode
 function! g:ToggleNumber()
