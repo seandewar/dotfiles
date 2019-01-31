@@ -120,8 +120,9 @@ set background=dark
 let g:gruvbox_contrast_dark = 'hard'
 colorscheme gruvbox
 
-" configure lightline
+" configure lightline color scheme and hide its close button
 let g:lightline = { 'colorscheme': 'gruvbox' }
+let g:lightline.tabline = { 'left': [ [ 'tabs' ] ], 'right': [ [ '' ] ] }
 
 " function to refresh lightline
 function! g:LightlineRefresh()
@@ -138,7 +139,8 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " general rebinds
-nmap <silent> <leader>w :w<cr>
+" make sure c-s flow ctrl is disabled for the terminal - press c-q to unfreeze
+nmap <silent> <c-s> :w<cr>
 nmap <leader>W :StripWhitespace<cr>
 
 " configure startify session keybinds
