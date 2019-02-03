@@ -181,6 +181,8 @@ nnoremap <leader>gc :Gcommit<cr>
 nnoremap <leader>gC :Gcommit -a<cr>
 nnoremap <leader>gw :Gwrite<cr>
 nnoremap <leader>gr :Gread<cr>
+nnoremap <leader>gps :Gpush<cr>
+nnoremap <leader>gpl :Gpull<cr>
 
 " allow toggling between rnu and nu mode
 function! g:ToggleNumber()
