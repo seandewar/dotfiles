@@ -11,9 +11,17 @@ set nocompatible
 " run :PlugInstall to install new plugins
 
 if has('nvim')
-  call plug#begin('~/.nvim/plugged')
+  if has('win32')
+    call plug#begin('~/AppData/Local/nvim/plugged')
+  else
+    call plug#begin('~/.config/nvim/plugged')
+  endif
 else
-  call plug#begin('~/.vim/plugged')
+  if has('win32')
+    call plug#begin('~/vimfiles/plugged')
+  else
+    call plug#begin('~/.vim/plugged')
+  endif
 endif
 
 " utilities
@@ -83,9 +91,6 @@ set nowrap textwidth=80
 " backspace settings
 set backspace=indent,eol,start
 
-" gvim GUI settings - turn off toolbar, GUI tabline and right & left scrollbars
-set guioptions-=T guioptions-=r guioptions-=L guioptions-=e
-
 " ensure file type, file plugin and file indent detection is on
 filetype plugin indent on
 
@@ -102,18 +107,23 @@ let g:startify_bookmarks = [ {'V': $MYVIMRC} ]
 " syntax highlighting
 syntax on
 
-" show hybrid relative line numbers on the side and status line
-set number relativenumber ruler
+" only show the tabline if at least two tabs are open
+set showtabline=1
 
-" highlight the line and column (disabled) that the cursor is on
-set cursorline "cursorcolumn
+" show the ruler and make sure we show hybrid relative line numbers on the side
+" of all buffers (including non-file buffers)
+set ruler
+autocmd! BufWinEnter * set number relativenumber
 
-" configure 80 (and 120 if supported) column indicator
-if exists('+colorcolumn')
-  set colorcolumn=81,121
-else
-  au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-endif
+" highlight the line that the cursor is on
+set cursorline
+
+" configure 80 and 120 column indicator only in insert mode
+augroup ColorColumnInsertMode
+  autocmd!
+  autocmd InsertEnter * setlocal colorcolumn=81,121
+  autocmd InsertLeave * setlocal colorcolumn=
+augroup END
 
 " configure color scheme
 set background=dark
@@ -140,25 +150,37 @@ endfunction
 
 " general rebinds
 " make sure c-s flow ctrl is disabled for the terminal - press c-q to unfreeze
-nmap <silent> <c-s> :w<cr>
-nmap <leader>W :StripWhitespace<cr>
+nnoremap <c-s> :w<cr>
+nnoremap <leader><esc> :Startify<cr>
+nnoremap <leader>w :StripWhitespace<cr>
+nnoremap <leader>d :Dirvish<cr>
 
 " configure startify session keybinds
-nmap <silent> <leader>ss :SSave<cr>
-nmap <silent> <leader>sl :SLoad<cr>
-nmap <silent> <leader>sd :SDelete<cr>
-nmap <silent> <leader>sc :SClose<cr>
+nnoremap <leader>ss :SSave<cr>
+nnoremap <leader>sl :SLoad<cr>
+nnoremap <leader>sd :SDelete<cr>
+nnoremap <leader>sc :SClose<cr>
 
 " configure vim-fswitch keybinds
-nmap <silent> <leader>oo :FSHere<cr>
-nmap <silent> <leader>ol :FSRight<cr>
-nmap <silent> <leader>oL :FSSplitRight<cr>
-nmap <silent> <leader>oh :FSLeft<cr>
-nmap <silent> <leader>oH :FSSplitLeft<cr>
-nmap <silent> <leader>ok :FSAbove<cr>
-nmap <silent> <leader>oK :FSSplitAbove<cr>
-nmap <silent> <leader>oj :FSBelow<cr>
-nmap <silent> <leader>oJ :FSSplitBelow<cr>
+nnoremap <leader>oo :FSHere<cr>
+nnoremap <leader>ol :FSRight<cr>
+nnoremap <leader>oL :FSSplitRight<cr>
+nnoremap <leader>oh :FSLeft<cr>
+nnoremap <leader>oH :FSSplitLeft<cr>
+nnoremap <leader>ok :FSAbove<cr>
+nnoremap <leader>oK :FSSplitAbove<cr>
+nnoremap <leader>oj :FSBelow<cr>
+nnoremap <leader>oJ :FSSplitBelow<cr>
+
+" configure vim-fugitive keybinds
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gl :Glog<cr>
+nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gb :Gblame<cr>
+nnoremap <leader>gc :Gcommit<cr>
+nnoremap <leader>gC :Gcommit -a<cr>
+nnoremap <leader>gw :Gwrite<cr>
+nnoremap <leader>gr :Gread<cr>
 
 " allow toggling between rnu and nu mode
 function! g:ToggleNumber()
