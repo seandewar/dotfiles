@@ -229,15 +229,14 @@ nnoremap <leader>bn :bnext<cr>
 nnoremap <leader>bN :bprevious<cr>
 
 " loclist window keybinds
-nnoremap <leader>qq :lopen<cr>
-nnoremap <leader>qn :lnext<cr>
-nnoremap <leader>qN :lprevious<cr>
+nnoremap <leader>ll :lopen<cr>
+nnoremap <leader>ln :lnext<cr>
+nnoremap <leader>lN :lprevious<cr>
 
 " quickfix window keybinds
-nnoremap <leader>QQ :copen<cr>
-nnoremap <leader>Qq :copen<cr>
-nnoremap <leader>Qn :cnext<cr>
-nnoremap <leader>QN :cprevious<cr>
+nnoremap <leader>qq :copen<cr>
+nnoremap <leader>qn :cnext<cr>
+nnoremap <leader>qN :cprevious<cr>
 
 " configure startify session keybinds
 nnoremap <leader>ss :SSave<cr>
@@ -259,7 +258,9 @@ nnoremap <leader>oJ :FSSplitBelow<cr>
 " configure vim-fugitive keybinds
 nnoremap <leader>gg :Gstatus<cr>
 nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gl :Glog<cr>
+nnoremap <silent> <leader>gl :Glog<cr>:copen<cr>
+nnoremap <silent> <leader>gL :0Glog<cr>:copen<cr>
+nnoremap <leader>ge :Gedit<cr>
 nnoremap <leader>gd :Gdiff<cr>
 nnoremap <leader>gb :Gblame<cr>
 nnoremap <leader>gc :Gcommit<cr>
