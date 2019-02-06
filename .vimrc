@@ -31,11 +31,11 @@ Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
 Plug 'ntpeters/vim-better-whitespace' " stray whitespace stripping and highlight
 Plug 'sheerun/vim-polyglot' " language support package
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
+Plug 'ajh17/VimCompletesMe' " simple <tab> completion wrapping vim's <c-x> modes
 Plug 'ludovicchabant/vim-gutentags' " tag file generation and management
 Plug 'tpope/vim-dispatch' " async jobs using :Dispatch
 Plug 'tpope/vim-fugitive' " git integration
 Plug 'w0rp/ale' " vim8/nvim async linting engine
-Plug 'Valloric/YouCompleteMe' " extensive code-completion engine
 
 " appearance
 Plug 'morhetz/gruvbox' " colorscheme
@@ -72,10 +72,7 @@ set hlsearch incsearch ignorecase smartcase
 
 " completion matches for commands (after pressing <tab> or ^D for a list &
 " <tab><tab> for the wildmenu)
-set wildmenu wildmode=list:longest,full
-
-" search into subdirs - can be paired with :find *foo for fuzzy-like searching
-set path+=**
+set wildmenu wildmode=list:longest,full wildignorecase
 
 " always display the status and tab lines
 set laststatus=2 showtabline=2
