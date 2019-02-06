@@ -31,7 +31,7 @@ Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
 Plug 'ntpeters/vim-better-whitespace' " stray whitespace stripping and highlight
 Plug 'sheerun/vim-polyglot' " language support package
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
-Plug 'ajh17/VimCompletesMe' " simple <tab> completion wrapping vim's <c-x> modes
+Plug 'lifepillar/vim-mucomplete' " <tab> completion using vim's <c-x> modes
 Plug 'ludovicchabant/vim-gutentags' " tag file generation and management
 Plug 'tpope/vim-dispatch' " async jobs using :Dispatch
 Plug 'tpope/vim-fugitive' " git integration
@@ -139,6 +139,7 @@ let g:ale_sign_error = 'E>'
 let g:ale_sign_warning = 'W>'
 let g:ale_echo_msg_error_str = 'error'
 let g:ale_echo_msg_warning_str = 'warning'
+let g:ale_echo_msg_info_str = 'info'
 let g:ale_echo_msg_format = '[%severity%] %s [%linter%]'
 
 " lightline-ale symbols
