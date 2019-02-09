@@ -28,7 +28,6 @@ Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
 Plug 'tpope/vim-surround' " surround mappings
 Plug 'tpope/vim-commentary' " commenting mappings
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
-Plug 'ntpeters/vim-better-whitespace' " stray whitespace stripping and highlight
 Plug 'sheerun/vim-polyglot' " language support package
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
 Plug 'lifepillar/vim-mucomplete' " <tab> completion using vim's <c-x> modes
@@ -96,10 +95,19 @@ set backspace=indent,eol,start
 filetype plugin indent on
 
 " configure completion menu
-set completeopt+=longest,menuone
+set completeopt+=menu,menuone,preview,noselect,noinsert,longest
 
 " startify bookmarks
-let g:startify_bookmarks = [ {'V': $MYVIMRC} ]
+let g:startify_bookmarks = [ { 'V': $MYVIMRC } ]
+
+" ale fixing and linting preferences
+let g:ale_fix_on_save = 1
+let g:ale_fixers = { '*': [ 'remove_trailing_lines', 'trim_whitespace' ] }
+
+" I prefer visual studio for compiling on windows (only use vim for editing)
+if (has('win32'))
+  let g:ale_linters = { 'cpp': [ '' ], 'c': [ '' ] }
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Vim Appearance
@@ -135,6 +143,7 @@ let g:gruvbox_contrast_dark = 'hard'
 colorscheme gruvbox
 
 " ale gutter error/warning symbols and message config
+let g:ale_sign_column_always = 1
 let g:ale_sign_error = 'E>'
 let g:ale_sign_warning = 'W>'
 let g:ale_echo_msg_error_str = 'error'
@@ -199,7 +208,6 @@ endfunction
 " general rebinds
 " make sure c-s flow ctrl is disabled for the terminal - press c-q to unfreeze
 nnoremap <c-s> :w<cr>
-nnoremap <leader>w :StripWhitespace<cr>
 nnoremap <leader>/ :set nohlsearch<cr>
 nnoremap <leader><esc> :Startify<cr>
 
@@ -268,8 +276,8 @@ nnoremap <leader>gr :Gread<cr>
 nnoremap <leader>gps :Gpush<cr>
 nnoremap <leader>gpl :Gpull<cr>
 
-" configure ale hotkeys
-nnoremap <leader>aa :ALEToggle<cr>
+" configure ale keybinds
+nnoremap <leader>aa :ALELint<cr>
 nnoremap <leader>al :ALELint<cr>
 nnoremap <leader>at :ALEToggle<cr>
 nnoremap <leader>af :ALEFix<cr>
