@@ -2,44 +2,51 @@
 "  Sean Dewar's Vim/Neovim Configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" determine a runtime dir to store user data.
+" an alternative is using fnamemodify(expand('$MYVIMRC', ':p:h')), but if the
+" .vimrc file is in the home directory, we'll end up cluttering it...
+function! GetUserDir()
+  if has('nvim')
+    if has('win32')
+      return expand('~/AppData/Local/nvim')
+    else
+      return expand('~/.config/nvim')
+    endif
+  else
+    if has('win32')
+      return expand('~/vimfiles')
+    else
+      return expand('~/.vim')
+    endif
+  endif
+endfunction
+let $VIMUSERDIR = GetUserDir()
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Plugin Configurations (using Plug)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" run :PlugInstall to install new plugins
 
-if has('nvim')
-  if has('win32')
-    call plug#begin('~/AppData/Local/nvim/plugged')
-  else
-    call plug#begin('~/.config/nvim/plugged')
-  endif
-else
-  if has('win32')
-    call plug#begin('~/vimfiles/plugged')
-  else
-    call plug#begin('~/.vim/plugged')
-  endif
-endif
+" run :PlugInstall to install new plugins
+call plug#begin($VIMUSERDIR . '/plugged')
 
 " utilities
-Plug 'mhinz/vim-startify' " start screen
-Plug 'mtth/scratch.vim' " personal scratch buffer
-Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
-Plug 'tpope/vim-surround' " surround mappings
-Plug 'tpope/vim-commentary' " commenting mappings
-Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
-Plug 'sheerun/vim-polyglot' " language support package
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets' " code snippets
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
-Plug 'lifepillar/vim-mucomplete' " <tab> completion using vim's <c-x> modes
-Plug 'ludovicchabant/vim-gutentags' " tag file generation and management
+Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
+Plug 'lifepillar/vim-mucomplete'
+Plug 'ludovicchabant/vim-gutentags' " ctag file generation and management
+Plug 'mhinz/vim-startify' " start screen
+Plug 'sheerun/vim-polyglot' " language support package
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch' " async jobs using :Dispatch
 Plug 'tpope/vim-fugitive' " git integration
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
 Plug 'w0rp/ale' " vim8/nvim async linting engine
 
 " appearance
+Plug 'itchyny/lightline.vim' | Plug 'maximbaz/lightline-ale'
 Plug 'morhetz/gruvbox' " colorscheme
-Plug 'itchyny/lightline.vim' " lightweight airline-like status bar
-Plug 'maximbaz/lightline-ale' " shows ale error/warning count on the lightline
 
 call plug#end()
 
@@ -97,8 +104,15 @@ filetype plugin indent on
 " configure completion menu
 set completeopt+=menu,menuone,preview,noselect,noinsert,longest
 
+" wait longer for key timeouts
+set timeoutlen=1500
+
 " startify bookmarks
 let g:startify_bookmarks = [ { 'V': $MYVIMRC } ]
+
+" configure ultisnips
+let g:UltiSnipsEditSplit = 'vertical'
+let g:UltiSnipsSnippetsDir = $VIMUSERDIR . '/ultisnips'
 
 " ale fixing and linting preferences
 let g:ale_fix_on_save = 1
@@ -207,7 +221,7 @@ endfunction
 
 " general rebinds
 " make sure c-s flow ctrl is disabled for the terminal - press c-q to unfreeze
-nnoremap <c-s> :w<cr>
+nnoremap <c-s> :write<cr>
 nnoremap <leader>/ :set nohlsearch<cr>
 nnoremap <leader><esc> :Startify<cr>
 
@@ -220,6 +234,9 @@ function! g:ToggleNumber()
   endif
 endfunction
 nnoremap <silent> <leader>l :call g:ToggleNumber()<cr>
+
+" configure utilsnips keybinds
+let g:UltiSnipsExpandTrigger = '<c-j>'
 
 " netrw (dir explorer) keybinds
 nnoremap <leader>dd :Explore<cr>
