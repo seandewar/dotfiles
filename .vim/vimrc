@@ -30,7 +30,7 @@ let $VIMUSERDIR = GetUserDir()
 call plug#begin($VIMUSERDIR . '/plugged')
 
 " utilities
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets' " code snippets
+Plug 'SirVer/ultisnips' " snippets engine
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
 Plug 'lifepillar/vim-mucomplete'
@@ -113,7 +113,7 @@ let g:startify_bookmarks = [ { 'V': $MYVIMRC } ]
 " configure ultisnips - I like to store my snippets globally
 let g:UltiSnipsEditSplit = 'vertical'
 let g:UltiSnipsSnippetsDir = $VIMUSERDIR . '/MyUltiSnips'
-let g:UltiSnipsSnippetDirectories = [ g:UltiSnipsSnippetsDir, 'UltiSnips' ]
+let g:UltiSnipsSnippetDirectories = [ g:UltiSnipsSnippetsDir ]
 
 " ale fixing and linting preferences
 let g:ale_fix_on_save = 1
@@ -130,6 +130,9 @@ endif
 
 " syntax highlighting
 syntax on
+
+" show tab characters (useful for snippets)
+set list listchars=tab:..
 
 " only show the tabline if at least two tabs are open
 set showtabline=1

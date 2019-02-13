@@ -1,0 +1,60 @@
+# Sean Dewar's C++ Snippets (extends C with higher priority)
+priority 1
+extends c
+priority 2
+
+snippet #in "#include global file"
+#include <${1:file.hpp}>
+endsnippet
+
+snippet #inl "#include local file"
+#include "${1:`!p snip.rv = snip.basename + '.hpp'`}"
+endsnippet
+
+snippet forea "range-based for (each) loop"
+for (${2:const auto} ${3:x} : ${1:container}) {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet forit "iterator-based for loop"
+for (auto ${3:it} = ${1:container}.${2:c}begin(); $3 != $1.$2end(); ++$3) {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet ns "namespace"
+namespace ${1:namespace} {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet cl "class"
+class ${1:Class} {
+	public:
+		$1(${2:/* ctor arguments */});
+
+	private:
+		${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ private members)/}}
+};
+endsnippet
+
+snippet ctor "class constructor"
+${1:Class}::$1(${2:/* arguments */}) ${3}{
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet dtor "class destructor"
+$1::~${1:Class}() {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet us "using type alias"
+using ${2:Type} = ${VISUAL}${1:${VISUAL/(.*)/(?1::int)/}};
+endsnippet
+
+snippet tp "template"
+template <${2:typename} ${1:T}${3}>
+endsnippet

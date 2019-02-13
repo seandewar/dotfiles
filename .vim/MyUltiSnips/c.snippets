@@ -1,0 +1,134 @@
+# Sean Dewar's C snippets
+priority 1
+
+snippet //c "Sean Dewar's copyright header comment"
+// Copyright (C) `!v strftime("%Y")` Sean Dewar <https://github.com/seandewar>.
+// This file is distributed under the license terms in the LICENSE.txt file
+// located within the root directory of this distribution.
+endsnippet
+
+snippet todo "TODO comment"
+// TODO: ${VISUAL}${0:${VISUAL/(.*)/(?1::comment)/}}
+endsnippet
+
+snippet once "#include guard (similar to #pragma once)"
+#ifndef ${1:PROJECT_FILE_H_}
+#define $1
+
+${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+
+#endif // $1
+endsnippet
+
+snippet #in "#include global file"
+#include <${1:file.h}>
+endsnippet
+
+snippet #inl "#include local file"
+#include "${1:`!p snip.rv = snip.basename + '.h'`}"
+endsnippet
+
+snippet #if "#if block"
+#if ${1:/* condition */}
+${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+#endif
+endsnippet
+
+snippet bl "block"
+{
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet if "if block"
+if (${1:/* condition */}) {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet el "else block"
+else {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet elif "else if block"
+else if (${1:/* condition */}) {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet for "for loop"
+for (${2:int} ${3:i} = 0; $3 < ${1:count}; ++$3) {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet wh "while loop"
+while (${1:/* condition */}) {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet do "do while loop"
+do {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+} while (${1:/* condition */});
+endsnippet
+
+snippet sw "switch"
+switch (${1:/* value */}) {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet ca "switch case"
+case ${1:/* value */}:
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+	break;
+endsnippet
+
+snippet de "switch default case"
+default:
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+	break;
+endsnippet
+
+snippet fn "function definition"
+${1:void} ${2:Function}(${3:/* arguments */}) {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+}
+endsnippet
+
+snippet fnp "function declaration (prototype)"
+${1:void} ${2:Function}(${3:/* arguments */});
+endsnippet
+
+snippet main "main() entry point function"
+int main(int argc, char *argv[]) {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+	return 0;
+}
+endsnippet
+
+snippet td "typedef"
+typedef ${VISUAL}${1:${VISUAL/(.*)/(?1::int)/}} ${2:Type};
+endsnippet
+
+snippet st "struct"
+struct ${1:Struct} {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ members)/}}
+};
+endsnippet
+
+snippet un "union"
+union ${1:Union} {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ members)/}}
+};
+endsnippet
+
+snippet en "enum"
+enum ${1:Enum} {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ values)/}}
+};
+endsnippet
