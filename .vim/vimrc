@@ -234,6 +234,7 @@ endfunction
 " general rebinds
 " make sure c-s flow ctrl is disabled for the terminal - press c-q to unfreeze
 nnoremap <c-s> :write<cr>
+inoremap <c-s> <c-o>:write<cr>
 nnoremap <leader>/ :set nohlsearch<cr>
 nnoremap <leader><esc> :Startify<cr>
 
