@@ -110,9 +110,10 @@ set timeoutlen=1500
 " startify bookmarks
 let g:startify_bookmarks = [ { 'V': $MYVIMRC } ]
 
-" configure ultisnips
+" configure ultisnips - I like to store my snippets globally
 let g:UltiSnipsEditSplit = 'vertical'
-let g:UltiSnipsSnippetsDir = $VIMUSERDIR . '/ultisnips'
+let g:UltiSnipsSnippetsDir = $VIMUSERDIR . '/MyUltiSnips'
+let g:UltiSnipsSnippetDirectories = [ g:UltiSnipsSnippetsDir, 'UltiSnips' ]
 
 " ale fixing and linting preferences
 let g:ale_fix_on_save = 1
@@ -140,6 +141,10 @@ augroup AutoBufferNumber
   autocmd!
   autocmd BufWinEnter * set number relativenumber
 augroup END
+
+" make sure we see numbers in netrw
+let g:netrw_bufsettings =
+      \ 'nomodifiable nomodified number relativenumber nobuflisted readonly'
 
 " highlight the line that the cursor is on
 set cursorline
@@ -237,6 +242,9 @@ nnoremap <silent> <leader>l :call g:ToggleNumber()<cr>
 
 " configure utilsnips keybinds
 let g:UltiSnipsExpandTrigger = '<c-j>'
+let g:UltiSnipsListSnippets = '<c-tab>'
+let g:UltiSnipsJumpForwardTrigger = '<c-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-n>'
 
 " netrw (dir explorer) keybinds
 nnoremap <leader>dd :Explore<cr>
