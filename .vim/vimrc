@@ -135,19 +135,23 @@ syntax on
 set showtabline=1
 
 " show the ruler and make sure we show hybrid relative line numbers on the side
-" of all buffers (including non-file buffers)
+" of all buffer windows (including windows to non-file buffers)
 set ruler
-augroup AutoBufferNumber
+augroup AutoWindowNumber
   autocmd!
-  autocmd BufWinEnter * set number relativenumber
+  autocmd BufWinEnter * setlocal number relativenumber
 augroup END
 
 " make sure we see numbers in netrw
 let g:netrw_bufsettings =
       \ 'nomodifiable nomodified number relativenumber nobuflisted readonly'
 
-" highlight the line that the cursor is on
-set cursorline
+" highlight the line that the cursor is on for active windows only
+augroup ActiveWindowCursorLine
+  autocmd!
+  autocmd VimEnter,WinEnter * setlocal cursorline
+  autocmd WinLeave * setlocal nocursorline
+augroup END
 
 " configure 80 and 120 column indicator only in insert mode
 augroup ColorColumnInsertMode
@@ -233,12 +237,12 @@ nnoremap <leader><esc> :Startify<cr>
 " allow toggling between rnu and nu mode
 function! g:ToggleNumber()
   if &relativenumber
-    set norelativenumber
+    setlocal norelativenumber
   else
-    set relativenumber
+    setlocal relativenumber
   endif
 endfunction
-nnoremap <silent> <leader>l :call g:ToggleNumber()<cr>
+nnoremap <silent> <leader>L :call g:ToggleNumber()<cr>
 
 " configure utilsnips keybinds
 let g:UltiSnipsExpandTrigger = '<c-j>'
