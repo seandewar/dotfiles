@@ -34,7 +34,7 @@ Plug 'SirVer/ultisnips' " snippets engine
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
 Plug 'lifepillar/vim-mucomplete'
-Plug 'ludovicchabant/vim-gutentags' " ctag file generation and management
+Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus' " tags
 Plug 'mhinz/vim-startify' " start screen
 Plug 'sheerun/vim-polyglot' " language support package
 Plug 'tpope/vim-commentary'
@@ -114,6 +114,14 @@ let g:startify_bookmarks = [ { 'V': $MYVIMRC } ]
 let g:UltiSnipsEditSplit = 'vertical'
 let g:UltiSnipsSnippetsDir = $VIMUSERDIR . '/MyUltiSnips'
 let g:UltiSnipsSnippetDirectories = [ g:UltiSnipsSnippetsDir ]
+
+" configure vim-gutentags and gutentags_plus
+let g:gutentags_modules = [ 'ctags', 'gtags_cscope' ]
+let g:gutentags_project_root = [ '.root' ] " extra project root markers
+let g:gutentags_cache_dir = expand('~/.cache/tags') " save tags in user root dir
+let g:gutentags_define_advanced_commands = 1
+let g:gutentags_plus_switch = 1 " auto-focus gutentags quickfix buffer
+let g:gutentags_plus_nomap = 1 " we'll explicitly define keymaps
 
 " ale fixing and linting preferences
 let g:ale_fix_on_save = 1
@@ -208,7 +216,7 @@ let g:lightline = {
       \              [ 'percent' ],
       \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
-		  \ 'inactive': {
+      \ 'inactive': {
       \   'left': [ [ 'readonly', 'filename', 'modified' ] ],
       \   'right': [ [ 'lineinfo' ],
       \              [ 'percent' ],
@@ -294,6 +302,17 @@ nnoremap <leader>oL :FSSplitRight<cr>
 nnoremap <leader>oK :FSSplitAbove<cr>
 nnoremap <leader>oJ :FSSplitBelow<cr>
 
+" configure gutentags_plus keybinds
+nnoremap <leader>ts :GscopeFind s <c-r><c-w><cr>
+nnoremap <leader>tg :GscopeFind g <c-r><c-w><cr>
+nnoremap <leader>tc :GscopeFind c <c-r><c-w><cr>
+nnoremap <leader>tt :GscopeFind t <c-r><c-w><cr>
+nnoremap <leader>te :GscopeFind e <c-r><c-w><cr>
+nnoremap <leader>tf :GscopeFind f <c-r>=expand("<cfile>")<cr><cr>
+nnoremap <leader>ti :GscopeFind i <c-r>=expand("<cfile>")<cr><cr>
+nnoremap <leader>td :GscopeFind d <c-r><c-w><cr>
+nnoremap <leader>ta :GscopeFind a <c-r><c-w><cr>
+
 " configure vim-fugitive keybinds
 nnoremap <leader>gg :Gstatus<cr>
 nnoremap <leader>gs :Gstatus<cr>
@@ -309,7 +328,7 @@ nnoremap <leader>gr :Gread<cr>
 nnoremap <leader>gps :Gpush<cr>
 nnoremap <leader>gpl :Gpull<cr>
 
-" configure ale keybinds
+" configure ale keybinds (most of these binds only work for lsp servers)
 nnoremap <leader>aa :ALELint<cr>
 nnoremap <leader>al :ALELint<cr>
 nnoremap <leader>at :ALEToggle<cr>
