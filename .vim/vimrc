@@ -124,13 +124,10 @@ let g:gutentags_plus_switch = 1 " auto-focus gutentags quickfix buffer
 let g:gutentags_plus_nomap = 1 " we'll explicitly define keymaps
 
 " ale fixing and linting preferences
-let g:ale_fix_on_save = 1
 let g:ale_fixers = { '*': [ 'remove_trailing_lines', 'trim_whitespace' ] }
-
-" I prefer visual studio for compiling on windows (only use vim for editing)
-if (has('win32'))
-  let g:ale_linters = { 'cpp': [ '' ], 'c': [ '' ] }
-endif
+let g:ale_linters = { 'cpp': [ 'cquery' ], 'c': [ 'cquery' ] }
+let g:ale_fix_on_save = 1
+let g:ale_completion_enabled = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Vim Appearance
@@ -242,7 +239,7 @@ endfunction
 " general rebinds
 " make sure c-s flow ctrl is disabled for the terminal - press c-q to unfreeze
 nnoremap <c-s> :write<cr>
-inoremap <c-s> <c-o>:write<cr>
+inoremap <c-s> <c-\><c-o>:write<cr>
 nnoremap <leader>/ :set nohlsearch<cr>
 nnoremap <leader><esc> :Startify<cr>
 
@@ -258,7 +255,7 @@ nnoremap <silent> <leader>L :call g:ToggleNumber()<cr>
 
 " configure utilsnips keybinds
 let g:UltiSnipsExpandTrigger = '<c-j>'
-let g:UltiSnipsListSnippets = '<c-tab>'
+let g:UltiSnipsListSnippets = '<c-space>'
 let g:UltiSnipsJumpForwardTrigger = '<c-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-n>'
 
@@ -329,11 +326,14 @@ nnoremap <leader>gps :Gpush<cr>
 nnoremap <leader>gpl :Gpull<cr>
 
 " configure ale keybinds (most of these binds only work for lsp servers)
-nnoremap <leader>aa :ALELint<cr>
+imap <c-tab> <plug>(ale_complete)
 nnoremap <leader>al :ALELint<cr>
-nnoremap <leader>at :ALEToggle<cr>
 nnoremap <leader>af :ALEFix<cr>
-nnoremap <leader>ad :ALEGoToDefinition<cr>
-nnoremap <leader>ar :ALEFindReferences<cr>
 nnoremap <leader>ah :ALEHover<cr>
+nnoremap <leader>ai :ALEHover<cr>
 nnoremap <leader>as :ALESymbolSearch<space>
+nnoremap <leader>ar :ALEFindReferences<cr>
+nnoremap <leader>ad :ALEGoToDefinition<cr>
+nnoremap <leader>aD :ALEGoToDefinitionInSplit<cr>
+nnoremap <leader>at :ALEGoToTypeDefinition<cr>
+nnoremap <leader>aT :ALEGoToTypeDefinitionInSplit<cr>
