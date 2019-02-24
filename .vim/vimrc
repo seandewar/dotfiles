@@ -102,7 +102,13 @@ set backspace=indent,eol,start
 filetype plugin indent on
 
 " configure completion menu
-set completeopt+=menu,menuone,preview,noselect,noinsert,longest
+set completeopt=menu,menuone,longest,preview,noinsert
+
+" close completion preview after finishing completion
+augroup AutoCloseCompletionPreview
+autocmd!
+autocmd CompleteDone * pclose
+augroup END
 
 " wait longer for key timeouts
 set timeoutlen=1500
@@ -127,7 +133,6 @@ let g:gutentags_plus_nomap = 1 " we'll explicitly define keymaps
 let g:ale_fixers = { '*': [ 'remove_trailing_lines', 'trim_whitespace' ] }
 let g:ale_linters = { 'cpp': [ 'cquery' ], 'c': [ 'cquery' ] }
 let g:ale_fix_on_save = 1
-let g:ale_completion_enabled = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  Vim Appearance
@@ -260,9 +265,9 @@ let g:UltiSnipsJumpForwardTrigger = '<c-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-n>'
 
 " netrw (dir explorer) keybinds
-nnoremap <leader>dd :Explore<cr>
-nnoremap <leader>ds :Sexplore<cr>
-nnoremap <leader>dv :Vexplore<cr>
+nnoremap <leader>dd :Explore<space>
+nnoremap <leader>ds :Sexplore<space>
+nnoremap <leader>dv :Vexplore<space>
 
 " buffer keybinds
 nnoremap <leader>bb :buffers<cr>:buffer<space>
