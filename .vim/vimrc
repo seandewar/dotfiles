@@ -1,5 +1,5 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Sean Dewar's Vim/Neovim Configuration
+"  Sean Dewar's Vim/Neovim Configuration <https://github.com/seandewar>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " determine a runtime dir to store user data.
@@ -30,6 +30,7 @@ let $VIMUSERDIR = GetUserDir()
 call plug#begin($VIMUSERDIR . '/plugged')
 
 " utilities
+Plug 'Shougo/echodoc.vim' " display completion signatures in command line
 Plug 'SirVer/ultisnips' " snippets engine
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
@@ -43,7 +44,7 @@ Plug 'tpope/vim-fugitive' " git integration
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
 Plug 'vim-utils/vim-troll-stopper' " highlight troll unicode (e.g. the greek ;)
-Plug 'w0rp/ale' " vim8/nvim async linting engine
+Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
 
 " appearance
 Plug 'itchyny/lightline.vim' | Plug 'maximbaz/lightline-ale'
@@ -84,6 +85,9 @@ set wildmenu wildmode=list:longest,full wildignorecase
 " always display the status and tab lines
 set laststatus=2 showtabline=2
 
+" don't show mode in the command-line (we already see it in the buffer line)
+set noshowmode
+
 " disable bell noises
 set belloff=all
 
@@ -103,7 +107,7 @@ set backspace=indent,eol,start
 filetype plugin indent on
 
 " configure completion menu
-set completeopt=menu,menuone,longest,preview,noinsert
+set completeopt=menuone,preview,noinsert
 
 " close completion preview after finishing completion
 augroup AutoCloseCompletionPreview
@@ -116,6 +120,9 @@ set timeoutlen=1500
 
 " startify bookmarks
 let g:startify_bookmarks = [ { 'V': $MYVIMRC } ]
+
+" start echodoc automatically
+let g:echodoc#enable_at_startup = 1
 
 " configure ultisnips - I like to store my snippets globally
 let g:UltiSnipsEditSplit = 'vertical'
