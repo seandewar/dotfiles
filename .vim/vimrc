@@ -56,6 +56,14 @@ call plug#end()
 "  Vim Behaviour
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" don't crowd working directories with swap files.
+" we'll use the same path regardless of nvim/vim so both programs are able to
+" detect the same swap files
+if !isdirectory(expand('~/.vim/swap'))
+  call mkdir(expand('~/.vim/swap'), 'p')
+endif
+set directory^=~/.vim/swap//
+
 " set character encoding
 set encoding=utf8 fileencoding=utf8 termencoding=utf8
 
@@ -139,7 +147,7 @@ let g:gutentags_plus_nomap = 1 " we'll explicitly define keymaps
 
 " ale fixing and linting preferences
 let g:ale_fixers = { '*': [ 'remove_trailing_lines', 'trim_whitespace' ] }
-let g:ale_linters = { 'cpp': [ 'cquery' ], 'c': [ 'cquery' ] }
+let g:ale_linters = { 'cpp': [ ], 'c': [ ] } " my preference changes daily
 let g:ale_fix_on_save = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -273,7 +281,8 @@ let g:UltiSnipsJumpForwardTrigger = '<c-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-n>'
 
 " netrw (dir explorer) keybinds
-nnoremap <leader>dd :Explore<space>
+nnoremap <leader>dd :Explore<cr>
+nnoremap <leader>de :Explore<space>
 nnoremap <leader>ds :Sexplore<space>
 nnoremap <leader>dv :Vexplore<space>
 
@@ -282,6 +291,7 @@ nnoremap <leader>bb :buffers<cr>:buffer<space>
 nnoremap <leader>bs :buffers<cr>:sbuffer<space>
 nnoremap <leader>bv :buffers<cr>:vertical sbuffer<space>
 nnoremap <leader>bd :buffers<cr>:bdelete<space>
+nnoremap <leader>bt :buffers<cr>:tab sbuffer<space>
 nnoremap <leader>bn :bnext<cr>
 nnoremap <leader>bN :bprevious<cr>
 
