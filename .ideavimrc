@@ -1,0 +1,11 @@
+" Sean Dewar's IntelliJ Vim Plugin Configuration
+
+set visualbell " not implemented, but disables the bell noise
+set relativenumber
+set ignorecase
+set scrolloff=1
+set clipboard=unnamedplus,unnamed
+
+nnoremap <c-s> :write<cr>
+inoremap <c-s> <c-\><c-o>:write<cr>
+nnoremap <leader>/ :set nohlsearch<cr>

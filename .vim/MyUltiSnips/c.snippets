@@ -12,6 +12,10 @@ snippet todo "TODO comment"
 // TODO: ${VISUAL}${0:${VISUAL/(.*)/(?1::implement this)/}}
 endsnippet
 
+snippet note "NOTE comment"
+// NOTE: ${VISUAL}${0:${VISUAL/(.*)/(?1::important note here)/}}
+endsnippet
+
 snippet once "#include guard (similar to #pragma once)"
 #ifndef ${1:PROJECT_FILE_H_}
 #define $1
@@ -21,18 +25,30 @@ ${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
 #endif // $1
 endsnippet
 
-snippet #in "#include global file"
+snippet inc "#include global file"
 #include <${1:file.h}>
 endsnippet
 
-snippet #inl "#include local file"
+snippet lin "#include local file"
 #include "${1:`!p snip.rv = snip.basename + '.h'`}"
 endsnippet
 
 snippet #if "#if block"
 #if ${1:/* condition */}
 ${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
-#endif
+#endif // $1
+endsnippet
+
+snippet #ifd "#ifdef block"
+#ifdef ${1:/* macro */}
+${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+#endif // $1
+endsnippet
+
+snippet #ifn "#ifndef block"
+#ifndef ${1:/* macro */}
+${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+#endif // $1
 endsnippet
 
 snippet bl "block"

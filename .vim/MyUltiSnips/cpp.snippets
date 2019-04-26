@@ -3,11 +3,11 @@ priority 1
 extends c
 priority 2
 
-snippet #in "#include global file"
+snippet inc "#include global file"
 #include <${1:file.hpp}>
 endsnippet
 
-snippet #inl "#include local file"
+snippet linc "#include local file"
 #include "${1:`!p snip.rv = snip.basename + '.hpp'`}"
 endsnippet
 
@@ -57,4 +57,10 @@ endsnippet
 
 snippet tp "template"
 template <${2:typename} ${1:T}${3}>
+endsnippet
+
+snippet encl "enum class"
+enum class ${1:Enum} {
+	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ values)/}}
+};
 endsnippet

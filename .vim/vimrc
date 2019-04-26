@@ -36,6 +36,7 @@ Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
 Plug 'lifepillar/vim-mucomplete'
 Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus'
+Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-startify' " start screen
 Plug 'sheerun/vim-polyglot' " language support package
 Plug 'tpope/vim-commentary'
@@ -111,7 +112,7 @@ set textwidth=79
 " backspace settings
 set backspace=indent,eol,start
 
-" ensure file type, file plugin and file indent detection is on
+" ensure file type and file indent detection is on
 filetype plugin indent on
 
 " configure completion menu
@@ -322,15 +323,25 @@ nnoremap <leader>oL :FSSplitRight<cr>
 nnoremap <leader>oK :FSSplitAbove<cr>
 nnoremap <leader>oJ :FSSplitBelow<cr>
 
-" configure gutentags_plus keybinds
+" configure tagbar and gutentags_plus keybinds
+nnoremap <leader>tt :TagbarToggle<cr>
+" find symbol
 nnoremap <leader>ts :GscopeFind s <c-r><c-w><cr>
-nnoremap <leader>tg :GscopeFind g <c-r><c-w><cr>
-nnoremap <leader>tc :GscopeFind c <c-r><c-w><cr>
-nnoremap <leader>tt :GscopeFind t <c-r><c-w><cr>
-nnoremap <leader>te :GscopeFind e <c-r><c-w><cr>
+" find definition
+nnoremap <leader>td :GscopeFind g <c-r><c-w><cr>
+" find functions calling this function
+nnoremap <leader>tm :GscopeFind c <c-r><c-w><cr>
+" find functions called by this function
+nnoremap <leader>tM :GscopeFind d <c-r><c-w><cr>
+" find this text string
+nnoremap <leader>tS :GscopeFind t <c-r><c-w><cr>
+" find this egrep pattern
+nnoremap <leader>tg :GscopeFind e <c-r><c-w><cr>
+" find this file
 nnoremap <leader>tf :GscopeFind f <c-r>=expand("<cfile>")<cr><cr>
+" find files #including this file
 nnoremap <leader>ti :GscopeFind i <c-r>=expand("<cfile>")<cr><cr>
-nnoremap <leader>td :GscopeFind d <c-r><c-w><cr>
+" find places where this symbol is assigned a value
 nnoremap <leader>ta :GscopeFind a <c-r><c-w><cr>
 
 " configure vim-fugitive keybinds
