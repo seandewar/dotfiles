@@ -30,14 +30,15 @@ let $VIMUSERDIR = GetUserDir()
 call plug#begin($VIMUSERDIR . '/plugged')
 
 " utilities
-Plug 'Shougo/echodoc.vim' " display completion signatures in command line
 Plug 'SirVer/ultisnips' " snippets engine
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
+Plug 'godlygeek/tabular' " text alignment
 Plug 'lifepillar/vim-mucomplete'
 Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus'
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-startify' " start screen
+Plug 'plasticboy/vim-markdown'
 Plug 'sheerun/vim-polyglot' " language support package
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch' " async jobs using :Dispatch
@@ -115,6 +116,13 @@ set backspace=indent,eol,start
 " ensure file type and file indent detection is on
 filetype plugin indent on
 
+" spellchecking (en_GB)
+set spell spelllang=en_gb
+
+function! g:ToggleSpell()
+  setlocal spell!
+endfunction
+
 " configure completion menu
 set completeopt=menuone,preview,noinsert
 
@@ -127,11 +135,11 @@ augroup END
 " wait longer for key timeouts
 set timeoutlen=1500
 
+" disable automatic folding of headers .etc in vim-markdown
+let g:vim_markdown_folding_disabled = 1
+
 " startify bookmarks
 let g:startify_bookmarks = [ { 'V': $MYVIMRC } ]
-
-" start echodoc automatically
-let g:echodoc#enable_at_startup = 1
 
 " configure ultisnips - I like to store my snippets globally
 let g:UltiSnipsEditSplit = 'vertical'
@@ -147,7 +155,10 @@ let g:gutentags_plus_switch = 1 " auto-focus gutentags quickfix buffer
 let g:gutentags_plus_nomap = 1 " we'll explicitly define keymaps
 
 " ale fixing and linting preferences
-let g:ale_fixers = { '*': [ 'remove_trailing_lines', 'trim_whitespace' ] }
+let g:ale_fixers = {
+      \ 'markdown': [ 'remove_trailing_lines' ],
+      \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ]
+      \ }
 let g:ale_linters = { 'cpp': [ ], 'c': [ ] } " my preference changes daily
 let g:ale_fix_on_save = 1
 
@@ -264,6 +275,8 @@ nnoremap <c-s> :write<cr>
 inoremap <c-s> <c-\><c-o>:write<cr>
 nnoremap <leader>/ :set nohlsearch<cr>
 nnoremap <leader><esc> :Startify<cr>
+nnoremap <f7> :call g:ToggleSpell()<cr>
+inoremap <f7> <c-\><c-o>:call g:ToggleSpell()<cr>
 
 " allow toggling between rnu and nu mode
 function! g:ToggleNumber()
