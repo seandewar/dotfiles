@@ -35,8 +35,6 @@ Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
 Plug 'godlygeek/tabular' " text alignment
 Plug 'lifepillar/vim-mucomplete'
-Plug 'ludovicchabant/vim-gutentags' | Plug 'skywind3000/gutentags_plus'
-Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-startify' " start screen
 Plug 'plasticboy/vim-markdown'
 Plug 'sheerun/vim-polyglot' " language support package
@@ -145,14 +143,6 @@ let g:startify_bookmarks = [ { 'V': $MYVIMRC } ]
 let g:UltiSnipsEditSplit = 'vertical'
 let g:UltiSnipsSnippetsDir = $VIMUSERDIR . '/MyUltiSnips'
 let g:UltiSnipsSnippetDirectories = [ g:UltiSnipsSnippetsDir ]
-
-" configure vim-gutentags and gutentags_plus
-let g:gutentags_modules = [ 'ctags', 'gtags_cscope' ]
-let g:gutentags_project_root = [ '.root' ] " extra project root markers
-let g:gutentags_cache_dir = expand('~/.cache/tags') " save tags in user root dir
-let g:gutentags_define_advanced_commands = 1
-let g:gutentags_plus_switch = 1 " auto-focus gutentags quickfix buffer
-let g:gutentags_plus_nomap = 1 " we'll explicitly define keymaps
 
 " ale fixing and linting preferences
 let g:ale_fixers = {
@@ -335,27 +325,6 @@ nnoremap <leader>oH :FSSplitLeft<cr>
 nnoremap <leader>oL :FSSplitRight<cr>
 nnoremap <leader>oK :FSSplitAbove<cr>
 nnoremap <leader>oJ :FSSplitBelow<cr>
-
-" configure tagbar and gutentags_plus keybinds
-nnoremap <leader>tt :TagbarToggle<cr>
-" find symbol
-nnoremap <leader>ts :GscopeFind s <c-r><c-w><cr>
-" find definition
-nnoremap <leader>td :GscopeFind g <c-r><c-w><cr>
-" find functions calling this function
-nnoremap <leader>tm :GscopeFind c <c-r><c-w><cr>
-" find functions called by this function
-nnoremap <leader>tM :GscopeFind d <c-r><c-w><cr>
-" find this text string
-nnoremap <leader>tS :GscopeFind t <c-r><c-w><cr>
-" find this egrep pattern
-nnoremap <leader>tg :GscopeFind e <c-r><c-w><cr>
-" find this file
-nnoremap <leader>tf :GscopeFind f <c-r>=expand("<cfile>")<cr><cr>
-" find files #including this file
-nnoremap <leader>ti :GscopeFind i <c-r>=expand("<cfile>")<cr><cr>
-" find places where this symbol is assigned a value
-nnoremap <leader>ta :GscopeFind a <c-r><c-w><cr>
 
 " configure vim-fugitive keybinds
 nnoremap <leader>gg :Gstatus<cr>
