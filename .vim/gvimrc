@@ -11,9 +11,9 @@ silent! GuiPopupmenu 0
 
 " set GUI font (GuiFont is used for older versions of neovim instead)
 if (has('win32'))
-  if (exists(':GuiFont'))
-    GuiFont! Consolas:h11
-  else
-    set guifont=Consolas:h11
-  endif
+    if (exists(':GuiFont'))
+        GuiFont! Consolas:h11
+    else
+        set guifont=Consolas:h11
+    endif
 endif

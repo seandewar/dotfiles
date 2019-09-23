@@ -1,4 +1,6 @@
 # Sean Dewar's C snippets
+# Mostly based on the ISO C++ Core Guidelines using the Stroustrup naming style
+# with some C-specific changes
 priority 1
 
 snippet //c "Sean Dewar's copyright header comment"
@@ -8,144 +10,160 @@ snippet //c "Sean Dewar's copyright header comment"
 
 endsnippet
 
-snippet todo "TODO comment"
-// TODO: ${VISUAL}${0:${VISUAL/(.*)/(?1::implement this)/}}
+snippet //todo "TODO comment"
+// TODO: ${0:${VISUAL:implement this}}
 endsnippet
 
-snippet note "NOTE comment"
-// NOTE: ${VISUAL}${0:${VISUAL/(.*)/(?1::important note here)/}}
+snippet #once "#include guard"
+#ifndef ${1:PROJECT}_${2:FILE}_H
+#define $1_$2_H
+
+${0:${VISUAL}}
+
+#endif // $1_$2_H
 endsnippet
 
-snippet once "#include guard (similar to #pragma once)"
-#ifndef ${1:PROJECT_FILE_H_}
-#define $1
-
-${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
-
-#endif // $1
-endsnippet
-
-snippet inc "#include global file"
+snippet #in "#include global file"
 #include <${1:file.h}>
 endsnippet
 
-snippet lin "#include local file"
+snippet #lin "#include local file"
 #include "${1:`!p snip.rv = snip.basename + '.h'`}"
 endsnippet
 
 snippet #if "#if block"
-#if ${1:/* condition */}
-${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
-#endif // $1
+#if ${1:MACRO_CONDITION}
+	${0:${VISUAL}}
+#endif
 endsnippet
 
 snippet #ifd "#ifdef block"
-#ifdef ${1:/* macro */}
-${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
-#endif // $1
+#ifdef ${1:MACRO_IDENTIFIER}
+	${0:${VISUAL}}
+#endif
 endsnippet
 
-snippet #ifn "#ifndef block"
-#ifndef ${1:/* macro */}
-${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
-#endif // $1
+snippet #ifnd "#ifndef block"
+#ifndef ${1:MACRO_IDENTIFIER}
+	${0:${VISUAL}}
+#endif
 endsnippet
 
 snippet bl "block"
 {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet if "if block"
-if (${1:/* condition */}) {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+if (${1:condition}) {
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet el "else block"
 else {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet elif "else if block"
-else if (${1:/* condition */}) {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+else if (${1:condition}) {
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet for "for loop"
-for (${2:int} ${3:i} = 0; $3 < ${1:count}; ++$3) {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+for (${3:int} ${4:i} = ${2:0}; $4 < ${1:count}; ++$4) {
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet wh "while loop"
-while (${1:/* condition */}) {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+while (${1:condition}) {
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet do "do while loop"
 do {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
-} while (${1:/* condition */});
+	${0:${VISUAL}}
+} while (${1:condition});
 endsnippet
 
 snippet sw "switch"
-switch (${1:/* value */}) {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+switch (${1:condition}) {
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet ca "switch case"
-case ${1:/* value */}:
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+case ${1:expression}:
+	${0:${VISUAL}}
 	break;
 endsnippet
 
 snippet de "switch default case"
 default:
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+	${0:${VISUAL}}
 	break;
 endsnippet
 
 snippet fn "function definition"
-${1:void} ${2:Function}(${3:/* arguments */}) {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+${1:void} ${2:my_function}(${3:void})
+{
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet fnp "function declaration (prototype)"
-${1:void} ${2:Function}(${3:/* arguments */});
+${1:void} ${2:my_function}(${3:void});
 endsnippet
 
 snippet main "main() entry point function"
-int main(int argc, char *argv[]) {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+int main(int argc, char* argv[])
+{
+	${0:${VISUAL}}
 	return 0;
 }
 endsnippet
 
 snippet td "typedef"
-typedef ${VISUAL}${1:${VISUAL/(.*)/(?1::int)/}} ${2:Type};
+typedef ${2:${VISUAL:T}} ${1:My_type};
 endsnippet
 
 snippet st "struct"
-struct ${1:Struct} {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ members)/}}
+struct ${1:My_struct} {
+	${0:${VISUAL}}
 };
+endsnippet
+
+snippet tdst "struct typedef"
+typedef struct {
+	${0:${VISUAL}}
+} ${1:My_struct_type};
 endsnippet
 
 snippet un "union"
-union ${1:Union} {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ members)/}}
+union ${1:My_union} {
+	${0:${VISUAL}}
 };
 endsnippet
 
+snippet tdun "union typedef"
+typedef union {
+	${0:${VISUAL}}
+} ${1:My_union_type};
+endsnippet
+
 snippet en "enum"
-enum ${1:Enum} {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ values)/}}
+enum ${1:My_enum} {
+	${0:${VISUAL}}
 };
+endsnippet
+
+snippet tden "enum typedef"
+typedef enum {
+	${0:${VISUAL}}
+} ${1:My_enum_type};
 endsnippet

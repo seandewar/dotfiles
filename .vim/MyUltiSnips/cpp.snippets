@@ -1,66 +1,80 @@
 # Sean Dewar's C++ Snippets (extends C with higher priority)
-priority 1
+# Mostly based on the ISO C++ Core Guidelines using the Stroustrup naming style
 extends c
 priority 2
 
-snippet inc "#include global file"
+snippet #in "#include global file"
 #include <${1:file.hpp}>
 endsnippet
 
-snippet linc "#include local file"
+snippet #lin "#include local file"
 #include "${1:`!p snip.rv = snip.basename + '.hpp'`}"
 endsnippet
 
 snippet forea "range-based for (each) loop"
-for (${2:const auto} ${3:x} : ${1:container}) {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+for (${2:const auto&} ${3:x} : ${1:container}) {
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet forit "iterator-based for loop"
 for (auto ${3:it} = ${1:container}.${2:c}begin(); $3 != $1.$2end(); ++$3) {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet ns "namespace"
-namespace ${1:namespace} {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+namespace ${1:My_namespace} {
+	${0:${VISUAL}}
 }
 endsnippet
 
-snippet cl "class"
-class ${1:Class} {
-	public:
-		$1(${2:/* ctor arguments */});
-
-	private:
-		${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ private members)/}}
+snippet cl "class (rule of zero)"
+class ${1:My_class} {
+public:
+	${2}
+private:
+	${0:${VISUAL}}
 };
 endsnippet
 
-snippet ctor "class constructor"
-${1:Class}::$1(${2:/* arguments */}) ${3}{
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
+snippet cl5 "class (rule of five)"
+class ${1:My_class} ${2}{
+public:
+	$1();
+	$1(const $1&);
+	$1($1&&);
+	${3}~$1();
+
+	$1& operator=(const $1&);
+	$1& operator=($1&&);
+
+private:
+	${0:${VISUAL}}
+};
+endsnippet
+
+snippet fn "function definition"
+${1:void} ${2:my_function}(${3})
+{
+	${0:${VISUAL}}
 }
 endsnippet
 
-snippet dtor "class destructor"
-$1::~${1:Class}() {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ code)/}}
-}
+snippet fnp "function declaration (prototype)"
+${1:void} ${2:my_function}(${3});
 endsnippet
 
 snippet us "using type alias"
-using ${2:Type} = ${VISUAL}${1:${VISUAL/(.*)/(?1::int)/}};
+using ${1:My_type} = ${2:${VISUAL:T}};
 endsnippet
 
 snippet tp "template"
-template <${2:typename} ${1:T}${3}>
+template<${1:typename} ${2:T}${3}>
 endsnippet
 
 snippet encl "enum class"
-enum class ${1:Enum} {
-	${VISUAL}${0:${VISUAL/(.*)/(?1::\/\/ values)/}}
+enum class ${1:My_enum_class} {
+	${0:${VISUAL}}
 };
 endsnippet
