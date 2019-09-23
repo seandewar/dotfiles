@@ -16,4 +16,10 @@ if (has('win32'))
     else
         set guifont=Consolas:h11
     endif
+else
+    if (exists(':GuiFont'))
+        GuiFont! DejaVu\ Sans\ Mono\ 11
+    else
+        set guifont=DejaVu\ Sans\ Mono\ 11
+    endif
 endif
