@@ -48,7 +48,7 @@ Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
 
 " appearance
 Plug 'itchyny/lightline.vim' | Plug 'maximbaz/lightline-ale'
-Plug 'morhetz/gruvbox' " colorscheme
+Plug 'gruvbox-community/gruvbox' " colorscheme
 
 call plug#end()
 
@@ -133,7 +133,7 @@ augroup END
 " wait longer for key timeouts
 set timeoutlen=1500
 
-" disable automatic folding of headers .etc in vim-markdown
+" disable automatic folding of headers etc. in vim-markdown
 let g:vim_markdown_folding_disabled = 1
 
 " startify bookmarks
@@ -191,12 +191,17 @@ augroup ColorColumnInsertMode
   autocmd InsertLeave * setlocal colorcolumn=
 augroup END
 
-" configure color scheme
+" configure colour scheme
 set background=dark
 let g:gruvbox_contrast_dark = 'hard'
+" change background colours instead of underlines etc. in terminals as they're
+" probably not supported
+if !has('gui_running')
+  let g:gruvbox_guisp_fallback = 'bg'
+endif
 colorscheme gruvbox
 
-" ale gutter error/warning symbols and message config
+" ale gutter error/warning symbols and message configuration
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = 'E>'
 let g:ale_sign_warning = 'W>'
@@ -278,7 +283,7 @@ function! g:ToggleNumber()
 endfunction
 nnoremap <silent> <leader>L :call g:ToggleNumber()<cr>
 
-" configure utilsnips keybinds
+" configure ultisnips keybinds
 let g:UltiSnipsExpandTrigger = '<c-j>'
 let g:UltiSnipsListSnippets = '<c-space>'
 let g:UltiSnipsJumpForwardTrigger = '<c-j>'
