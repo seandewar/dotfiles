@@ -30,9 +30,10 @@ namespace ${1:My_namespace} {
 endsnippet
 
 snippet cl "class (rule of zero)"
-class ${1:My_class} {
+class ${1:My_class} ${2}{
 public:
-	${2}
+	$1();
+
 private:
 	${0:${VISUAL}}
 };
@@ -54,15 +55,21 @@ private:
 };
 endsnippet
 
+snippet st "struct"
+struct ${1:My_struct} ${2}{
+	${0:${VISUAL}}
+};
+endsnippet
+
 snippet fn "function definition"
-${1:void} ${2:my_function}(${3})
+${1:void} ${2:my_function}(${4})${3}
 {
 	${0:${VISUAL}}
 }
 endsnippet
 
 snippet fnp "function declaration (prototype)"
-${1:void} ${2:my_function}(${3});
+${1:void} ${2:my_function}(${4})${3};
 endsnippet
 
 snippet us "using type alias"
