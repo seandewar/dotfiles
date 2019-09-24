@@ -67,6 +67,9 @@ set directory^=~/.vim/swap//
 " set character encoding
 set encoding=utf8 fileencoding=utf8 termencoding=utf8
 
+" save local window and buffer options and mappings with session data
+set sessionoptions+=localoptions
+
 " disable unsafe commands in local vimrc files
 set secure
 
@@ -93,9 +96,6 @@ set wildmenu wildmode=list:longest,full wildignorecase
 " always display the status and tab lines
 set laststatus=2 showtabline=2
 
-" don't show mode in the command-line (we already see it in the buffer line)
-set noshowmode
-
 " disable bell noises
 set belloff=all
 
@@ -115,12 +115,8 @@ set backspace=indent,eol,start
 " ensure file type and file indent detection is on
 filetype plugin indent on
 
-" spellchecking (en_GB)
-set spell spelllang=en_gb
-
-function! g:ToggleSpell()
-    setlocal spell!
-endfunction
+" spellchecking language en_GB and off by default
+set spelllang=en_gb
 
 " configure completion menu
 set completeopt=menuone,preview,noinsert
@@ -138,7 +134,10 @@ set timeoutlen=1500
 let g:vim_markdown_folding_disabled = 1
 
 " startify bookmarks
-let g:startify_bookmarks = [ { 'V': $MYVIMRC } ]
+let g:startify_bookmarks = []
+if exists('$MYVIMRC')
+    let g:startify_bookmarks += [ { 'V': $MYVIMRC } ]
+endif
 
 " configure ultisnips - I like to store my snippets globally
 let g:UltiSnipsEditSplit = 'horizontal'
@@ -235,17 +234,17 @@ let g:lightline = {
             \ 'component_function': { 'gitbranch': 'fugitive#head' },
             \ 'active': {
             \   'left': [ [ 'mode', 'paste' ],
-            \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ],
+            \             [ 'filename', 'gitbranch', 'readonly', 'modified' ] ],
             \   'right': [ [ 'linter_checking', 'linter_warnings',
             \                'linter_errors', 'linter_ok' ],
-            \              [ 'lineinfo' ],
-            \              [ 'percent' ],
+            \              [ 'spell' ],
+            \              [ 'percent', 'lineinfo' ],
             \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
             \ },
             \ 'inactive': {
-            \   'left': [ [ 'readonly', 'filename', 'modified' ] ],
-            \   'right': [ [ 'lineinfo' ],
-            \              [ 'percent' ],
+            \   'left': [ [ 'filename', 'readonly', 'modified' ] ],
+            \   'right': [ [ 'spell' ],
+            \              [ 'percent', 'lineinfo' ],
             \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
             \ },
             \ 'tabline': { 'left': [ [ 'tabs' ] ], 'right': [ [ '' ] ] }
@@ -266,29 +265,27 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " general rebinds
-" make sure c-s flow ctrl is disabled for the terminal - press c-q to unfreeze
+" make sure ^S flow ctrl is disabled for the terminal - press ^Q to unfreeze
+nnoremap <leader><esc> :Startify<cr>
 nnoremap <c-s> :write<cr>
 inoremap <c-s> <c-\><c-o>:write<cr>
-nnoremap <leader>/ :set nohlsearch<cr>
-nnoremap <leader><esc> :Startify<cr>
-nnoremap <f7> :call g:ToggleSpell()<cr>
-inoremap <f7> <c-\><c-o>:call g:ToggleSpell()<cr>
+nnoremap <silent> <leader>L :setlocal relativenumber!<cr>
+nnoremap <silent> <f7> :setlocal spell!<cr>
+inoremap <silent> <f7> <c-\><c-o>:setlocal spell!<cr>
+nnoremap <leader>/ :set hlsearch!<cr>
 
-" allow toggling between rnu and nu mode
-function! g:ToggleNumber()
-    if &relativenumber
-        setlocal norelativenumber
-    else
-        setlocal relativenumber
-    endif
-endfunction
-nnoremap <silent> <leader>L :call g:ToggleNumber()<cr>
+" configure mucomplete keybinds
+inoremap <silent> <plug>(MUcompleteFwdKey) <c-b>
+imap <c-b> <plug>(MUcompleteCycFwd)
+" TODO can't find a good mapping for this, but it's not too necessary:
+"inoremap <silent> <plug>(MUcompleteBwdKey) <c-n>
+"imap <c-n> <plug>(MUcompleteCycBwd)
 
 " configure ultisnips keybinds
 let g:UltiSnipsExpandTrigger = '<c-j>'
-let g:UltiSnipsListSnippets = '<c-n>'
+let g:UltiSnipsListSnippets = '<c-k>'
 let g:UltiSnipsJumpForwardTrigger = '<c-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<c-n>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 
 " netrw (dir explorer) keybinds
 nnoremap <leader>dd :Explore<cr>
