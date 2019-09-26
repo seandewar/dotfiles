@@ -127,8 +127,9 @@ augroup AutoCloseCompletionPreview
     autocmd CompleteDone * pclose
 augroup END
 
-" wait longer for key timeouts
-set timeoutlen=1500
+" wait longer for key timeouts and don't wait for extra key combinations after
+" Esc
+set timeoutlen=1500 noesckeys
 
 " disable automatic folding of headers etc. in vim-markdown
 let g:vim_markdown_folding_disabled = 1
