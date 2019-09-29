@@ -82,9 +82,9 @@ set splitbelow splitright
 " always show at least 1 line above or below the cursor
 set scrolloff=1
 
-" enable mouse for all modes, don't hide cursor when typing, right-click
-" displays context menu
-set mouse=a nomousehide mousemodel=popup
+" don't hide cursor when typing, right-click displays context menu
+" ('mouse' is not set, so mouse support is disabled by default for terminals)
+set nomousehide mousemodel=popup
 
 " search options
 set hlsearch incsearch ignorecase smartcase
@@ -105,9 +105,11 @@ set title
 " set tab sizes - treat tabs as 8 spaces (as they typically are), insert 4
 " spaces when we use tabs or an auto indent
 set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab
+" don't indent switch case statements and class access specifiers
+set cinoptions+=:0,g0
 
-" automatically wrap text inserted at 80 characters
-set textwidth=79
+" wrap text at 80 cols when formatting (gq), don't auto do it in insert mode
+set textwidth=79 formatoptions-=t
 
 " backspace settings
 set backspace=indent,eol,start
@@ -235,7 +237,7 @@ let g:lightline = {
             \ 'component_function': { 'gitbranch': 'fugitive#head' },
             \ 'active': {
             \   'left': [ [ 'mode', 'paste' ],
-            \             [ 'filename', 'gitbranch', 'readonly', 'modified' ] ],
+            \             [ 'filename', 'readonly', 'modified', 'gitbranch' ] ],
             \   'right': [ [ 'linter_checking', 'linter_warnings',
             \                'linter_errors', 'linter_ok' ],
             \              [ 'spell' ],
