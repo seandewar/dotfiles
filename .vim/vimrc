@@ -105,8 +105,9 @@ set title
 " set tab sizes - treat tabs as 8 spaces (as they typically are), insert 4
 " spaces when we use tabs or an auto indent
 set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab
-" don't indent switch case statements and class access specifiers
-set cinoptions+=:0,g0
+" don't indent switch case statements, class access specifiers & namespace
+" blocks
+set cinoptions+=:0,g0,N-s
 
 " wrap text at 80 cols when formatting (gq), don't auto do it in insert mode
 set textwidth=79 formatoptions-=t
@@ -150,6 +151,7 @@ let g:UltiSnipsSnippetDirectories = [ g:UltiSnipsSnippetsDir ]
 " ale fixing and linting preferences
 let g:ale_fixers = {
             \ 'markdown': [ 'remove_trailing_lines' ],
+            \ 'cpp': [ 'clang-format', 'remove_trailing_lines', 'trim_whitespace' ],
             \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ]
             \ }
 let g:ale_linters = { 'cpp': [ ], 'c': [ ] } " my preference changes daily
