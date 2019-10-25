@@ -110,6 +110,8 @@ set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab
 set cinoptions+=:0,g0,N-s
 
 " wrap text at 80 cols when formatting (gq), don't auto do it in insert mode
+" (polygot plugins may override settings like this to suit the enforced
+" standard styles for such languages - e.g rust uses a 100 col limit instead)
 set textwidth=79 formatoptions-=t
 
 " backspace settings
@@ -152,6 +154,7 @@ let g:UltiSnipsSnippetDirectories = [ g:UltiSnipsSnippetsDir ]
 let g:ale_fixers = {
             \ 'markdown': [ 'remove_trailing_lines' ],
             \ 'cpp': [ 'clang-format', 'remove_trailing_lines', 'trim_whitespace' ],
+            \ 'rust': [ 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' ],
             \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ]
             \ }
 let g:ale_c_clangformat_options = '-fallback-style=none'
