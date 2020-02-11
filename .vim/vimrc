@@ -132,9 +132,8 @@ augroup AutoCloseCompletionPreview
     autocmd CompleteDone * pclose
 augroup END
 
-" wait longer for key timeouts and don't wait for extra key combinations after
-" Esc
-set timeoutlen=1500 noesckeys
+" wait longer for key timeouts
+set timeoutlen=1500
 
 " disable automatic folding of headers etc. in vim-markdown
 let g:vim_markdown_folding_disabled = 1
@@ -158,7 +157,11 @@ let g:ale_fixers = {
             \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ]
             \ }
 let g:ale_c_clangformat_options = '-fallback-style=none'
-let g:ale_linters = { 'cpp': [ ], 'c': [ ] } " my preference changes daily
+let g:ale_linters = {
+            \ 'c': [ ],
+            \ 'cpp': [ ],
+            \ 'rust': [ 'rls', 'cargo' ]
+            \ }
 let g:ale_fix_on_save = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -274,21 +277,23 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " general rebinds
-" make sure ^S flow ctrl is disabled for the terminal - press ^Q to unfreeze
-nnoremap <leader><esc> :Startify<cr>
+" NOTE: make sure ^S flow control is disabled for the terminal if you want to
+" use the ^S :write mapping. if you accidently activate flow control, press ^Q
+" to unfreeze the terminal
+nnoremap <silent> <f1> :Startify<cr>
+nnoremap <silent> <f5> :setlocal paste!<cr>
+nnoremap <silent> <f6> :setlocal spell!<cr>
+inoremap <silent> <f6> <c-\><c-o>:setlocal spell!<cr>
 nnoremap <c-s> :write<cr>
 inoremap <c-s> <c-\><c-o>:write<cr>
 nnoremap <silent> <leader>L :setlocal relativenumber!<cr>
-nnoremap <silent> <f7> :setlocal spell!<cr>
-inoremap <silent> <f7> <c-\><c-o>:setlocal spell!<cr>
 nnoremap <leader>/ :set hlsearch!<cr>
 
 " configure mucomplete keybinds
-inoremap <silent> <plug>(MUcompleteFwdKey) <c-b>
-imap <c-b> <plug>(MUcompleteCycFwd)
-" TODO can't find a good mapping for this, but it's not too necessary:
-"inoremap <silent> <plug>(MUcompleteBwdKey) <c-n>
-"imap <c-n> <plug>(MUcompleteCycBwd)
+inoremap <silent> <plug>(MUcompleteFwdKey) <c-f>
+imap <c-f> <plug>(MUcompleteCycFwd)
+inoremap <silent> <plug>(MUcompleteBwdKey) <c-b>
+imap <c-b> <plug>(MUcompleteCycBwd)
 
 " configure ultisnips keybinds
 let g:UltiSnipsExpandTrigger = '<c-j>'
