@@ -75,6 +75,12 @@ else if (${1:condition}) {
 endsnippet
 
 snippet for "for loop"
+for (${1:init}; ${2:condition}; ${3:step}) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet fori "index-based for loop"
 for (${3:int} ${4:i} = ${2:0}; $4 < ${1:count}; ++$4) {
 	${0:${VISUAL}}
 }

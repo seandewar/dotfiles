@@ -349,7 +349,7 @@ nnoremap <leader>gs :Gstatus<cr>
 nnoremap <silent> <leader>gl :Glog<cr>:copen<cr>
 nnoremap <silent> <leader>gL :0Glog<cr>:copen<cr>
 nnoremap <leader>ge :Gedit<cr>
-nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gd :Gdiffsplit<cr>
 nnoremap <leader>gb :Gblame<cr>
 nnoremap <leader>gc :Gcommit<cr>
 nnoremap <leader>gC :Gcommit -a<cr>

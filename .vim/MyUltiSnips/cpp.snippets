@@ -18,7 +18,27 @@ for (${2:const auto&} ${3:x} : ${1:container}) {
 endsnippet
 
 snippet forit "iterator-based for loop"
-for (auto ${3:it} = ${1:container}.${2:c}begin(); $3 != $1.$2end(); ++$3) {
+for (auto ${3:it} = std::${2:c}begin(${1:container}); $3 != std::$2end($1); ++$3) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet try "try-catch block"
+try {
+	${1:${VISUAL}}
+} catch (${2:const std::exception&}${3: e}) {
+	${0}
+}
+endsnippet
+
+snippet cat "catch block"
+catch (${1:const std::exception&}${2: e}) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet cata "catch-all block"
+catch (...) {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -47,7 +67,7 @@ public:
 	$1();
 	$1(const $1&);
 	$1($1&&);
-	${3}~$1() noexcept;
+	${3:virtual }~$1() noexcept;
 
 	$1& operator=(const $1&);
 	$1& operator=($1&&);
