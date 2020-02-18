@@ -39,11 +39,9 @@ Plug 'mhinz/vim-startify' " start screen
 Plug 'plasticboy/vim-markdown'
 Plug 'sheerun/vim-polyglot' " language support package
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-dispatch' " asynchronous jobs using :Dispatch
 Plug 'tpope/vim-fugitive' " git integration
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
-Plug 'vim-utils/vim-troll-stopper' " highlight troll unicode (e.g. the greek ;)
 Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
 
 " appearance
@@ -105,14 +103,21 @@ set title
 " set tab sizes - treat tabs as 8 spaces (as they typically are), insert 4
 " spaces when we use tabs or an auto indent
 set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab
-" don't indent switch case statements, class access specifiers & namespace
-" blocks
+" don't indent switch cases, class access specifiers & namespace blocks
 set cinoptions+=:0,g0,N-s
 
-" wrap text at 80 cols when formatting (gq), don't auto do it in insert mode
-" (polygot plugins may override settings like this to suit the enforced
-" standard styles for such languages - e.g rust uses a 100 col limit instead)
-set textwidth=79 formatoptions-=t
+" wrap text at 80 cols (ftplugins may override settings like this to suit the
+" enforced standard styles for such languages - e.g rust uses 100 col instead)
+set textwidth=80
+
+" enforced settings regardless of ftplugin options (easier than creating an
+" ftplugin-specific script in .vim/after, but can fail if the ftplugin also
+" creates its own autocmd...)
+augroup EnforceFileTypeSettings
+    autocmd!
+    autocmd FileType * setlocal formatoptions=crqljn
+    autocmd FileType c,cpp setlocal commentstring=//\ %s
+augroup END
 
 " backspace settings
 set backspace=indent,eol,start
@@ -152,7 +157,8 @@ let g:UltiSnipsSnippetDirectories = [ g:UltiSnipsSnippetsDir ]
 " ale fixing and linting preferences
 let g:ale_fixers = {
             \ 'markdown': [ 'remove_trailing_lines' ],
-            \ 'cpp': [ 'clang-format', 'remove_trailing_lines', 'trim_whitespace' ],
+            \ 'cpp': [ 'clang-format', 'remove_trailing_lines',
+                        \ 'trim_whitespace' ],
             \ 'rust': [ 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' ],
             \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ]
             \ }
@@ -185,23 +191,34 @@ augroup AutoWindowNumber
     autocmd BufWinEnter * setlocal number relativenumber
 augroup END
 
-" make sure we see numbers in netrw
-let g:netrw_bufsettings = 'nomodifiable nomodified number relativenumber
-            \ nobuflisted readonly'
-
-" highlight the line that the cursor is on for active windows only
-augroup ActiveWindowCursorLine
+" highlight the line that the cursor is on for the active window
+augroup AutoWindowCursorLine
     autocmd!
-    autocmd VimEnter,WinEnter * setlocal cursorline
+    autocmd WinEnter * setlocal cursorline
     autocmd WinLeave * setlocal nocursorline
 augroup END
 
-" configure 80 and 120 column indicator only in insert mode
-augroup ColorColumnInsertMode
+" function hides colorcolumn in unmodifiable mode, otherwise sets to textwidth+1
+function! ColorColumnUpdate()
+    if &modifiable
+        setlocal colorcolumn=+1
+    else
+        setlocal colorcolumn=
+    endif
+endfunction
+
+" show the colorcolumn for the active window and update if modifiable is (un)set
+augroup AutoWindowColorColumn
     autocmd!
-    autocmd InsertEnter * setlocal colorcolumn=81,121
-    autocmd InsertLeave * setlocal colorcolumn=
+    autocmd OptionSet modifiable call ColorColumnUpdate()
+    autocmd WinEnter,BufWinEnter * call ColorColumnUpdate()
+    autocmd WinLeave * setlocal colorcolumn=
 augroup END
+
+" make sure we see numbers in netrw and file timestamp & size info
+let g:netrw_bufsettings = 'nomodifiable nomodified number relativenumber
+            \ nobuflisted readonly'
+let g:netrw_liststyle = 1
 
 " configure colour scheme
 set background=dark
@@ -280,7 +297,7 @@ endfunction
 " NOTE: make sure ^S flow control is disabled for the terminal if you want to
 " use the ^S :write mapping. if you accidently activate flow control, press ^Q
 " to unfreeze the terminal
-nnoremap <silent> <f1> :Startify<cr>
+nnoremap <silent> <f2> :Startify<cr>
 nnoremap <silent> <f5> :setlocal paste!<cr>
 nnoremap <silent> <f6> :setlocal spell!<cr>
 inoremap <silent> <f6> <c-\><c-o>:setlocal spell!<cr>
@@ -302,8 +319,7 @@ let g:UltiSnipsJumpForwardTrigger = '<c-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 
 " netrw (dir explorer) keybinds
-nnoremap <leader>dd :Explore<cr>
-nnoremap <leader>de :Explore<space>
+nnoremap <leader>dd :Explore<space>
 nnoremap <leader>ds :Sexplore<space>
 nnoremap <leader>dv :Vexplore<space>
 
