@@ -33,8 +33,6 @@ call plug#begin($VIMUSERDIR . '/plugged')
 Plug 'SirVer/ultisnips' " snippets engine
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
-Plug 'godlygeek/tabular' " text alignment
-Plug 'lifepillar/vim-mucomplete'
 Plug 'mhinz/vim-startify' " start screen
 Plug 'plasticboy/vim-markdown'
 Plug 'sheerun/vim-polyglot' " language support package
@@ -54,13 +52,17 @@ call plug#end()
 "  Vim Behaviour
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" don't crowd working directories with swap files.
-" we'll use the same path regardless of nvim/vim so both programs are able to
-" detect the same swap files
+" don't crowd working directories with swap files. we'll use the same path
+" regardless of nvim/vim so both programs are able to detect the same swap files
 if !isdirectory(expand('~/.vim/swap'))
     call mkdir(expand('~/.vim/swap'), 'p')
 endif
 set directory^=~/.vim/swap//
+
+" use ripgrep over grep if available
+if executable('rg')
+    set grepprg=rg\ --vimgrep
+endif
 
 " set character encoding
 set encoding=utf8 fileencoding=utf8 termencoding=utf8
@@ -115,7 +117,7 @@ set textwidth=80
 " creates its own autocmd...)
 augroup EnforceFileTypeSettings
     autocmd!
-    autocmd FileType * setlocal formatoptions=crqljn
+    autocmd FileType * setlocal formatoptions=croqljn
     autocmd FileType c,cpp setlocal commentstring=//\ %s
 augroup END
 
@@ -176,6 +178,9 @@ let g:ale_fix_on_save = 1
 
 " syntax highlighting
 syntax on
+
+" stops c++ brace lists from being highlighted as an error inside of []s & ()s
+let c_no_curly_error = 1
 
 " show tab characters (useful for snippets)
 set list listchars=tab:..
@@ -298,19 +303,15 @@ endfunction
 " use the ^S :write mapping. if you accidently activate flow control, press ^Q
 " to unfreeze the terminal
 nnoremap <silent> <f2> :Startify<cr>
+inoremap <silent> <f2> <c-\><c-n>:Startify<cr>
 nnoremap <silent> <f5> :setlocal paste!<cr>
+inoremap <silent> <f5> <c-\><c-o>:setlocal paste!<cr>
 nnoremap <silent> <f6> :setlocal spell!<cr>
 inoremap <silent> <f6> <c-\><c-o>:setlocal spell!<cr>
 nnoremap <c-s> :write<cr>
 inoremap <c-s> <c-\><c-o>:write<cr>
 nnoremap <silent> <leader>L :setlocal relativenumber!<cr>
 nnoremap <leader>/ :set hlsearch!<cr>
-
-" configure mucomplete keybinds
-inoremap <silent> <plug>(MUcompleteFwdKey) <c-f>
-imap <c-f> <plug>(MUcompleteCycFwd)
-inoremap <silent> <plug>(MUcompleteBwdKey) <c-b>
-imap <c-b> <plug>(MUcompleteCycBwd)
 
 " configure ultisnips keybinds
 let g:UltiSnipsExpandTrigger = '<c-j>'
@@ -338,9 +339,9 @@ nnoremap <leader>ln :lnext<cr>
 nnoremap <leader>lN :lprevious<cr>
 
 " quickfix window keybinds
-nnoremap <leader>qq :copen<cr>
-nnoremap <leader>qn :cnext<cr>
-nnoremap <leader>qN :cprevious<cr>
+nnoremap <leader>cc :copen<cr>
+nnoremap <leader>cn :cnext<cr>
+nnoremap <leader>cN :cprevious<cr>
 
 " configure startify session keybinds
 nnoremap <leader>ss :SSave<cr>
