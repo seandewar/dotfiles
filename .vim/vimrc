@@ -2,7 +2,7 @@
 "  Sean Dewar's Vim/Neovim Configuration <https://github.com/seandewar>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" determine a runtime directory to store user data.
+"" Determine a runtime directory to store user data {{{1
 " an alternative is using fnamemodify(expand('$MYVIMRC', ':p:h')), but if the
 " vimrc file is in the home directory, we'll end up cluttering it...
 function! GetUserDir()
@@ -22,10 +22,7 @@ function! GetUserDir()
 endfunction
 let $VIMUSERDIR = GetUserDir()
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Plugin Configurations (using Plug)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+"" Plugin Configurations (using Plug) {{{1
 " run :PlugInstall to install new plugins
 call plug#begin($VIMUSERDIR . '/plugged')
 
@@ -38,6 +35,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'sheerun/vim-polyglot' " language support package
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive' " git integration
+Plug 'tpope/vim-repeat' " repeat command (.) support for plugins
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
 Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
@@ -48,9 +46,8 @@ Plug 'gruvbox-community/gruvbox' " colour scheme
 
 call plug#end()
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Vim Behaviour
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Vim Behaviour {{{1
+set secure " disable unsafe commands in local vimrc files
 
 " don't crowd working directories with swap files. we'll use the same path
 " regardless of nvim/vim so both programs are able to detect the same swap files
@@ -64,53 +61,37 @@ if executable('rg')
     set grepprg=rg\ --vimgrep
 endif
 
-" set character encoding
-set encoding=utf8 fileencoding=utf8 termencoding=utf8
+filetype plugin indent on " ensure file type and file indent detection is on
+set backspace=indent,eol,start " backspace settings
+set belloff=all " disable bell noises
+set completeopt=menuone,preview " configure completion menu
+set encoding=utf8 fileencoding=utf8 termencoding=utf8 " char encodings
+set foldmethod=marker " enable text markers in files for automatic folding
+set hidden " don't unload modified buffers that are not currently in a window
+set hlsearch incsearch ignorecase smartcase " search options
+set laststatus=2 showtabline=2 " always display the status and tab lines
+set scrolloff=1 " always show at least 1 line above or below the cursor
+set sessionoptions+=localoptions " save local option settings in sessions
+set spelllang=en_gb " spellchecking language en_GB and off by default
+set splitbelow splitright " split new windows on the bottom & right
+set textwidth=80 " wrap text at 80 col (ftplugins may override this)
+set timeoutlen=1500 " wait longer for key timeouts
+set title " display open file name in terminal title bar
 
-" save local window and buffer options and mappings with session data
-set sessionoptions+=localoptions
-
-" disable unsafe commands in local vimrc files
-set secure
-
-" don't unload modified buffers that are not displayed within a window
-set hidden
-
-" open splits on the bottom/right instead of top/left
-set splitbelow splitright
-
-" always show at least 1 line above or below the cursor
-set scrolloff=1
+" don't indent C/C++ switch cases, class access specifiers & namespace blocks
+set cinoptions+=:0,g0,N-s
 
 " don't hide cursor when typing, right-click displays context menu
 " ('mouse' is not set, so mouse support is disabled by default for terminals)
 set nomousehide mousemodel=popup
 
-" search options
-set hlsearch incsearch ignorecase smartcase
+" set tab sizes - treat tabs as 8 spaces (as they typically are), insert 4
+" spaces when we use tabs or an auto indent
+set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab
 
 " completion matches for commands (after pressing <tab> or ^D for a list &
 " <tab><tab> for the wildmenu)
 set wildmenu wildmode=list:longest,full wildignorecase
-
-" always display the status and tab lines
-set laststatus=2 showtabline=2
-
-" disable bell noises
-set belloff=all
-
-" display open file name in terminal title bar
-set title
-
-" set tab sizes - treat tabs as 8 spaces (as they typically are), insert 4
-" spaces when we use tabs or an auto indent
-set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab
-" don't indent switch cases, class access specifiers & namespace blocks
-set cinoptions+=:0,g0,N-s
-
-" wrap text at 80 cols (ftplugins may override settings like this to suit the
-" enforced standard styles for such languages - e.g rust uses 100 col instead)
-set textwidth=80
 
 " enforced settings regardless of ftplugin options (easier than creating an
 " ftplugin-specific script in .vim/after, but can fail if the ftplugin also
@@ -121,29 +102,11 @@ augroup EnforceFileTypeSettings
     autocmd FileType c,cpp setlocal commentstring=//\ %s
 augroup END
 
-" backspace settings
-set backspace=indent,eol,start
-
-" ensure file type and file indent detection is on
-filetype plugin indent on
-
-" spellchecking language en_GB and off by default
-set spelllang=en_gb
-
-" configure completion menu
-set completeopt=menuone,preview,noinsert
-
 " close completion preview after finishing completion
 augroup AutoCloseCompletionPreview
     autocmd!
     autocmd CompleteDone * pclose
 augroup END
-
-" wait longer for key timeouts
-set timeoutlen=1500
-
-" disable automatic folding of headers etc. in vim-markdown
-let g:vim_markdown_folding_disabled = 1
 
 " startify bookmarks
 let g:startify_bookmarks = []
@@ -160,7 +123,7 @@ let g:UltiSnipsSnippetDirectories = [ g:UltiSnipsSnippetsDir ]
 let g:ale_fixers = {
             \ 'markdown': [ 'remove_trailing_lines' ],
             \ 'cpp': [ 'clang-format', 'remove_trailing_lines',
-                        \ 'trim_whitespace' ],
+                     \ 'trim_whitespace' ],
             \ 'rust': [ 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' ],
             \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ]
             \ }
@@ -172,25 +135,24 @@ let g:ale_linters = {
             \ }
 let g:ale_fix_on_save = 1
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Vim Appearance
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"" Vim Appearance {{{1
+set list listchars=tab:.. " show tab characters (useful for snippets)
+set ruler " show line/col number of cursor position
+set showtabline=1 " only show the tabline if at least two tabs are open
+syntax on " syntax highlighting
 
-" syntax highlighting
-syntax on
+" configure colour scheme
+set background=dark
+let g:gruvbox_contrast_dark = 'hard'
+" change bg colours instead of drawing underlines etc. in terminals as they're
+" not always supported
+if !has('gui_running')
+    let g:gruvbox_guisp_fallback = 'bg'
+endif
+colorscheme gruvbox
 
-" stops c++ brace lists from being highlighted as an error inside of []s & ()s
-let c_no_curly_error = 1
-
-" show tab characters (useful for snippets)
-set list listchars=tab:..
-
-" only show the tabline if at least two tabs are open
-set showtabline=1
-
-" show the ruler and make sure we show hybrid relative line numbers on the side
-" of all buffer windows (including windows to non-file buffers)
-set ruler
+" make sure we show hybrid relative line numbers on the side of all buffer
+" windows (including windows to non-file buffers)
 augroup AutoWindowNumber
     autocmd!
     autocmd BufWinEnter * setlocal number relativenumber
@@ -220,20 +182,12 @@ augroup AutoWindowColorColumn
     autocmd WinLeave * setlocal colorcolumn=
 augroup END
 
+let c_no_curly_error = 1 " for C++11, don't highlight {} inside [] as a mistake
+
 " make sure we see numbers in netrw and file timestamp & size info
 let g:netrw_bufsettings = 'nomodifiable nomodified number relativenumber
             \ nobuflisted readonly'
 let g:netrw_liststyle = 1
-
-" configure colour scheme
-set background=dark
-let g:gruvbox_contrast_dark = 'hard'
-" change background colours instead of underlines etc. in terminals as they're
-" probably not supported
-if !has('gui_running')
-    let g:gruvbox_guisp_fallback = 'bg'
-endif
-colorscheme gruvbox
 
 " ale gutter error/warning symbols and message configuration
 let g:ale_sign_column_always = 1
@@ -294,10 +248,7 @@ function! g:LightlineRefresh()
     call lightline#update()
 endfunction
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Vim Keymappings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+"" Vim Keymappings {{{1
 " general rebinds
 " NOTE: make sure ^S flow control is disabled for the terminal if you want to
 " use the ^S :write mapping. if you accidently activate flow control, press ^Q
@@ -380,7 +331,6 @@ imap <c-tab> <plug>(ale_complete)
 nnoremap <leader>al :ALELint<cr>
 nnoremap <leader>af :ALEFix<cr>
 nnoremap <leader>ah :ALEHover<cr>
-nnoremap <leader>ai :ALEHover<cr>
 nnoremap <leader>as :ALESymbolSearch<space>
 nnoremap <leader>ar :ALEFindReferences<cr>
 nnoremap <leader>ad :ALEGoToDefinition<cr>
