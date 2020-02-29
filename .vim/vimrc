@@ -269,7 +269,7 @@ inoremap <silent> <f6> <c-\><c-o>:setlocal spell!<cr>
 nnoremap <c-s> :write<cr>
 inoremap <c-s> <c-\><c-o>:write<cr>
 nnoremap <silent> <leader>L :setlocal relativenumber!<cr>
-nnoremap <leader>/ :set hlsearch!<cr>
+nnoremap <leader>/ :nohlsearch<cr>
 
 " configure ultisnips keybinds
 let g:UltiSnipsExpandTrigger = '<c-j>'
