@@ -1,5 +1,5 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Sean Dewar's Vim/Neovim Configuration <https://github.com/seandewar>
+"  Sean Dewar's Vim/Neovim Configuration <https://github.com/seandewar>        "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "" Determine a runtime directory to store user data {{{1
@@ -27,18 +27,18 @@ let $VIMUSERDIR = GetUserDir()
 call plug#begin($VIMUSERDIR . '/plugged')
 
 " utilities
+Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
 Plug 'SirVer/ultisnips' " snippets engine
-Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
+Plug 'tpope/vim-commentary'
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
-Plug 'mhinz/vim-startify' " start screen
+Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c/.cc etc.)
+Plug 'tpope/vim-fugitive' " git integration
 Plug 'plasticboy/vim-markdown'
 Plug 'sheerun/vim-polyglot' " language support package
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive' " git integration
 Plug 'tpope/vim-repeat' " repeat command (.) support for plugins
+Plug 'mhinz/vim-startify' " start screen
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
-Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
 
 " appearance
 Plug 'itchyny/lightline.vim' | Plug 'maximbaz/lightline-ale'
@@ -86,8 +86,9 @@ set cinoptions+=:0,g0,N-s
 set nomousehide mousemodel=popup
 
 " set tab sizes - treat tabs as 8 spaces (as they typically are), insert 4
-" spaces when we use tabs or an auto indent
-set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab
+" spaces when we use tabs or an auto indent, use shiftwidth instead of tabstop
+" when inserting tab at the beginning of a line
+set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 
 " completion matches for commands (after pressing <tab> or ^D for a list &
 " <tab><tab> for the wildmenu)
@@ -136,20 +137,10 @@ let g:ale_linters = {
 let g:ale_fix_on_save = 1
 
 "" Vim Appearance {{{1
+syntax on " syntax highlighting
 set list listchars=tab:.. " show tab characters (useful for snippets)
 set ruler " show line/col number of cursor position
 set showtabline=1 " only show the tabline if at least two tabs are open
-syntax on " syntax highlighting
-
-" configure colour scheme
-set background=dark
-let g:gruvbox_contrast_dark = 'hard'
-" change bg colours instead of drawing underlines etc. in terminals as they're
-" not always supported
-if !has('gui_running')
-    let g:gruvbox_guisp_fallback = 'bg'
-endif
-colorscheme gruvbox
 
 " make sure we show hybrid relative line numbers on the side of all buffer
 " windows (including windows to non-file buffers)
@@ -204,9 +195,8 @@ let g:lightline#ale#indicator_warnings = 'W:'
 let g:lightline#ale#indicator_checking = 'Linting...'
 let g:lightline#ale#indicator_ok = 'Lint OK'
 
-" configure lightline
+" configure lightline and its color scheme
 let g:lightline = {
-            \ 'colorscheme': 'gruvbox',
             \ 'component_expand': {
             \   'linter_checking': 'lightline#ale#checking',
             \   'linter_errors': 'lightline#ale#errors',
@@ -247,6 +237,23 @@ function! g:LightlineRefresh()
     call lightline#colorscheme()
     call lightline#update()
 endfunction
+
+" configure vim colour scheme {{{2
+" NOTE: check if we support 256+ colors, otherwise don't bother with gruvbox
+" (e.g gruvbox lightline errors constantly if this requirement is not met)
+set background=dark
+if has('gui_running') || (has('termguicolors') && &termguicolors) || &t_Co == 256
+    let g:gruvbox_contrast_dark = 'hard'
+
+    " change bg colours instead of drawing underlines etc. in terminals as
+    " they're not always supported
+    if !has('gui_running')
+        let g:gruvbox_guisp_fallback = 'bg'
+    endif
+
+    colorscheme gruvbox
+    let g:lightline.colorscheme = 'gruvbox'
+endif
 
 "" Vim Keymappings {{{1
 " general rebinds
