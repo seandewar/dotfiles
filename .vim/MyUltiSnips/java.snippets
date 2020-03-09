@@ -1,0 +1,92 @@
+################################################################################
+#  Sean Dewar's Java snippets <https://github.com/seandewar>                   #
+################################################################################
+extends c-like
+priority 1
+
+snippet pa "package statement"
+package ${1:name};
+
+
+endsnippet
+
+snippet im "import statement"
+import ${1:package.Member};
+endsnippet
+
+snippet ims "static import statement"
+import static ${1:package.Member.staticMember};
+endsnippet
+
+snippet forea "enhanced for (each) loop"
+for (${1:final var} ${2:x} : ${3:collection}) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet try "try-catch block"
+try {
+	${1:${VISUAL}}
+} catch (${2:final Exception} ${3:e}) {
+	${0}
+}
+endsnippet
+
+snippet tryr "try-with-resources block"
+try (${1:resource}) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet cat "catch block"
+catch (${1:final Exception} ${2:e}) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet fin "finally block"
+finally {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet fn "function definition"
+${1:private} ${2:void} ${3:myFunction}(${4})${5} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet fno "overriding function definition"
+@Override
+${1:private} ${2:void} ${3:myFunction}(${4})${5} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet fnp "abstract function declaration (prototype)"
+${1:private} ${2:void} ${3:myFunction}(${4})${5};
+endsnippet
+
+snippet main "main() entry point function"
+public static void main(final String args[]) {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet cl "class"
+${1}class ${2:`!p snip.rv = snip.basename`}${3} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet in "interface"
+${1}interface ${2:`!p snip.rv = snip.basename`}${3} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet en "enum"
+${1}enum ${2:`!p snip.rv = snip.basename`} {
+	${0:${VISUAL}}
+}
+endsnippet

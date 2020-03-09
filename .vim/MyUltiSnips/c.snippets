@@ -1,19 +1,8 @@
-# Sean Dewar's C snippets
-# Mostly based on the ISO C++ Core Guidelines using the Stroustrup naming style
-# with some C-specific changes
+################################################################################
+#  Sean Dewar's C snippets <https://github.com/seandewar>                      #
+################################################################################
+extends c-like
 priority 1
-
-snippet //c "Sean Dewar's copyright header comment"
-// Copyright (C) Sean Dewar <https://github.com/seandewar>.
-// This file is distributed under the license terms in the LICENSE.txt file
-// located within the root directory of this distribution.
-
-
-endsnippet
-
-snippet //todo "TODO comment"
-// TODO: ${0:${VISUAL:implement this}}
-endsnippet
 
 snippet #once "#include guard"
 #ifndef ${1:PROJECT}_${2:FILE}_H
@@ -28,7 +17,7 @@ snippet #in "#include global file"
 #include <${1:file.h}>
 endsnippet
 
-snippet #lin "#include local file"
+snippet #inl "#include local file"
 #include "${1:`!p snip.rv = snip.basename + '.h'`}"
 endsnippet
 
@@ -48,73 +37,6 @@ snippet #ifnd "#ifndef block"
 #ifndef ${1:MACRO_IDENTIFIER}
 	${0:${VISUAL}}
 #endif
-endsnippet
-
-snippet bl "block"
-{
-	${0:${VISUAL}}
-}
-endsnippet
-
-snippet if "if block"
-if (${1:condition}) {
-	${0:${VISUAL}}
-}
-endsnippet
-
-snippet el "else block"
-else {
-	${0:${VISUAL}}
-}
-endsnippet
-
-snippet elif "else if block"
-else if (${1:condition}) {
-	${0:${VISUAL}}
-}
-endsnippet
-
-snippet for "for loop"
-for (${1:init}; ${2:condition}; ${3:step}) {
-	${0:${VISUAL}}
-}
-endsnippet
-
-snippet fori "index-based for loop"
-for (${3:int} ${4:i} = ${2:0}; $4 < ${1:count}; ++$4) {
-	${0:${VISUAL}}
-}
-endsnippet
-
-snippet wh "while loop"
-while (${1:condition}) {
-	${0:${VISUAL}}
-}
-endsnippet
-
-snippet do "do while loop"
-do {
-	${0:${VISUAL}}
-} while (${1:condition});
-endsnippet
-
-snippet sw "switch"
-switch (${1:condition}) {
-	${0:${VISUAL}}
-}
-endsnippet
-
-# TODO unindent case to match switch's indent
-snippet ca "switch case"
-case ${1:expression}:
-	${0:${VISUAL}}
-	break;
-endsnippet
-
-snippet de "switch default case"
-default:
-	${0:${VISUAL}}
-	break;
 endsnippet
 
 snippet fn "function definition"
