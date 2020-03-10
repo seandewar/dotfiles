@@ -283,11 +283,7 @@ nnoremap <leader>ds :Sexplore<space>
 nnoremap <leader>dv :Vexplore<space>
 
 " buffer keybinds
-nnoremap <leader>bb :buffers<cr>:buffer<space>
-nnoremap <leader>bs :buffers<cr>:sbuffer<space>
-nnoremap <leader>bv :buffers<cr>:vertical sbuffer<space>
-nnoremap <leader>bd :buffers<cr>:bdelete<space>
-nnoremap <leader>bt :buffers<cr>:tab sbuffer<space>
+nnoremap <leader>bb :buffers<cr>:
 nnoremap <leader>bn :bnext<cr>
 nnoremap <leader>bN :bprevious<cr>
 
@@ -319,19 +315,17 @@ nnoremap <leader>oK :FSSplitAbove<cr>
 nnoremap <leader>oJ :FSSplitBelow<cr>
 
 " configure vim-fugitive keybinds
-nnoremap <leader>gg :Gstatus<cr>
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <silent> <leader>gl :Glog<cr>:copen<cr>
-nnoremap <silent> <leader>gL :0Glog<cr>:copen<cr>
+nnoremap <leader>gg :Git<cr>
+nnoremap <silent> <leader>gl :0Gclog<cr>:copen<cr>
+nnoremap <silent> <leader>gL :Gclog<cr>:copen<cr>
 nnoremap <leader>ge :Gedit<cr>
 nnoremap <leader>gd :Gdiffsplit<cr>
-nnoremap <leader>gb :Gblame<cr>
-nnoremap <leader>gc :Gcommit<cr>
-nnoremap <leader>gC :Gcommit -a<cr>
+nnoremap <leader>gb :Git blame<cr>
+nnoremap <leader>gc :Git commit<cr>
 nnoremap <leader>gw :Gwrite<cr>
 nnoremap <leader>gr :Gread<cr>
-nnoremap <leader>gps :Gpush<cr>
-nnoremap <leader>gpl :Gpull<cr>
+nnoremap <leader>gps :Git push<cr>
+nnoremap <leader>gpl :Git pull<cr>
 
 " configure ale keybinds (most of these binds only work for lsp servers)
 imap <c-tab> <plug>(ale_complete)
