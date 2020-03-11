@@ -62,6 +62,7 @@ if executable('rg')
 endif
 
 filetype plugin indent on " ensure file type and file indent detection is on
+set autoread " autoread file if changed outside of vim (without unsaved changes)
 set backspace=indent,eol,start " backspace settings
 set belloff=all " disable bell noises
 set completeopt=menuone,preview " configure completion menu
