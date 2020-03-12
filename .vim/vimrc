@@ -5,7 +5,7 @@
 "" Determine a runtime directory to store user data {{{1
 " an alternative is using fnamemodify(expand('$MYVIMRC', ':p:h')), but if the
 " vimrc file is in the home directory, we'll end up cluttering it...
-function! GetUserDir()
+function! GetUserDir() abort
     if has('nvim')
         if has('win32')
             return expand('~/AppData/Local/nvim')
@@ -158,7 +158,7 @@ augroup AutoWindowCursorLine
 augroup END
 
 " function hides colorcolumn in unmodifiable mode, otherwise sets to textwidth+1
-function! ColorColumnUpdate()
+function! ColorColumnUpdate() abort
     if &modifiable
         setlocal colorcolumn=+1
     else
@@ -230,7 +230,7 @@ let g:lightline = {
             \ }
 
 " function to refresh lightline
-function! g:LightlineRefresh()
+function! g:LightlineRefresh() abort
     if !exists('g:loaded_lightline')
         return
     endif
