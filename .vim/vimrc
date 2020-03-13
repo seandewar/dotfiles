@@ -71,6 +71,7 @@ set foldmethod=marker " enable text markers in files for automatic folding
 set hidden " don't unload modified buffers that are not currently in a window
 set hlsearch incsearch ignorecase smartcase " search options
 set laststatus=2 showtabline=2 " always display the status and tab lines
+set nojoinspaces " don't insert 2 spaces after . ? or ! when joining lines
 set scrolloff=1 " always show at least 1 line above or below the cursor
 set sessionoptions+=localoptions " save local option settings in sessions
 set spelllang=en_gb " spellchecking language en_GB and off by default
