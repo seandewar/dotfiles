@@ -1,7 +1,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Sean Dewar's Vim/Neovim GUI Configuration
-"  (this runs after the .vimrc)
+"  Sean Dewar's Vim/Neovim GUI Configuration <https://github.com/seandewar>    "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NOTE: this file will auto run after the vimrc if running in a GUI
 
 " disable pretty much all GUI features and use command-line dialogs
 " (the Gui* commands are for neovim, which doesn't properly respect guioptions)
@@ -9,17 +9,21 @@ set guioptions=c
 silent! GuiTabline 0
 silent! GuiPopupmenu 0
 
-" set GUI font (GuiFont is used for older versions of neovim instead)
-if (has('win32'))
-    if (exists(':GuiFont'))
-        GuiFont! Consolas:h11
+" set the GUI font {{{1
+" function to set the font (GuiFont is used for old versions of neovim instead)
+function! s:GuiFont(f, s) abort
+    let font = a:f . (has('gui_gtk') ? ' ' : ':h') . a:s
+
+    if exists('GuiFont')
+        call v:GuiFont(font)
     else
-        set guifont=Consolas:h11
+        let &guifont = font
     endif
+endfunction
+
+" try fonts which have a good chance of being installed
+if has('win32')
+    call s:GuiFont('Consolas', 11)
 else
-    if (exists(':GuiFont'))
-        GuiFont! DejaVu\ Sans\ Mono\ 11
-    else
-        set guifont=DejaVu\ Sans\ Mono\ 11
-    endif
+    call s:GuiFont('Deja Vu Sans Mono', 11)
 endif
