@@ -2,9 +2,8 @@
 "  Sean Dewar's Vim/Neovim Configuration <https://github.com/seandewar>        "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"" Determine a runtime directory to store user data in {{{1
-" an alternative is using fnamemodify(expand('$MYVIMRC', ':p:h')), but if the
-" vimrc file is in the home directory, we'll end up cluttering it...
+"" Vim Settings {{{1
+" get the path to the vim user runtime directory
 function! s:GetUserDir() abort
     let basedir = $XDG_CONFIG_HOME
     if empty(basedir)
@@ -20,38 +19,13 @@ function! s:GetUserDir() abort
 endfunction
 let $VIMUSERDIR = s:GetUserDir()
 
-"" Plugin List {{{1
-" uses vim-plug: run :PlugUpdate or :PlugInstall to install new plugins
-call plug#begin($VIMUSERDIR . '/plugged')
-
-Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
-Plug 'sjl/badwolf' " color scheme
-Plug 'SirVer/ultisnips' " snippets engine
-Plug 'tpope/vim-commentary' " commands for (un)commenting lines
-Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
-Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c, etc.)
-Plug 'tpope/vim-fugitive' " git integration
-Plug 'plasticboy/vim-markdown' " markdown file type support
-Plug 'sheerun/vim-polyglot' " language support package
-Plug 'tpope/vim-repeat' " repeat command (.) support for plugins
-Plug 'mhinz/vim-startify' " start screen
-Plug 'tpope/vim-surround' " commands for editing surrounding (), '', etc.
-Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
-
-call plug#end()
-
-"" Vim Behaviour {{{1
-" general settings {{{2
-set secure " disable unsafe commands in local vimrc files
-
-" don't crowd working dirs with swap & persistent undo files; put them in the
-" user dir instead. luckily, neovim already does this by default.
+" don't crowd working dirs with swap & persistent undo files; use the user dir.
 " NOTE: this doesn't include backup files
-if !has('nvim')
+if !has('nvim') " neovim does this by default
     silent! call mkdir($VIMUSERDIR . '/swap', 'p')
     silent! call mkdir($VIMUSERDIR . '/undo', 'p')
-    let &directory = $VIMUSERDIR . '/swap//' . ',' . &directory
-    let &undodir = $VIMUSERDIR . '/undo' . ',' . &undodir
+    let &directory = $VIMUSERDIR . '/swap//,' . &directory
+    let &undodir = $VIMUSERDIR . '/undo,' . &undodir
 endif
 
 " use ripgrep over grep if available
@@ -59,26 +33,33 @@ if executable('rg')
     set grepprg=rg\ --vimgrep
 endif
 
-filetype plugin indent on " ensure file type and file indent detection is on
-set autoread " autoread file if changed outside of vim (w/o unsaved changes)
-set backspace=indent,eol,start " backspace settings
-set belloff=all " disable bell noises
-set encoding=utf-8 " the internal char encoding used by vim - default to utf-8
+filetype plugin indent on " turn on auto file type and indent detection
+syntax on " turn on syntax highlighting
+
+set autoread " auto read file if changed outside of vim (w/o unsaved changes)
+set backspace=indent,eol,start
+set belloff=all " disable bell sounds
+set encoding=utf-8 " default internal char encoding used by vim
 set foldmethod=marker " enable text markers in files for automatic folding
 set hidden " don't unload modified buffers that are not currently in a window
-set hlsearch incsearch ignorecase smartcase " search options
+set hlsearch incsearch ignorecase smartcase
 set lazyredraw " don't redraw while executing untyped commands (e.g: macros)
 set nojoinspaces " don't insert 2 spaces after . ? or ! when joining lines
-set nowrap " don't draw lines as wrapped if they can't fit on the screen
-set scrolloff=1 " always show at least 1 line above or below the cursor
+set nowrap
+set ruler
+set scrolloff=1 sidescroll=5 " auto scroll when cursor is near screen boundaries
 set sessionoptions+=localoptions " save local option settings in sessions
-set sidescroll=5 " horiz scroll amount when nowrap is set & cursor off-screen
-set spelllang=en_gb " spellchecking language en_GB and off by default
-set splitbelow splitright " split new windows on the bottom & right
-set textwidth=80 " auto wrap some lines at 80 cols (ftplugins may change this)
-set timeoutlen=1500 " wait longer for key timeouts
-set title " display open file name in terminal title bar
-set winwidth=80 winheight=20 " recommended min size of the selected window
+set showbreak=\\ " show \ char at beginning of lines that have been wrapped
+set spelllang=en_gb
+set splitbelow splitright
+set textwidth=80
+set timeoutlen=1500 " wait longer for key combination timeouts
+set title
+set winwidth=80 winheight=15 " recommended min size of the selected window
+
+" configure vanilla color scheme; assume dark background
+set background=dark
+colorscheme torte
 
 " don't indent C/C++ switch cases, class access specifiers & namespace blocks
 set cinoptions+=:0,g0,N-s
@@ -88,6 +69,9 @@ set completeopt=menuone,preview
 if has('patch-8.1.1880')
     set completeopt+=popup " overrides preview flag
 endif
+
+" enable list mode to draw certain hidden chars (e.g: tabs)
+set list listchars=tab:\..,trail:.,nbsp:~,extends:>,precedes:<
 
 " don't hide mouse cursor when typing, right-click displays context menu
 " ('mouse' is not set, so mouse support is disabled by default for terminals)
@@ -102,6 +86,12 @@ set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 " <tab><tab> for the wildmenu)
 set wildmenu wildmode=list:longest,full wildignorecase
 
+let c_no_curly_error = 1 " for C++11: don't highlight {} in a [] as a mistake
+
+" make sure we see line numbers in netrw
+let g:netrw_bufsettings = 'number relativenumber nomodifiable nomodified
+                         \ nobuflisted readonly'
+
 " enforced settings regardless of ftplugin options (easier than creating an
 " ftplugin-specific script in .vim/after, but can fail if the ftplugin also
 " creates its own autocmd...)
@@ -110,44 +100,6 @@ augroup enforce_ft_settings
     autocmd FileType * setlocal formatoptions=croqljn
     autocmd FileType c,cpp setlocal commentstring=//\ %s
 augroup END
-
-" plugin settings {{{2
-" startify bookmarks
-let g:startify_bookmarks = []
-if exists('$MYVIMRC')
-    let g:startify_bookmarks += [ { 'V': $MYVIMRC } ]
-endif
-
-" configure ultisnips
-let g:UltiSnipsSnippetDirectories = [ $VIMUSERDIR . '/ultisnips' ]
-
-" configure ale and its fixing and linting preferences
-let g:ale_fixers = {
-            \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ],
-            \ 'c': [ 'clang-format', 'remove_trailing_lines',
-                   \ 'trim_whitespace' ],
-            \ 'cpp': [ 'clang-format', 'remove_trailing_lines',
-                     \ 'trim_whitespace' ],
-            \ 'rust': [ 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' ],
-            \ 'markdown': [ 'remove_trailing_lines' ]
-            \ }
-let g:ale_linters = {
-            \ 'c': [ 'clangd' ],
-            \ 'cpp': [ 'clangd' ],
-            \ 'rust': [ 'rls' ]
-            \ }
-let g:ale_c_clangformat_options = '-fallback-style=none'
-let g:ale_fix_on_save = 1
-
-set completefunc=ale#completion#OmniFunc " lsp as user-defined ins-completion
-
-"" Vim Appearance {{{1
-" general settings {{{2
-syntax on " syntax highlighting
-set list " enable list mode: draws visible chars for hidden chars (e.g: tabs)
-set listchars=tab:\..,trail:.,nbsp:~,extends:>,precedes:< " list mode settings
-set ruler " show line/col number of cursor position
-set showbreak=\\ " show \ char at beginning of lines that have been wrapped
 
 " make sure we show hybrid relative line numbers on the side of all buffer
 " windows (including windows to non-file buffers)
@@ -176,31 +128,10 @@ augroup auto_window_color_column
     autocmd WinLeave * setlocal colorcolumn=
 augroup END
 
-" colorscheme settings {{{2
-set background=dark " assume dark background
-colorscheme torte " fallback scheme
-colorscheme goodwolf " will do nothing if term not compatible
 
-" plugin settings {{{2
-let c_no_curly_error = 1 " for C++11: don't highlight {} in a [] as a mistake
-
-" make sure we see line numbers in netrw
-let g:netrw_bufsettings = 'number relativenumber nomodifiable nomodified
-                         \ nobuflisted readonly'
-
-" only show editor version as startify header instead of the pointless cow
-let g:startify_custom_header = startify#pad(
-                                 \ split(execute('version'), '\n')[:0])
-
-" ale gutter error/warning symbols and message configuration
-let g:ale_sign_error = 'E'
-let g:ale_sign_warning = 'W'
-let g:ale_sign_info = 'I'
-let g:ale_echo_msg_format = '[%linter%] %s'
-
-" status line settings {{{2
-" generates status line string with lint info for the current buffer
-function! LintStatusLine() abort
+"" Status Line Settings {{{2
+" generates status line string with ale's lint info for the current buffer.
+function! ALELintStatusLine() abort
     if !get(g:, 'loaded_ale', 0) || !get(g:, 'ale_enabled', 1)
                                \ || !get(b:, 'ale_enabled', 1)
         return ''
@@ -218,9 +149,9 @@ function! LintStatusLine() abort
     let total_err = counts.error + counts.style_error
     let total_warn = counts.warning + counts.style_warning
 
-    let line  = total_err > 0 ? 'E:' . total_err : ''
-    let line .= total_warn > 0 ? ',W:' . total_warn : ''
-    let line .= counts.info > 0 ? ',I:' . counts.info : ''
+    let line  = total_err > 0 ? total_err . 'E' : ''
+    let line .= total_warn > 0 ? ',' . total_warn . 'W' : ''
+    let line .= counts.info > 0 ? ',' . counts.info . 'I' : ''
     return line
 endfunction
 
@@ -231,14 +162,17 @@ function! StatusLine() abort
     let line .= '%([%M%R] %)'                               " modified, RO flag
     let line .= '%(%y %)'                                   " file type
     let line .= '%([%{&spell ? &spelllang : ""}] %)'        " spell check
-    let line .= '%([%{LintStatusLine()}] %)'                " lint status
+    let line .= '%([%{ALELintStatusLine()}] %)'             " ale lint status
     let line .= '%='                                        " align right
     let line .= '%-14(%l,%c%V%) '                           " cursor line & col
     let line .= '%P'                                        " scroll percentage
     return line
 endfunction
 
-" automatically redraw and update window status lines
+set laststatus=2 " always display status line
+set statusline=%!StatusLine()
+
+" automatically redraw and update window status lines when necessary
 augroup auto_redraw_statuslines
     autocmd!
     autocmd User ALEJobStarted redrawstatus!
@@ -246,10 +180,8 @@ augroup auto_redraw_statuslines
     autocmd User ALEFixPost redrawstatus!
 augroup END
 
-set laststatus=2 " always display status line
-set statusline=%!StatusLine()
 
-" tab line settings {{{2
+"" Tab Line Settings {{{2
 " generates label string for the tab line
 function! TabName(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
@@ -278,8 +210,8 @@ endfunction
 set tabline=%!TabLine()
 set showtabline=1 " only show the tabline if at least two tabs are open
 
-"" Vim Keyboard Mappings {{{1
-" general keybinds {{{2
+
+"" Mappings {{{2
 " NOTE: disable flow control for your terminal to use the ^S mapping to save.
 " if you accidentally activate flow control, press ^Q to unfreeze the terminal
 set pastetoggle=<f5> " also works while in paste mode
@@ -289,24 +221,94 @@ nnoremap <c-s> :write<cr>
 inoremap <c-s> <c-\><c-o>:write<cr>
 nnoremap <leader>/ :nohlsearch<cr>
 
-" buffer keybinds {{{3
-nnoremap <leader>b :buffers<cr>
-nnoremap <leader>B :buffers!<cr>
+" buffer {{{3
+nnoremap <leader>b :buffers<cr>:
+nnoremap <leader>B :buffers!<cr>:
 nnoremap ]b :bnext<cr>
 nnoremap [b :bprevious<cr>
 
-" quickfix keybinds {{{3
+" quickfix {{{3
 nnoremap <leader>c :cwindow<cr>
 nnoremap ]c :cnext<cr>
 nnoremap [c :cprevious<cr>
 
-" loclist keybinds {{{3
+" loclist {{{3
 nnoremap <leader>l :lwindow<cr>
 nnoremap ]l :lnext<cr>
 nnoremap [l :lprevious<cr>
 
-" plugin keybinds {{{2
-" ale keybinds {{{3
+
+"" Plugin Settings {{{1
+" can't continue if vim-plug isn't installed
+if empty(globpath(&runtimepath, '/autoload/plug.vim'))
+    autocmd! VimEnter *
+             \ echomsg 'vim-plug is not installed; using vanilla configuration.'
+    finish
+endif
+
+" uses vim-plug: run :PlugUpdate or :PlugInstall to install new plugins
+call plug#begin($VIMUSERDIR . '/plugged')
+
+Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
+Plug 'robertmeta/nofrils' " color scheme
+Plug 'SirVer/ultisnips' " snippets engine
+Plug 'tpope/vim-commentary' " commands for (un)commenting lines
+Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
+Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c, etc.)
+Plug 'tpope/vim-fugitive' " git integration
+Plug 'plasticboy/vim-markdown' " markdown file type support
+Plug 'sheerun/vim-polyglot' " language support package
+Plug 'tpope/vim-repeat' " repeat command (.) support for plugins
+Plug 'mhinz/vim-startify' " start screen
+Plug 'tpope/vim-surround' " commands for editing surrounding (), '', etc.
+Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
+
+call plug#end()
+
+" configure color scheme
+let g:nofrils_strbackgrounds = 1
+let g:nofrils_heavylinenumbers = 1
+colorscheme nofrils-dark
+
+" startify bookmarks
+let g:startify_bookmarks = []
+if exists('$MYVIMRC')
+    let g:startify_bookmarks += [ { 'V': $MYVIMRC } ]
+endif
+
+let g:UltiSnipsSnippetDirectories = [ $VIMUSERDIR . '/ultisnips' ]
+
+" configure ale and its fixing and linting preferences
+set completefunc=ale#completion#OmniFunc " lsp as user-defined ins-completion
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+            \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ],
+            \ 'c': [ 'clang-format', 'remove_trailing_lines',
+                   \ 'trim_whitespace' ],
+            \ 'cpp': [ 'clang-format', 'remove_trailing_lines',
+                     \ 'trim_whitespace' ],
+            \ 'markdown': [ 'remove_trailing_lines' ],
+            \ 'rust': [ 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' ]
+            \ }
+let g:ale_linters = {
+            \ 'c': [ 'clangd' ],
+            \ 'cpp': [ 'clangd' ],
+            \ 'rust': [ 'rls' ]
+            \ }
+let g:ale_c_clangformat_options = '-fallback-style=none'
+
+" only show editor version as startify header instead of the pointless cow
+let g:startify_custom_header = startify#pad(split(execute('version'), '\n')[:0])
+
+" ale gutter error/warning symbols and message configuration
+let g:ale_sign_error = 'E'
+let g:ale_sign_warning = 'W'
+let g:ale_sign_info = 'I'
+let g:ale_echo_msg_format = '[%linter%] %s'
+
+
+"" Mappings {{{2
+"" ale {{{3
 " NOTE: most of these binds only work for lsp servers
 nnoremap <leader>al :ALELint<cr>
 nnoremap <leader>af :ALEFix<cr>
@@ -317,7 +319,7 @@ nnoremap <leader>aR :ALERename<cr>
 nnoremap <leader>ad :ALEGoToDefinition<cr>
 nnoremap <leader>at :ALEGoToTypeDefinition<cr>
 
-" startify keybinds {{{3
+"" startify {{{3
 nnoremap <silent> <f2> :Startify<cr>
 inoremap <silent> <f2> <c-\><c-n>:Startify<cr>
 nnoremap <leader>ss :SSave<cr>
@@ -325,13 +327,13 @@ nnoremap <leader>sl :SLoad<cr>
 nnoremap <leader>sd :SDelete<cr>
 nnoremap <leader>sc :SClose<cr>
 
-" ultisnips keybinds {{{3
+"" ultisnips {{{3
 let g:UltiSnipsExpandTrigger = '<c-j>'
 let g:UltiSnipsListSnippets = '<c-k>'
 let g:UltiSnipsJumpForwardTrigger = '<c-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 
-" vim-fswitch keybinds {{{3
+"" vim-fswitch {{{3
 nnoremap <leader>oo :FSHere<cr>
 nnoremap <leader>oh :FSLeft<cr>
 nnoremap <leader>ol :FSRight<cr>
@@ -342,7 +344,7 @@ nnoremap <leader>oL :FSSplitRight<cr>
 nnoremap <leader>oK :FSSplitAbove<cr>
 nnoremap <leader>oJ :FSSplitBelow<cr>
 
-" vim-fugitive keybinds {{{3
+"" vim-fugitive {{{3
 nnoremap <leader>gg :Git<cr>
 nnoremap <silent> <leader>gl :0Gclog<cr>:copen<cr>
 nnoremap <silent> <leader>gL :Gclog<cr>:copen<cr>
