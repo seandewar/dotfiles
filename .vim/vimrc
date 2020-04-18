@@ -214,9 +214,9 @@ set showtabline=1 " only show the tabline if at least two tabs are open
 "" Mappings {{{2
 " NOTE: disable flow control for your terminal to use the ^S mapping to save.
 " if you accidentally activate flow control, press ^Q to unfreeze the terminal
-set pastetoggle=<f5> " also works while in paste mode
-nnoremap <silent> <f6> :setlocal spell!<cr>
-inoremap <silent> <f6> <c-\><c-o>:setlocal spell!<cr>
+nnoremap <silent> <f3> :setlocal spell!<cr>
+inoremap <silent> <f3> <c-\><c-o>:setlocal spell!<cr>
+set pastetoggle=<f4> " also works while in paste mode
 nnoremap <c-s> :write<cr>
 inoremap <c-s> <c-\><c-o>:write<cr>
 nnoremap <leader>/ :nohlsearch<cr>

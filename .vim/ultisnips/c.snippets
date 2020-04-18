@@ -22,19 +22,19 @@ snippet #inl "#include local file"
 endsnippet
 
 snippet #if "#if block"
-#if ${1:MACRO_CONDITION}
+#if ${1:CONDITION}
 	${0:${VISUAL}}
 #endif
 endsnippet
 
 snippet #ifd "#ifdef block"
-#ifdef ${1:MACRO_IDENTIFIER}
+#ifdef ${1:IDENTIFIER}
 	${0:${VISUAL}}
 #endif
 endsnippet
 
 snippet #ifnd "#ifndef block"
-#ifndef ${1:MACRO_IDENTIFIER}
+#ifndef ${1:IDENTIFIER}
 	${0:${VISUAL}}
 #endif
 endsnippet

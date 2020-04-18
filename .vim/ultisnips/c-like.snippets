@@ -9,7 +9,7 @@ snippet //d "Doxygen/Javadoc empty multi-line documentation"
  */
 endsnippet
 
-snippet //f "Doxygen file header documentation"
+snippet //h "Doxygen file header documentation"
 /**
  * @author [Sean Dewar](https://github.com/seandewar)
  *
@@ -45,14 +45,14 @@ snippet //leeta "LeetCode alternative solution header"
 
 endsnippet
 
-snippet bl "block"
+snippet b "block"
 {
 	${0:${VISUAL}}
 }
 endsnippet
 
 snippet if "if block"
-if (${1:condition}) {
+if (${1}) {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -63,14 +63,14 @@ else {
 }
 endsnippet
 
-snippet elif "else if block"
-else if (${1:condition}) {
+snippet eli "else if block"
+else if (${1}) {
 	${0:${VISUAL}}
 }
 endsnippet
 
 snippet for "for loop"
-for (${1:init}; ${2:condition}; ${3:step}) {
+for (${1}; ${2}; ${3}) {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -82,7 +82,7 @@ for (${1:int} ${2:i} = ${3:0}; $2 < ${4:count}; ++$2) {
 endsnippet
 
 snippet wh "while loop"
-while (${1:condition}) {
+while (${1}) {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -90,24 +90,25 @@ endsnippet
 snippet do "do while loop"
 do {
 	${0:${VISUAL}}
-} while (${1:condition});
+} while (${1});
 endsnippet
 
-# TODO: would be nice to make UltiSnips obey my case label indentation settings
-snippet sw "switch"
-switch (${1:condition}) {
-	${0:${VISUAL}}
+snippet sw "switch with case"
+switch (${1}) {
+	case ${2:EXPRESSION}:
+		${3:${VISUAL}}
+		${4:break;}
 }
 endsnippet
 
 snippet ca "switch case"
-case ${1:expression}:
-	${0:${VISUAL}}
-	break;
+case ${1:EXPRESSION}:
+	${2:${VISUAL}}
+	${3:break;}
 endsnippet
 
 snippet de "switch default case"
 default:
-	${0:${VISUAL}}
-	break;
+	${2:${VISUAL}}
+	${3:break;}
 endsnippet

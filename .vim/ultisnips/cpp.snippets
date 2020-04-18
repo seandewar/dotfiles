@@ -8,7 +8,7 @@ snippet #inl "#include local file"
 #include "${1:`!p snip.rv = snip.basename + '.hpp'`}"
 endsnippet
 
-snippet forea "range-based for (each) loop"
+snippet fore "range-based for (each) loop"
 for (${1:const auto&} ${2:x} : ${3:container}) {
 	${0:${VISUAL}}
 }
@@ -23,19 +23,13 @@ endsnippet
 snippet try "try-catch block"
 try {
 	${1:${VISUAL}}
-} catch (${2:const std::exception&}${3: e}) {
+} catch (${2}) {
 	${0}
 }
 endsnippet
 
 snippet cat "catch block"
-catch (${1:const std::exception&}${2: e}) {
-	${0:${VISUAL}}
-}
-endsnippet
-
-snippet cata "catch-all block"
-catch (...) {
+catch (${1}) {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -64,7 +58,7 @@ public:
 	$1();
 	$1(const $1&);
 	$1($1&&);
-	${3:virtual }~$1();
+	virtual ~$1();
 
 	$1& operator=(const $1&);
 	$1& operator=($1&&);
@@ -87,7 +81,7 @@ ${1:void} ${2:my_function}(${3})${4}
 }
 endsnippet
 
-snippet fnp "function declaration (prototype)"
+snippet fnd "function declaration (prototype)"
 ${1:void} ${2:my_function}(${3})${4};
 endsnippet
 

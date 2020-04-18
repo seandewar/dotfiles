@@ -27,19 +27,19 @@ endsnippet
 snippet try "try-catch block"
 try {
 	${1:${VISUAL}}
-} catch (${2:final Exception} ${3:e}) {
+} catch (${2}) {
 	${0}
 }
 endsnippet
 
 snippet tryr "try-with-resources block"
-try (${1:resource}) {
+try (${1}) {
 	${0:${VISUAL}}
 }
 endsnippet
 
 snippet cat "catch block"
-catch (${1:final Exception} ${2:e}) {
+catch (${1}) {
 	${0:${VISUAL}}
 }
 endsnippet
@@ -63,7 +63,7 @@ ${1:private} ${2:void} ${3:myFunction}(${4})${5} {
 }
 endsnippet
 
-snippet fnp "abstract function declaration (prototype)"
+snippet fnd "abstract function declaration (prototype)"
 ${1:private} ${2:void} ${3:myFunction}(${4})${5};
 endsnippet
 
