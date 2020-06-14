@@ -5,6 +5,10 @@
 "" Vim Settings {{{1
 " get the path to the vim user runtime directory
 function! s:GetUserDir() abort
+    if exists('*stdpath') " currently an nvim 0.3+ feature; use if available
+        return stdpath('config')
+    endif
+
     let basedir = $XDG_CONFIG_HOME
     if empty(basedir)
         let basedir = has('win32') ? '~/AppData/Local' : '~/.config'
