@@ -254,6 +254,7 @@ endif
 call plug#begin($VIMUSERDIR . '/plugged')
 
 Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
+Plug 'ianding1/leetcode.vim' " leetcode integration
 Plug 'robertmeta/nofrils' " color scheme
 Plug 'SirVer/ultisnips' " snippets engine
 Plug 'tpope/vim-commentary' " commands for (un)commenting lines
@@ -310,6 +311,9 @@ let g:ale_sign_warning = 'W'
 let g:ale_sign_info = 'I'
 let g:ale_echo_msg_format = '[%linter%] %s'
 
+" configure leetcode.vim
+let g:leetcode_solution_filetype = 'cpp'
+let g:leetcode_browser = 'firefox'
 
 "" Mappings {{{2
 "" ale {{{3

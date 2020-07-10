@@ -15,7 +15,7 @@ for (${1:const auto&} ${2:x} : ${3:container}) {
 endsnippet
 
 snippet forit "iterator-based for loop"
-for (auto ${1:it} = std::${2:c}begin(${3:container}); $1 != std::$2end($3); ++$1) {
+for (auto ${1:it} = ${2:c}begin(${3:container}); $1 != $2end($3); ++$1) {
 	${0:${VISUAL}}
 }
 endsnippet
