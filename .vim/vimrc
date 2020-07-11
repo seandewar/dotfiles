@@ -23,13 +23,14 @@ function! s:GetUserDir() abort
 endfunction
 let $VIMUSERDIR = s:GetUserDir()
 
-" don't crowd working dirs with swap & persistent undo files; use the user dir.
-" NOTE: this doesn't include backup files
+" don't crowd working dirs with swap, persistent undo & other files; use the
+" user dir instead. NOTE: this doesn't include backup files
 if !has('nvim') " neovim does this by default
     silent! call mkdir($VIMUSERDIR . '/swap', 'p')
     silent! call mkdir($VIMUSERDIR . '/undo', 'p')
     let &directory = $VIMUSERDIR . '/swap//,' . &directory
     let &undodir = $VIMUSERDIR . '/undo,' . &undodir
+    let &viminfofile = $VIMUSERDIR . '/viminfo'
 endif
 
 " use ripgrep over grep if available
