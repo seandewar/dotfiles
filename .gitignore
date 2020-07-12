@@ -1,0 +1,4 @@
+# Windows-specific symlinks from the create_windows_symlinks.bat script
+/vimfiles/
+/AppData/Local/nvim/
+/_ideavimrc
