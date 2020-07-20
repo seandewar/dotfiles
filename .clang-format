@@ -27,7 +27,7 @@ BinPackArguments: 'true'
 BinPackParameters: 'false'
 BreakBeforeBinaryOperators: NonAssignment
 
-# Based on Stroustrup style
+# Based on K&R style
 BreakBeforeBraces: Custom
 BraceWrapping:
     AfterClass: 'false'
@@ -38,8 +38,8 @@ BraceWrapping:
     AfterNamespace: 'false'
     AfterStruct: 'false'
     AfterUnion: 'false'
-    BeforeCatch: 'true'
-    BeforeElse: 'true'
+    BeforeCatch: 'false'
+    BeforeElse: 'false'
     IndentBraces: 'false'
     SplitEmptyFunction: 'false'
     SplitEmptyNamespace: 'false'
