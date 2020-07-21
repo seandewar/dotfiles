@@ -80,7 +80,7 @@ if has('patch-8.1.1880')
 endif
 
 " enable list mode to draw certain hidden chars (e.g: tabs)
-set list listchars=tab:\..,trail:.,nbsp:~,extends:>,precedes:<
+set list listchars=tab:__,trail:.,nbsp:~,extends:>,precedes:<
 
 " don't hide mouse cursor when typing, right-click displays context menu
 " ('mouse' is not set, so mouse support is disabled by default for terminals)
