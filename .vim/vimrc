@@ -46,7 +46,6 @@ set backspace=indent,eol,start
 set belloff=all " disable bell sounds
 set encoding=utf-8 " default internal char encoding used by vim
 set foldmethod=marker " enable text markers in files for automatic folding
-set hidden " don't unload modified buffers that are not currently in a window
 set hlsearch incsearch ignorecase smartcase
 set lazyredraw " don't redraw while executing untyped commands (e.g: macros)
 set nojoinspaces " don't insert 2 spaces after . ? or ! when joining lines
@@ -61,6 +60,11 @@ set textwidth=80
 set timeoutlen=1500 " wait longer for key combination timeouts
 set title
 set winwidth=80 winheight=15 " recommended min size of the selected window
+
+" 16-bit true colour is available if Win32 virtual console support is active
+if has('vcon')
+    set termguicolors
+endif
 
 " configure vanilla color scheme; assume dark background
 set background=dark
@@ -256,8 +260,8 @@ call plug#begin($VIMUSERDIR . '/plugged')
 
 Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
 Plug 'ianding1/leetcode.vim' " leetcode integration
-Plug 'robertmeta/nofrils' " color scheme
 Plug 'SirVer/ultisnips' " snippets engine
+Plug 'tomasiser/vim-code-dark' " color scheme
 Plug 'tpope/vim-commentary' " commands for (un)commenting lines
 Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c, etc.)
@@ -272,9 +276,7 @@ Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
 call plug#end()
 
 " configure color scheme
-let g:nofrils_strbackgrounds = 1
-let g:nofrils_heavylinenumbers = 1
-colorscheme nofrils-dark
+colorscheme codedark
 
 " startify bookmarks
 let g:startify_bookmarks = []
