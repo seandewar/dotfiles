@@ -251,11 +251,11 @@ nnoremap [l :lprevious<cr>
 " can't continue if vim-plug isn't installed
 if empty(globpath(&runtimepath, '/autoload/plug.vim'))
     autocmd! VimEnter *
-             \ echomsg 'vim-plug is not installed; using vanilla configuration.'
+             \ echomsg 'vim-plug is not installed; using minimal configuration.'
     finish
 endif
 
-" uses vim-plug: run :PlugUpdate or :PlugInstall to install new plugins
+" NOTE: run :PlugUpdate to update plugins, :PlugUpgrade to update vim-plug
 call plug#begin($VIMUSERDIR . '/plugged')
 
 Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
@@ -274,6 +274,31 @@ Plug 'tpope/vim-surround' " commands for editing surrounding (), '', etc.
 Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
 
 call plug#end()
+
+" runs :PlugInstall synchronously, showing a message, while leaving the window
+" active and open
+function! s:PlugInstall() abort
+    echomsg 'Trying to install missing plugins with vim-plug...'
+    PlugInstall --sync
+endfunction
+
+" auto run :PlugInstall if we detect missing plugins on startup, otherwise
+" prompt user. if installation fails after manually prompting, keep prompting if
+" it continues to fail (avoids uncontrollably looping on startup if an auto
+" install would continuously fail).
+while len(filter(values(g:plugs), '!isdirectory(v:val.dir)')) > 0
+    if v:vim_did_enter
+        if confirm('Some plugins are missing, try to install them?',
+                 \ "&Yes\n&No, abort configuration", 1) == 1
+            call s:PlugInstall()
+        else
+            finish " abort if plugins missing to avoid possible errors
+        endif
+    else
+        autocmd! VimEnter * call s:PlugInstall() | quit | source $MYVIMRC
+        finish " cannot continue until after startup; abort for now
+    endif
+endwhile
 
 " configure color scheme
 colorscheme codedark
