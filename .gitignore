@@ -2,3 +2,7 @@
 /vimfiles/
 /AppData/Local/nvim/
 /_ideavimrc
+
+# system-specific local vimrc files
+lvimrc
+lgvimrc

@@ -3,27 +3,21 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NOTE: this file will auto run after the vimrc if running in a GUI
 
-" disable pretty much all GUI features and use command-line dialogs
-" (the Gui* commands are for neovim, which doesn't properly respect guioptions)
+" disable pretty much all GUI features and use command-line dialogs.
+" (Gui commands are for older versions of nvim-qt)
 set guioptions=c
 silent! GuiTabline 0
 silent! GuiPopupmenu 0
 
-" set the GUI font {{{1
-" function to set the font (GuiFont is used for old versions of neovim instead)
-function! s:GuiFont(f, s) abort
-    let font = a:f . (has('gui_gtk') ? ' ' : ':h') . a:s
-
-    if exists('GuiFont')
-        call v:GuiFont(font)
-    else
-        let &guifont = font
-    endif
-endfunction
-
-" try fonts which have a good chance of being installed
+" try some default fonts that have a good chance of being installed.
+" (the GuiFont commands are again for older versions of nvim-qt)
 if has('win32')
-    call s:GuiFont('Consolas', 11)
-else
-    call s:GuiFont('Deja Vu Sans Mono', 11)
+    silent! set guifont=Consolas:h11
+    silent! GuiFont! Consolas:h11
+else " assume UNIX-like
+    silent! set guifont=Deja\ Vu\ Sans\ Mono\ 11 " assumes GTK+ 2 or 3
+    silent! GuiFont! Deja Vu Sans Mono:h11
 endif
+
+" load an optional local gvimrc for system-specific configurations
+runtime lgvimrc

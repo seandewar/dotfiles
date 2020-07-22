@@ -367,3 +367,7 @@ nnoremap <leader>gw :Gwrite<cr>
 nnoremap <leader>gr :Gread<cr>
 nnoremap <leader>gps :Git push<cr>
 nnoremap <leader>gpl :Git pull<cr>
+" }}}1
+
+" load an optional local vimrc for system-specific configurations
+runtime lvimrc
