@@ -12,11 +12,17 @@ silent! GuiPopupmenu 0
 " try some default fonts that have a good chance of being installed.
 " (the GuiFont commands are again for older versions of nvim-qt)
 if has('win32')
-    silent! set guifont=Consolas:h11
-    silent! GuiFont! Consolas:h11
+    if exists('GuiFont')
+        GuiFont! Consolas:h11
+    else
+        silent! set guifont=Consolas:h11
+    endif
 else " assume UNIX-like
-    silent! set guifont=Deja\ Vu\ Sans\ Mono\ 11 " assumes GTK+ 2 or 3
-    silent! GuiFont! Deja Vu Sans Mono:h11
+    if exists('GuiFont')
+        GuiFont! DejaVu Sans Mono:h11
+    else
+        silent! set guifont=DejaVu\ Sans\ Mono\ 11 " assumes GTK+ 2 or 3
+    endif
 endif
 
 " load an optional local gvimrc for system-specific configurations
