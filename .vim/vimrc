@@ -53,6 +53,7 @@ set nowrap
 set ruler
 set scrolloff=1 sidescroll=5 " auto scroll when cursor is near screen boundaries
 set sessionoptions+=localoptions " save local option settings in sessions
+set shortmess+=I " disable the intro message
 set showbreak=\\ " show \ char at beginning of lines that have been wrapped
 set spelllang=en_gb
 set splitbelow splitright
@@ -120,7 +121,7 @@ augroup END
 " highlight the line that the cursor is on for the active window
 augroup auto_window_cursor_line
     autocmd!
-    autocmd WinEnter * setlocal cursorline
+    autocmd VimEnter,WinEnter * setlocal cursorline
     autocmd WinLeave * setlocal nocursorline
 augroup END
 
@@ -223,9 +224,9 @@ set showtabline=1 " only show the tabline if at least two tabs are open
 "" Mappings {{{2
 " NOTE: disable flow control for your terminal to use the ^S mapping to save.
 " if you accidentally activate flow control, press ^Q to unfreeze the terminal
-nnoremap <silent> <f3> :setlocal spell!<cr>
-inoremap <silent> <f3> <c-\><c-o>:setlocal spell!<cr>
-set pastetoggle=<f4> " also works while in paste mode
+nnoremap <silent> <f2> :setlocal spell!<cr>
+inoremap <silent> <f2> <c-\><c-o>:setlocal spell!<cr>
+set pastetoggle=<f3> " also works while in paste mode
 nnoremap <c-s> :write<cr>
 inoremap <c-s> <c-\><c-o>:write<cr>
 nnoremap <leader>/ :nohlsearch<cr>
@@ -269,7 +270,6 @@ Plug 'tpope/vim-fugitive' " git integration
 Plug 'plasticboy/vim-markdown' " markdown file type support
 Plug 'sheerun/vim-polyglot' " language support package
 Plug 'tpope/vim-repeat' " repeat command (.) support for plugins
-Plug 'mhinz/vim-startify' " start screen
 Plug 'tpope/vim-surround' " commands for editing surrounding (), '', etc.
 Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
 
@@ -303,12 +303,6 @@ endwhile
 " configure color scheme
 colorscheme codedark
 
-" startify bookmarks
-let g:startify_bookmarks = []
-if exists('$MYVIMRC')
-    let g:startify_bookmarks += [ { 'V': $MYVIMRC } ]
-endif
-
 let g:UltiSnipsSnippetDirectories = [ $VIMUSERDIR . '/ultisnips' ]
 
 " configure ale and its fixing and linting preferences
@@ -329,9 +323,6 @@ let g:ale_linters = {
             \ 'rust': [ 'rls' ]
             \ }
 let g:ale_c_clangformat_options = '-fallback-style=none'
-
-" only show editor version as startify header instead of the pointless cow
-let g:startify_custom_header = startify#pad(split(execute('version'), '\n')[:0])
 
 " ale gutter error/warning symbols and message configuration
 let g:ale_sign_error = 'E'
@@ -355,13 +346,6 @@ nnoremap <leader>aR :ALERename<cr>
 nnoremap <leader>ad :ALEGoToDefinition<cr>
 nnoremap <leader>at :ALEGoToTypeDefinition<cr>
 
-"" startify {{{3
-nnoremap <silent> <f2> :Startify<cr>
-inoremap <silent> <f2> <c-\><c-n>:Startify<cr>
-nnoremap <leader>ss :SSave<cr>
-nnoremap <leader>sl :SLoad<cr>
-nnoremap <leader>sd :SDelete<cr>
-nnoremap <leader>sc :SClose<cr>
 
 "" ultisnips {{{3
 let g:UltiSnipsExpandTrigger = '<c-j>'
