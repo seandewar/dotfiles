@@ -15,6 +15,9 @@ BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeBraces: Custom
 BraceWrapping:
     AfterFunction: true
+    SplitEmptyFunction: false
+    SplitEmptyRecord: false
+    SplitEmptyNamespace: false
 
 KeepEmptyLinesAtTheStartOfBlocks: false
 PointerAlignment: Left
