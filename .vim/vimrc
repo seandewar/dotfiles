@@ -46,15 +46,16 @@ set backspace=indent,eol,start
 set belloff=all " disable bell sounds
 set encoding=utf-8 " default internal char encoding used by vim
 set foldmethod=marker " enable text markers in files for automatic folding
+set hidden
 set hlsearch incsearch ignorecase smartcase
 set lazyredraw " don't redraw while executing untyped commands (e.g: macros)
 set nojoinspaces " don't insert 2 spaces after . ? or ! when joining lines
-set nowrap
+set nrformats-=octal
+set number relativenumber
 set ruler
 set scrolloff=1 sidescroll=5 " auto scroll when cursor is near screen boundaries
 set sessionoptions+=localoptions " save local option settings in sessions
 set shortmess+=I " disable the intro message
-set showbreak=\\ " show \ char at beginning of lines that have been wrapped
 set spelllang=en_gb
 set splitbelow splitright
 set textwidth=80
@@ -78,6 +79,10 @@ set cinoptions+=:0,g0,N-s
 set completeopt=menuone,preview
 if has('patch-8.1.1880')
     set completeopt+=popup " overrides preview flag
+
+    if has('patch-8.1.1882')
+        set completepopup=border:off
+    endif
 endif
 
 " enable list mode to draw certain hidden chars (e.g: tabs)
@@ -109,13 +114,6 @@ augroup enforce_ft_settings
     autocmd!
     autocmd FileType * setlocal formatoptions=croqljn
     autocmd FileType c,cpp setlocal commentstring=//\ %s
-augroup END
-
-" make sure we show hybrid relative line numbers on the side of all buffer
-" windows (including windows to non-file buffers)
-augroup auto_window_number
-    autocmd!
-    autocmd BufWinEnter * setlocal number relativenumber
 augroup END
 
 " highlight the line that the cursor is on for the active window
@@ -259,7 +257,7 @@ endif
 " NOTE: run :PlugUpdate to update plugins, :PlugUpgrade to update vim-plug
 call plug#begin($VIMUSERDIR . '/plugged')
 
-Plug 'w0rp/ale' " vim8/nvim async linting engine + lsp support
+Plug 'w0rp/ale' " vim8/nvim async linting engine & lsp client (w/o code actions)
 Plug 'ianding1/leetcode.vim' " leetcode integration
 Plug 'SirVer/ultisnips' " snippets engine
 Plug 'tomasiser/vim-code-dark' " color scheme
@@ -303,11 +301,13 @@ endwhile
 " configure color scheme
 colorscheme codedark
 
+" configure ultisnips
 let g:UltiSnipsSnippetDirectories = [ $VIMUSERDIR . '/ultisnips' ]
 
 " configure ale and its fixing and linting preferences
 set completefunc=ale#completion#OmniFunc " lsp as user-defined ins-completion
 let g:ale_fix_on_save = 1
+let g:ale_linters_explicit = 1
 let g:ale_fixers = {
             \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ],
             \ 'c': [ 'clang-format', 'remove_trailing_lines',
@@ -332,7 +332,6 @@ let g:ale_echo_msg_format = '[%linter%] %s'
 
 " configure leetcode.vim
 let g:leetcode_solution_filetype = 'cpp'
-let g:leetcode_browser = 'firefox'
 
 "" Mappings {{{2
 "" ale {{{3
