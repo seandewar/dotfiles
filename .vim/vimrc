@@ -61,7 +61,6 @@ set splitbelow splitright
 set textwidth=80
 set timeoutlen=1500 " wait longer for key combination timeouts
 set title
-set winwidth=80 winheight=15 " recommended min size of the selected window
 
 " 16-bit true colour is available if Win32 virtual console support is active
 if has('vcon')
