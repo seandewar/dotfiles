@@ -1,8 +1,15 @@
-# Windows-specific symlinks from the create_windows_symlinks.bat script
-/vimfiles/
+# script-generated symlinks for vim
+/.config/nvim/vimrc
+/.config/nvim/gvimrc
+
+# Windows symlinks from ~\.config\dotfiles\make_windows_symlinks.bat
 /AppData/Local/nvim/
+/vimfiles/
 /_ideavimrc
 
-# system-specific local vimrc files
-lvimrc
-lgvimrc
+# Linux symlinks from ~/.config/dotfiles/make_linux_symlinks.sh
+/.vim/
+
+# system-specific vim configuration files
+init_local.vim
+ginit_local.vim

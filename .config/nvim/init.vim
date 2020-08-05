@@ -1,8 +1,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Sean Dewar's Vim/Neovim Configuration <https://github.com/seandewar>        "
+"  Sean Dewar's Vanilla (Neo)Vim Configuration <https://github.com/seandewar>  "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"" Vim Settings {{{1
+" General Settings {{{1
 " get the path to the vim user runtime directory
 function! s:GetUserDir() abort
     if exists('*stdpath') " currently an nvim 0.3+ feature; use if available
@@ -59,7 +59,6 @@ set shortmess+=I " disable the intro message
 set spelllang=en_gb
 set splitbelow splitright
 set textwidth=80
-set timeoutlen=1500 " wait longer for key combination timeouts
 set title
 
 " 16-bit true colour is available if Win32 virtual console support is active
@@ -135,8 +134,7 @@ augroup auto_window_color_column
     autocmd WinLeave * setlocal colorcolumn=
 augroup END
 
-
-"" Status Line Settings {{{2
+" Status Line Settings {{{1
 " generates status line string with ale's lint info for the current buffer.
 function! ALELintStatusLine() abort
     if !get(g:, 'loaded_ale', 0) || !get(g:, 'ale_enabled', 1)
@@ -187,8 +185,7 @@ augroup auto_redraw_statuslines
     autocmd User ALEFixPost redrawstatus!
 augroup END
 
-
-"" Tab Line Settings {{{2
+" Tab Line Settings {{{1
 " generates label string for the tab line
 function! TabName(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
@@ -217,8 +214,7 @@ endfunction
 set tabline=%!TabLine()
 set showtabline=1 " only show the tabline if at least two tabs are open
 
-
-"" Mappings {{{2
+" Mappings {{{1
 " NOTE: disable flow control for your terminal to use the ^S mapping to save.
 " if you accidentally activate flow control, press ^Q to unfreeze the terminal
 nnoremap <silent> <f2> :setlocal spell!<cr>
@@ -228,153 +224,23 @@ nnoremap <c-s> :write<cr>
 inoremap <c-s> <c-\><c-o>:write<cr>
 nnoremap <leader>/ :nohlsearch<cr>
 
-" buffer {{{3
+" buffer {{{2
 nnoremap <leader>b :buffers<cr>:
 nnoremap <leader>B :buffers!<cr>:
 nnoremap ]b :bnext<cr>
 nnoremap [b :bprevious<cr>
 
-" quickfix {{{3
+" quickfix {{{2
 nnoremap <leader>c :cwindow<cr>
 nnoremap ]c :cnext<cr>
 nnoremap [c :cprevious<cr>
 
-" loclist {{{3
+" loclist {{{2
 nnoremap <leader>l :lwindow<cr>
 nnoremap ]l :lnext<cr>
 nnoremap [l :lprevious<cr>
 
-
-"" Plugin Settings {{{1
-" can't continue if vim-plug isn't installed
-if empty(globpath(&runtimepath, '/autoload/plug.vim'))
-    autocmd! VimEnter *
-             \ echomsg 'vim-plug is not installed; using minimal configuration.'
-    finish
-endif
-
-" NOTE: run :PlugUpdate to update plugins, :PlugUpgrade to update vim-plug
-call plug#begin($VIMUSERDIR . '/plugged')
-
-Plug 'w0rp/ale' " vim8/nvim async linting engine & lsp client (w/o code actions)
-Plug 'ianding1/leetcode.vim' " leetcode integration
-Plug 'SirVer/ultisnips' " snippets engine
-Plug 'tomasiser/vim-code-dark' " color scheme
-Plug 'tpope/vim-commentary' " commands for (un)commenting lines
-Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
-Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c, etc.)
-Plug 'tpope/vim-fugitive' " git integration
-Plug 'plasticboy/vim-markdown' " markdown file type support
-Plug 'sheerun/vim-polyglot' " language support package
-Plug 'tpope/vim-repeat' " repeat command (.) support for plugins
-Plug 'tpope/vim-surround' " commands for editing surrounding (), '', etc.
-Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
-
-call plug#end()
-
-" runs :PlugInstall synchronously, showing a message, while leaving the window
-" active and open
-function! s:PlugInstall() abort
-    echomsg 'Trying to install missing plugins with vim-plug...'
-    PlugInstall --sync
-endfunction
-
-" auto run :PlugInstall if we detect missing plugins on startup, otherwise
-" prompt user. if installation fails after manually prompting, keep prompting if
-" it continues to fail (avoids uncontrollably looping on startup if an auto
-" install would continuously fail).
-while len(filter(values(g:plugs), '!isdirectory(v:val.dir)')) > 0
-    if v:vim_did_enter
-        if confirm('Some plugins are missing, try to install them?',
-                 \ "&Yes\n&No, abort configuration", 1) == 1
-            call s:PlugInstall()
-        else
-            finish " abort if plugins missing to avoid possible errors
-        endif
-    else
-        autocmd! VimEnter * call s:PlugInstall() | quit | source $MYVIMRC
-        finish " cannot continue until after startup; abort for now
-    endif
-endwhile
-
-" configure color scheme
-colorscheme codedark
-
-" configure ultisnips
-let g:UltiSnipsSnippetDirectories = [ $VIMUSERDIR . '/ultisnips' ]
-
-" configure ale and its fixing and linting preferences
-set completefunc=ale#completion#OmniFunc " lsp as user-defined ins-completion
-let g:ale_fix_on_save = 1
-let g:ale_linters_explicit = 1
-let g:ale_fixers = {
-            \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ],
-            \ 'c': [ 'clang-format', 'remove_trailing_lines',
-                   \ 'trim_whitespace' ],
-            \ 'cpp': [ 'clang-format', 'remove_trailing_lines',
-                     \ 'trim_whitespace' ],
-            \ 'markdown': [ 'remove_trailing_lines' ],
-            \ 'rust': [ 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' ]
-            \ }
-let g:ale_linters = {
-            \ 'c': [ 'clangd' ],
-            \ 'cpp': [ 'clangd' ],
-            \ 'rust': [ 'rls' ]
-            \ }
-let g:ale_c_clangformat_options = '-fallback-style=none'
-
-" ale gutter error/warning symbols and message configuration
-let g:ale_sign_error = 'E'
-let g:ale_sign_warning = 'W'
-let g:ale_sign_info = 'I'
-let g:ale_echo_msg_format = '[%linter%] %s'
-
-" configure leetcode.vim
-let g:leetcode_solution_filetype = 'cpp'
-
-"" Mappings {{{2
-"" ale {{{3
-" NOTE: most of these binds only work for lsp servers
-nnoremap <leader>al :ALELint<cr>
-nnoremap <leader>af :ALEFix<cr>
-nnoremap <leader>ah :ALEHover<cr>
-nnoremap <leader>as :ALESymbolSearch<space>
-nnoremap <leader>ar :ALEFindReferences<cr>
-nnoremap <leader>aR :ALERename<cr>
-nnoremap <leader>ad :ALEGoToDefinition<cr>
-nnoremap <leader>at :ALEGoToTypeDefinition<cr>
-
-
-"" ultisnips {{{3
-let g:UltiSnipsExpandTrigger = '<c-j>'
-let g:UltiSnipsListSnippets = '<c-k>'
-let g:UltiSnipsJumpForwardTrigger = '<c-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
-
-"" vim-fswitch {{{3
-nnoremap <leader>oo :FSHere<cr>
-nnoremap <leader>oh :FSLeft<cr>
-nnoremap <leader>ol :FSRight<cr>
-nnoremap <leader>ok :FSAbove<cr>
-nnoremap <leader>oj :FSBelow<cr>
-nnoremap <leader>oH :FSSplitLeft<cr>
-nnoremap <leader>oL :FSSplitRight<cr>
-nnoremap <leader>oK :FSSplitAbove<cr>
-nnoremap <leader>oJ :FSSplitBelow<cr>
-
-"" vim-fugitive {{{3
-nnoremap <leader>gg :Git<cr>
-nnoremap <silent> <leader>gl :0Gclog<cr>:copen<cr>
-nnoremap <silent> <leader>gL :Gclog<cr>:copen<cr>
-nnoremap <leader>ge :Gedit<cr>
-nnoremap <leader>gd :Gdiffsplit<cr>
-nnoremap <leader>gb :Git blame<cr>
-nnoremap <leader>gc :Git commit<cr>
-nnoremap <leader>gw :Gwrite<cr>
-nnoremap <leader>gr :Gread<cr>
-nnoremap <leader>gps :Git push<cr>
-nnoremap <leader>gpl :Git pull<cr>
-" }}}1
-
-" load an optional local vimrc for system-specific configurations
-runtime lvimrc
+" Extra Sources {{{1
+" source other optional configuration files in the runtimepath
+runtime init_plugins.vim " plugin-specific configurations
+runtime init_local.vim   " system-specific configurations; not versioned

@@ -1,5 +1,5 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Sean Dewar's Vim/Neovim GUI Configuration <https://github.com/seandewar>    "
+"  Sean Dewar's (Neo)Vim GUI Configuration <https://github.com/seandewar>      "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NOTE: this file will auto run after the vimrc if running in a GUI
 
@@ -25,5 +25,5 @@ else " assume UNIX-like
     endif
 endif
 
-" load an optional local gvimrc for system-specific configurations
-runtime lgvimrc
+" load an optional system-specific configuration (un-versioned)
+runtime ginit_local.vim
