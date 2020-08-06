@@ -5,6 +5,10 @@
 " General Settings {{{1
 let $MYPLUGINSVIMRC = expand('<sfile>')
 
+if !&loadplugins
+    finish
+endif
+
 " can't continue if vim-plug isn't installed
 if empty(globpath(&runtimepath, '/autoload/plug.vim'))
     autocmd! VimEnter *
