@@ -3,130 +3,111 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " General Settings {{{1
-" get the path to the vim user runtime directory
 function! s:GetUserDir() abort
-    if exists('*stdpath') " currently an nvim 0.3+ feature; use if available
+    if exists('*stdpath') " nvim 0.3+ feature
         return stdpath('config')
     endif
 
     let basedir = $XDG_CONFIG_HOME
     if empty(basedir)
-        let basedir = has('win32') ? '~/AppData/Local' : '~/.config'
+        let basedir = has('win32') ? $LOCALAPPDATA : '~/.config'
     endif
 
     if has('nvim')
         return expand(basedir . '/nvim')
-    else " vim
-        " NOTE: vim doesn't respect the XDG spec yet
-        return expand(has('win32') ? '~/vimfiles' : '~/.vim')
     endif
+
+    return expand(has('win32') ? '~/vimfiles' : '~/.vim')
 endfunction
+
 let $VIMUSERDIR = s:GetUserDir()
 
 " don't crowd working dirs with swap, persistent undo & other files; use the
 " user dir instead. NOTE: this doesn't include backup files
-if !has('nvim') " neovim does this by default
+if !has('nvim') " nvim does this all by default
     silent! call mkdir($VIMUSERDIR . '/swap', 'p')
     silent! call mkdir($VIMUSERDIR . '/undo', 'p')
+    set directory& undodir&
     let &directory = $VIMUSERDIR . '/swap//,' . &directory
     let &undodir = $VIMUSERDIR . '/undo,' . &undodir
     let &viminfofile = $VIMUSERDIR . '/viminfo'
 endif
 
-" use ripgrep over grep if available
-if executable('rg')
-    set grepprg=rg\ --vimgrep
-endif
+filetype plugin indent on
+syntax on
 
-filetype plugin indent on " turn on auto file type and indent detection
-syntax on " turn on syntax highlighting
-
-set autoread " auto read file if changed outside of vim (w/o unsaved changes)
+set autoread
 set backspace=indent,eol,start
-set belloff=all " disable bell sounds
-set encoding=utf-8 " default internal char encoding used by vim
-set foldmethod=marker " enable text markers in files for automatic folding
+set belloff=all
+set cinoptions+=:0,g0,N-s
+set completeopt=menuone,preview
+set encoding=utf-8
+set foldmethod=marker
 set hidden
 set hlsearch incsearch ignorecase smartcase
-set lazyredraw " don't redraw while executing untyped commands (e.g: macros)
-set nojoinspaces " don't insert 2 spaces after . ? or ! when joining lines
+set nojoinspaces
+set lazyredraw
+set list listchars=tab:__,trail:.,nbsp:~,extends:>,precedes:<
+set nomousehide mousemodel=popup
 set nrformats-=octal
 set number relativenumber
 set ruler
-set scrolloff=1 sidescroll=5 " auto scroll when cursor is near screen boundaries
-set sessionoptions+=localoptions " save local option settings in sessions
-set shortmess+=I " disable the intro message
+set scrolloff=1 sidescroll=5
+set sessionoptions-=options
+set shortmess+=I
 set spelllang=en_gb
 set splitbelow splitright
+set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 set textwidth=80
 set title
+set wildmenu wildmode=list:longest,full wildignorecase
+
+" vanilla colorscheme assuming dark terminal background
+set background=dark
+colorscheme torte
+
+if exists('+inccommand')
+    set inccommand=nosplit
+endif
+
+" completion menu can use popups rather than preview window if available
+if has('patch-8.1.1880')
+    set completeopt+=popup " overrides preview flag
+    if has('patch-8.1.1882') | set completepopup=border:off | endif
+endif
+
+" prefer ripgrep over grep, if available
+if executable('rg')
+    set grepprg=rg\ --vimgrep
+endif
 
 " 16-bit true colour is available if Win32 virtual console support is active
 if has('vcon')
     set termguicolors
 endif
 
-" configure vanilla color scheme; assume dark background
-set background=dark
-colorscheme torte
-
-" don't indent C/C++ switch cases, class access specifiers & namespace blocks
-set cinoptions+=:0,g0,N-s
-
-" configure completion menu - use popups rather than preview window if available
-set completeopt=menuone,preview
-if has('patch-8.1.1880')
-    set completeopt+=popup " overrides preview flag
-
-    if has('patch-8.1.1882')
-        set completepopup=border:off
-    endif
-endif
-
-" enable list mode to draw certain hidden chars (e.g: tabs)
-set list listchars=tab:__,trail:.,nbsp:~,extends:>,precedes:<
-
-" don't hide mouse cursor when typing, right-click displays context menu
-" ('mouse' is not set, so mouse support is disabled by default for terminals)
-set nomousehide mousemodel=popup
-
-" set tab sizes - treat tabs as 8 spaces (as they typically are), insert 4
-" spaces when we use tabs or an auto indent, use shiftwidth instead of tabstop
-" when inserting tab at the beginning of a line
-set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
-
-" completion matches for commands (after pressing <tab> or ^D for a list &
-" <tab><tab> for the wildmenu)
-set wildmenu wildmode=list:longest,full wildignorecase
-
-let c_no_curly_error = 1 " for C++11: don't highlight {} in a [] as a mistake
-
-" make sure we see line numbers in netrw
+" show line numbers in netrw buffers
 let g:netrw_bufsettings = 'number relativenumber nomodifiable nomodified
                          \ nobuflisted readonly'
 
-" enforced settings regardless of ftplugin options (easier than creating an
-" ftplugin-specific script in .vim/after, but can fail if the ftplugin also
-" creates its own autocmd...)
-augroup enforce_ft_settings
+" NOTE: easier than creating an ftplugin-specific script in .vim/after, but can
+" fail if the ftplugin also creates its own autocmd...
+augroup ft_setting_overrides
     autocmd!
     autocmd FileType * setlocal formatoptions=croqljn
     autocmd FileType c,cpp setlocal commentstring=//\ %s
 augroup END
 
-" highlight the line that the cursor is on for the active window
 augroup auto_window_cursor_line
     autocmd!
     autocmd VimEnter,WinEnter * setlocal cursorline
     autocmd WinLeave * setlocal nocursorline
 augroup END
 
-" hides colorcolumn in unmodifiable mode, otherwise sets to textwidth+1
 function! s:ColorColumnUpdate() abort
-    let &l:colorcolumn = &modifiable ? '+1' : ''
+    let &l:colorcolumn = &modifiable ? '+1' : '' " hide when nomodifiable
 endfunction
 
-" show the colorcolumn for the active window & update if modifiable is (un)set
 augroup auto_window_color_column
     autocmd!
     autocmd OptionSet modifiable call s:ColorColumnUpdate()
@@ -135,7 +116,6 @@ augroup auto_window_color_column
 augroup END
 
 " Status Line Settings {{{1
-" generates status line string with ale's lint info for the current buffer.
 function! ALELintStatusLine() abort
     if !get(g:, 'loaded_ale', 0) || !get(g:, 'ale_enabled', 1)
                                \ || !get(b:, 'ale_enabled', 1)
@@ -160,7 +140,6 @@ function! ALELintStatusLine() abort
     return line
 endfunction
 
-" generates the status line format string for the current window
 function! StatusLine() abort
     let line  = '%(%w %)'                                   " preview win flag
     let line .= '%f '                                       " relative file name
@@ -174,10 +153,8 @@ function! StatusLine() abort
     return line
 endfunction
 
-set laststatus=2 " always display status line
-set statusline=%!StatusLine()
+set laststatus=2 statusline=%!StatusLine()
 
-" automatically redraw and update window status lines when necessary
 augroup auto_redraw_statuslines
     autocmd!
     autocmd User ALEJobStarted redrawstatus!
@@ -186,7 +163,6 @@ augroup auto_redraw_statuslines
 augroup END
 
 " Tab Line Settings {{{1
-" generates label string for the tab line
 function! TabName(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
     let winnum = tabpagewinnr(a:tabnum)
@@ -194,25 +170,23 @@ function! TabName(tabnum) abort
     return empty(bufname) ? '[No Name]' : bufname
 endfunction
 
-" generates the tab line format string
 function! TabLine() abort
-    let line = '%T' " reset tab number for the mouse click line
+    let line = '%T'                  " reset tab number for the mouse click line
 
     for t in range(1, tabpagenr('$'))
         " active tab highlight
         let line .= tabpagenr() == t ? '%#TabLineSel# ' : '%#TabLine# '
 
-        let line .= '%' . t . 'T'                     " tab num for mouse clicks
-        let line .= t . ' '                           " tab number label
-        let line .= '%{TabName(' . t . ')} '          " tab name label
+        let line .= '%' . t . 'T'                  " tab number for mouse clicks
+        let line .= t . ' '                        " number label
+        let line .= '%{TabName(' . t . ')} '       " name label
     endfor
 
-    let line .= '%#TabLineFill#' " fill remaining tab line
+    let line .= '%#TabLineFill#'                   " fill remaining tab line
     return line
 endfunction
 
-set tabline=%!TabLine()
-set showtabline=1 " only show the tabline if at least two tabs are open
+set showtabline=1 tabline=%!TabLine()
 
 " Mappings {{{1
 " NOTE: disable flow control for your terminal to use the ^S mapping to save.

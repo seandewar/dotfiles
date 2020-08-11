@@ -9,10 +9,9 @@ if !&loadplugins
     finish
 endif
 
-" can't continue if vim-plug isn't installed
 if empty(globpath(&runtimepath, '/autoload/plug.vim'))
     autocmd! VimEnter *
-             \ echomsg 'vim-plug is not installed; using minimal configuration.'
+             \ echomsg 'vim-plug is not installed; skipping plugin configuration.'
     finish
 endif
 
@@ -20,7 +19,6 @@ endif
 call plug#begin($VIMUSERDIR . '/plugged')
 
 Plug 'w0rp/ale' " vim8/nvim async linting engine & lsp client (w/o code actions)
-Plug 'ianding1/leetcode.vim' " leetcode integration
 Plug 'SirVer/ultisnips' " snippets engine
 Plug 'tomasiser/vim-code-dark' " color scheme
 Plug 'tpope/vim-commentary' " commands for (un)commenting lines
@@ -39,8 +37,6 @@ endif
 
 call plug#end()
 
-" runs :PlugInstall synchronously, showing a message, while leaving the window
-" active and open
 function! s:PlugInstall() abort
     echomsg 'Trying to install missing plugins with vim-plug...'
     PlugInstall --sync
@@ -95,9 +91,6 @@ let g:ale_sign_error = 'E'
 let g:ale_sign_warning = 'W'
 let g:ale_sign_info = 'I'
 let g:ale_echo_msg_format = '[%linter%] %s'
-
-" configure leetcode.vim
-let g:leetcode_solution_filetype = 'cpp'
 
 " Mappings {{{1
 " ale {{{2
