@@ -22,7 +22,6 @@ Plug 'w0rp/ale' " vim8/nvim async linting engine & lsp client (w/o code actions)
 Plug 'SirVer/ultisnips' " snippets engine
 Plug 'tomasiser/vim-code-dark' " color scheme
 Plug 'tpope/vim-commentary' " commands for (un)commenting lines
-Plug 'easymotion/vim-easymotion' " easier motions using <leader><leader>
 Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c, etc.)
 Plug 'tpope/vim-fugitive' " git integration
 Plug 'plasticboy/vim-markdown' " markdown file type support
@@ -30,10 +29,6 @@ Plug 'sheerun/vim-polyglot' " language support package
 Plug 'tpope/vim-repeat' " repeat command (.) support for plugins
 Plug 'tpope/vim-surround' " commands for editing surrounding (), '', etc.
 Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
-
-if has('nvim-0.5.0')
-    Plug 'neovim/nvim-lsp' " lang server configs for nvim's native lsp client
-endif
 
 call plug#end()
 
@@ -60,7 +55,7 @@ while len(filter(values(g:plugs), '!isdirectory(v:val.dir)')) > 0
     endif
 endwhile
 
-" configure color scheme
+" configure colorscheme
 colorscheme codedark
 
 " configure ultisnips

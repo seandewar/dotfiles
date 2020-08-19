@@ -39,10 +39,12 @@ syntax on
 set autoread
 set backspace=indent,eol,start
 set belloff=all
+set breakindent
 set cinoptions+=:0,g0,N-s
 set completeopt=menuone,preview
 set encoding=utf-8
 set foldmethod=marker
+set gdefault
 set hidden
 set hlsearch incsearch ignorecase smartcase
 set nojoinspaces
@@ -50,11 +52,10 @@ set lazyredraw
 set list listchars=tab:__,trail:.,nbsp:~,extends:>,precedes:<
 set nomousehide mousemodel=popup
 set nrformats-=octal
-set number relativenumber
-set ruler
+set number ruler
 set scrolloff=1 sidescroll=5
 set sessionoptions-=options
-set shortmess+=I
+set shortmess+=I shortmess-=S
 set spelllang=en_gb
 set splitbelow splitright
 set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
@@ -87,8 +88,7 @@ if has('vcon')
 endif
 
 " show line numbers in netrw buffers
-let g:netrw_bufsettings = 'number relativenumber nomodifiable nomodified
-                         \ nobuflisted readonly'
+let g:netrw_bufsettings = 'number nomodifiable nomodified nobuflisted readonly'
 
 " NOTE: easier than creating an ftplugin-specific script in .vim/after, but can
 " fail if the ftplugin also creates its own autocmd...
