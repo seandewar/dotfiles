@@ -9,52 +9,6 @@ if !&loadplugins
     finish
 endif
 
-if empty(globpath(&runtimepath, '/autoload/plug.vim'))
-    autocmd! VimEnter *
-             \ echomsg 'vim-plug is not installed; skipping plugin configuration.'
-    finish
-endif
-
-" NOTE: run :PlugUpdate to update plugins, :PlugUpgrade to update vim-plug
-call plug#begin($VIMUSERDIR . '/plugged')
-
-Plug 'w0rp/ale' " vim8/nvim async linting engine & lsp client (w/o code actions)
-Plug 'SirVer/ultisnips' " snippets engine
-Plug 'tomasiser/vim-code-dark' " color scheme
-Plug 'tpope/vim-commentary' " commands for (un)commenting lines
-Plug 'derekwyatt/vim-fswitch' " switch between companion files (.h, .c, etc.)
-Plug 'tpope/vim-fugitive' " git integration
-Plug 'plasticboy/vim-markdown' " markdown file type support
-Plug 'sheerun/vim-polyglot' " language support package
-Plug 'tpope/vim-repeat' " repeat command (.) support for plugins
-Plug 'tpope/vim-surround' " commands for editing surrounding (), '', etc.
-Plug 'tpope/vim-vinegar' " enhancements for the netrw directory viewer
-
-call plug#end()
-
-function! s:PlugInstall() abort
-    echomsg 'Trying to install missing plugins with vim-plug...'
-    PlugInstall --sync
-endfunction
-
-" auto run :PlugInstall if we detect missing plugins on startup, otherwise
-" prompt user. if installation fails after manually prompting, keep prompting if
-" it continues to fail (avoids uncontrollably looping on startup if an auto
-" install would continuously fail).
-while len(filter(values(g:plugs), '!isdirectory(v:val.dir)')) > 0
-    if v:vim_did_enter
-        if confirm('Some plugins are missing, try to install them?',
-                 \ "&Yes\n&No, abort configuration", 1) == 1
-            call s:PlugInstall()
-        else
-            finish " abort if plugins missing to avoid possible errors
-        endif
-    else
-        autocmd! VimEnter * call s:PlugInstall() | quit | source $MYPLUGINSVIMRC
-        finish " cannot continue until after startup; abort for now
-    endif
-endwhile
-
 " configure colorscheme
 colorscheme codedark
 
@@ -68,9 +22,9 @@ let g:ale_linters_explicit = 1
 let g:ale_fixers = {
             \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ],
             \ 'c': [ 'clang-format', 'remove_trailing_lines',
-                   \ 'trim_whitespace' ],
+            \        'trim_whitespace' ],
             \ 'cpp': [ 'clang-format', 'remove_trailing_lines',
-                     \ 'trim_whitespace' ],
+            \          'trim_whitespace' ],
             \ 'markdown': [ 'remove_trailing_lines' ],
             \ 'rust': [ 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' ]
             \ }

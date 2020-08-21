@@ -3,12 +3,9 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set visualbell " not implemented, but disables the bell noise
-set relativenumber
 set ignorecase
 set scrolloff=1
 set clipboard=unnamedplus,unnamed
-
-set easymotion " enable the IdeaVim-EasyMotion plugin
 
 nnoremap <c-s> :write<cr>
 inoremap <c-s> <c-\><c-o>:write<cr>
