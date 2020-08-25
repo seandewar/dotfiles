@@ -35,11 +35,42 @@ let g:ale_linters = {
             \ }
 let g:ale_c_clangformat_options = '-fallback-style=none'
 
-" ale gutter error/warning symbols and message configuration
 let g:ale_sign_error = 'E'
 let g:ale_sign_warning = 'W'
 let g:ale_sign_info = 'I'
 let g:ale_echo_msg_format = '[%linter%] %s'
+
+function! ALELintStatusLine() abort
+    if !get(g:, 'ale_enabled', 1) || !get(b:, 'ale_enabled', 1)
+        return ''
+    endif
+
+    if ale#engine#IsCheckingBuffer(bufnr())
+        return '...'
+    endif
+
+    let counts = ale#statusline#Count(bufnr())
+    if counts.total == 0
+        return get(b:, 'ale_linted', 0) > 0 ? 'OK' : ''
+    endif
+
+    let total_err = counts.error + counts.style_error
+    let total_warn = counts.warning + counts.style_warning
+
+    let line  = total_err > 0 ? total_err . 'E' : ''
+    let line .= total_warn > 0 ? ',' . total_warn . 'W' : ''
+    let line .= counts.info > 0 ? ',' . counts.info . 'I' : ''
+    return line
+endfunction
+
+let g:plugin_statusline = '%([%{ALELintStatusLine()}] %)'
+
+augroup ale_update_statusline
+    autocmd!
+    autocmd User ALEJobStarted redrawstatus!
+    autocmd User ALELintPost redrawstatus!
+    autocmd User ALEFixPost redrawstatus!
+augroup END
 
 " Mappings {{{1
 " ale {{{2

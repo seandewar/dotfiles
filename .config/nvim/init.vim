@@ -50,9 +50,9 @@ set hlsearch incsearch ignorecase smartcase
 set nojoinspaces
 set lazyredraw
 set list listchars=tab:__,trail:.,nbsp:~,extends:>,precedes:<
-set nomousehide mousemodel=popup
+set mouse=a nomousehide mousemodel=popup
 set nrformats-=octal
-set number ruler
+set ruler
 set scrolloff=1 sidescroll=5
 set sessionoptions-=options
 set shortmess+=I shortmess-=S
@@ -116,37 +116,13 @@ augroup auto_window_color_column
 augroup END
 
 " Status Line Settings {{{1
-function! ALELintStatusLine() abort
-    if !get(g:, 'loaded_ale', 0) || !get(g:, 'ale_enabled', 1)
-                               \ || !get(b:, 'ale_enabled', 1)
-        return ''
-    endif
-
-    if ale#engine#IsCheckingBuffer(bufnr('%'))
-        return '...'
-    endif
-
-    let counts = ale#statusline#Count(bufnr('%'))
-    if counts.total == 0
-        return get(b:, 'ale_linted', 0) > 0 ? 'OK' : ''
-    endif
-
-    let total_err = counts.error + counts.style_error
-    let total_warn = counts.warning + counts.style_warning
-
-    let line  = total_err > 0 ? total_err . 'E' : ''
-    let line .= total_warn > 0 ? ',' . total_warn . 'W' : ''
-    let line .= counts.info > 0 ? ',' . counts.info . 'I' : ''
-    return line
-endfunction
-
 function! StatusLine() abort
     let line  = '%(%w %)'                                   " preview win flag
     let line .= '%f '                                       " relative file name
     let line .= '%([%M%R] %)'                               " modified, RO flag
     let line .= '%(%y %)'                                   " file type
-    let line .= '%([%{&spell ? &spelllang : ""}] %)'        " spell check
-    let line .= '%([%{ALELintStatusLine()}] %)'             " ale lint status
+    let line .= '%([%{&spell ? &spelllang : ''''}] %)'      " spell check
+    let line .= get(g:, 'plugin_statusline', '')            " plugin stuff
     let line .= '%='                                        " align right
     let line .= '%-14(%l,%c%V%) '                           " cursor line & col
     let line .= '%P'                                        " scroll percentage
@@ -155,31 +131,23 @@ endfunction
 
 set laststatus=2 statusline=%!StatusLine()
 
-augroup auto_redraw_statuslines
-    autocmd!
-    autocmd User ALEJobStarted redrawstatus!
-    autocmd User ALELintPost redrawstatus!
-    autocmd User ALEFixPost redrawstatus!
-augroup END
-
 " Tab Line Settings {{{1
-function! TabName(tabnum) abort
+function! TabLabel(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
     let winnum = tabpagewinnr(a:tabnum)
     let bufname = expand('#' . buffers[winnum - 1] . ':t')
-    return empty(bufname) ? '[No Name]' : bufname
+    return a:tabnum . (empty(bufname) ? '' : ' ') . bufname
 endfunction
 
 function! TabLine() abort
-    let line = '%T'                  " reset tab number for the mouse click line
+    let line = ''
 
-    for t in range(1, tabpagenr('$'))
+    for t in range(1, tabpagenr())
         " active tab highlight
         let line .= tabpagenr() == t ? '%#TabLineSel# ' : '%#TabLine# '
 
         let line .= '%' . t . 'T'                  " tab number for mouse clicks
-        let line .= t . ' '                        " number label
-        let line .= '%{TabName(' . t . ')} '       " name label
+        let line .= '%{TabLabel(' . t . ')} '      " tab label
     endfor
 
     let line .= '%#TabLineFill#'                   " fill remaining tab line
