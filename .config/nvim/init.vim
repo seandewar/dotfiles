@@ -34,7 +34,7 @@ if !has('nvim') " nvim does this all by default
 endif
 
 filetype plugin indent on
-syntax on
+if &t_Co > 1 | syntax enable | endif
 
 set autoread
 set backspace=indent,eol,start
@@ -44,7 +44,6 @@ set cinoptions+=:0,g0,N-s
 set completeopt=menuone,preview
 set encoding=utf-8
 set foldmethod=marker
-set gdefault
 set hidden
 set hlsearch incsearch ignorecase smartcase
 set nojoinspaces
@@ -142,7 +141,7 @@ endfunction
 function! TabLine() abort
     let line = ''
 
-    for t in range(1, tabpagenr())
+    for t in range(1, tabpagenr('$'))
         " active tab highlight
         let line .= tabpagenr() == t ? '%#TabLineSel# ' : '%#TabLine# '
 
@@ -176,6 +175,8 @@ nnoremap [b :bprevious<cr>
 nnoremap <leader>c :cwindow<cr>
 nnoremap ]c :cnext<cr>
 nnoremap [c :cprevious<cr>
+nnoremap ]C :cnewer<cr>
+nnoremap [C :colder<cr>
 
 " loclist {{{2
 nnoremap <leader>l :lwindow<cr>
