@@ -44,13 +44,13 @@ set cinoptions+=:0,g0,N-s
 set completeopt=menuone,preview
 set encoding=utf-8
 set foldmethod=marker
+set formatoptions=croqnlj nrformats-=octal
 set hidden
 set hlsearch incsearch ignorecase smartcase
 set nojoinspaces
 set lazyredraw
 set list listchars=tab:__,trail:.,nbsp:~,extends:>,precedes:<
 set mouse=a nomousehide mousemodel=popup
-set nrformats-=octal
 set ruler
 set scrolloff=1 sidescroll=5
 set sessionoptions-=options
@@ -85,14 +85,6 @@ endif
 if has('vcon')
     set termguicolors
 endif
-
-" NOTE: easier than creating an ftplugin-specific script in .vim/after, but can
-" fail if the ftplugin also creates its own autocmd...
-augroup ft_setting_overrides
-    autocmd!
-    autocmd FileType * setlocal formatoptions=croqljn
-    autocmd FileType c,cpp setlocal commentstring=//\ %s
-augroup END
 
 function! s:ColorColumnUpdate() abort
     let &l:colorcolumn = &modifiable ? '+1' : '' " hide when nomodifiable

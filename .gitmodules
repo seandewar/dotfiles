@@ -1,33 +1,33 @@
 [submodule ".local/share/nvim/site/pack/submodules/start/ale"]
-	path = .local/share/nvim/site/pack/submodules/start/ale
+	path = .local/share/nvim/site/pack/general/start/ale
 	url = https://github.com/dense-analysis/ale.git
 [submodule ".local/share/nvim/site/pack/submodules/start/ultisnips"]
-	path = .local/share/nvim/site/pack/submodules/start/ultisnips
+	path = .local/share/nvim/site/pack/general/start/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-code-dark"]
-	path = .local/share/nvim/site/pack/submodules/start/vim-code-dark
+	path = .local/share/nvim/site/pack/general/start/vim-code-dark
 	url = https://github.com/tomasiser/vim-code-dark.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-commentary"]
-	path = .local/share/nvim/site/pack/submodules/start/vim-commentary
+	path = .local/share/nvim/site/pack/general/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-fswitch"]
-	path = .local/share/nvim/site/pack/submodules/start/vim-fswitch
+	path = .local/share/nvim/site/pack/general/start/vim-fswitch
 	url = https://github.com/derekwyatt/vim-fswitch.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-fugitive"]
-	path = .local/share/nvim/site/pack/submodules/start/vim-fugitive
+	path = .local/share/nvim/site/pack/general/start/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-markdown"]
-	path = .local/share/nvim/site/pack/submodules/start/vim-markdown
+	path = .local/share/nvim/site/pack/general/start/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-polyglot"]
 	path = .local/share/nvim/site/pack/submodules/start/vim-polyglot
 	url = https://github.com/sheerun/vim-polyglot.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-repeat"]
-	path = .local/share/nvim/site/pack/submodules/start/vim-repeat
+	path = .local/share/nvim/site/pack/general/start/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-surround"]
-	path = .local/share/nvim/site/pack/submodules/start/vim-surround
+	path = .local/share/nvim/site/pack/general/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-vinegar"]
-	path = .local/share/nvim/site/pack/submodules/start/vim-vinegar
+	path = .local/share/nvim/site/pack/general/start/vim-vinegar
 	url = https://github.com/tpope/vim-vinegar.git
