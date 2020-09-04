@@ -5,7 +5,7 @@
 	path = .local/share/nvim/site/pack/general/start/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-code-dark"]
-	path = .local/share/nvim/site/pack/general/start/vim-code-dark
+	path = .local/share/nvim/site/pack/colors/start/vim-code-dark
 	url = https://github.com/tomasiser/vim-code-dark.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-commentary"]
 	path = .local/share/nvim/site/pack/general/start/vim-commentary
@@ -17,7 +17,7 @@
 	path = .local/share/nvim/site/pack/general/start/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-markdown"]
-	path = .local/share/nvim/site/pack/general/start/vim-markdown
+	path = .local/share/nvim/site/pack/ft/start/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown.git
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-polyglot"]
 	path = .local/share/nvim/site/pack/submodules/start/vim-polyglot
