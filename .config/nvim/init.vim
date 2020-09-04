@@ -2,7 +2,6 @@
 "  Sean Dewar's Vanilla (Neo)Vim Configuration <https://github.com/seandewar>  "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" General Settings {{{1
 function! s:GetUserDir() abort
     if exists('*stdpath') " nvim 0.3+ feature
         return stdpath('config')
@@ -22,6 +21,7 @@ endfunction
 
 let $VIMUSERDIR = s:GetUserDir()
 
+" General Settings {{{1
 " don't crowd working dirs with swap, persistent undo & other files; use the
 " user dir instead. NOTE: this doesn't include backup files
 if !has('nvim') " nvim does this all by default
@@ -34,7 +34,7 @@ if !has('nvim') " nvim does this all by default
 endif
 
 filetype plugin indent on
-if &t_Co > 1 | syntax enable | endif
+syntax enable
 
 set autoread
 set backspace=indent,eol,start
@@ -86,21 +86,12 @@ if has('vcon')
     set termguicolors
 endif
 
-" show line numbers in netrw buffers
-let g:netrw_bufsettings = 'number nomodifiable nomodified nobuflisted readonly'
-
 " NOTE: easier than creating an ftplugin-specific script in .vim/after, but can
 " fail if the ftplugin also creates its own autocmd...
 augroup ft_setting_overrides
     autocmd!
     autocmd FileType * setlocal formatoptions=croqljn
     autocmd FileType c,cpp setlocal commentstring=//\ %s
-augroup END
-
-augroup auto_window_cursor_line
-    autocmd!
-    autocmd VimEnter,WinEnter * setlocal cursorline
-    autocmd WinLeave * setlocal nocursorline
 augroup END
 
 function! s:ColorColumnUpdate() abort
@@ -182,8 +173,10 @@ nnoremap [C :colder<cr>
 nnoremap <leader>l :lwindow<cr>
 nnoremap ]l :lnext<cr>
 nnoremap [l :lprevious<cr>
+nnoremap ]L :lnewer<cr>
+nnoremap [L :lolder<cr>
+" }}}1
 
-" Extra Sources {{{1
 " source other optional configuration files in the runtimepath
 runtime init_plugins.vim " plugin-specific configurations
 runtime init_local.vim   " system-specific configurations; not versioned

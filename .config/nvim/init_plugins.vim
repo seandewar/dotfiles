@@ -2,20 +2,20 @@
 "  Sean Dewar's (Neo)Vim Plugin Configuration <https://github.com/seandewar>   "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" General Settings {{{1
 let $MYPLUGINSVIMRC = expand('<sfile>')
 
 if !&loadplugins
     finish
 endif
 
-" configure colorscheme
+" General Settings {{{1
+" colorscheme {{{2
 colorscheme codedark
 
-" configure ultisnips
+" ultisnips {{{2
 let g:UltiSnipsSnippetDirectories = [ $VIMUSERDIR . '/ultisnips' ]
 
-" configure ale and its fixing and linting preferences
+" ale {{{2
 set completefunc=ale#completion#OmniFunc " lsp as user-defined ins-completion
 let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
