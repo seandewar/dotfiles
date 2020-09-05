@@ -9,6 +9,10 @@ if !&loadplugins
 endif
 
 " General Settings {{{1
+" disable netrw (we'll be using dirvish instead) {{{2
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+
 " colorscheme {{{2
 colorscheme codedark
 

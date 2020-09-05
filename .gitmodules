@@ -28,6 +28,6 @@
 [submodule ".local/share/nvim/site/pack/submodules/start/vim-surround"]
 	path = .local/share/nvim/site/pack/general/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
-[submodule ".local/share/nvim/site/pack/submodules/start/vim-vinegar"]
-	path = .local/share/nvim/site/pack/general/start/vim-vinegar
-	url = https://github.com/tpope/vim-vinegar.git
+[submodule ".local/share/nvim/site/pack/general/vim-dirvish"]
+	path = .local/share/nvim/site/pack/general/start/vim-dirvish
+	url = https://github.com/justinmk/vim-dirvish.git
