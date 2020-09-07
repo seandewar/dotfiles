@@ -90,11 +90,11 @@ function! s:ColorColumnUpdate() abort
     let &l:colorcolumn = &modifiable ? '+1' : '' " hide when nomodifiable
 endfunction
 
-augroup auto_window_color_column
+augroup current_window_cursorline_and_colorcolumn
     autocmd!
     autocmd OptionSet modifiable call s:ColorColumnUpdate()
-    autocmd WinEnter,BufWinEnter * call s:ColorColumnUpdate()
-    autocmd WinLeave * setlocal colorcolumn=
+    autocmd WinEnter,BufWinEnter * call s:ColorColumnUpdate() | set cursorline
+    autocmd WinLeave * setlocal colorcolumn= nocursorline
 augroup END
 
 " Status Line Settings {{{1
@@ -155,14 +155,12 @@ nnoremap ]b :bnext<cr>
 nnoremap [b :bprevious<cr>
 
 " quickfix {{{2
-nnoremap <leader>c :cwindow<cr>
 nnoremap ]c :cnext<cr>
 nnoremap [c :cprevious<cr>
 nnoremap ]C :cnewer<cr>
 nnoremap [C :colder<cr>
 
 " loclist {{{2
-nnoremap <leader>l :lwindow<cr>
 nnoremap ]l :lnext<cr>
 nnoremap [l :lprevious<cr>
 nnoremap ]L :lnewer<cr>
