@@ -31,3 +31,9 @@
 [submodule ".local/share/nvim/site/pack/general/vim-dirvish"]
 	path = .local/share/nvim/site/pack/general/start/vim-dirvish
 	url = https://github.com/justinmk/vim-dirvish.git
+[submodule ".local/share/nvim/site/pack/lsp/opt/nvim-lspconfig"]
+	path = .local/share/nvim/site/pack/lsp/opt/nvim-lspconfig
+	url = https://github.com/neovim/nvim-lspconfig.git
+[submodule ".local/share/nvim/site/pack/general/start/vim-qftoggle"]
+	path = .local/share/nvim/site/pack/general/start/vim-qftoggle
+	url = https://github.com/seandewar/vim-qftoggle.git

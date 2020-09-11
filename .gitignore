@@ -11,5 +11,5 @@
 /.vim/
 
 # system-specific vim configuration files
-init_local.vim
-ginit_local.vim
+/.config/nvim/init_local.vim
+/.config/nvim/ginit_local.vim
