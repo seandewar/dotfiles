@@ -1,12 +1,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"  Sean Dewar's (Neo)Vim Plugin Configuration <https://github.com/seandewar>   "
+" Sean Dewar's Extended (Neo)Vim Configuration <https://github.com/seandewar>  "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let $MYPLUGINSVIMRC = expand('<sfile>')
-
-if !&loadplugins
-    finish
-endif
+let $MYEXVIMRC = expand('<sfile>')
 
 " General Settings {{{1
 " disable netrw (use dirvish instead) {{{2
@@ -14,7 +10,7 @@ let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
 " colorscheme {{{2
-colorscheme codedark
+silent! colorscheme codedark
 
 " ultisnips {{{2
 let g:UltiSnipsSnippetDirectories = [ $VIMUSERDIR . '/ultisnips' ]
@@ -45,7 +41,8 @@ let g:ale_sign_info = 'I'
 let g:ale_echo_msg_format = '[%linter%] %s'
 
 function! ALELintStatusLine() abort
-    if !get(g:, 'ale_enabled', 1) || !get(b:, 'ale_enabled', 1)
+    if !exists('g:loaded_ale') || !get(g:, 'ale_enabled', 1)
+                             \ || !get(b:, 'ale_enabled', 1)
         return ''
     endif
 
@@ -107,8 +104,8 @@ nnoremap <leader>oJ :FSSplitBelow<cr>
 
 " vim-fugitive {{{2
 nnoremap <leader>gg :Git<cr>
-nnoremap <silent> <leader>gl :0Gclog<cr>:copen<cr>
-nnoremap <silent> <leader>gL :Gclog<cr>:copen<cr>
+nnoremap <leader>gl :0Gclog \| copen<cr>
+nnoremap <leader>gL :Gclog \| copen<cr>
 nnoremap <leader>ge :Gedit<cr>
 nnoremap <leader>gd :Gdiffsplit<cr>
 nnoremap <leader>gb :Git blame<cr>
@@ -117,3 +114,7 @@ nnoremap <leader>gw :Gwrite<cr>
 nnoremap <leader>gr :Gread<cr>
 nnoremap <leader>gps :Git push<cr>
 nnoremap <leader>gpl :Git pull<cr>
+
+" vim-qftoggle {{{2
+nmap <leader>c <plug>(qftoggle_toggle_quickfix)
+nmap <leader>l <plug>(qftoggle_toggle_loclist)
