@@ -1,39 +1,39 @@
-[submodule ".local/share/nvim/site/pack/submodules/start/ale"]
-	path = .local/share/nvim/site/pack/general/start/ale
-	url = https://github.com/dense-analysis/ale.git
-[submodule ".local/share/nvim/site/pack/submodules/start/ultisnips"]
-	path = .local/share/nvim/site/pack/general/start/ultisnips
-	url = https://github.com/SirVer/ultisnips.git
-[submodule ".local/share/nvim/site/pack/submodules/start/vim-code-dark"]
-	path = .local/share/nvim/site/pack/colors/start/vim-code-dark
+[submodule "neovim/.local/share/nvim/site/pack/colors/vim-code-dark"]
+	path = neovim/.local/share/nvim/site/pack/colors/opt/vim-code-dark
 	url = https://github.com/tomasiser/vim-code-dark.git
-[submodule ".local/share/nvim/site/pack/submodules/start/vim-commentary"]
-	path = .local/share/nvim/site/pack/general/start/vim-commentary
-	url = https://github.com/tpope/vim-commentary.git
-[submodule ".local/share/nvim/site/pack/submodules/start/vim-fswitch"]
-	path = .local/share/nvim/site/pack/general/start/vim-fswitch
-	url = https://github.com/derekwyatt/vim-fswitch.git
-[submodule ".local/share/nvim/site/pack/submodules/start/vim-fugitive"]
-	path = .local/share/nvim/site/pack/general/start/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive.git
-[submodule ".local/share/nvim/site/pack/submodules/start/vim-markdown"]
-	path = .local/share/nvim/site/pack/ft/start/vim-markdown
+[submodule "neovim/.local/share/nvim/site/pack/ft/vim-markdown"]
+	path = neovim/.local/share/nvim/site/pack/ft/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown.git
-[submodule ".local/share/nvim/site/pack/submodules/start/vim-polyglot"]
-	path = .local/share/nvim/site/pack/submodules/start/vim-polyglot
-	url = https://github.com/sheerun/vim-polyglot.git
-[submodule ".local/share/nvim/site/pack/submodules/start/vim-repeat"]
-	path = .local/share/nvim/site/pack/general/start/vim-repeat
-	url = https://github.com/tpope/vim-repeat.git
-[submodule ".local/share/nvim/site/pack/submodules/start/vim-surround"]
-	path = .local/share/nvim/site/pack/general/start/vim-surround
-	url = https://github.com/tpope/vim-surround.git
-[submodule ".local/share/nvim/site/pack/general/vim-dirvish"]
-	path = .local/share/nvim/site/pack/general/start/vim-dirvish
-	url = https://github.com/justinmk/vim-dirvish.git
-[submodule ".local/share/nvim/site/pack/lsp/opt/nvim-lspconfig"]
-	path = .local/share/nvim/site/pack/lsp/opt/nvim-lspconfig
+[submodule "neovim/.local/share/nvim/site/pack/ft/start/vim-markdown"]
+	path = neovim/.local/share/nvim/site/pack/ft/start/vim-markdown
+	url = https://github.com/plasticboy/vim-markdown.git
+[submodule "neovim/.local/share/nvim/site/pack/lsp/opt/nvim-lspconfig"]
+	path = neovim/.local/share/nvim/site/pack/lsp/opt/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig.git
-[submodule ".local/share/nvim/site/pack/general/start/vim-qftoggle"]
-	path = .local/share/nvim/site/pack/general/start/vim-qftoggle
+[submodule "neovim/.local/share/nvim/site/pack/general/start/ale"]
+	path = neovim/.local/share/nvim/site/pack/general/start/ale
+	url = https://github.com/dense-analysis/ale.git
+[submodule "neovim/.local/share/nvim/site/pack/general/start/ultisnips"]
+	path = neovim/.local/share/nvim/site/pack/general/start/ultisnips
+	url = https://github.com/SirVer/ultisnips.git
+[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-commentary"]
+	path = neovim/.local/share/nvim/site/pack/general/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary.git
+[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-fswitch"]
+	path = neovim/.local/share/nvim/site/pack/general/start/vim-fswitch
+	url = https://github.com/derekwyatt/vim-fswitch.git
+[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-fugitive"]
+	path = neovim/.local/share/nvim/site/pack/general/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-repeat"]
+	path = neovim/.local/share/nvim/site/pack/general/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-surround"]
+	path = neovim/.local/share/nvim/site/pack/general/start/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-dirvish"]
+	path = neovim/.local/share/nvim/site/pack/general/start/vim-dirvish
+	url = https://github.com/justinmk/vim-dirvish.git
+[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-qftoggle"]
+	path = neovim/.local/share/nvim/site/pack/general/start/vim-qftoggle
 	url = https://github.com/seandewar/vim-qftoggle.git

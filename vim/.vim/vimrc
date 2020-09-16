@@ -1,0 +1,4 @@
+" use neovim's user runtime and config instead
+set runtimepath^=~/.config/nvim,~/.local/share/nvim/site runtimepath+=~/.local/share/nvim/site/after,~/.config/nvim/after
+let &packpath = &runtimepath
+silent! source ~/.config/nvim/init.vim

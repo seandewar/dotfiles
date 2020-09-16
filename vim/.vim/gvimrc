@@ -1,0 +1,2 @@
+" use neovim's GUI config instead
+silent! source ~/.config/nvim/ginit.vim

@@ -1,0 +1,9 @@
+[push]
+	default = simple
+[core]
+	excludesfile = ~/.gitignore_global
+[user]
+	name = Sean Dewar
+	email = seandewar@users.noreply.github.com
+[include]
+	path = ~/.gitconfig_local
