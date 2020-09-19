@@ -7,7 +7,7 @@ if !exists('s:was_loaded')
     let s:was_loaded = 1
 
     let g:neovim_stow_package_dir =
-                \ fnamemodify(resolve(expand('<sfile>:p:h')), ':h:h')
+                \ fnamemodify(resolve(expand('<sfile>')), ':p:h:h:h')
                 \ . '/neovim'
 
     execute 'set runtimepath^='
