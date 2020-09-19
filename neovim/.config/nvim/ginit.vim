@@ -2,6 +2,8 @@
 " Sean Dewar's (Neo)Vim GUI Configuration <https://github.com/seandewar>       "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+let $MYGVIMRC = resolve($MYGVIMRC)
+
 " Disable pretty much all GUI features and use command-line dialogs.
 " (:Gui* commands are for older versions of nvim-qt)
 set guioptions=c

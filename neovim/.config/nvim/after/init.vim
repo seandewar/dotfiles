@@ -2,7 +2,7 @@
 " Sean Dewar's Extended (Neo)Vim Configuration <https://github.com/seandewar>  "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let $MYEXVIMRC = expand('<sfile>')
+let $MYEXVIMRC = resolve(expand('<sfile>:p'))
 
 " General Settings {{{1
 " disable netrw (use dirvish instead) {{{2
@@ -13,7 +13,7 @@ let g:loaded_netrwPlugin = 1
 silent! colorscheme codedark
 
 " ultisnips {{{2
-let g:UltiSnipsSnippetDirectories = [ $VIMUSERDIR . '/ultisnips' ]
+let g:UltiSnipsSnippetDirectories = [ $MYVIMRUNTIME . '/ultisnips' ]
 
 " ale {{{2
 set completefunc=ale#completion#OmniFunc " lsp as user-defined ins-completion
@@ -104,8 +104,8 @@ nnoremap <leader>oJ :FSSplitBelow<cr>
 
 " vim-fugitive {{{2
 nnoremap <leader>gg :Git<cr>
-nnoremap <leader>gl :0Gclog \| copen<cr>
-nnoremap <leader>gL :Gclog \| copen<cr>
+nnoremap <leader>gl :0Gclog \| cwindow<cr>
+nnoremap <leader>gL :Gclog \| cwindow<cr>
 nnoremap <leader>ge :Gedit<cr>
 nnoremap <leader>gd :Gdiffsplit<cr>
 nnoremap <leader>gb :Git blame<cr>

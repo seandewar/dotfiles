@@ -1,13 +1,11 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Sean Dewar's Vanilla (Neo)Vim Configuration <https://github.com/seandewar>   "
-"                                                                              "
-" This config is standalone and requires no plugins or external scripts.       "
-" Useful for a quick, minimal install with some of my preferences available.   "
-" An optional after/init.vim is sourced after this script for more features.   "
+" Sean Dewar's (Neo)Vim Configuration <https://github.com/seandewar>           "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Determine where the user's runtime directory is {{{1
-function! s:GetUserDir() abort
+let $MYVIMRC = resolve($MYVIMRC)
+
+function! s:GetUserRuntimeDir() abort
     if exists('*stdpath') " nvim 0.3+
         return stdpath('config')
     endif
@@ -25,22 +23,22 @@ function! s:GetUserDir() abort
     return expand(has('win32') ? '~/vimfiles' : '~/.vim') " vim
 endfunction
 
-let $VIMUSERDIR = s:GetUserDir()
+let $MYVIMRUNTIME = resolve(s:GetUserRuntimeDir())
 
 " General Settings {{{1
 " don't crowd working dirs with swap, persistent undo & other files; use the
-" user directory instead. nvim already does this by default.
+" user runtime directory instead. nvim already does this by default.
 if !has('nvim')
-    silent! call mkdir($VIMUSERDIR . '/swap', 'p')
-    silent! call mkdir($VIMUSERDIR . '/undo', 'p')
-    silent! call mkdir($VIMUSERDIR . '/backup', 'p')
+    silent! call mkdir($MYVIMRUNTIME . '/swap', 'p')
+    silent! call mkdir($MYVIMRUNTIME . '/undo', 'p')
+    silent! call mkdir($MYVIMRUNTIME . '/backup', 'p')
 
     set directory& undodir&
-    let &directory = $VIMUSERDIR . '/swap//,' . &directory
-    let &undodir = $VIMUSERDIR . '/undo,' . &undodir
+    let &directory = $MYVIMRUNTIME . '/swap//,' . &directory
+    let &undodir = $MYVIMRUNTIME . '/undo,' . &undodir
 
-    let &backupdir = '.,' . $VIMUSERDIR . '/backup'
-    let &viminfofile = $VIMUSERDIR . '/viminfo'
+    let &backupdir = '.,' . $MYVIMRUNTIME . '/backup'
+    let &viminfofile = $MYVIMRUNTIME . '/viminfo'
 endif
 
 set autoread
