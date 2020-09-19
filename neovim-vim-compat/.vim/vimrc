@@ -1,7 +1,31 @@
-" use neovim's user runtime and config instead
-set runtimepath^=~/.config/nvim,~/.local/share/nvim/site
-set runtimepath+=~/.local/share/nvim/site/after,~/.config/nvim/after
+" use neovim's user runtime instead (relative to the dotfiles directory).
+"
+" if this file was reloaded, don't source the runtime path compatibility logic
+" more than once to avoid cluttering up the 'runtimepath' and to avoid resetting
+" 'packpath'.
+if !exists('s:was_loaded')
+    let s:was_loaded = 1
 
-let &packpath = &runtimepath
+    let g:neovim_stow_package_dir =
+                \ fnamemodify(resolve(expand('<sfile>:p:h')), ':h:h')
+                \ . '/neovim'
 
-silent! source ~/.config/nvim/init.vim
+    execute 'set runtimepath^='
+                \ . g:neovim_stow_package_dir . '/.config/nvim,'
+                \ . g:neovim_stow_package_dir . '/.local/share/nvim/site'
+        \ . ' runtimepath+='
+                \ . g:neovim_stow_package_dir . '/.local/share/nvim/site/after,'
+                \ . g:neovim_stow_package_dir . '/.config/nvim/after'
+
+    let &packpath = &runtimepath
+endif
+
+" use neovim's rc file instead
+let s:nvimrc = g:neovim_stow_package_dir . '/.config/nvim/init.vim'
+
+if filereadable(s:nvimrc)
+    let $MYVIMRC = s:nvimrc
+    execute 'source ' . s:nvimrc
+endif
+
+unlet s:nvimrc
