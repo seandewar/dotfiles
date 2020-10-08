@@ -1,8 +1,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Sean Dewar's Extended (Neo)Vim Configuration <https://github.com/seandewar>  "
+" Sean Dewar's Plugin (Neo)Vim Configuration <https://github.com/seandewar>    "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let $MYEXVIMRC = resolve(expand('<sfile>:p'))
+let $MYPLUGINCONF = resolve(expand('<sfile>:p'))
 
 " General Settings {{{1
 " disable netrw (use dirvish instead) {{{2
@@ -10,28 +10,27 @@ let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
 " colorscheme {{{2
-silent! colorscheme codedark
+silent! colorscheme moonfly
 
 " ultisnips {{{2
-let g:UltiSnipsSnippetDirectories = [ $MYVIMRUNTIME . '/ultisnips' ]
+let g:UltiSnipsSnippetDirectories = [$MYVIMRUNTIME . '/ultisnips']
 
 " ale {{{2
 set completefunc=ale#completion#OmniFunc " lsp as user-defined ins-completion
 let g:ale_fix_on_save = 1
 let g:ale_linters_explicit = 1
 let g:ale_fixers = {
-            \ '*': [ 'remove_trailing_lines', 'trim_whitespace' ],
-            \ 'c': [ 'clang-format', 'remove_trailing_lines',
-            \        'trim_whitespace' ],
-            \ 'cpp': [ 'clang-format', 'remove_trailing_lines',
-            \          'trim_whitespace' ],
-            \ 'markdown': [ 'remove_trailing_lines' ],
-            \ 'rust': [ 'rustfmt', 'remove_trailing_lines', 'trim_whitespace' ]
+            \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+            \ 'c': ['clang-format', 'remove_trailing_lines', 'trim_whitespace'],
+            \ 'cpp': ['clang-format', 'remove_trailing_lines',
+            \         'trim_whitespace'],
+            \ 'markdown': ['remove_trailing_lines'],
+            \ 'rust': ['rustfmt', 'remove_trailing_lines', 'trim_whitespace']
             \ }
 let g:ale_linters = {
-            \ 'c': [ 'clangd' ],
-            \ 'cpp': [ 'clangd' ],
-            \ 'rust': [ 'rls' ]
+            \ 'c': ['clangd'],
+            \ 'cpp': ['clangd'],
+            \ 'rust': ['rls']
             \ }
 let g:ale_c_clangformat_options = '-fallback-style=none'
 

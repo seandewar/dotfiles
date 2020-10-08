@@ -179,10 +179,11 @@ nnoremap <silent> <c-l> :nohlsearch<cr><c-l>
 
 " NOTE: disable flow control for your terminal to use the <C-S> maps!
 " press <C-Q> to unfreeze the terminal if you have accidently activated it
-nnoremap <silent> <c-s> :write<cr>
-inoremap <silent> <c-s> <c-\><c-o>:write<cr>
+nnoremap <silent> <c-s> :update<cr>
+inoremap <silent> <c-s> <c-\><c-o>:update<cr>
 
 " Argument list {{{2
+nnoremap <leader>a :args<cr>
 nnoremap <silent> ]a :next<cr>
 nnoremap <silent> [a :previous<cr>
 
@@ -202,8 +203,8 @@ nnoremap <silent> [C :colder<cr>
 nnoremap <silent> ]l :lnext<cr>
 nnoremap <silent> [l :lprevious<cr>
 
-" Source optional after/init.vim script before plugins are loaded {{{1
-runtime after/init.vim
+" Source optional plugin_conf.vim script before plugins are loaded {{{1
+runtime plugin_conf.vim
 
 " Use my vanilla color scheme choice if one wasn't set {{{1
 if !exists('g:colors_name')

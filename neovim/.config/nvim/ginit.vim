@@ -14,7 +14,10 @@ silent! GuiPopupmenu 0
 
 " try to use my choice of font, if available
 if exists('GuiFont')
-    GuiFont! Roboto Mono:h11
+    GuiFont! Cascadia Code SemiLight:h12
 else
-    silent! set guifont=Roboto\ Mono:h11
+    silent! set guifont=Cascadia\ Code\ SemiLight:h12
 endif
+
+" newer versions of nvim-qt support font ligatures
+silent! GuiRenderLigatures 1
