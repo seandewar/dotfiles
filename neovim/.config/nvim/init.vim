@@ -188,8 +188,8 @@ nnoremap <silent> ]a :next<cr>
 nnoremap <silent> [a :previous<cr>
 
 " Buffers {{{2
-nnoremap <leader>b :buffers<cr>:
-nnoremap <leader>B :buffers!<cr>:
+nnoremap <leader>b :buffers<cr>:b
+nnoremap <leader>B :buffers!<cr>:b
 nnoremap <silent> ]b :bnext<cr>2<c-g>
 nnoremap <silent> [b :bprevious<cr>2<c-g>
 

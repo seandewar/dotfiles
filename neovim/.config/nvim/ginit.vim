@@ -6,18 +6,18 @@
 " ensure it is set to this file, resolving links along the way.
 let $MYGVIMRC = resolve(empty($MYGVIMRC) ? expand('<sfile>:p') : $MYGVIMRC)
 
-" disable pretty much all GUI features and use command-line dialogs.
-" (:Gui* commands are for older versions of nvim-qt)
-set guioptions=c
-silent! GuiTabline 0
-silent! GuiPopupmenu 0
-
-" try to use my choice of font, if available
-if exists('GuiFont')
-    GuiFont! Cascadia Code SemiLight:h12
+if exists('g:GuiLoaded')
+    " using a GUI that uses the nvim shim helper plugin (e.g nvim-qt)
+    GuiTabline 0
+    GuiPopupmenu 0
+    silent! GuiRenderLigatures 1 " newer nvim-qt versions support font ligatures
+    GuiFont! Iosevka:h13.5
 else
-    silent! set guifont=Cascadia\ Code\ SemiLight:h12
+    set guioptions=Mc
+    silent! set guifont=Iosevka:h13.5
 endif
 
-" newer versions of nvim-qt support font ligatures
-silent! GuiRenderLigatures 1
+if exists('g:neovide')
+    let g:neovide_cursor_animation_length = 0
+    silent! set guifont=Iosevka:h18
+endif
