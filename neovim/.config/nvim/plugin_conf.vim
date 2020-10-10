@@ -9,6 +9,9 @@ let $MYPLUGINCONF = resolve(expand('<sfile>:p'))
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
 
+" don't highlight [{}] as an error, as this is valid C++11 {{{2
+let c_no_curly_error = 1
+
 " colorscheme {{{2
 silent! colorscheme moonfly
 
