@@ -99,6 +99,9 @@ if has('vcon')
     set termguicolors
 endif
 
+" don't highlight [{}] as an error in C/C++ files, as it's valid C++11 {{{2
+let c_no_curly_error = 1
+
 function! s:UpdateColorColumn() abort
     let &l:colorcolumn = &modifiable ? '+1' : '' " hide when nomodifiable
 endfunction
