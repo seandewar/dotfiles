@@ -33,7 +33,7 @@ let g:ale_fixers = {
 let g:ale_linters = {
             \ 'c': ['clangd'],
             \ 'cpp': ['clangd'],
-            \ 'rust': ['rls']
+            \ 'rust': ['analyzer']
             \ }
 let g:ale_c_clangformat_options = '-fallback-style=none'
 
