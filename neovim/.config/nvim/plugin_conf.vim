@@ -75,6 +75,12 @@ augroup ale_update_statusline
     autocmd User ALEFixPost redrawstatus!
 augroup END
 
+" Commands {{{1
+" minpac {{{2
+command! -bar PackUpdate call pack#LoadMinpac() | call minpac#update()
+command! -bar PackClean call pack#LoadMinpac() | call minpac#clean()
+command! -bar PackStatus call pack#LoadMinpac() | call minpac#status()
+
 " Mappings {{{1
 " ale {{{2
 " NOTE: most of these binds only work for lsp servers

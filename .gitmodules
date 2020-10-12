@@ -1,42 +1,6 @@
-[submodule "neovim/.local/share/nvim/site/pack/colors/vim-code-dark"]
-	path = neovim/.local/share/nvim/site/pack/colors/opt/vim-code-dark
-	url = https://github.com/tomasiser/vim-code-dark.git
-[submodule "neovim/.local/share/nvim/site/pack/lsp/opt/nvim-lspconfig"]
-	path = neovim/.local/share/nvim/site/pack/lsp/opt/nvim-lspconfig
-	url = https://github.com/neovim/nvim-lspconfig.git
-[submodule "neovim/.local/share/nvim/site/pack/general/start/ale"]
-	path = neovim/.local/share/nvim/site/pack/general/start/ale
-	url = https://github.com/dense-analysis/ale.git
-[submodule "neovim/.local/share/nvim/site/pack/general/start/ultisnips"]
-	path = neovim/.local/share/nvim/site/pack/general/start/ultisnips
-	url = https://github.com/SirVer/ultisnips.git
-[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-commentary"]
-	path = neovim/.local/share/nvim/site/pack/general/start/vim-commentary
-	url = https://github.com/tpope/vim-commentary.git
-[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-fswitch"]
-	path = neovim/.local/share/nvim/site/pack/general/start/vim-fswitch
-	url = https://github.com/derekwyatt/vim-fswitch.git
-[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-fugitive"]
-	path = neovim/.local/share/nvim/site/pack/general/start/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive.git
-[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-repeat"]
-	path = neovim/.local/share/nvim/site/pack/general/start/vim-repeat
-	url = https://github.com/tpope/vim-repeat.git
-[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-surround"]
-	path = neovim/.local/share/nvim/site/pack/general/start/vim-surround
-	url = https://github.com/tpope/vim-surround.git
-[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-dirvish"]
-	path = neovim/.local/share/nvim/site/pack/general/start/vim-dirvish
-	url = https://github.com/justinmk/vim-dirvish.git
-[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-qftoggle"]
-	path = neovim/.local/share/nvim/site/pack/general/start/vim-qftoggle
-	url = https://github.com/seandewar/vim-qftoggle.git
-[submodule "neovim/.local/share/nvim/site/pack/colors/opt/vim-moonfly-colors"]
-	path = neovim/.local/share/nvim/site/pack/colors/opt/vim-moonfly-colors
-	url = https://github.com/bluz71/vim-moonfly-colors.git
-[submodule "neovim/.local/share/nvim/site/pack/general/start/vim-dispatch"]
-	path = neovim/.local/share/nvim/site/pack/general/start/vim-dispatch
-	url = https://github.com/tpope/vim-dispatch.git
 [submodule "tmux/.tmux/plugins/tpm"]
 	path = tmux/.tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git
+[submodule "neovim/.local/share/nvim/site/pack/minpac/opt/minpac"]
+	path = neovim/.local/share/nvim/site/pack/minpac/opt/minpac
+	url = https://github.com/k-takata/minpac.git
