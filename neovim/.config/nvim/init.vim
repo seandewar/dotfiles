@@ -11,13 +11,13 @@ function! s:GetUserRuntimeDir() abort
     endif
 
     if has('nvim') " nvim < 0.3
-        let basedir = $XDG_CONFIG_HOME
+        let base_dir = $XDG_CONFIG_HOME
 
-        if empty(basedir)
-            let basedir = has('win32') ? $LOCALAPPDATA : '~/.config'
+        if empty(base_dir)
+            let base_dir = has('win32') ? $LOCALAPPDATA : '~/.config'
         endif
 
-        return expand(basedir . '/nvim')
+        return expand(base_dir . '/nvim')
     endif
 
     return expand(has('win32') ? '~/vimfiles' : '~/.vim') " vim
@@ -26,21 +26,6 @@ endfunction
 let $MYVIMRUNTIME = resolve(s:GetUserRuntimeDir())
 
 " General Settings {{{1
-" don't crowd working dirs with swap, persistent undo & other files; use the
-" user runtime directory instead. nvim already does this by default.
-if !has('nvim')
-    silent! call mkdir($MYVIMRUNTIME . '/swap', 'p')
-    silent! call mkdir($MYVIMRUNTIME . '/undo', 'p')
-    silent! call mkdir($MYVIMRUNTIME . '/backup', 'p')
-
-    set directory& undodir&
-    let &directory = $MYVIMRUNTIME . '/swap//,' . &directory
-    let &undodir = $MYVIMRUNTIME . '/undo,' . &undodir
-
-    let &backupdir = '.,' . $MYVIMRUNTIME . '/backup'
-    let &viminfofile = $MYVIMRUNTIME . '/viminfo'
-endif
-
 set autoread
 set backspace=indent,eol,start
 set belloff=all
@@ -86,7 +71,10 @@ endif
 " completion menu can use popups rather than preview window, if available
 if has('patch-8.1.1880')
     set completeopt+=popup " overrides preview flag
-    if has('patch-8.1.1882') | set completepopup=border:off | endif
+
+    if has('patch-8.1.1882')
+        set completepopup=border:off
+    endif
 endif
 
 " prefer ripgrep over grep, if available
@@ -99,7 +87,23 @@ if has('vcon')
     set termguicolors
 endif
 
-" don't highlight [{}] as an error in C/C++ files, as it's valid C++11 {{{2
+" don't crowd working dirs with swap, persistent undo & other files; use the
+" user runtime directory instead. nvim already does this by default.
+if !has('nvim')
+    silent! call mkdir($MYVIMRUNTIME . '/swap', 'p')
+    silent! call mkdir($MYVIMRUNTIME . '/undo', 'p')
+    silent! call mkdir($MYVIMRUNTIME . '/backup', 'p')
+
+    " NOTE: by using :set^= rather than :let, commas will be added after our
+    " prepended entries by vim if required
+    execute 'set directory& directory^=' . $MYVIMRUNTIME . '/swap//'
+    execute 'set undodir& undodir^=' . $MYVIMRUNTIME . '/undo'
+
+    let &backupdir = '.,' . $MYVIMRUNTIME . '/backup'
+    let &viminfofile = $MYVIMRUNTIME . '/viminfo'
+endif
+
+" don't highlight [{}] as an error in C/C++ files, as it's valid C++11
 let c_no_curly_error = 1
 
 function! s:UpdateColorColumn() abort
@@ -179,6 +183,12 @@ inoremap <silent> <f2> <c-\><c-o>:setlocal spell!<cr>
 set pastetoggle=<f3> " also works while in paste mode
 
 nnoremap <silent> <c-l> :nohlsearch<cr><c-l>
+
+" disable suspend mapping for nvim on windows as there is no way to resume the
+" process, which causes a lot of frustration!
+if has('nvim') && has('win32')
+    nnoremap <silent> <c-z> <nop>
+endif
 
 " NOTE: disable flow control for your terminal to use the <C-S> maps!
 " press <C-Q> to unfreeze the terminal if you have accidently activated it
