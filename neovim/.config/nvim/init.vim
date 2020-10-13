@@ -27,7 +27,8 @@ set nojoinspaces
 set lazyredraw
 set list listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
 set nomodeline
-set mouse=a nomousehide mousemodel=popup
+set mouse=a mousemodel=popup nomousehide
+set pumheight=12
 set ruler
 set scrolloff=1 sidescroll=5
 set sessionoptions-=options viewoptions-=options
