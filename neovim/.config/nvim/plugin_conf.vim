@@ -5,15 +5,22 @@
 let $MYPLUGINCONF = resolve(expand('<sfile>:p'))
 
 " General Settings {{{1
-" disable netrw (using dirvish instead) {{{2
-let g:loaded_netrw = 1
-let g:loaded_netrwPlugin = 1
+" minpac {{{2
+" on nvim, prefer installing minpac packages to the data directory over the
+" config directory. g:minpac_base_dir is used in my pack#LoadMinpac() function.
+if has('nvim')
+    let g:minpac_base_dir = stdpath('data') . '/site'
+endif
 
 " color scheme {{{2
 silent! colorscheme moonfly
 
 " dirvish {{{2
-let g:dirvish_mode = ':sort /^\v(.*[\/])|\ze/' " sort with directories first
+" disable netrw (using dirvish instead)
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+
+let g:dirvish_mode = ':sort /^\v(.*[\/])|\ze/' " display directories first
 
 " ultisnips {{{2
 let g:UltiSnipsSnippetDirectories = [$MYVIMRUNTIME . '/ultisnips']

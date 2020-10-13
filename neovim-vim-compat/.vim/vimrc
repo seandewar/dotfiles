@@ -10,12 +10,15 @@ if !exists('s:was_loaded')
                 \ fnamemodify(resolve(expand('<sfile>')), ':p:h:h:h')
                 \ . '/neovim'
 
-    execute 'set runtimepath^='
-                \ . g:neovim_stow_package_dir . '/.config/nvim,'
-                \ . g:neovim_stow_package_dir . '/.local/share/nvim/site'
-        \ . ' runtimepath+='
-                \ . g:neovim_stow_package_dir . '/.local/share/nvim/site/after,'
-                \ . g:neovim_stow_package_dir . '/.config/nvim/after'
+    let config_dir = g:neovim_stow_package_dir . '/.config/nvim'
+    let data_dir = g:neovim_stow_package_dir . '/.local/share/nvim/site'
+
+    let g:minpac_base_dir = data_dir
+
+    " NOTE: by using :set^= and :set+= rather than :let, commas will be added
+    " before and after our prepended and appended entries by vim if required
+    execute 'set runtimepath^=' . config_dir . ',' . data_dir
+           \ . ' runtimepath+=' . config_dir . '/after,' . data_dir . '/after'
 
     let &packpath = &runtimepath
 endif

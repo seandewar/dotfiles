@@ -5,25 +5,11 @@
 " Determine where the user's runtime directory is {{{1
 let $MYVIMRC = resolve($MYVIMRC)
 
-function! s:GetUserRuntimeDir() abort
-    if exists('*stdpath') " nvim 0.3+
-        return stdpath('config')
-    endif
-
-    if has('nvim') " nvim < 0.3
-        let base_dir = $XDG_CONFIG_HOME
-
-        if empty(base_dir)
-            let base_dir = has('win32') ? $LOCALAPPDATA : '~/.config'
-        endif
-
-        return expand(base_dir . '/nvim')
-    endif
-
-    return expand(has('win32') ? '~/vimfiles' : '~/.vim') " vim
-endfunction
-
-let $MYVIMRUNTIME = resolve(s:GetUserRuntimeDir())
+if has('nvim')
+    let $MYVIMRUNTIME = resolve(stdpath('config'))
+else " vim
+    let $MYVIMRUNTIME = resolve(expand(has('win32') ? '~/vimfiles' : '~/.vim'))
+endif
 
 " General Settings {{{1
 set autoread
