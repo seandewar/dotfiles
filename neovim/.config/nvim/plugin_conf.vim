@@ -2,15 +2,47 @@
 " Sean Dewar's Plugin (Neo)Vim Configuration <https://github.com/seandewar>    "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Set $MYPLUGINCONF and $MYPLUGINLIST for easy access, resolving symlinks {{{1
 let $MYPLUGINCONF = resolve(expand('<sfile>:p'))
+
+" NOTE: plugin_list.vim is lazily-sourced when minpac functionality is needed;
+" we shouldn't let plugin_list.vim set $MYPLUGINLIST itself, as it would need to
+" be sourced in order to have $MYPLUGINLIST available, which isn't ideal...
+"
+" NOTE: using a temporary script variable rather than manipulating $MYPLUGINLIST
+" directly avoids us from using :unlet-environment from inside the if statement,
+" which before vim patch 8.2.0602, always has the ':unlet $MYPLUGINLIST' command
+" run even when the if statement's condition evaluates to false. This approach
+" preserves backwards compatibility, while also allowing the latest neovim (as
+" of pre-release version 0.5.0-753-g4b00916e9) to not trigger the bug.
+unlet $MYPLUGINLIST
+let s:list_file = resolve(expand('<sfile>:p:h') . '/plugin_list.vim')
+
+if filereadable(s:list_file)
+    let $MYPLUGINLIST = s:list_file
+endif
+
+unlet s:list_file
 
 " General Settings {{{1
 " minpac {{{2
 " on nvim, prefer installing minpac packages to the data directory over the
-" config directory. g:minpac_base_dir is used in my pack#LoadMinpac() function.
+" config directory
 if has('nvim')
     let g:minpac_base_dir = stdpath('data') . '/site'
 endif
+
+function! s:ReloadMinpac() abort
+    packadd minpac
+
+    " minpac (self-update)
+    call minpac#init({'dir': get(g:, 'minpac_base_dir', '')})
+    call minpac#add('k-takata/minpac', {'type': 'opt'})
+
+    if !empty($MYPLUGINLIST)
+        source $MYPLUGINLIST
+    endif
+endfunction
 
 " color scheme {{{2
 silent! colorscheme moonfly
@@ -84,9 +116,10 @@ augroup END
 
 " Commands {{{1
 " minpac {{{2
-command! -bar PackUpdate call pack#LoadMinpac() | call minpac#update()
-command! -bar PackClean call pack#LoadMinpac() | call minpac#clean()
-command! -bar PackStatus call pack#LoadMinpac() | call minpac#status()
+command! -bar PackUpdate call <sid>ReloadMinpac() | call minpac#update('',
+            \ {'do': 'source $MYPLUGINCONF | packloadall!'})
+command! -bar PackClean call <sid>ReloadMinpac() | call minpac#clean()
+command! -bar PackStatus call <sid>ReloadMinpac() | call minpac#status()
 
 " Mappings {{{1
 " ale {{{2

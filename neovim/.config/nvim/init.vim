@@ -2,7 +2,7 @@
 " Sean Dewar's (Neo)Vim Configuration <https://github.com/seandewar>           "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Determine where the user's runtime directory is {{{1
+" Set $MYVIMRC and $MYVIMRUNTIME for easy access, resolving symlinks {{{1
 let $MYVIMRC = resolve($MYVIMRC)
 
 if has('nvim')
