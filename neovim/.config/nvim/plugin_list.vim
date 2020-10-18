@@ -13,3 +13,10 @@ call minpac#add('seandewar/vim-qftoggle')
 call minpac#add('tpope/vim-repeat')
 call minpac#add('tpope/vim-surround')
 call minpac#add('SirVer/ultisnips')
+
+" neovim 0.5+ plugins
+if has('nvim-0.5')
+    call minpac#add('nvim-treesitter/nvim-treesitter', {'type': 'opt'})
+    call minpac#add('nvim-treesitter/nvim-treesitter-textobjects',
+                \ {'type': 'opt'})
+endif

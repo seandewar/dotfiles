@@ -10,11 +10,11 @@ let $MYPLUGINCONF = resolve(expand('<sfile>:p'))
 " be sourced in order to have $MYPLUGINLIST available, which isn't ideal...
 "
 " NOTE: using a temporary script variable rather than manipulating $MYPLUGINLIST
-" directly avoids us from using :unlet-environment from inside the if statement,
-" which before vim patch 8.2.0602, always has the ':unlet $MYPLUGINLIST' command
-" run even when the if statement's condition evaluates to false. This approach
-" preserves backwards compatibility, while also allowing the latest neovim (as
-" of pre-release version 0.5.0-753-g4b00916e9) to not trigger the bug.
+" directly avoids us from using :unlet on an environment variable from inside of
+" the if statement; before vim 8.2.0602, the ':unlet $MYPLUGINLIST' command will
+" run even when the enclosing if statement's condition evaluates to false. This
+" approach preserves backward-compatibility, while also allowing the latest
+" nvim (as of pre-release version 0.5.0-753-g4b00916e9) to not trigger the bug.
 unlet $MYPLUGINLIST
 let s:list_file = resolve(expand('<sfile>:p:h') . '/plugin_list.vim')
 
@@ -113,6 +113,67 @@ augroup ale_update_statusline
     autocmd User ALELintPost redrawstatus!
     autocmd User ALEFixPost redrawstatus!
 augroup END
+
+" nvim-treesitter {{{2
+if has('nvim-0.5')
+    packadd nvim-treesitter
+    packadd nvim-treesitter-textobjects
+
+    " NOTE: if we don't wrap ':lua << EOF' in a function, the Lua code will
+    " still be ran even when the if condition above evaluates to false!
+    " (see ':help script-here' for more information)
+    function! s:SetupNvimTreesitter() abort
+        lua << EOF
+            require('nvim-treesitter.configs').setup({
+                ensure_installed = {
+                    'bash', 'c', 'cpp', 'css', 'html', 'java', 'lua',
+                    'markdown', 'python', 'regex', 'rust'
+                },
+                highlight = {enable = true},
+
+                -- NOTE: uses the default keymaps
+                -- (see ":help nvim-treesitter-incremental-selection-mod")
+                incremental_selection = {enable = true},
+
+                -- NOTE: the textobjects module does not define any keymaps for
+                -- us, so we'll -- just use the recommended
+                -- (see ":help nvim-treesitter-textobjects-mod")
+                textobjects = {
+                    select = {
+                        enable = true,
+                        keymaps = {
+                          ['af'] = '@function.outer',
+                          ['if'] = '@function.inner',
+                          ['ac'] = '@class.outer',
+                          ['ic'] = '@class.inner'
+                        }
+                    },
+                    move = {
+                        enable = true,
+                        goto_next_start = {
+                          [']m'] = '@function.outer',
+                          [']]'] = '@class.outer'
+                        },
+                        goto_next_end = {
+                          [']M'] = '@function.outer',
+                          [']['] = '@class.outer'
+                        },
+                        goto_previous_start = {
+                          ['[m'] = '@function.outer',
+                          ['[['] = '@class.outer'
+                        },
+                        goto_previous_end = {
+                          ['[M'] = '@function.outer',
+                          ['[]'] = '@class.outer'
+                        }
+                    }
+                }
+            })
+EOF
+    endfunction
+
+    call s:SetupNvimTreesitter()
+endif
 
 " Commands {{{1
 " minpac {{{2
