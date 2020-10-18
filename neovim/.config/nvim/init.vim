@@ -144,6 +144,12 @@ function! TabLabel(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
     let winnum = tabpagewinnr(a:tabnum)
     let bufname = expand('#' . buffers[winnum - 1] . ':t')
+
+    " default to the working directory's tail component if empty
+    if empty(bufname)
+        let bufname = fnamemodify(getcwd(winnum, a:tabnum), ':t')
+    endif
+
     return a:tabnum . (empty(bufname) ? '' : ' ') . bufname
 endfunction
 
