@@ -4,6 +4,7 @@ call minpac#add('bluz71/vim-moonfly-colors', {'type': 'opt'})
 
 " general plugins
 call minpac#add('dense-analysis/ale')
+call minpac#add('editorconfig/editorconfig-vim')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('justinmk/vim-dirvish')
 call minpac#add('tpope/vim-dispatch')
