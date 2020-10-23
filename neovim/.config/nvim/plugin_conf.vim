@@ -213,9 +213,8 @@ nnoremap <leader>oJ :FSSplitBelow<cr>
 
 " vim-fugitive {{{2
 nnoremap <leader>gg :Git<cr>
-nnoremap <leader>gl :0Gclog \| cwindow<cr>
-nnoremap <leader>gL :Gclog \| cwindow<cr>
-nnoremap <leader>ge :Gedit<cr>
+nnoremap <leader>gl :Git log<cr>
+nnoremap <leader>gL :Git log %<cr>
 nnoremap <leader>gd :Gdiffsplit<cr>
 nnoremap <leader>gb :Git blame<cr>
 nnoremap <leader>gc :Git commit<cr>
