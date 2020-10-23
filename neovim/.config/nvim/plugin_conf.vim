@@ -129,14 +129,14 @@ if has('nvim-0.5')
                     'bash', 'c', 'cpp', 'css', 'html', 'java', 'lua',
                     'markdown', 'python', 'regex', 'rust'
                 },
-                highlight = {enable = true},
 
-                -- NOTE: uses the default keymaps
+                -- NOTE: these bundled modules define default keymaps, if any
                 -- (see ":help nvim-treesitter-incremental-selection-mod")
+                highlight = {enable = true},
                 incremental_selection = {enable = true},
 
-                -- NOTE: the textobjects module does not define any keymaps for
-                -- us, so we'll -- just use the recommended
+                -- NOTE: these additional modules do not define any keymaps for
+                -- us, so we'll just use the recommended ones from the docs
                 -- (see ":help nvim-treesitter-textobjects-mod")
                 textobjects = {
                     select = {
