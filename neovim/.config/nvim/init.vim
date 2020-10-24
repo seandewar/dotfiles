@@ -90,9 +90,6 @@ if !has('nvim')
     let &viminfofile = $MYVIMRUNTIME . '/viminfo'
 endif
 
-" don't highlight [{}] as an error in C/C++ files, as it's valid C++11
-let c_no_curly_error = 1
-
 function! s:UpdateColorColumn() abort
     let &l:colorcolumn = &modifiable ? '+1' : '' " hide when nomodifiable
 endfunction
@@ -123,21 +120,54 @@ augroup auto_open_quickfix_or_loclist
                 \ call timer_start(0, {-> execute('lwindow', 'silent!')})
 augroup END
 
+" Distributed Plugin Settings {{{1
+packadd cfilter
+
+let g:qf_disable_statusline = 1
+
+" don't highlight [{}] as an error in C/C++ files, as it's valid C++11
+let c_no_curly_error = 1
+
 " Status Line Settings {{{1
-function! StatusLine() abort
+function! StatusLine(is_current) abort
     let line  = '%(%w %)'                                   " preview win flag
-    let line .= '%f '                                       " relative file name
+    let line .= '%(%{fnamemodify(bufname(), '':~:.'')} %)'  " relative file name
     let line .= '%([%M%R] %)'                               " modified, RO flag
     let line .= '%(%y %)'                                   " file type
     let line .= '%([%{&spell ? &spelllang : ''''}] %)'      " spell check
-    let line .= get(g:, 'plugin_statusline', '')            " plugin stuff
+
+    " paste mode indicator
+    if a:is_current && &paste
+        let line .= '[%#WarningMsg#PASTE%*] '
+    endif
+
+    " plugin-specific status line elements
+    for Fn in get(g:, 'plugin_statusline_functions', [])
+        let line .= Fn(a:is_current)
+    endfor
+
     let line .= '%='                                        " align right
     let line .= '%-14(%l,%c%V%) '                           " cursor line & col
     let line .= '%P'                                        " scroll percentage
     return line
 endfunction
 
-set laststatus=2 statusline=%!StatusLine()
+set laststatus=2
+
+" Let statuslines know if they are attached to the currently-active window or
+" not. Newer versions of (Neo)Vim can do this easily using 'g:statusline_winid',
+" but older versions can achieve the same result using autocommands.
+if has('patch-8.1.1372') || has('nvim-0.5')
+    set statusline=%!StatusLine(g:statusline_winid\ ==\ win_getid())
+else
+    set statusline=%!StatusLine(0)
+
+    augroup current_statusline_winid_compatibility
+        autocmd!
+        autocmd VimEnter,WinEnter * setl statusline=%!StatusLine(1)
+        autocmd WinLeave * setl statusline=%!StatusLine(0)
+    augroup END
+endif
 
 " Tab Line Settings {{{1
 function! TabLabel(tabnum) abort
@@ -199,17 +229,17 @@ nnoremap <leader>B :buffers!<cr>:b<space>
 nnoremap <silent> ]b :bnext<cr>2<c-g>
 nnoremap <silent> [b :bprevious<cr>2<c-g>
 
-" QuickFix {{{2
+" QuickFix and Location lists {{{2
+nnoremap <silent> <leader>c :cwindow<cr>
+nnoremap <silent> <leader>C :lwindow<cr>
+
 nnoremap <silent> ]c :cnext<cr>
 nnoremap <silent> [c :cprevious<cr>
-nnoremap <silent> ]C :cnewer<cr>
-nnoremap <silent> [C :colder<cr>
 
-" Location list {{{2
-nnoremap <silent> ]l :lnext<cr>
-nnoremap <silent> [l :lprevious<cr>
+nnoremap <silent> ]C :lnext<cr>
+nnoremap <silent> [C :lprevious<cr>
 
-" Source optional plugin_conf.vim script before plugins are loaded {{{1
+" Source optional plugin_conf.vim script before external plugins are loaded {{{1
 runtime plugin_conf.vim
 
 " Use my vanilla color scheme choice if one wasn't set {{{1
