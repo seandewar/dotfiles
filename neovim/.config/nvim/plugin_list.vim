@@ -1,5 +1,4 @@
 " color schemes
-call minpac#add('tomasiser/vim-code-dark', {'type': 'opt'})
 call minpac#add('bluz71/vim-moonfly-colors', {'type': 'opt'})
 
 " general plugins
