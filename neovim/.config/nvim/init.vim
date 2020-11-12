@@ -137,7 +137,11 @@ let c_no_curly_error = 1
 " Status Line Settings {{{1
 function! StatusLine(is_current) abort
     let line  = '%(%w %)'                                   " preview win flag
-    let line .= '%(%{fnamemodify(bufname(), '':~:.'')} %)'  " relative file name
+
+    " relative file name
+    let line .= '%(%{empty(bufname()) ? ''[No Name]'' '
+    let line .= ': fnamemodify(bufname(), '':~:.'')} %)'
+
     let line .= '%([%M%R] %)'                               " modified, RO flag
     let line .= '%(%y %)'                                   " file type
     let line .= '%([%{&spell ? &spelllang : ''''}] %)'      " spell check
