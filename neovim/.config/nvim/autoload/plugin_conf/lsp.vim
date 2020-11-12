@@ -8,10 +8,17 @@ packadd vim-lsp-settings
 packadd vim-lsp-snippets
 packadd vim-lsp-ultisnips
 
-let g:lsp_signs_error = {'text': 'X'}
-let g:lsp_signs_warning = {'text': '!'}
-let g:lsp_signs_information = {'text': '>'}
-let g:lsp_signs_hint = {'text': '*'}
+if &encoding ==# 'utf-8'
+    let g:lsp_signs_error = {'text': '⛔'}
+    let g:lsp_signs_warning = {'text': '⚠'}
+    let g:lsp_signs_information = {'text': 'ℹ'}
+    let g:lsp_signs_hint = {'text': '💡'}
+else
+    let g:lsp_signs_error = {'text': 'X'}
+    let g:lsp_signs_warning = {'text': '!'}
+    let g:lsp_signs_information = {'text': '>'}
+    let g:lsp_signs_hint = {'text': '*'}
+endif
 
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_echo_delay = 0

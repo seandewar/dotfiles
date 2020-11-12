@@ -25,7 +25,6 @@ set formatoptions=croqnlj nrformats-=octal
 set hidden
 set nojoinspaces
 set lazyredraw
-set list listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
 set nomodeline
 set mouse=a mousemodel=popup nomousehide
 set pumheight=12
@@ -47,6 +46,13 @@ set guioptions=M
 
 filetype plugin indent on
 syntax enable
+
+set list
+if &encoding ==# 'utf-8'
+    set listchars=tab:→\ ,trail:·,nbsp:␣,extends:⟩,precedes:⟨
+else
+    set listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
+endif
 
 set hlsearch incsearch ignorecase smartcase
 nohlsearch " cancel the highlight from setting hlsearch when reloading the vimrc
