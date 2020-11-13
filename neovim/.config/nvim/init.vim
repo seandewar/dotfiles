@@ -25,7 +25,6 @@ set formatoptions=croqnlj nrformats-=octal
 set hidden
 set nojoinspaces
 set lazyredraw
-set nomodeline
 set mouse=a mousemodel=popup nomousehide
 set pumheight=12
 set ruler

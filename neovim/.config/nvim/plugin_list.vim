@@ -3,6 +3,7 @@ call minpac#add('bluz71/vim-moonfly-colors', {'type': 'opt'})
 
 " general plugins
 call minpac#add('editorconfig/editorconfig-vim')
+call minpac#add('sbdchd/neoformat')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-dispatch')
 call minpac#add('tpope/vim-fugitive')
@@ -12,7 +13,7 @@ call minpac#add('tpope/vim-repeat')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-vinegar')
 
-" lsp and linting
+" lsp
 call minpac#add('prabirshrestha/vim-lsp', {'type': 'opt'})
 call minpac#add('mattn/vim-lsp-settings', {'type': 'opt'})
 

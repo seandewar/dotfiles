@@ -103,6 +103,10 @@ if !exists('g:lsp_loaded')
 endif
 
 " Mappings {{{1
+" neoformat {{{2
+nnoremap <silent> <f4> :Neoformat<cr>
+vnoremap <silent> <f4> :Neoformat<cr>
+
 " ultisnips {{{2
 let g:UltiSnipsExpandTrigger = '<c-j>'
 let g:UltiSnipsListSnippets = '<c-k>'
