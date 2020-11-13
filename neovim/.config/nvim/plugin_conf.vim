@@ -4,8 +4,7 @@
 
 " General Plugin Settings {{{1
 " minpac {{{2
-" on nvim, prefer installing minpac packages to the data directory over the
-" config directory
+" on nvim, install minpac packages to the data directory over the config dir
 if has('nvim')
     let g:minpac_base_dir = stdpath('data') . '/site'
 endif
@@ -22,6 +21,20 @@ endfunction
 
 " color scheme {{{2
 silent! colorscheme moonfly
+
+" neoformat {{{2
+let g:neoformat_basic_format_trim = 1
+
+" NOTE: can be overridden on a per-buffer basis with b:format_on_save
+let g:format_on_save = 1
+
+augroup neoformat_on_save
+    autocmd!
+    autocmd BufWritePre *
+                \ if get(b:, 'format_on_save', get(g:, 'format_on_save', 0))
+                \ | silent Neoformat
+                \ | endif
+augroup END
 
 " ultisnips {{{2
 let g:UltiSnipsSnippetDirectories = [$MYVIMRUNTIME . '/ultisnips']
