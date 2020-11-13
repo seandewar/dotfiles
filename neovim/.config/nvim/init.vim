@@ -129,6 +129,11 @@ augroup END
 " Distributed Plugin Settings {{{1
 packadd cfilter
 
+" if nvim, store the .netrwhist file in the data directory
+if has('nvim')
+    let g:netrw_home = stdpath('data')
+endif
+
 let g:qf_disable_statusline = 1
 
 " don't highlight [{}] as an error in C/C++ files, as it's valid C++11
