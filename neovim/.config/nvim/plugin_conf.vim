@@ -105,8 +105,10 @@ let g:plugin_statusline_functions = [{is_current -> exists('g:lsp_loaded')
 
 " Commands {{{1
 " minpac {{{2
-command! -bar PackUpdate call <sid>ReloadMinpac() | call minpac#update('',
-            \ {'do': 'runtime plugin_list.vim | packloadall!'})
+" NOTE: use :execute so that expand('<sfile>') results in this script's path
+execute 'command! -bar PackUpdate call <sid>ReloadMinpac() '
+            \ . '| call minpac#update('''', '
+            \ . '{''do'': ''source ' . expand('<sfile>') . ' | packloadall!''})'
 command! -bar PackClean call <sid>ReloadMinpac() | call minpac#clean()
 command! -bar PackStatus call <sid>ReloadMinpac() | call minpac#status()
 
