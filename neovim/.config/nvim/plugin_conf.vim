@@ -140,7 +140,7 @@ nnoremap <silent> <leader>gps :Git push<cr>
 nnoremap <silent> <leader>gpl :Git pull<cr>
 
 " vim-qftoggle {{{2
-nmap <leader>c <plug>(qftoggle_toggle_quickfix)
+nnoremap <silent> <leader>c :botright Ctoggle<cr>
 nmap <leader>C <plug>(qftoggle_toggle_loclist)
 
 nmap ]c <plug>(qftoggle_quickfix_next)

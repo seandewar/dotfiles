@@ -108,7 +108,7 @@ augroup END
 
 augroup auto_open_quickfix_or_loclist
     autocmd!
-    autocmd VimEnter * nested cwindow
+    autocmd VimEnter * nested botright cwindow
 
     " NOTE: we cannot simply call :c/lwindow here!
     "
@@ -120,7 +120,7 @@ augroup auto_open_quickfix_or_loclist
     " by calling timer_start() for 0ms, :c/lwindow is deferred until after Vim
     " is ready to receive user input, which will be after the command finishes.
     autocmd QuickfixCmdPost [^l]* nested
-                \ call timer_start(0, {-> execute('cwindow')})
+                \ call timer_start(0, {-> execute('botright cwindow')})
     autocmd QuickfixCmdPost l* nested
                 \ call timer_start(0, {-> execute('lwindow', 'silent!')})
 augroup END
@@ -244,7 +244,7 @@ nnoremap <silent> ]b :bnext<cr>2<c-g>
 nnoremap <silent> [b :bprevious<cr>2<c-g>
 
 " QuickFix and Location lists {{{2
-nnoremap <silent> <leader>c :cwindow<cr>
+nnoremap <silent> <leader>c :botright cwindow<cr>
 nnoremap <silent> <leader>C :lwindow<cr>
 
 nnoremap <silent> ]c :cnext<cr>
