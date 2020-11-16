@@ -25,9 +25,8 @@ silent! colorscheme moonfly
 " neoformat {{{2
 let g:neoformat_basic_format_trim = 1
 
-" NOTE: can be overridden on a per-buffer basis with b:format_on_save
-let g:format_on_save = 1
-
+" NOTE: formatting on save can be globally enabled with g:format_on_save, or
+" overridden on a per-buffer basis with b:format_on_save
 augroup neoformat_on_save
     autocmd!
     autocmd BufWritePre *
@@ -44,9 +43,6 @@ if has('nvim-0.5')
     packadd nvim-treesitter
     packadd nvim-treesitter-textobjects
 
-    " FIXME nvim-treesitter misbehaves with inccommand set; disable it for now
-    set inccommand=
-
     " NOTE: if we don't wrap ':lua << EOF' in a function, the Lua code will
     " still be ran even when the if condition above evaluates to false!
     " (see ':help script-here' for more information)
@@ -55,7 +51,9 @@ if has('nvim-0.5')
           require('nvim-treesitter.configs').setup({
             -- NOTE: these bundled modules define default keymaps, if any
             -- (see ":help nvim-treesitter-incremental-selection-mod")
-            highlight = {enable = true},
+            -- FIXME: highlights misbehave when buffer changes sometimes
+            -- (e.g: 'inccommand'), requiring :edit to fix; disable for now
+            -- highlight = {enable = true},
             incremental_selection = {enable = true},
 
             -- NOTE: these additional modules do not define any keymaps for us
@@ -101,7 +99,7 @@ endif
 " Status Line Settings {{{1
 " vim-lsp {{{2
 let g:plugin_statusline_functions = [{is_current -> exists('g:lsp_loaded')
-            \ ? plugin_conf#lsp#statusline(is_current) : ''}]
+            \ ? plugin_conf#vim_lsp#statusline(is_current) : ''}]
 
 " Commands {{{1
 " minpac {{{2
@@ -114,7 +112,8 @@ command! -bar PackStatus call <sid>ReloadMinpac() | call minpac#status()
 
 " vim-lsp {{{2
 if !exists('g:lsp_loaded')
-    command! -bar LspEnable call plugin_conf#lsp#enable() | delcommand LspEnable
+    command! -bar LspEnable call plugin_conf#vim_lsp#enable()
+                \ | delcommand LspEnable
 endif
 
 " Mappings {{{1

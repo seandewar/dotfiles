@@ -27,7 +27,7 @@ let g:lsp_textprop_enabled = 0
 let g:lsp_highlights_enabled = 0
 let g:lsp_highlight_references_enabled = 0
 
-function! plugin_conf#lsp#enable() abort
+function! plugin_conf#vim_lsp#enable() abort
     call lsp#enable()
 endfunction
 
@@ -44,8 +44,8 @@ augroup lsp_setup_buffer
 augroup END
 
 " Status Line Settings {{{1
-function! plugin_conf#lsp#statusline(is_current) abort
-    if !a:is_current
+function! plugin_conf#vim_lsp#statusline(is_current) abort
+    if !a:is_current || !exists('g:lsp_loaded')
         return ''
     endif
 
