@@ -88,10 +88,10 @@ function! s:SetupBufferMappings() abort
     nmap <buffer> <silent> 1gD <plug>(lsp-type-definition)
     nmap <buffer> <silent> gr <plug>(lsp-references)
 
-    nmap <buffer> <silent> gK <plug>(lsp-hover)
     if &filetype !~# 'vim'
         nmap <buffer> <silent> K <plug>(lsp-hover)
     endif
+    nmap <buffer> <silent> gK <plug>(lsp-signature-help)
 
     nmap <buffer> <silent> g0 <plug>(lsp-document-symbol)
     nmap <buffer> <silent> gW <plug>(lsp-workspace-symbol)

@@ -54,6 +54,7 @@ if has('nvim-0.5')
             -- FIXME: highlights misbehave when buffer changes sometimes
             -- (e.g: 'inccommand'), requiring :edit to fix; disable for now
             -- highlight = {enable = true},
+            indent = {enable = true},
             incremental_selection = {enable = true},
 
             -- NOTE: these additional modules do not define any keymaps for us
