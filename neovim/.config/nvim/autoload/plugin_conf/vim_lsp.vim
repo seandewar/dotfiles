@@ -22,10 +22,10 @@ endif
 
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_diagnostics_echo_delay = 0
-
-let g:lsp_textprop_enabled = 0
 let g:lsp_highlights_enabled = 0
 let g:lsp_highlight_references_enabled = 0
+let g:lsp_textprop_enabled = 0
+let g:lsp_virtual_text_enabled = 0
 
 function! plugin_conf#vim_lsp#enable() abort
     call lsp#enable()
