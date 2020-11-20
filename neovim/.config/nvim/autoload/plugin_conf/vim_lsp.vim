@@ -95,6 +95,7 @@ function! s:SetupBufferMappings() abort
 
     nmap <buffer> <silent> g0 <plug>(lsp-document-symbol)
     nmap <buffer> <silent> gW <plug>(lsp-workspace-symbol)
+    nmap <buffer> <silent> 1gW :LspWorkspaceSymbol <c-r><c-w><cr>
 
     if exists(':LspDocumentSwitchSourceHeader')
         nmap <buffer> <silent> <leader>ls :LspDocumentSwitchSourceHeader<cr>
