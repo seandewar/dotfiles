@@ -20,7 +20,7 @@ call minpac#add('mattn/vim-lsp-settings', {'type': 'opt'})
 " snippets with lsp integration
 call minpac#add('thomasfaingnaert/vim-lsp-snippets', {'type': 'opt'})
 call minpac#add('thomasfaingnaert/vim-lsp-ultisnips', {'type': 'opt'})
-call minpac#add('SirVer/ultisnips')
+call minpac#add('SirVer/ultisnips', {'type': 'opt'})
 
 " neovim 0.5+ plugins
 if has('nvim-0.5')

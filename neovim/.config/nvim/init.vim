@@ -26,6 +26,7 @@ set hidden
 set nojoinspaces
 set lazyredraw
 set mouse=a mousemodel=popup nomousehide
+set path=.,,**
 set pumheight=12
 set ruler
 set scrolloff=1 sidescroll=5
@@ -133,10 +134,9 @@ if has('nvim')
     let g:netrw_home = stdpath('data')
 endif
 
+let g:c_no_curly_error = 1 " don't show [{}] as an error; it's valid C++11
+let g:markdown_folding = 1
 let g:qf_disable_statusline = 1
-
-" don't highlight [{}] as an error in C/C++ files, as it's valid C++11
-let c_no_curly_error = 1
 
 " Status Line Settings {{{1
 function! StatusLine(is_current) abort
@@ -218,7 +218,6 @@ set showtabline=1 tabline=%!TabLine()
 nnoremap <silent> <f2> :setlocal spell!<cr>
 inoremap <silent> <f2> <c-\><c-o>:setlocal spell!<cr>
 set pastetoggle=<f3> " also works while in paste mode
-
 nnoremap <silent> <c-l> :nohlsearch<cr><c-l>
 
 " disable suspend mapping for nvim on windows as there is no way to resume the
@@ -237,21 +236,25 @@ nnoremap <leader>a :args<cr>
 nnoremap <silent> ]a :next<cr>
 nnoremap <silent> [a :previous<cr>
 
-" Buffers {{{2
-nnoremap <leader>b :buffers<cr>:b<space>
-nnoremap <leader>B :buffers!<cr>:b<space>
+" Buffers and Find {{{2
+nnoremap <leader>b :buffer *
+nnoremap <leader>f :find *
 nnoremap <silent> ]b :bnext<cr>2<c-g>
 nnoremap <silent> [b :bprevious<cr>2<c-g>
 
 " QuickFix and Location lists {{{2
 nnoremap <silent> <leader>c :botright cwindow<cr>
-nnoremap <silent> <leader>C :lwindow<cr>
+nnoremap <silent> <leader>l :lwindow<cr>
 
 nnoremap <silent> ]c :cnext<cr>
 nnoremap <silent> [c :cprevious<cr>
+nnoremap <silent> ]C :cnewer<cr>
+nnoremap <silent> [C :colder<cr>
 
-nnoremap <silent> ]C :lnext<cr>
-nnoremap <silent> [C :lprevious<cr>
+nnoremap <silent> ]l :lnext<cr>
+nnoremap <silent> [l :lprevious<cr>
+nnoremap <silent> ]L :lnewer<cr>
+nnoremap <silent> [L :lolder<cr>
 
 " Source optional plugin_conf.vim script before external plugins are loaded {{{1
 runtime plugin_conf.vim

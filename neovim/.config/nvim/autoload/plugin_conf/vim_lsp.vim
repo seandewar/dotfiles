@@ -1,13 +1,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Sean Dewar's Configuration for vim-lsp <https://github.com/seandewar>        "
+" Sean Dewar's Autoload Config for vim-lsp <https://github.com/seandewar>      "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " General Plugin Settings {{{1
-packadd vim-lsp
-packadd vim-lsp-settings
-packadd vim-lsp-snippets
-packadd vim-lsp-ultisnips
-
 if &encoding ==# 'utf-8'
     let g:lsp_signs_error = {'text': '⛔'}
     let g:lsp_signs_warning = {'text': '⚠'}
@@ -20,14 +15,17 @@ else
     let g:lsp_signs_hint = {'text': '*'}
 endif
 
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_diagnostics_echo_delay = 0
+let g:lsp_diagnostics_float_cursor = 1
 let g:lsp_highlights_enabled = 0
 let g:lsp_highlight_references_enabled = 0
 let g:lsp_textprop_enabled = 0
 let g:lsp_virtual_text_enabled = 0
 
 function! plugin_conf#vim_lsp#enable() abort
+    packadd vim-lsp
+    packadd vim-lsp-settings
+    packadd vim-lsp-snippets
+    packadd vim-lsp-ultisnips
     call lsp#enable()
 endfunction
 
@@ -83,31 +81,29 @@ function! s:SetupBufferMappings() abort
         nmap <buffer> <silent> <c-]> <plug>(lsp-definition)
     endif
 
-    nmap <buffer> <silent> gd <plug>(lsp-declaration)
-    nmap <buffer> <silent> gD <plug>(lsp-implementation)
-    nmap <buffer> <silent> 1gD <plug>(lsp-type-definition)
-    nmap <buffer> <silent> gr <plug>(lsp-references)
-
     if &filetype !~# 'vim'
         nmap <buffer> <silent> K <plug>(lsp-hover)
     endif
-    nmap <buffer> <silent> gK <plug>(lsp-signature-help)
 
+    nmap <buffer> <silent> gK <plug>(lsp-signature-help)
+    nmap <buffer> <silent> gd <plug>(lsp-declaration)
+    nmap <buffer> <silent> gD <plug>(lsp-implementation)
+    nmap <buffer> <silent> 1gD <plug>(lsp-type-definition)
     nmap <buffer> <silent> g0 <plug>(lsp-document-symbol)
     nmap <buffer> <silent> gW <plug>(lsp-workspace-symbol)
     nmap <buffer> <silent> 1gW :LspWorkspaceSymbol <c-r><c-w><cr>
 
-    if exists(':LspDocumentSwitchSourceHeader')
-        nmap <buffer> <silent> <leader>ls :LspDocumentSwitchSourceHeader<cr>
+    nmap <buffer> <silent> <space>a <plug>(lsp-code-action)
+    nmap <buffer> <silent> <space>l <plug>(lsp-code-lens)
+    nmap <buffer> <silent> <space>r <plug>(lsp-references)
+    xmap <buffer> <silent> <space>f <plug>(lsp-document-range-format)
+    nmap <buffer> <silent> <space>F <plug>(lsp-document-format)
+
+    nmap <buffer> <silent> <space><space> <plug>(lsp-document-diagnostics)
+    nmap <buffer> <silent> ]<space> <plug>(lsp-next-diagnostic)
+    nmap <buffer> <silent> [<space> <plug>(lsp-previous-diagnostic)
+
+    if &filetype =~? '^c\(pp\)\?$'
+        nmap <buffer> <silent> <space>s :LspDocumentSwitchSourceHeader<cr>
     endif
-
-    nmap <buffer> <silent> <leader>la <plug>(lsp-code-action)
-    nmap <buffer> <silent> <leader>lc <plug>(lsp-code-lens)
-
-    nmap <buffer> <silent> <leader>lf <plug>(lsp-document-format)
-    xmap <buffer> <silent> <leader>lf <plug>(lsp-document-range-format)
-
-    nmap <buffer> <silent> <leader>ll <plug>(lsp-document-diagnostics)
-    nmap <buffer> <silent> ]l <plug>(lsp-next-diagnostic)
-    nmap <buffer> <silent> [l <plug>(lsp-previous-diagnostic)
 endfunction

@@ -3,23 +3,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " General Plugin Settings {{{1
-" minpac {{{2
-" on nvim, install minpac packages to the data directory over the config dir
-if has('nvim')
-    let g:minpac_base_dir = stdpath('data') . '/site'
-endif
-
-function! s:ReloadMinpac() abort
-    packadd minpac
-
-    " minpac (self-update)
-    call minpac#init({'dir': get(g:, 'minpac_base_dir', '')})
-    call minpac#add('k-takata/minpac', {'type': 'opt'})
-
-    runtime plugin_list.vim
-endfunction
-
 " color scheme {{{2
+set termguicolors " assume a decent terminal if we're using this color scheme
 silent! colorscheme moonfly
 
 " neoformat {{{2
@@ -36,7 +21,12 @@ augroup neoformat_on_save
 augroup END
 
 " ultisnips {{{2
-let g:UltiSnipsSnippetDirectories = [$MYVIMRUNTIME . '/ultisnips']
+" If we can't use py3, don't load ultisnips, as it'll constantly throw errors
+try
+    python3 #
+    packadd ultisnips
+    let g:UltiSnipsSnippetDirectories = [$MYVIMRUNTIME . '/ultisnips']
+endtry
 
 " nvim-treesitter {{{2
 if has('nvim-0.5')
@@ -105,11 +95,11 @@ let g:plugin_statusline_functions = [{is_current -> exists('g:lsp_loaded')
 " Commands {{{1
 " minpac {{{2
 " NOTE: use :execute so that expand('<sfile>') results in this script's path
-execute 'command! -bar PackUpdate call <sid>ReloadMinpac() '
+execute 'command! -bar PackUpdate call plugin_conf#minpac#reload() '
             \ . '| call minpac#update('''', '
             \ . '{''do'': ''source ' . expand('<sfile>') . ' | packloadall!''})'
-command! -bar PackClean call <sid>ReloadMinpac() | call minpac#clean()
-command! -bar PackStatus call <sid>ReloadMinpac() | call minpac#status()
+command! -bar PackClean call plugin_conf#minpac#reload() | call minpac#clean()
+command! -bar PackStatus call plugin_conf#minpac#reload() | call minpac#status()
 
 " vim-lsp {{{2
 if !exists('g:lsp_loaded')
@@ -132,21 +122,24 @@ let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 nnoremap <silent> <leader>gg :Git<cr>
 nnoremap <silent> <leader>gl :Git log<cr>
 nnoremap <silent> <leader>gL :Git log %<cr>
-nnoremap <silent> <leader>gd :Gdiffsplit<cr>
+nnoremap <silent> <leader>gd :G difftool<cr>
+nnoremap <silent> <leader>gD :Gdiffsplit<cr>
+nnoremap <silent> <leader>gm :G mergetool<cr>
+nnoremap <leader>gr :G rebase -i<space>
 nnoremap <silent> <leader>gb :Git blame<cr>
 nnoremap <silent> <leader>gc :Git commit<cr>
 nnoremap <silent> <leader>gC :Git commit --amend<cr>
 nnoremap <silent> <leader>gw :Gwrite<cr>
-nnoremap <silent> <leader>gr :Gread<cr>
+nnoremap <silent> <leader>gR :Gread<cr>
 nnoremap <silent> <leader>gps :Git push<cr>
 nnoremap <silent> <leader>gpl :Git pull<cr>
 
 " vim-qftoggle {{{2
 nnoremap <silent> <leader>c :botright Ctoggle<cr>
-nmap <leader>C <plug>(qftoggle_toggle_loclist)
+nmap <leader>l <plug>(qftoggle_toggle_loclist)
 
 nmap ]c <plug>(qftoggle_quickfix_next)
 nmap [c <plug>(qftoggle_quickfix_previous)
 
-nmap ]C <plug>(qftoggle_loclist_next)
-nmap [C <plug>(qftoggle_loclist_previous)
+nmap ]l <plug>(qftoggle_loclist_next)
+nmap [l <plug>(qftoggle_loclist_previous)
