@@ -1,15 +1,12 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sean Dewar's (Neo)Vim Configuration <https://github.com/seandewar>           "
+" Aims for compatibility with Vim 8.0+ and Neovim 0.3+ (plugins may differ)    "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Set $MYVIMRC and $MYVIMRUNTIME for easy access, resolving symlinks {{{1
 let $MYVIMRC = resolve($MYVIMRC)
-
-if has('nvim')
-    let $MYVIMRUNTIME = resolve(stdpath('config'))
-else " vim
-    let $MYVIMRUNTIME = resolve(expand(has('win32') ? '~/vimfiles' : '~/.vim'))
-endif
+let $MYVIMRUNTIME = resolve(has('nvim') ? stdpath('config')
+                          \ : expand(has('win32') ? '~/vimfiles' : '~/.vim'))
 
 " General Settings {{{1
 set autoread
@@ -21,12 +18,15 @@ set completeopt=menuone,preview
 set display+=lastline
 set encoding=utf-8
 set foldmethod=marker
-set formatoptions=croqnlj nrformats-=octal
+set formatoptions=croqnlj
+set guioptions=M " has to be before :syntax/:filetype on, so not in gvimrc
 set hidden
+set hlsearch incsearch ignorecase smartcase
 set nojoinspaces
 set lazyredraw
 set mouse=a mousemodel=popup nomousehide
-set path=.,,**
+set nrformats-=octal
+set path& | let &path .= '**' " use :let.=, as 'path' already ends in a comma
 set pumheight=12
 set ruler
 set scrolloff=1 sidescroll=5
@@ -40,10 +40,7 @@ set textwidth=80
 set title
 set wildmenu wildmode=list:longest,full wildignorecase
 
-" I don't use the GUI menu, so don't bother loading its defaults from menu.vim.
-" NOTE: has to be set here (not the gvimrc) before :filetype and :syntax on.
-set guioptions=M
-
+nohlsearch " cancel search highlight from setting hlsearch when reloading
 filetype plugin indent on
 syntax enable
 
@@ -54,17 +51,18 @@ else
     set listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
 endif
 
-set hlsearch incsearch ignorecase smartcase
-nohlsearch " cancel the highlight from setting hlsearch when reloading the vimrc
-
 if exists('+inccommand')
     set inccommand=nosplit
+endif
+
+" Open QuickFix entries in the previous window always, if available
+if has('patch-8.1.2315') || has('nvim-0.5')
+    set switchbuf+=uselast
 endif
 
 " completion menu can use popups rather than preview window, if available
 if has('patch-8.1.1880')
     set completeopt+=popup " overrides preview flag
-
     if has('patch-8.1.1882')
         set completepopup=border:off
     endif
@@ -80,8 +78,8 @@ if has('vcon')
     set termguicolors
 endif
 
-" don't crowd working dirs with swap, persistent undo & other files; use the
-" user runtime directory instead. nvim already does this by default.
+" Don't crowd working dirs with swap, persistent undo & other files; use the
+" user runtime directory instead. Nvim already does this by default.
 if !has('nvim')
     silent! call mkdir($MYVIMRUNTIME . '/swap', 'p')
     silent! call mkdir($MYVIMRUNTIME . '/undo', 'p')
@@ -103,13 +101,14 @@ endfunction
 augroup current_window_cursorline_and_colorcolumn
     autocmd!
     autocmd OptionSet modifiable call s:UpdateColorColumn()
-    autocmd WinEnter,BufWinEnter * call s:UpdateColorColumn() | set cursorline
+    autocmd WinEnter,BufWinEnter *
+                \ call s:UpdateColorColumn() | setlocal cursorline
     autocmd WinLeave * setlocal colorcolumn= nocursorline
 augroup END
 
 augroup auto_open_quickfix_or_loclist
     autocmd!
-    autocmd VimEnter * nested botright cwindow
+    autocmd VimEnter * nested cwindow
 
     " NOTE: we cannot simply call :c/lwindow here!
     "
@@ -121,7 +120,7 @@ augroup auto_open_quickfix_or_loclist
     " by calling timer_start() for 0ms, :c/lwindow is deferred until after Vim
     " is ready to receive user input, which will be after the command finishes.
     autocmd QuickfixCmdPost [^l]* nested
-                \ call timer_start(0, {-> execute('botright cwindow')})
+                \ call timer_start(0, {-> execute('cwindow')})
     autocmd QuickfixCmdPost l* nested
                 \ call timer_start(0, {-> execute('lwindow', 'silent!')})
 augroup END
@@ -150,7 +149,7 @@ function! StatusLine(is_current) abort
     let line .= '%(%y %)'                                   " file type
     let line .= '%([%{&spell ? &spelllang : ''''}] %)'      " spell check
 
-    " paste mode indicator
+    " paste indicator
     if a:is_current && &paste
         let line .= '[%#WarningMsg#PASTE%*] '
     endif
@@ -243,7 +242,7 @@ nnoremap <silent> ]b :bnext<cr>2<c-g>
 nnoremap <silent> [b :bprevious<cr>2<c-g>
 
 " QuickFix and Location lists {{{2
-nnoremap <silent> <leader>c :botright cwindow<cr>
+nnoremap <silent> <leader>c :cwindow<cr>
 nnoremap <silent> <leader>l :lwindow<cr>
 
 nnoremap <silent> ]c :cnext<cr>
