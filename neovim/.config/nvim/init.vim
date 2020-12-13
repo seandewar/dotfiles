@@ -255,7 +255,8 @@ nnoremap <silent> [l :lprevious<cr>
 nnoremap <silent> ]L :lnewer<cr>
 nnoremap <silent> [L :lolder<cr>
 
-" Source optional plugin_conf.vim script before external plugins are loaded {{{1
+" Source optional configurations before plugins are loaded {{{1
+runtime init_local.vim " machine-specific settings; un-versioned
 runtime plugin_conf.vim
 
 " Use my vanilla color scheme choice if one wasn't set {{{1

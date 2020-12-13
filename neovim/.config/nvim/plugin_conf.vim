@@ -4,7 +4,6 @@
 
 " General Plugin Settings {{{1
 " color scheme {{{2
-set termguicolors " assume a decent terminal if we're using this color scheme
 silent! colorscheme moonfly
 
 " neoformat {{{2
@@ -88,8 +87,13 @@ EOF
 endif
 
 " Status Line Settings {{{1
+" vim-fugitive {{{2
+let g:plugin_statusline_functions  =
+            \ [{is_current -> exists('g:loaded_fugitive') && is_current
+                            \ ? '%([%{FugitiveHead(7)}] %)' : ''}]
+
 " vim-lsp {{{2
-let g:plugin_statusline_functions = [{is_current -> exists('g:lsp_loaded')
+let g:plugin_statusline_functions += [{is_current -> exists('g:lsp_loaded')
             \ ? plugin_conf#vim_lsp#statusline(is_current) : ''}]
 
 " Commands {{{1
@@ -143,3 +147,8 @@ nmap [c <plug>(qftoggle_quickfix_previous)
 
 nmap ]l <plug>(qftoggle_loclist_next)
 nmap [l <plug>(qftoggle_loclist_previous)
+
+" nvim-treesitter {{{2
+if has('nvim-0.5')
+    nnoremap <silent> <c-g> :echo nvim_treesitter#statusline()<cr>
+endif
