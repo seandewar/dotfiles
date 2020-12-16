@@ -81,7 +81,7 @@ function! s:SetupBufferMappings() abort
         nmap <buffer> <silent> <c-]> <plug>(lsp-definition)
     endif
 
-    if &filetype !~# 'vim'
+    if &filetype !~# '\<vim\>'
         nmap <buffer> <silent> K <plug>(lsp-hover)
     endif
 
@@ -103,7 +103,7 @@ function! s:SetupBufferMappings() abort
     nmap <buffer> <silent> ]<space> <plug>(lsp-next-diagnostic)
     nmap <buffer> <silent> [<space> <plug>(lsp-previous-diagnostic)
 
-    if &filetype =~? '^c\(pp\)\?$'
+    if &filetype =~? '\<c\(pp\)\?\>'
         nmap <buffer> <silent> <space>s :LspDocumentSwitchSourceHeader<cr>
     endif
 endfunction

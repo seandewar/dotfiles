@@ -1,8 +1,8 @@
-" Only do this once for the current buffer
-if exists('b:did_ftplugin_after')
+" Only do this once for the current window (not buffer)
+if exists('w:did_ftplugin_after')
     finish
 endif
-let b:did_ftplugin_after = 1
+let w:did_ftplugin_after = 1
 
 " Open QuickFix window at the bottom of the screen if errors are always to be
 " opened in the previous window due to 'uselast' set in 'switchbuf' (as the
