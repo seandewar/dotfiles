@@ -147,8 +147,3 @@ nmap [c <plug>(qftoggle_quickfix_previous)
 
 nmap ]l <plug>(qftoggle_loclist_next)
 nmap [l <plug>(qftoggle_loclist_previous)
-
-" nvim-treesitter {{{2
-if has('nvim-0.5')
-    nnoremap <silent> <c-g> :echo nvim_treesitter#statusline()<cr>
-endif
