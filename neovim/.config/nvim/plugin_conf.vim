@@ -40,10 +40,15 @@ if has('nvim-0.5')
           require('nvim-treesitter.configs').setup({
             -- NOTE: these bundled modules define default keymaps, if any
             -- (see ":help nvim-treesitter-incremental-selection-mod")
+
             -- FIXME: highlights misbehave when buffer changes sometimes
-            -- (e.g: 'inccommand'), requiring :edit to fix; disable for now
+            --        (e.g: 'inccommand'), requiring :e to fix; disable for now
             -- highlight = {enable = true},
-            indent = {enable = true},
+
+            -- FIXME: indents misbehave right now as the module is currently
+            --        undergoing a refactor; disable for now
+            -- indent = {enable = true},
+
             incremental_selection = {enable = true},
 
             -- NOTE: these additional modules do not define any keymaps for us
