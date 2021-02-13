@@ -1,9 +1,15 @@
 [push]
 	default = simple
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
 [core]
 	excludesfile = ~/.gitignore_global
 [user]
 	name = Sean Dewar
 	email = seandewar@users.noreply.github.com
+	; fingerprint hash of the public key; no need for me to hide this :)
+	signingkey = 04C8CC2938F069D7B194083908CC2C83AD41B581
 [include]
 	path = ~/.gitconfig_local
