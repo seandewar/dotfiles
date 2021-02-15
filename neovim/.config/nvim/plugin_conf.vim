@@ -131,15 +131,17 @@ let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
 nnoremap <silent> <leader>gg :Git<cr>
 nnoremap <silent> <leader>gl :Git log<cr>
 nnoremap <silent> <leader>gL :Git log %<cr>
-nnoremap <silent> <leader>gd :G difftool<cr>
-nnoremap <silent> <leader>gD :Gdiffsplit<cr>
+nnoremap <silent> <leader>gd :Gdiffsplit<cr>
+nnoremap <silent> <leader>gD :Gdiffsplit %<cr>
+nnoremap <silent> <leader>gt :G difftool<cr>
 nnoremap <silent> <leader>gm :G mergetool<cr>
-nnoremap <leader>gr :G rebase -i<space>
 nnoremap <silent> <leader>gb :Git blame<cr>
-nnoremap <silent> <leader>gc :Git commit<cr>
-nnoremap <silent> <leader>gC :Git commit --amend<cr>
 nnoremap <silent> <leader>gw :Gwrite<cr>
 nnoremap <silent> <leader>gR :Gread<cr>
+nnoremap <leader>gM :GRename <c-r>=expand('%:t')<cr>
+nnoremap <leader>gr :G rebase -i<space>
+nnoremap <silent> <leader>gc :Git commit<cr>
+nnoremap <silent> <leader>gC :Git commit --amend<cr>
 nnoremap <silent> <leader>gps :Git push<cr>
 nnoremap <silent> <leader>gpl :Git pull<cr>
 

@@ -4,15 +4,15 @@
 
 " General Plugin Settings {{{1
 if &encoding ==# 'utf-8'
-    let g:lsp_signs_error = {'text': '⛔'}
-    let g:lsp_signs_warning = {'text': '⚠'}
-    let g:lsp_signs_information = {'text': 'ℹ'}
-    let g:lsp_signs_hint = {'text': '💡'}
+    let g:lsp_diagnostics_signs_error = {'text': '⛔'}
+    let g:lsp_diagnostics_signs_warning = {'text': '⚠'}
+    let g:lsp_diagnostics_signs_information = {'text': 'ℹ'}
+    let g:lsp_diagnostics_signs_hint = {'text': '💡'}
 else
-    let g:lsp_signs_error = {'text': 'X'}
-    let g:lsp_signs_warning = {'text': '!'}
-    let g:lsp_signs_information = {'text': '>'}
-    let g:lsp_signs_hint = {'text': '*'}
+    let g:lsp_diagnostics_signs_error = {'text': 'X'}
+    let g:lsp_diagnostics_signs_warning = {'text': '!'}
+    let g:lsp_diagnostics_signs_information = {'text': '>'}
+    let g:lsp_diagnostics_signs_hint = {'text': '*'}
 endif
 
 let g:lsp_diagnostics_float_cursor = 1
@@ -52,20 +52,24 @@ function! plugin_conf#vim_lsp#statusline(is_current) abort
 
     if counts['error'] > 0
         let items += ['%#LspErrorText#'
-                    \ . get(get(g:, 'lsp_signs_error', {}), 'text', 'E')
+                    \ . get(get(g:, 'lsp_diagnostics_signs_error', {}),
+                    \       'text', 'E')
                     \ . counts['error']]
     endif
     if counts['warning'] > 0
         let items += ['%#LspWarningText#'
-                    \ . get(get(g:, 'lsp_signs_warning', {}), 'text', 'W')
+                    \ . get(get(g:, 'lsp_diagnostics_signs_warning', {}),
+                    \       'text', 'W')
                     \ . counts['warning']]
     endif
     if counts['information'] > 0
-        let items += [get(get(g:, 'lsp_signs_information', {}), 'text', 'I')
+        let items += [get(get(g:, 'lsp_diagnostics_signs_information', {}),
+                    \     'text', 'I')
                     \ . counts['information']]
     endif
     if counts['hint'] > 0
-        let items += [get(get(g:, 'lsp_signs_hint', {}), 'text', 'H')
+        let items += [get(get(g:, 'lsp_diagnostics_signs_hint', {}),
+                    \     'text', 'H')
                     \ . counts['hint']]
     endif
 
