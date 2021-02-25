@@ -14,7 +14,7 @@ set backspace=indent,eol,start
 set belloff=all
 set breakindent
 set cinoptions+=:0,g0,N-s
-set completeopt=menuone,preview
+set completeopt+=menuone
 set display+=lastline
 set encoding=utf-8
 set foldmethod=marker
@@ -57,9 +57,6 @@ endif
 " completion menu can use popups rather than preview window, if available
 if has('patch-8.1.1880')
     set completeopt+=popup " overrides preview flag
-    if has('patch-8.1.1882')
-        set completepopup=border:off
-    endif
 endif
 
 " prefer ripgrep over grep, if available

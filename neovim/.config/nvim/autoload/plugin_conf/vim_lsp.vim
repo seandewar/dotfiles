@@ -16,6 +16,7 @@ function! plugin_conf#vim_lsp#enable() abort
     packadd vim-lsp-settings
     packadd vim-vsnip-integ
     call lsp#enable()
+    call vsnip_integ#integration#attach()
     echomsg "LSP enabled for new buffers! "
                 \ . "Reload old buffers with :edit to enable LSP for them."
 endfunction

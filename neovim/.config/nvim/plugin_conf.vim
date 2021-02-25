@@ -19,14 +19,6 @@ augroup neoformat_on_save
                 \ | endif
 augroup END
 
-" ultisnips {{{2
-" If we can't use py3, don't load ultisnips, as it'll constantly throw errors
-try
-    python3 #
-    packadd ultisnips
-    let g:UltiSnipsSnippetDirectories = [$MYVIMRUNTIME . '/ultisnips']
-endtry
-
 " nvim-treesitter {{{2
 if has('nvim-0.5')
     packadd nvim-treesitter
@@ -121,18 +113,32 @@ endif
 nnoremap <silent> <f4> :Neoformat<cr>
 vnoremap <silent> <f4> :Neoformat<cr>
 
-" ultisnips {{{2
-let g:UltiSnipsExpandTrigger = '<c-j>'
-let g:UltiSnipsListSnippets = '<c-k>'
-let g:UltiSnipsJumpForwardTrigger = '<c-j>'
-let g:UltiSnipsJumpBackwardTrigger = '<c-k>'
+" vim-vsnip {{{2
+imap <expr> <c-j> vsnip#expandable() ? '<plug>(vsnip-expand)' : '<c-j>'
+smap <expr> <c-j> vsnip#expandable() ? '<plug>(vsnip-expand)' : '<c-j>'
+
+imap <expr> <c-l> vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<c-l>'
+smap <expr> <c-l> vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<c-l>'
+
+imap <expr> <tab> vsnip#jumpable(1) ? '<plug>(vsnip-jump-next)' : '<tab>'
+smap <expr> <tab> vsnip#jumpable(1) ? '<plug>(vsnip-jump-next)' : '<tab>'
+imap <expr> <s-tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<s-tab>'
+smap <expr> <s-tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<s-tab>'
+
+" select or cut text to use as $TM_SELECTED_TEXT in the next snippet
+" (see https://github.com/hrsh7th/vim-vsnip/pull/50)
+" TODO: find a good map for this; s and S is terrible
+" nmap s <plug>(vsnip-select-text)
+" xmap s <plug>(vsnip-select-text)
+" nmap S <plug>(vsnip-cut-text)
+" xmap S <plug>(vsnip-cut-text)
 
 " vim-fugitive {{{2
 nnoremap <silent> <leader>gg :Git<cr>
 nnoremap <silent> <leader>gl :Git log<cr>
 nnoremap <silent> <leader>gL :Git log %<cr>
-nnoremap <silent> <leader>gd :Gdiffsplit<cr>
-nnoremap <silent> <leader>gD :Gdiffsplit %<cr>
+nnoremap <silent> <leader>gd :G diff<cr>
+nnoremap <silent> <leader>gD :Gdiffsplit<cr>
 nnoremap <silent> <leader>gt :G difftool<cr>
 nnoremap <silent> <leader>gm :G mergetool<cr>
 nnoremap <silent> <leader>gb :Git blame<cr>
