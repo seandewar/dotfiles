@@ -24,6 +24,7 @@ set hidden
 set hlsearch incsearch ignorecase smartcase
 set nojoinspaces
 set lazyredraw
+set list listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
 set mouse=a mousemodel=popup nomousehide
 set nrformats-=octal
 set path& | let &path .= '**' " use :let.=, as 'path' already ends in a comma
@@ -43,13 +44,6 @@ set wildmenu wildmode=list:longest,full wildignorecase
 nohlsearch " cancel search highlight from setting hlsearch when reloading
 filetype plugin indent on
 syntax enable
-
-set list
-if &encoding ==# 'utf-8'
-    set listchars=tab:→\ ,trail:·,nbsp:␣,extends:⟩,precedes:⟨
-else
-    set listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
-endif
 
 if exists('+inccommand')
     set inccommand=nosplit

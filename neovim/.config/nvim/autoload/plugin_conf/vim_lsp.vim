@@ -3,30 +3,21 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " General Plugin Settings {{{1
-if &encoding ==# 'utf-8'
-    let g:lsp_diagnostics_signs_error = {'text': '⛔'}
-    let g:lsp_diagnostics_signs_warning = {'text': '⚠'}
-    let g:lsp_diagnostics_signs_information = {'text': 'ℹ'}
-    let g:lsp_diagnostics_signs_hint = {'text': '💡'}
-else
-    let g:lsp_diagnostics_signs_error = {'text': 'X'}
-    let g:lsp_diagnostics_signs_warning = {'text': '!'}
-    let g:lsp_diagnostics_signs_information = {'text': '>'}
-    let g:lsp_diagnostics_signs_hint = {'text': '*'}
-endif
+let g:lsp_diagnostics_signs_error = {'text': 'X'}
+let g:lsp_diagnostics_signs_warning = {'text': '!'}
+let g:lsp_diagnostics_signs_information = {'text': '>'}
+let g:lsp_diagnostics_signs_hint = {'text': '*'}
 
 let g:lsp_diagnostics_float_cursor = 1
-let g:lsp_highlights_enabled = 0
-let g:lsp_highlight_references_enabled = 0
-let g:lsp_textprop_enabled = 0
-let g:lsp_virtual_text_enabled = 0
+let g:lsp_diagnostics_virtual_text_enabled = 0
 
 function! plugin_conf#vim_lsp#enable() abort
     packadd vim-lsp
     packadd vim-lsp-settings
-    packadd vim-lsp-snippets
-    packadd vim-lsp-ultisnips
+    packadd vim-vsnip-integ
     call lsp#enable()
+    echomsg "LSP enabled for new buffers! "
+                \ . "Reload old buffers with :edit to enable LSP for them."
 endfunction
 
 function! s:SetupBuffer() abort
@@ -78,6 +69,11 @@ endfunction
 
 " Mappings {{{1
 function! s:SetupBufferMappings() abort
+    " popup scrolling (mostly for compatibility with vim, as it doesn't have
+    " focusable popups like nvim does)
+    inoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    inoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
     " override tag jumping behaviour for jumping to definitions
     if exists('+tagfunc')
         setlocal tagfunc=lsp#tagfunc
