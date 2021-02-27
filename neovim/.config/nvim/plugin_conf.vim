@@ -148,8 +148,8 @@ nnoremap <leader>gM :GRename <c-r>=expand('%:t')<cr>
 nnoremap <leader>gr :G rebase -i<space>
 nnoremap <silent> <leader>gc :Git commit<cr>
 nnoremap <silent> <leader>gC :Git commit --amend<cr>
-nnoremap <silent> <leader>gps :Git push<cr>
-nnoremap <silent> <leader>gpl :Git pull<cr>
+nnoremap <silent> <leader>gp :Git pull<cr>
+nnoremap <silent> <leader>gP :Git push<cr>
 
 " vim-qftoggle {{{2
 nmap <leader>c <plug>(qftoggle_toggle_quickfix)
