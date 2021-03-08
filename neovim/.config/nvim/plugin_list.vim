@@ -13,6 +13,10 @@ call minpac#add('tpope/vim-repeat')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-vinegar')
 
+" filetypes and language support
+call minpac#add('rust-lang/rust.vim')
+call minpac#add('tikhomirov/vim-glsl')
+
 " lsp
 call minpac#add('prabirshrestha/vim-lsp', {'type': 'opt'})
 call minpac#add('mattn/vim-lsp-settings', {'type': 'opt'})

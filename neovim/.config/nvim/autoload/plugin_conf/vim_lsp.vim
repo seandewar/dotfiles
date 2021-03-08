@@ -5,16 +5,20 @@
 " General Plugin Settings {{{1
 let g:lsp_diagnostics_signs_error = {'text': 'X'}
 let g:lsp_diagnostics_signs_warning = {'text': '!'}
-let g:lsp_diagnostics_signs_information = {'text': '>'}
-let g:lsp_diagnostics_signs_hint = {'text': '*'}
+let g:lsp_diagnostics_signs_information = {'text': 'i'}
+let g:lsp_diagnostics_signs_hint = {'text': '>'}
+let g:lsp_document_code_action_signs_hint  = {'text': '*'}
 
+let g:lsp_work_done_progress_enabled = 1
 let g:lsp_diagnostics_float_cursor = 1
+let g:lsp_diagnostics_highlights_enabled = 0
 let g:lsp_diagnostics_virtual_text_enabled = 0
 
 function! plugin_conf#vim_lsp#enable() abort
     packadd vim-lsp
     packadd vim-lsp-settings
     packadd vim-vsnip-integ
+
     call lsp#enable()
     call vsnip_integ#integration#attach()
     echomsg "LSP enabled for new buffers! "
@@ -25,12 +29,19 @@ function! s:SetupBuffer() abort
     " vim-lsp handles completion menu preview and floating/popup windows itself
     setlocal completeopt-=preview completeopt-=popup
     setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+
     call s:SetupBufferMappings()
 endfunction
 
 augroup lsp_setup_buffer
     autocmd!
     autocmd User lsp_buffer_enabled call s:SetupBuffer()
+
+    " NOTE: as of 0.5, neovim excessively redraws its statusline, which causes
+    " our refresh-limiting logic to be ignored; still works in vim, though
+    " (see neovim/neovim#4847)
+    autocmd User lsp_progress_updated call s:StatusLineProgressRedraw()
 augroup END
 
 " Status Line Settings {{{1
@@ -65,15 +76,41 @@ function! plugin_conf#vim_lsp#statusline(is_current) abort
                     \ . counts['hint']]
     endif
 
-    return !empty(items) ? '[' . join(items, '%* ') . '%*] ' : ''
+    let counts_str = !empty(items) ? '[' . join(items, '%* ') . '%*] ' : ''
+    let progress = lsp#get_progress()
+    let status_str = ''
+
+    if !empty(progress)
+        let status_str .= progress[0].server . ': '
+        let status_str .= progress[0].title . ' '
+        let status_str .= progress[0].message . ' '
+
+        let percentage = get(progress[0], 'percentage', '')
+        if !empty(percentage)
+            let status_str .= '(' . percentage . '%%) '
+        endif
+    endif
+
+    return counts_str . status_str
+endfunction
+
+let s:ignore_progress_redraws_until = 0
+function! s:StatusLineProgressRedraw() abort
+    let now = reltimefloat(reltime())
+    if now < s:ignore_progress_redraws_until && !empty(lsp#get_progress())
+        return
+    endif
+
+    let s:ignore_progress_redraws_until = now + 0.5
+    redrawstatus
 endfunction
 
 " Mappings {{{1
 function! s:SetupBufferMappings() abort
     " popup scrolling (mostly for compatibility with vim, as it doesn't have
     " focusable popups like nvim does)
-    inoremap <buffer> <expr><c-f> lsp#scroll(+4)
-    inoremap <buffer> <expr><c-d> lsp#scroll(-4)
+    inoremap <buffer> <expr> <c-f> lsp#scroll(+4)
+    inoremap <buffer> <expr> <c-d> lsp#scroll(-4)
 
     " override tag jumping behaviour for jumping to definitions
     if exists('+tagfunc')
@@ -82,6 +119,8 @@ function! s:SetupBufferMappings() abort
         nmap <buffer> <silent> <c-]> <plug>(lsp-definition)
     endif
 
+    nmap <buffer> <silent> <c-k> <plug>(lsp-signature-help)
+    imap <buffer> <silent> <c-k> <c-\><c-o><plug>(lsp-signature-help)
     if &filetype !~# '\<vim\>'
         nmap <buffer> <silent> K <plug>(lsp-hover)
     endif
@@ -90,13 +129,13 @@ function! s:SetupBufferMappings() abort
     nmap <buffer> <silent> gd <plug>(lsp-declaration)
     nmap <buffer> <silent> gD <plug>(lsp-implementation)
     nmap <buffer> <silent> 1gD <plug>(lsp-type-definition)
-    nmap <buffer> <silent> g0 <plug>(lsp-document-symbol)
-    nmap <buffer> <silent> gW <plug>(lsp-workspace-symbol)
-    nmap <buffer> <silent> 1gW :LspWorkspaceSymbol <c-r><c-w><cr>
 
+    nmap <buffer> <silent> <space>w <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> <silent> <space>d <plug>(lsp-document-symbol-search)
+    nmap <buffer> <silent> <space>r <plug>(lsp-references)
     nmap <buffer> <silent> <space>a <plug>(lsp-code-action)
     nmap <buffer> <silent> <space>l <plug>(lsp-code-lens)
-    nmap <buffer> <silent> <space>r <plug>(lsp-references)
+    nmap <buffer> <silent> <space>R <plug>(lsp-rename)
     xmap <buffer> <silent> <space>f <plug>(lsp-document-range-format)
     nmap <buffer> <silent> <space>F <plug>(lsp-document-format)
 
@@ -104,7 +143,5 @@ function! s:SetupBufferMappings() abort
     nmap <buffer> <silent> ]<space> <plug>(lsp-next-diagnostic)
     nmap <buffer> <silent> [<space> <plug>(lsp-previous-diagnostic)
 
-    if &filetype =~? '\<c\(pp\)\?\>'
-        nmap <buffer> <silent> <space>s :LspDocumentSwitchSourceHeader<cr>
-    endif
+    nmap <buffer> <silent> <space>s <plug>(lsp-switch-source-header)
 endfunction
