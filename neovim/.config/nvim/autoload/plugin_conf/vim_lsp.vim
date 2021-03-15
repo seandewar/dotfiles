@@ -3,6 +3,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " General Plugin Settings {{{1
+" vim-lsp {{{2
 let g:lsp_diagnostics_signs_error = {'text': 'X'}
 let g:lsp_diagnostics_signs_warning = {'text': '!'}
 let g:lsp_diagnostics_signs_information = {'text': 'i'}
@@ -43,6 +44,9 @@ augroup lsp_setup_buffer
     " (see neovim/neovim#4847)
     autocmd User lsp_progress_updated call s:StatusLineProgressRedraw()
 augroup END
+
+" vim-lsp-settings {{{2
+let g:lsp_settings_enable_suggestions = 0
 
 " Status Line Settings {{{1
 function! plugin_conf#vim_lsp#statusline(is_current) abort

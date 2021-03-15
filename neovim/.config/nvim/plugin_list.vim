@@ -15,7 +15,7 @@ call minpac#add('tpope/vim-vinegar')
 
 " filetypes and language support
 call minpac#add('rust-lang/rust.vim')
-call minpac#add('tikhomirov/vim-glsl')
+call minpac#add('sheerun/vim-polyglot')
 
 " lsp
 call minpac#add('prabirshrestha/vim-lsp', {'type': 'opt'})

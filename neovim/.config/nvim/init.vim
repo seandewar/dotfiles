@@ -14,7 +14,6 @@ set backspace=indent,eol,start
 set belloff=all
 set breakindent
 set cinoptions+=:0,g0,N-s
-set completeopt+=menuone
 set display+=lastline
 set encoding=utf-8
 set foldmethod=marker
@@ -54,6 +53,7 @@ if has('patch-8.1.2315') || has('nvim-0.5')
     set switchbuf+=uselast
 endif
 
+set completeopt+=menuone
 " completion menu can use popups rather than preview window, if available
 if has('patch-8.1.1880')
     set completeopt+=popup " overrides preview flag
@@ -131,11 +131,7 @@ let g:qf_disable_statusline = 1
 " Status Line Settings {{{1
 function! StatusLine(is_current) abort
     let line  = '%(%w %)'                                   " preview win flag
-
-    " relative file name
-    let line .= '%(%{empty(bufname()) ? ''[No Name]'' '
-    let line .= ': fnamemodify(bufname(), '':~:.'')} %)'
-
+    let line .= '%(%t %)'                                   " file name (tail)
     let line .= '%([%M%R] %)'                               " modified, RO flag
     let line .= '%(%y %)'                                   " file type
     let line .= '%([%{&spell ? &spelllang : ''''}] %)'      " spell check
@@ -228,7 +224,7 @@ nnoremap <silent> [a :previous<cr>
 
 " Buffers and Find {{{2
 nnoremap <leader>b :buffer *
-nnoremap <leader>f :find *
+nnoremap <leader>f :find<space>
 nnoremap <silent> ]b :bnext<cr>2<c-g>
 nnoremap <silent> [b :bprevious<cr>2<c-g>
 
