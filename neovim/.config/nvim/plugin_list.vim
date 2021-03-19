@@ -6,16 +6,19 @@ call minpac#add('editorconfig/editorconfig-vim')
 call minpac#add('sbdchd/neoformat')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-dispatch')
-call minpac#add('tpope/vim-fugitive')
 call minpac#add('embear/vim-localvimrc')
 call minpac#add('seandewar/vim-qftoggle')
 call minpac#add('tpope/vim-repeat')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-vinegar')
 
+" git integration
+call minpac#add('tpope/vim-fugitive')
+call minpac#add('tpope/vim-rhubarb')
+
 " filetypes and language support
 call minpac#add('rust-lang/rust.vim')
-call minpac#add('sheerun/vim-polyglot')
+call minpac#add('sheerun/vim-polyglot', {'type': 'opt'})
 
 " lsp
 call minpac#add('prabirshrestha/vim-lsp', {'type': 'opt'})

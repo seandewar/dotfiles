@@ -6,6 +6,14 @@
 " color scheme {{{2
 silent! colorscheme moonfly
 
+" vim-polyglot {{{2
+" HACK: polyglot unsets `fileignorecase`, which may cause issues with plugins
+" such as vim-lsp, or Nvim's built-in LSP on case-insensitive file systems such
+" as Windows (sometimes servers send lowercase URIs, which messes with Windows' 
+" uppercase drive letters, for example)
+packadd vim-polyglot
+set fileignorecase&
+
 " neoformat {{{2
 let g:neoformat_basic_format_trim = 1
 
@@ -30,18 +38,14 @@ if has('nvim-0.5')
     function! s:SetupNvimTreesitter() abort
         lua << EOF
           require('nvim-treesitter.configs').setup({
-            -- NOTE: these bundled modules define default keymaps, if any
-            -- (see ":help nvim-treesitter-incremental-selection-mod")
-
-            -- FIXME: highlights misbehave when buffer changes sometimes
-            --        (e.g: 'inccommand'), requiring :e to fix; disable for now
-            -- highlight = {enable = true},
-
-            -- FIXME: indents misbehave right now as the module is currently
-            --        undergoing a refactor; disable for now
-            -- indent = {enable = true},
-
+            ensure_installed = "maintained",
+            highlight = {enable = true},
+            -- indent = {enable = true}, -- NOTE: disabled due to bugs
             incremental_selection = {enable = true},
+
+            -- enable ":syntax"-based highlights so 'spell' checker ignores code
+            -- TODO: we won't need this once TS is updated to do this for us
+            additional_vim_regex_highlighting = true,
 
             -- NOTE: these additional modules do not define any keymaps for us
             -- so we'll just use the recommended ones from the docs
@@ -136,10 +140,10 @@ smap <expr> <s-tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<s-tab>'
 
 " vim-fugitive {{{2
 nnoremap <silent> <leader>gg :Git<cr>
-nnoremap <silent> <leader>gl :Git log<cr>
-nnoremap <silent> <leader>gL :Git log %<cr>
-nnoremap <silent> <leader>gd :G diff<cr>
-nnoremap <silent> <leader>gD :Gdiffsplit<cr>
+nnoremap <silent> <leader>gl :Git log %<cr>
+nnoremap <silent> <leader>gL :Git log<cr>
+nnoremap <silent> <leader>gd :Gdiffsplit<cr>
+nnoremap <silent> <leader>gD :G diff<cr>
 nnoremap <silent> <leader>gt :G difftool<cr>
 nnoremap <silent> <leader>gm :G mergetool<cr>
 nnoremap <silent> <leader>gb :Git blame<cr>

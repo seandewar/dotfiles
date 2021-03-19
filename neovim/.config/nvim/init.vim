@@ -48,6 +48,10 @@ if exists('+inccommand')
     set inccommand=nosplit
 endif
 
+if exists('+spelloptions')
+    set spelloptions=camel
+endif
+
 " Open QuickFix entries in the previous window always, if available
 if has('patch-8.1.2315') || has('nvim-0.5')
     set switchbuf+=uselast
@@ -131,15 +135,10 @@ let g:qf_disable_statusline = 1
 " Status Line Settings {{{1
 function! StatusLine(is_current) abort
     let line  = '%(%w %)'                                   " preview win flag
-    let line .= '%(%t %)'                                   " file name (tail)
+    let line .= '%(%f %)'                                   " file name
     let line .= '%([%M%R] %)'                               " modified, RO flag
     let line .= '%(%y %)'                                   " file type
     let line .= '%([%{&spell ? &spelllang : ''''}] %)'      " spell check
-
-    " paste indicator
-    if a:is_current && &paste
-        let line .= '[%#WarningMsg#PASTE%*] '
-    endif
 
     " plugin-specific status line elements
     for Fn in get(g:, 'plugin_statusline_functions', [])
@@ -203,7 +202,7 @@ set showtabline=1 tabline=%!TabLine()
 " Mappings {{{1
 nnoremap <silent> <f2> :setlocal spell!<cr>
 inoremap <silent> <f2> <c-\><c-o>:setlocal spell!<cr>
-set pastetoggle=<f3> " also works while in paste mode
+set pastetoggle=<f3>
 nnoremap <silent> <c-l> :nohlsearch<cr><c-l>
 
 " disable suspend mapping for nvim on windows as there is no way to resume the
