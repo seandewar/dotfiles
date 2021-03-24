@@ -27,77 +27,9 @@ augroup neoformat_on_save
                 \ | endif
 augroup END
 
-" nvim-treesitter {{{2
+" Neovim 0.5+ Lua Plugins {{{2
 if has('nvim-0.5')
-    packadd nvim-treesitter
-    packadd nvim-treesitter-textobjects
-
-    " NOTE: if we don't wrap ':lua << EOF' in a function, the Lua code will
-    " still be ran even when the if condition above evaluates to false!
-    " (see ':help script-here' for more information)
-    function! s:SetupNvimTreesitter() abort
-        lua << EOF
-          require('nvim-treesitter.configs').setup({
-            ensure_installed = "maintained",
-
-            -- these parsers require tree-sitter CLI, which may not be available
-            -- TODO: remove extra windows-only ignores when they're fixed
-            ignore_install = vim.list_extend({
-              "erlang", "ocamllex", "gdscript", "devicetree", "ledger", "nix",
-              "supercollider"
-            }, (function()
-              return vim.fn.has("win32") == 1
-                and {"ocaml", "ocaml_interface", "typescript"} or {}
-            end)()),
-
-            incremental_selection = {enable = true},
-            -- indent = {enable = true}, -- NOTE: disabled due to bugs
-            highlight = {
-              enable = true,
-
-              -- enable ":syntax" highlights so 'spell' checker ignores code
-              -- TODO: we won't need this once TS is updated to do this
-              additional_vim_regex_highlighting = true
-            },
-
-            -- NOTE: these additional modules do not define any keymaps for us
-            -- so we'll just use the recommended ones from the docs
-            -- (see ":help nvim-treesitter-textobjects-mod")
-            textobjects = {
-              select = {
-                enable = true,
-                keymaps = {
-                  ['af'] = '@function.outer',
-                  ['if'] = '@function.inner',
-                  ['ac'] = '@class.outer',
-                  ['ic'] = '@class.inner'
-                }
-              },
-              move = {
-                enable = true,
-                goto_next_start = {
-                  [']m'] = '@function.outer',
-                  [']]'] = '@class.outer'
-                },
-                goto_next_end = {
-                  [']M'] = '@function.outer',
-                  [']['] = '@class.outer'
-                },
-                goto_previous_start = {
-                  ['[m'] = '@function.outer',
-                  ['[['] = '@class.outer'
-                },
-                goto_previous_end = {
-                  ['[M'] = '@function.outer',
-                  ['[]'] = '@class.outer'
-                }
-              }
-            }
-          })
-EOF
-    endfunction
-
-    call s:SetupNvimTreesitter()
+    execute 'luafile ' . $MYVIMRUNTIME . '/lua/plugin_conf.lua' 
 endif
 
 " Status Line Settings {{{1
