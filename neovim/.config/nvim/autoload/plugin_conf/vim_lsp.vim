@@ -10,10 +10,15 @@ let g:lsp_diagnostics_signs_information = {'text': 'i'}
 let g:lsp_diagnostics_signs_hint = {'text': '>'}
 let g:lsp_document_code_action_signs_hint  = {'text': '*'}
 
+let g:lsp_diagnostics_signs_priority_map = {
+            \ 'LspError': 12,
+            \ 'LspWarning': 11,
+            \ }
+
 let g:lsp_work_done_progress_enabled = 1
-let g:lsp_diagnostics_float_cursor = 1
 let g:lsp_diagnostics_highlights_enabled = 0
 let g:lsp_diagnostics_virtual_text_enabled = 0
+let g:lsp_diagnostics_float_cursor = 1
 
 function! plugin_conf#vim_lsp#enable() abort
     packadd vim-lsp

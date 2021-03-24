@@ -9,7 +9,7 @@ silent! colorscheme moonfly
 " vim-polyglot {{{2
 " HACK: polyglot unsets `fileignorecase`, which may cause issues with plugins
 " such as vim-lsp, or Nvim's built-in LSP on case-insensitive file systems such
-" as Windows (sometimes servers send lowercase URIs, which messes with Windows' 
+" as Windows (sometimes servers send lowercase URIs, which messes with Windows'
 " uppercase drive letters, for example)
 packadd vim-polyglot
 set fileignorecase&
@@ -39,13 +39,26 @@ if has('nvim-0.5')
         lua << EOF
           require('nvim-treesitter.configs').setup({
             ensure_installed = "maintained",
-            highlight = {enable = true},
-            -- indent = {enable = true}, -- NOTE: disabled due to bugs
-            incremental_selection = {enable = true},
 
-            -- enable ":syntax"-based highlights so 'spell' checker ignores code
-            -- TODO: we won't need this once TS is updated to do this for us
-            additional_vim_regex_highlighting = true,
+            -- these parsers require tree-sitter CLI, which may not be available
+            -- TODO: remove extra windows-only ignores when they're fixed
+            ignore_install = vim.list_extend({
+              "erlang", "ocamllex", "gdscript", "devicetree", "ledger", "nix",
+              "supercollider"
+            }, (function()
+              return vim.fn.has("win32") == 1
+                and {"ocaml", "ocaml_interface", "typescript"} or {}
+            end)()),
+
+            incremental_selection = {enable = true},
+            -- indent = {enable = true}, -- NOTE: disabled due to bugs
+            highlight = {
+              enable = true,
+
+              -- enable ":syntax" highlights so 'spell' checker ignores code
+              -- TODO: we won't need this once TS is updated to do this
+              additional_vim_regex_highlighting = true
+            },
 
             -- NOTE: these additional modules do not define any keymaps for us
             -- so we'll just use the recommended ones from the docs
