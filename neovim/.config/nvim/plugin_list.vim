@@ -31,6 +31,12 @@ call minpac#add('stevearc/vim-vsnip-snippets')
 
 " neovim 0.5+ plugins
 if has('nvim-0.5')
+    " telescope fuzzy finder
+    call minpac#add('nvim-telescope/telescope.nvim', {'type': 'opt'})
+    call minpac#add('nvim-lua/plenary.nvim', {'type': 'opt'})
+    call minpac#add('nvim-lua/popup.nvim', {'type': 'opt'})
+
+    " treesitter
     call minpac#add('nvim-treesitter/nvim-treesitter', {'type': 'opt'})
     call minpac#add('nvim-treesitter/nvim-treesitter-textobjects',
                 \ {'type': 'opt'})

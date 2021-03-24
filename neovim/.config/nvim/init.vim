@@ -200,6 +200,7 @@ endfunction
 set showtabline=1 tabline=%!TabLine()
 
 " Mappings {{{1
+" General Mappings {{{2
 nnoremap <silent> <f2> :setlocal spell!<cr>
 inoremap <silent> <f2> <c-\><c-o>:setlocal spell!<cr>
 set pastetoggle=<f3>
@@ -221,15 +222,22 @@ nnoremap <leader>a :args<cr>
 nnoremap <silent> ]a :next<cr>
 nnoremap <silent> [a :previous<cr>
 
-" Buffers and Find {{{2
-nnoremap <leader>b :buffer *
-nnoremap <leader>f :find<space>
+" Buffers, Find, Grep, ... {{{2
+nnoremap <leader>fb :buffer<space>
+nnoremap <leader>ff :find<space>
+nnoremap <leader>fg :grep<space>
+nnoremap <leader>ft :tselect<space>
+nnoremap <leader>fo :browse oldfiles<cr>
+
 nnoremap <silent> ]b :bnext<cr>2<c-g>
 nnoremap <silent> [b :bprevious<cr>2<c-g>
 
 " QuickFix and Location lists {{{2
 nnoremap <silent> <leader>c :cwindow<cr>
 nnoremap <silent> <leader>l :lwindow<cr>
+
+nnoremap <silent> <leader>fc :Cfilter<space>
+nnoremap <silent> <leader>fl :Lfilter<space>
 
 nnoremap <silent> ]c :cnext<cr>
 nnoremap <silent> [c :cprevious<cr>

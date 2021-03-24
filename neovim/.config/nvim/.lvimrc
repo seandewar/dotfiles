@@ -1,0 +1,1 @@
+execute 'lcd ' . g:localvimrc_script_dir

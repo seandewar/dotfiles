@@ -1,9 +1,19 @@
-local fn = vim.fn
+--[[""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sean Dewar's Neovim 0.5+ Lua Plugin Config <https://github.com/seandewar>    "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""]]
+
+-- File Locals {{{1
+local api, fn = vim.api, vim.fn
 
 -- General Plugin Settings {{{1
+-- telescope.nvim {{{2
+vim.cmd 'packadd telescope.nvim'
+vim.cmd 'packadd plenary.nvim'
+vim.cmd 'packadd popup.nvim'
+
 -- nvim-treesitter {{{2
-vim.cmd [[packadd nvim-treesitter]]
-vim.cmd [[packadd nvim-treesitter-textobjects]]
+vim.cmd 'packadd nvim-treesitter'
+vim.cmd 'packadd nvim-treesitter-textobjects'
 
 require 'nvim-treesitter.configs'.setup {
   ensure_installed = 'maintained',
@@ -12,10 +22,10 @@ require 'nvim-treesitter.configs'.setup {
   -- TODO: remove extra Windows-only ignores when they're fixed upstream
   ignore_install = vim.list_extend({
     'erlang', 'ocamllex', 'gdscript', 'devicetree', 'ledger', 'supercollider',
-     'nix'
+    'nix',
   }, (function()
-    return fn.has('win32') == 1 and {'ocaml', 'ocaml_interface', 'typescript'}
-                                 or {}
+    return fn.has('win32') == 1
+      and {'ocaml', 'ocaml_interface', 'typescript', 'tsx'} or {}
   end)()),
 
   highlight = {
@@ -62,3 +72,24 @@ require 'nvim-treesitter.configs'.setup {
     },
   }
 }
+
+-- Mappings {{{1
+-- telescope.nvim {{{2
+api.nvim_set_keymap(
+  'n', '<leader>fb', '<cmd>Telescope buffers<cr>', {silent = true})
+api.nvim_set_keymap(
+  'n', '<leader>ff', '<cmd>Telescope find_files<cr>', {silent = true})
+api.nvim_set_keymap(
+  'n', '<leader>fg', '<cmd>Telescope live_grep<cr>', {silent = true})
+api.nvim_set_keymap(
+  'n', '<leader>fo', '<cmd>Telescope oldfiles<cr>', {silent = true})
+
+api.nvim_set_keymap(
+  'n', '<leader>fc', '<cmd>Telescope quickfix<cr>', {silent = true})
+api.nvim_set_keymap(
+  'n', '<leader>fl', '<cmd>Telescope loclist<cr>', {silent = true})
+
+api.nvim_set_keymap(
+  'n', '<leader>ft', '<cmd>Telescope tags<cr>', {silent = true})
+api.nvim_set_keymap(
+  'n', '<leader>fs', '<cmd>Telescope treesitter<cr>', {silent = true})
