@@ -27,7 +27,7 @@ call minpac#add('mattn/vim-lsp-settings', {'type': 'opt'})
 " snippets with integrations
 call minpac#add('hrsh7th/vim-vsnip')
 call minpac#add('hrsh7th/vim-vsnip-integ', {'type': 'opt'})
-call minpac#add('stevearc/vim-vsnip-snippets')
+call minpac#add('rafamadriz/friendly-snippets')
 
 " neovim 0.5+ plugins
 if has('nvim-0.5')

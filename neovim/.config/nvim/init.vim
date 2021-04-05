@@ -203,7 +203,6 @@ set showtabline=1 tabline=%!TabLine()
 " General Mappings {{{2
 nnoremap <silent> <f2> :setlocal spell!<cr>
 inoremap <silent> <f2> <c-\><c-o>:setlocal spell!<cr>
-set pastetoggle=<f3>
 nnoremap <silent> <c-l> :nohlsearch<cr><c-l>
 
 " disable suspend mapping for nvim on windows as there is no way to resume the

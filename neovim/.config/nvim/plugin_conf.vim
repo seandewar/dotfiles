@@ -7,6 +7,8 @@
 silent! colorscheme moonfly
 
 " vim-polyglot {{{2
+let g:polyglot_disabled = ['sensible']
+
 " HACK: polyglot unsets `fileignorecase`, which may cause issues with plugins
 " such as vim-lsp, or Nvim's built-in LSP on case-insensitive file systems such
 " as Windows (sometimes servers send lowercase URIs, which messes with Windows'
@@ -26,6 +28,9 @@ augroup neoformat_on_save
                 \ | silent Neoformat
                 \ | endif
 augroup END
+
+" vim-compiler-luacheck {{{2
+let g:luacheck_makeprg_type = 'cd'
 
 " Neovim 0.5+ Lua Plugins {{{2
 if has('nvim-0.5')

@@ -125,32 +125,32 @@ function! s:SetupBufferMappings() abort
     if exists('+tagfunc')
         setlocal tagfunc=lsp#tagfunc
     else
-        nmap <buffer> <silent> <c-]> <plug>(lsp-definition)
+        nmap <buffer> <c-]> <plug>(lsp-definition)
     endif
 
-    nmap <buffer> <silent> <c-k> <plug>(lsp-signature-help)
-    imap <buffer> <silent> <c-k> <c-\><c-o><plug>(lsp-signature-help)
+    nmap <buffer> <c-k> <plug>(lsp-signature-help)
+    imap <buffer> <c-k> <c-\><c-o><plug>(lsp-signature-help)
     if &filetype !~# '\<vim\>'
-        nmap <buffer> <silent> K <plug>(lsp-hover)
+        nmap <buffer> K <plug>(lsp-hover)
     endif
 
-    nmap <buffer> <silent> gK <plug>(lsp-signature-help)
-    nmap <buffer> <silent> gd <plug>(lsp-declaration)
-    nmap <buffer> <silent> gD <plug>(lsp-implementation)
-    nmap <buffer> <silent> 1gD <plug>(lsp-type-definition)
+    nmap <buffer> gK <plug>(lsp-signature-help)
+    nmap <buffer> gd <plug>(lsp-declaration)
+    nmap <buffer> gD <plug>(lsp-implementation)
+    nmap <buffer> 1gD <plug>(lsp-type-definition)
 
-    nmap <buffer> <silent> <space>w <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> <silent> <space>d <plug>(lsp-document-symbol-search)
-    nmap <buffer> <silent> <space>r <plug>(lsp-references)
-    nmap <buffer> <silent> <space>a <plug>(lsp-code-action)
-    nmap <buffer> <silent> <space>l <plug>(lsp-code-lens)
-    nmap <buffer> <silent> <space>R <plug>(lsp-rename)
-    xmap <buffer> <silent> <space>f <plug>(lsp-document-range-format)
-    nmap <buffer> <silent> <space>F <plug>(lsp-document-format)
+    nmap <buffer> <space>w <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> <space>d <plug>(lsp-document-symbol-search)
+    nmap <buffer> <space>r <plug>(lsp-references)
+    nmap <buffer> <space>a <plug>(lsp-code-action)
+    nmap <buffer> <space>l <plug>(lsp-code-lens)
+    nmap <buffer> <space>R <plug>(lsp-rename)
+    xmap <buffer> <space>f <plug>(lsp-document-range-format)
+    nmap <buffer> <space>F <plug>(lsp-document-format)
 
-    nmap <buffer> <silent> <space><space> <plug>(lsp-document-diagnostics)
-    nmap <buffer> <silent> ]<space> <plug>(lsp-next-diagnostic)
-    nmap <buffer> <silent> [<space> <plug>(lsp-previous-diagnostic)
+    nmap <buffer> <space><space> <plug>(lsp-document-diagnostics)
+    nmap <buffer> ]<space> <plug>(lsp-next-diagnostic)
+    nmap <buffer> [<space> <plug>(lsp-previous-diagnostic)
 
-    nmap <buffer> <silent> <space>s <plug>(lsp-switch-source-header)
+    nmap <buffer> <space>s <plug>(lsp-switch-source-header)
 endfunction
