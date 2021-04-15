@@ -19,17 +19,6 @@ cmd "packadd nvim-treesitter-textobjects"
 require "nvim-treesitter.configs".setup {
   ensure_installed = "maintained",
 
-  -- these parsers require the tree-sitter CLI, which may not be installed
-  -- TODO: remove extra Windows-only ignores when they're fixed upstream
-  ignore_install = vim.list_extend(
-    fn.executable("tree-sitter") == 0 and {
-      "erlang", "ocamllex", "gdscript", "devicetree", "ledger", "supercollider",
-      "nix"
-    } or {},
-    fn.has("win32") == 1 and {
-      "ocaml", "ocaml_interface", "typescript", "tsx"
-    } or {}
-  ),
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = true -- so spellchecker ignores code
@@ -72,13 +61,16 @@ require "nvim-treesitter.configs".setup {
 
 -- Mappings {{{1
 -- telescope.nvim {{{2
+-- FIXME: disabled some mega-slow/meh finders until they're fixed
 keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", {silent = true})
 keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", {silent = true})
-keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", {silent = true})
+-- keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", {silent = true})
 keymap("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", {silent = true})
 
+keymap("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>",
+  {silent = true})
 keymap("n", "<leader>fc", "<cmd>Telescope quickfix<cr>", {silent = true})
 keymap("n", "<leader>fl", "<cmd>Telescope loclist<cr>", {silent = true})
 
-keymap("n", "<leader>ft", "<cmd>Telescope tags<cr>", {silent = true})
+-- keymap("n", "<leader>ft", "<cmd>Telescope tags<cr>", {silent = true})
 keymap("n", "<leader>fs", "<cmd>Telescope treesitter<cr>", {silent = true})

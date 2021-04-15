@@ -9,13 +9,6 @@ silent! colorscheme moonfly
 " vim-polyglot {{{2
 let g:polyglot_disabled = ['sensible']
 
-" HACK: polyglot unsets `fileignorecase`, which may cause issues with plugins
-" such as vim-lsp, or Nvim's built-in LSP on case-insensitive file systems such
-" as Windows (sometimes servers send lowercase URIs, which messes with Windows'
-" uppercase drive letters, for example)
-packadd vim-polyglot
-set fileignorecase&
-
 " neoformat {{{2
 let g:neoformat_basic_format_trim = 1
 
@@ -69,16 +62,10 @@ nnoremap <silent> <f4> :Neoformat<cr>
 vnoremap <silent> <f4> :Neoformat<cr>
 
 " vim-vsnip {{{2
-imap <expr> <c-j> vsnip#expandable() ? '<plug>(vsnip-expand)' : '<c-j>'
-smap <expr> <c-j> vsnip#expandable() ? '<plug>(vsnip-expand)' : '<c-j>'
-
-imap <expr> <c-l> vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<c-l>'
-smap <expr> <c-l> vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<c-l>'
-
-imap <expr> <tab> vsnip#jumpable(1) ? '<plug>(vsnip-jump-next)' : '<tab>'
-smap <expr> <tab> vsnip#jumpable(1) ? '<plug>(vsnip-jump-next)' : '<tab>'
-imap <expr> <s-tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<s-tab>'
-smap <expr> <s-tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<s-tab>'
+imap <expr> <c-j> vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<c-j>'
+smap <expr> <c-j> vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<c-j>'
+imap <expr> <c-k> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<c-k>'
+smap <expr> <c-k> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<c-k>'
 
 " select or cut text to use as $TM_SELECTED_TEXT in the next snippet
 " (see https://github.com/hrsh7th/vim-vsnip/pull/50)

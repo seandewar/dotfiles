@@ -128,13 +128,13 @@ function! s:SetupBufferMappings() abort
         nmap <buffer> <c-]> <plug>(lsp-definition)
     endif
 
-    nmap <buffer> <c-k> <plug>(lsp-signature-help)
-    imap <buffer> <c-k> <c-\><c-o><plug>(lsp-signature-help)
     if &filetype !~# '\<vim\>'
         nmap <buffer> K <plug>(lsp-hover)
     endif
+    " TODO: find better mapping for signature help (c-k conflicts with snippets)
+    nmap <buffer> <m-k> <plug>(lsp-signature-help)
+    imap <buffer> <m-k> <c-\><c-o><plug>(lsp-signature-help)
 
-    nmap <buffer> gK <plug>(lsp-signature-help)
     nmap <buffer> gd <plug>(lsp-declaration)
     nmap <buffer> gD <plug>(lsp-implementation)
     nmap <buffer> 1gD <plug>(lsp-type-definition)

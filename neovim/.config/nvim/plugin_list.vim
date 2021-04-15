@@ -1,5 +1,5 @@
 " color schemes
-call minpac#add('bluz71/vim-moonfly-colors', {'type': 'opt'})
+call minpac#add('bluz71/vim-moonfly-colors')
 
 " general plugins
 call minpac#add('editorconfig/editorconfig-vim')
@@ -18,7 +18,8 @@ call minpac#add('tpope/vim-rhubarb')
 
 " filetypes and language support
 call minpac#add('rust-lang/rust.vim')
-call minpac#add('sheerun/vim-polyglot', {'type': 'opt'})
+call minpac#add('seandewar/vim-compiler-luacheck')
+call minpac#add('sheerun/vim-polyglot')
 
 " lsp
 call minpac#add('prabirshrestha/vim-lsp', {'type': 'opt'})
