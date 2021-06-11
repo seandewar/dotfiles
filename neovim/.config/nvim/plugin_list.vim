@@ -19,7 +19,6 @@ call minpac#add('tpope/vim-rhubarb')
 " filetypes and language support
 call minpac#add('rust-lang/rust.vim')
 call minpac#add('seandewar/vim-compiler-luacheck')
-call minpac#add('sheerun/vim-polyglot')
 
 " lsp
 call minpac#add('prabirshrestha/vim-lsp', {'type': 'opt'})
@@ -32,6 +31,9 @@ call minpac#add('rafamadriz/friendly-snippets')
 
 " neovim 0.5+ plugins
 if has('nvim-0.5')
+    " debug adapter protocol
+    call minpac#add('mfussenegger/nvim-dap')
+
     " telescope fuzzy finder
     call minpac#add('nvim-telescope/telescope.nvim', {'type': 'opt'})
     call minpac#add('nvim-lua/plenary.nvim', {'type': 'opt'})

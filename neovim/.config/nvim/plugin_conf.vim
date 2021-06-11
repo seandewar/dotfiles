@@ -4,10 +4,8 @@
 
 " General Plugin Settings {{{1
 " color scheme {{{2
+let g:moonflyNormalFloat = 1
 silent! colorscheme moonfly
-
-" vim-polyglot {{{2
-let g:polyglot_disabled = ['sensible']
 
 " neoformat {{{2
 let g:neoformat_basic_format_trim = 1
@@ -102,3 +100,4 @@ nmap [c <plug>(qftoggle_quickfix_previous)
 
 nmap ]l <plug>(qftoggle_loclist_next)
 nmap [l <plug>(qftoggle_loclist_previous)
+
