@@ -58,6 +58,7 @@ require"nvim-treesitter.configs".setup {
 }
 
 -- nvim-dap {{{2
+cmd "packadd nvim-dap"
 local dap = require "dap"
 
 dap.adapters["lldb-vscode"] = {

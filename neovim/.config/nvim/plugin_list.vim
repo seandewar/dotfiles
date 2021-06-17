@@ -32,7 +32,7 @@ call minpac#add('rafamadriz/friendly-snippets')
 " neovim 0.5+ plugins
 if has('nvim-0.5')
     " debug adapter protocol
-    call minpac#add('mfussenegger/nvim-dap')
+    call minpac#add('mfussenegger/nvim-dap', {'type': 'opt'})
 
     " telescope fuzzy finder
     call minpac#add('nvim-telescope/telescope.nvim', {'type': 'opt'})
