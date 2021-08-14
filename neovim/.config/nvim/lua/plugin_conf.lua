@@ -1,9 +1,13 @@
 --------------------------------------------------------------------------------
 -- Sean Dewar's Neovim 0.5+ Lua Plugin Config <https://github.com/seandewar>  --
 --------------------------------------------------------------------------------
--- File Locals {{{1
-local api, fn = vim.api, vim.fn
-local cmd, kmap = vim.cmd, vim.api.nvim_set_keymap
+local api, fn, cmd = vim.api, vim.fn, vim.cmd
+
+local kmap = function(mode, lhs, rhs, opts)
+  opts = opts or {}
+  opts.silent = opts.silent ~= nil and opts.silent or true
+  api.nvim_set_keymap(mode, lhs, rhs, opts)
+end
 
 -- General Plugin Settings {{{1
 -- telescope.nvim {{{2
@@ -69,38 +73,41 @@ dap.adapters["lldb-vscode"] = {
     env = {LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "YES"}
 }
 
+-- Language Server Protocol {{{2
+cmd "packadd nvim-lspconfig"
+cmd("luafile " .. vim.env.MYVIMRUNTIME .. "/lua/lsp.lua")
+
 -- Mappings {{{1
 -- telescope.nvim {{{2
 -- FIXME: re-enable the commented-out mega-slow/meh finders until they're fixed
-kmap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", {silent = true})
-kmap("n", "<leader>ff",
-     "<cmd>lua require'telescope.builtin'.find_files { hidden = true }<cr>",
-     {silent = true})
--- kmap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", {silent = true})
-kmap("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", {silent = true})
+kmap("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
+kmap("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>")
+kmap("n", "<leader>fF",
+     "<cmd>Telescope find_files hidden=true no_ignore=true<cr>")
+-- kmap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
+kmap("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")
+kmap("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>")
+kmap("n", "<leader>fc", "<cmd>Telescope quickfix<cr>")
+kmap("n", "<leader>fl", "<cmd>Telescope loclist<cr>")
+-- kmap("n", "<leader>ft", "<cmd>Telescope tags<cr>")
+kmap("n", "<leader>fs", "<cmd>Telescope treesitter<cr>")
 
-kmap("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>",
-     {silent = true})
-kmap("n", "<leader>fc", "<cmd>Telescope quickfix<cr>", {silent = true})
-kmap("n", "<leader>fl", "<cmd>Telescope loclist<cr>", {silent = true})
-
--- kmap("n", "<leader>ft", "<cmd>Telescope tags<cr>", {silent = true})
-kmap("n", "<leader>fs", "<cmd>Telescope treesitter<cr>", {silent = true})
+-- git-specific mappings & vim-fugitive overrides
+kmap("n", "<leader>gB", "<cmd>Telescope git_branches<cr>")
+kmap("n", "<leader>gl", "<cmd>Telescope git_bcommits<cr>")
+kmap("n", "<leader>gL", "<cmd>Telescope git_commits<cr>")
 
 -- nvim-dap {{{2
-kmap("n", "<leader>dd", "<cmd>lua require'dap'.repl.open()<cr>", {silent = true})
-kmap("n", "<f5>", "<cmd>lua require'dap'.continue()<cr>", {silent = true})
-kmap("n", "<c-f5>", "<cmd>lua require'dap'.run_last()<cr>", {silent = true})
+kmap("n", "<leader>dd", "<cmd>lua require'dap'.repl.open()<cr>")
+kmap("n", "<f5>", "<cmd>lua require'dap'.continue()<cr>")
+kmap("n", "<c-f5>", "<cmd>lua require'dap'.run_last()<cr>")
 
-kmap("n", "<f9>", "<cmd>lua require'dap'.toggle_breakpoint()<cr>",
-     {silent = true})
-
+kmap("n", "<f9>", "<cmd>lua require'dap'.toggle_breakpoint()<cr>")
 kmap("n", "<c-f9>", "<cmd>lua require'dap'.set_breakpoint(" ..
-         "vim.fn.input('Breakpoint condition: '))<cr>", {silent = true})
-
+                    "vim.fn.input('Breakpoint condition: '))<cr>")
 kmap("n", "<leader>dl", "<cmd>lua require'dap'.set_breakpoint(nil, nil, " ..
-         "vim.fn.input('Log point message: '))<cr>", {silent = true})
+                        "vim.fn.input('Log point message: '))<cr>")
 
-kmap("n", "<f10>", "<cmd>lua require'dap'.step_over()<cr>", {silent = true})
-kmap("n", "<f11>", "<cmd>lua require'dap'.step_into()<cr>", {silent = true})
-kmap("n", "<f12>", "<cmd>lua require'dap'.step_out()<cr>", {silent = true})
+kmap("n", "<f10>", "<cmd>lua require'dap'.step_over()<cr>")
+kmap("n", "<f11>", "<cmd>lua require'dap'.step_into()<cr>")
+kmap("n", "<f12>", "<cmd>lua require'dap'.step_out()<cr>")

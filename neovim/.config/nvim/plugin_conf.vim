@@ -23,20 +23,17 @@ augroup END
 " vim-compiler-luacheck {{{2
 let g:luacheck_makeprg_type = 'cd'
 
-" Neovim 0.5+ Lua Plugins {{{2
-if has('nvim-0.5')
-    execute 'luafile ' . $MYVIMRUNTIME . '/lua/plugin_conf.lua' 
-endif
-
 " Status Line Settings {{{1
 " vim-fugitive {{{2
 let g:plugin_statusline_functions  =
             \ [{is_current -> exists('g:loaded_fugitive') && is_current
                             \ ? '%([%{FugitiveHead(7)}] %)' : ''}]
 
-" vim-lsp {{{2
-let g:plugin_statusline_functions += [{is_current -> exists('g:lsp_loaded')
-            \ ? plugin_conf#vim_lsp#statusline(is_current) : ''}]
+" Neovim 0.5+ LSP {{{2
+if has('nvim-0.5')
+    let g:plugin_statusline_functions += [{is_current ->
+                \ v:lua.lsp_conf.statusline(is_current)}]
+end
 
 " Commands {{{1
 " minpac {{{2
@@ -47,12 +44,6 @@ execute 'command! -bar PackUpdate call plugin_conf#minpac#reload() '
 command! -bar PackClean call plugin_conf#minpac#reload() | call minpac#clean()
 command! -bar PackStatus call plugin_conf#minpac#ensure_init()
             \ | call minpac#status()
-
-" vim-lsp {{{2
-if !exists('g:lsp_loaded')
-    command! -bar LspEnable call plugin_conf#vim_lsp#enable()
-                \ | delcommand LspEnable
-endif
 
 " Mappings {{{1
 " neoformat {{{2
@@ -77,11 +68,13 @@ smap <expr> <c-k> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<c-k>'
 nnoremap <silent> <leader>gg :Git<cr>
 nnoremap <silent> <leader>gl :Git log %<cr>
 nnoremap <silent> <leader>gL :Git log<cr>
+nnoremap <silent> <leader>gs :Git show<cr>
 nnoremap <silent> <leader>gd :Gdiffsplit<cr>
 nnoremap <silent> <leader>gD :G diff<cr>
 nnoremap <silent> <leader>gt :G difftool<cr>
 nnoremap <silent> <leader>gm :G mergetool<cr>
 nnoremap <silent> <leader>gb :Git blame<cr>
+nnoremap <leader>gB :Git checkout<space>
 nnoremap <silent> <leader>gw :Gwrite<cr>
 nnoremap <silent> <leader>gR :Gread<cr>
 nnoremap <leader>gM :GRename <c-r>=expand('%:t')<cr>
@@ -101,3 +94,7 @@ nmap [c <plug>(qftoggle_quickfix_previous)
 nmap ]l <plug>(qftoggle_loclist_next)
 nmap [l <plug>(qftoggle_loclist_previous)
 
+" Neovim 0.5+ Lua Plugin Settings {{{1
+if has('nvim-0.5')
+    execute 'luafile ' . $MYVIMRUNTIME . '/lua/plugin_conf.lua'
+endif

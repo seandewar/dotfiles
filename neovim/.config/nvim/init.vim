@@ -38,6 +38,7 @@ set splitbelow splitright
 set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 set textwidth=80
 set title
+set updatetime=1500
 set wildmenu wildmode=list:longest,full wildignorecase
 
 nohlsearch " cancel search highlight from setting hlsearch when reloading
@@ -57,10 +58,10 @@ if has('patch-8.1.2315') || has('nvim-0.5')
     set switchbuf+=uselast
 endif
 
-set completeopt+=menuone
-" completion menu can use popups rather than preview window, if available
+set completeopt=menu,menuone
+" completion menu can use popups, if available
 if has('patch-8.1.1880')
-    set completeopt+=popup " overrides preview flag
+    set completeopt+=popup
 endif
 
 " prefer ripgrep over grep, if available
@@ -68,8 +69,9 @@ if executable('rg')
     set grepprg=rg\ --vimgrep
 endif
 
-" 16-bit true colour is available if Win32 virtual console support is active
-if has('vcon')
+" 16-bit true colour is available if Win32 virtual console support is active.
+" If we're using Nvim, turn it on anyway as tgc tends to Just Work TM.
+if has('nvim') || has('vcon')
     set termguicolors
 endif
 
@@ -225,7 +227,7 @@ nnoremap <silent> [a :previous<cr>
 nnoremap <leader>fb :buffer<space>
 nnoremap <leader>ff :find<space>
 nnoremap <leader>fg :grep<space>
-nnoremap <leader>ft :tselect<space>
+nnoremap <leader>ft :tjump<space>
 nnoremap <leader>fo :browse oldfiles<cr>
 
 nnoremap <silent> ]b :bnext<cr>2<c-g>
@@ -238,13 +240,13 @@ nnoremap <silent> <leader>l :lwindow<cr>
 nnoremap <silent> <leader>fc :Cfilter<space>
 nnoremap <silent> <leader>fl :Lfilter<space>
 
-nnoremap <silent> ]c :cnext<cr>
-nnoremap <silent> [c :cprevious<cr>
+nnoremap <silent> ]c :cnext<cr>zv
+nnoremap <silent> [c :cprevious<cr>zv
 nnoremap <silent> ]C :cnewer<cr>
 nnoremap <silent> [C :colder<cr>
 
-nnoremap <silent> ]l :lnext<cr>
-nnoremap <silent> [l :lprevious<cr>
+nnoremap <silent> ]l :lnext<cr>zv
+nnoremap <silent> [l :lprevious<cr>zv
 nnoremap <silent> ]L :lnewer<cr>
 nnoremap <silent> [L :lolder<cr>
 

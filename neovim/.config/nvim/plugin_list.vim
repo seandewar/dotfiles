@@ -20,27 +20,25 @@ call minpac#add('tpope/vim-rhubarb')
 call minpac#add('rust-lang/rust.vim')
 call minpac#add('seandewar/vim-compiler-luacheck')
 
-" lsp
-call minpac#add('prabirshrestha/vim-lsp', {'type': 'opt'})
-call minpac#add('mattn/vim-lsp-settings', {'type': 'opt'})
-
 " snippets with integrations
 call minpac#add('hrsh7th/vim-vsnip')
-call minpac#add('hrsh7th/vim-vsnip-integ', {'type': 'opt'})
 call minpac#add('rafamadriz/friendly-snippets')
 
 " neovim 0.5+ plugins
 if has('nvim-0.5')
+    " language server protocol
+    call minpac#add('neovim/nvim-lspconfig', {'type': 'opt'})
+
     " debug adapter protocol
     call minpac#add('mfussenegger/nvim-dap', {'type': 'opt'})
-
-    " telescope fuzzy finder
-    call minpac#add('nvim-telescope/telescope.nvim', {'type': 'opt'})
-    call minpac#add('nvim-lua/plenary.nvim', {'type': 'opt'})
-    call minpac#add('nvim-lua/popup.nvim', {'type': 'opt'})
 
     " treesitter
     call minpac#add('nvim-treesitter/nvim-treesitter', {'type': 'opt'})
     call minpac#add('nvim-treesitter/nvim-treesitter-textobjects',
                 \ {'type': 'opt'})
+
+    " telescope fuzzy finder
+    call minpac#add('nvim-telescope/telescope.nvim', {'type': 'opt'})
+    call minpac#add('nvim-lua/plenary.nvim', {'type': 'opt'})
+    call minpac#add('nvim-lua/popup.nvim', {'type': 'opt'})
 endif
