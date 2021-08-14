@@ -5,11 +5,11 @@ local lsp, api = vim.lsp, vim.api
 local lspconfig = require "lspconfig"
 
 local kmap = function(mode, lhs, rhs)
-  api.nvim_buf_set_keymap(0, mode, lhs, rhs, {noremap = true, silent = true})
+  api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
 end
 
 local echo = function(message)
-  api.nvim_echo({{message}}, false, {})
+  api.nvim_echo({ { message } }, false, {})
 end
 
 -- Global, as this file isn't usually require()'d (allows reloading)
@@ -23,7 +23,7 @@ lsp_conf.eval_statusline = function(is_current)
   local progress = is_current and (lsp_conf.progress .. " ") or ""
 
   if #lsp.buf_get_clients(0) == 0 then
-     return progress
+    return progress
   end
 
   local errors = lsp.diagnostic.get_count(0, "Error")
@@ -85,14 +85,16 @@ lsp_conf.update_progress = function()
 end
 -- }}}1
 
-local servers = {"clangd", "rust_analyzer"}
+local servers = { "clangd", "rust_analyzer" }
 
 local on_attach = function(client, bufnr)
   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
   vim.opt_local.signcolumn = "yes"
 
-  vim.cmd("autocmd! CursorHold <buffer> " ..
-          "lua vim.lsp.diagnostic.show_line_diagnostics({focusable = false})")
+  vim.cmd(
+    "autocmd! CursorHold <buffer> "
+      .. "lua vim.lsp.diagnostic.show_line_diagnostics({focusable = false})"
+  )
 
   if client.name == "clangd" then
     kmap("n", "<space>s", "<cmd>ClangdSwitchSourceHeader<cr>")
@@ -114,10 +116,17 @@ local on_attach = function(client, bufnr)
   kmap("n", "<space>r", "<cmd>Telescope lsp_references<cr>")
 
   kmap("n", "<space>R", "<cmd>lua vim.lsp.buf.rename()<cr>")
-  kmap("n", "<space>f",
-       "<cmd>echo 'Formatting buffer...' | lua vim.lsp.buf.formatting()<cr>")
-  kmap("x", "<space>f", "<esc><cmd>echo 'Formatting selection...' | " ..
-                        "lua vim.lsp.buf.range_formatting()<cr>")
+  kmap(
+    "n",
+    "<space>f",
+    "<cmd>echo 'Formatting buffer...' | lua vim.lsp.buf.formatting()<cr>"
+  )
+  kmap(
+    "x",
+    "<space>f",
+    "<esc><cmd>echo 'Formatting selection...' | "
+      .. "lua vim.lsp.buf.range_formatting()<cr>"
+  )
   kmap("n", "<space>a", "<cmd>Telescope lsp_code_actions<cr>")
   kmap("x", "<space>a", "<esc><cmd>Telescope lsp_range_code_actions<cr>")
 
@@ -126,13 +135,17 @@ local on_attach = function(client, bufnr)
 end
 
 for _, s in pairs(servers) do
-  lspconfig[s].setup{
+  lspconfig[s].setup {
     on_attach = on_attach,
     handlers = {
-      ["textDocument/hover"] =
-        lsp.with(lsp.handlers.hover, {border = "single"}),
-      ["textDocument/signatureHelp"] =
-        lsp.with(lsp.handlers.signature_help, {border = "single"}),
+      ["textDocument/hover"] = lsp.with(
+        lsp.handlers.hover,
+        { border = "single" }
+      ),
+      ["textDocument/signatureHelp"] = lsp.with(
+        lsp.handlers.signature_help,
+        { border = "single" }
+      ),
       ["textDocument/formatting"] = function(...)
         lsp.handlers["textDocument/formatting"](...)
         echo "Buffer formatted!"
@@ -141,7 +154,7 @@ for _, s in pairs(servers) do
         lsp.handlers["textDocument/rangeFormatting"](...)
         echo "Range formatted!"
       end,
-    }
+    },
   }
 end
 
