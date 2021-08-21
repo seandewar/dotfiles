@@ -79,7 +79,6 @@ cmd("luafile " .. vim.env.MYVIMRUNTIME .. "/lua/lsp.lua")
 
 -- Mappings {{{1
 -- telescope.nvim {{{2
--- FIXME: re-enable the commented-out mega-slow/meh finders until they're fixed
 kmap("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 kmap("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>")
 kmap(
@@ -87,12 +86,12 @@ kmap(
   "<leader>fF",
   "<cmd>Telescope find_files hidden=true no_ignore=true<cr>"
 )
--- kmap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
+kmap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
 kmap("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")
 kmap("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>")
 kmap("n", "<leader>fc", "<cmd>Telescope quickfix<cr>")
 kmap("n", "<leader>fl", "<cmd>Telescope loclist<cr>")
--- kmap("n", "<leader>ft", "<cmd>Telescope tags<cr>")
+kmap("n", "<leader>ft", "<cmd>Telescope tags<cr>")
 kmap("n", "<leader>fs", "<cmd>Telescope treesitter<cr>")
 
 -- git-specific mappings & vim-fugitive overrides
