@@ -22,7 +22,7 @@ lsp_conf.eval_statusline = function(is_current)
   is_current = is_current ~= 0
   local progress = is_current and (lsp_conf.progress .. " ") or ""
 
-  if #lsp.buf_get_clients(0) == 0 then
+  if vim.tbl_isempty(lsp.buf_get_clients(0)) then
     return progress
   end
 
@@ -46,8 +46,10 @@ lsp_conf.eval_statusline = function(is_current)
     parts[#parts + 1] = "%#" .. hi_prefix .. "Information#" .. infos .. "%*"
   end
 
-  local counts = #parts > 0 and ("[" .. table.concat(parts, " ") .. "] ") or ""
-  return counts .. progress
+  local status = "["
+    .. (#parts > 0 and table.concat(parts, " ") or "OK")
+    .. "] "
+  return status .. progress
 end
 
 lsp_conf.statusline = function(is_current)
@@ -127,12 +129,12 @@ local on_attach = function(client, bufnr)
   kmap(
     "n",
     "<space>f",
-    "<cmd>echo 'Formatting buffer...' | lua vim.lsp.buf.formatting()<cr>"
+    "<cmd>echo 'Formatting buffer...'<bar>lua vim.lsp.buf.formatting()<cr>"
   )
   kmap(
     "x",
     "<space>f",
-    "<esc><cmd>echo 'Formatting selection...' | "
+    "<esc><cmd>echo 'Formatting selection...'<bar>"
       .. "lua vim.lsp.buf.range_formatting()<cr>"
   )
   kmap("n", "<space>a", "<cmd>Telescope lsp_code_actions<cr>")
@@ -167,14 +169,16 @@ for _, s in pairs(servers) do
 end
 
 vim.cmd [[
-  augroup lsp_conf
+  augroup lsp_conf_update_statusline
     autocmd!
     autocmd User LspProgressUpdate lua lsp_conf.update_progress()
+    autocmd User LspDiagnosticsChanged redrawstatus!
   augroup END
 
   highlight default link LspDiagnosticsStlError LspDiagnosticsSignError
   highlight default link LspDiagnosticsStlWarning LspDiagnosticsSignWarning
   highlight default link LspDiagnosticsStlInfo LspDiagnosticsSignInfo
+
   highlight default link LspDiagnosticsStlNCError LspDiagnosticsStlError
   highlight default link LspDiagnosticsStlNCWarning LspDiagnosticsStlWarning
   highlight default link LspDiagnosticsStlNCInfo LspDiagnosticsStlInfo

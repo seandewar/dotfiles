@@ -4,6 +4,17 @@
 
 " General Plugin Settings {{{1
 " color scheme {{{2
+augroup colorscheme_customization
+    autocmd!
+    autocmd ColorScheme moonfly
+                \ highlight LspDiagnosticsStlError
+                \ ctermfg=1 ctermbg=236 guifg=#ff5454 guibg=#303030
+                \ | highlight LspDiagnosticsStlWarning
+                \ ctermfg=3 ctermbg=236 guifg=#e3c78a guibg=#303030
+                \ | highlight LspDiagnosticsStlInfo
+                \ ctermfg=12 ctermbg=236 guifg=#74b2ff guibg=#303030
+augroup END
+
 let g:moonflyNormalFloat = 1
 silent! colorscheme moonfly
 
