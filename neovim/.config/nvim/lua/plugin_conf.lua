@@ -13,7 +13,6 @@ end
 -- telescope.nvim {{{2
 cmd "packadd telescope.nvim"
 cmd "packadd plenary.nvim"
-cmd "packadd popup.nvim"
 
 -- nvim-treesitter {{{2
 cmd "packadd nvim-treesitter"
