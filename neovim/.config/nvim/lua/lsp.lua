@@ -82,6 +82,14 @@ lsp_conf.update_progress = function()
 
   lsp_conf.progress = progress
   vim.cmd "redrawstatus"
+
+  if lsp_conf.progress_clear_timer then
+    lsp_conf.progress_clear_timer:stop()
+  end
+  lsp_conf.progress_clear_timer = vim.defer_fn(function()
+    lsp_conf.progress = ""
+    vim.cmd "redrawstatus"
+  end, 2500)
 end
 -- }}}1
 

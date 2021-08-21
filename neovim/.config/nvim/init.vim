@@ -18,7 +18,7 @@ set display+=lastline
 set encoding=utf-8
 set foldmethod=marker
 set formatoptions=croqnlj
-set guioptions=M " has to be before :syntax/:filetype on, so not in gvimrc
+set guioptions=M " has to be before :syntax/filetype on, so not in gvimrc
 set hidden
 set hlsearch incsearch ignorecase smartcase
 set nojoinspaces
@@ -205,7 +205,7 @@ set showtabline=1 tabline=%!TabLine()
 " General Mappings {{{2
 nnoremap <silent> <f2> :setlocal spell!<cr>
 inoremap <silent> <f2> <c-\><c-o>:setlocal spell!<cr>
-nnoremap <silent> <c-l> :nohlsearch<cr><c-l>
+nnoremap <silent> <c-l> :nohlsearch<bar>diffupdate<cr><c-l>
 
 " disable suspend mapping for nvim on windows as there is no way to resume the
 " process, which causes a lot of frustration!
@@ -213,8 +213,13 @@ if has('nvim') && has('win32')
     nnoremap <silent> <c-z> <nop>
 endif
 
+" nvim 0.6 makes Y more sensible (y$), but I'm used to the default behaviour
+if has('nvim-0.6')
+    silent! unmap Y
+endif
+
 " NOTE: disable flow control for your terminal to use the <C-S> maps!
-" press <C-Q> to unfreeze the terminal if you have accidently activated it
+" press <C-Q> to unfreeze the terminal if you have accidentally activated it
 nnoremap <silent> <c-s> :update<cr>
 inoremap <silent> <c-s> <c-\><c-o>:update<cr>
 
