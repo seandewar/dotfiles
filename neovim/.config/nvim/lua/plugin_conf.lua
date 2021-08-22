@@ -74,7 +74,7 @@ dap.adapters["lldb-vscode"] = {
 
 -- Language Server Protocol {{{2
 cmd "packadd nvim-lspconfig"
-cmd("luafile " .. vim.env.MYVIMRUNTIME .. "/lua/lsp.lua")
+cmd("luafile " .. vim.env.MYVIMRUNTIME .. "/lua/lsp_conf.lua")
 
 -- Mappings {{{1
 -- telescope.nvim {{{2
