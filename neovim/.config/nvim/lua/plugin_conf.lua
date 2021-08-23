@@ -11,8 +11,11 @@ end
 
 -- General Plugin Settings {{{1
 -- telescope.nvim {{{2
-cmd "packadd telescope.nvim"
 cmd "packadd plenary.nvim"
+cmd "packadd telescope.nvim"
+cmd "packadd telescope-fzy-native.nvim"
+
+require("telescope").load_extension "fzy_native"
 
 -- nvim-treesitter {{{2
 cmd "packadd nvim-treesitter"

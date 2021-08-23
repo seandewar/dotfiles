@@ -38,6 +38,7 @@ if has('nvim-0.5')
                 \ {'type': 'opt'})
 
     " telescope fuzzy finder
-    call minpac#add('nvim-telescope/telescope.nvim', {'type': 'opt'})
     call minpac#add('nvim-lua/plenary.nvim', {'type': 'opt'})
+    call minpac#add('nvim-telescope/telescope.nvim', {'type': 'opt'})
+    call minpac#add('nvim-telescope/telescope-fzy-native.nvim', {'type': 'opt'})
 endif
