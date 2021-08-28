@@ -3,11 +3,17 @@
 --------------------------------------------------------------------------------
 local api, fn, cmd = vim.api, vim.fn, vim.cmd
 
-local kmap = function(mode, lhs, rhs, opts)
-  opts = opts or {}
-  opts.silent = opts.silent ~= nil and opts.silent or true
+local map = function(mode, lhs, rhs, opts)
+  opts = vim.tbl_extend("keep", opts or {}, { silent = true, noremap = true })
   api.nvim_set_keymap(mode, lhs, rhs, opts)
 end
+
+local t = function(str)
+  return api.nvim_replace_termcodes(str, true, true, true)
+end
+
+-- Global, as this file isn't usually require()'d (allows reloading)
+plugin_conf = {}
 
 -- General Plugin Settings {{{1
 -- telescope.nvim {{{2
@@ -63,11 +69,21 @@ require("nvim-treesitter.configs").setup {
   },
 }
 
+-- nvim-gps {{{2
+cmd "packadd nvim-gps"
+
+require("nvim-gps").setup {
+  icons = {
+    ["class-name"] = "[c] ",
+    ["function-name"] = "[f] ",
+    ["method-name"] = "[m] ",
+  },
+}
+
 -- nvim-dap {{{2
 cmd "packadd nvim-dap"
-local dap = require "dap"
 
-dap.adapters["lldb-vscode"] = {
+require("dap").adapters["lldb-vscode"] = {
   name = "lldb-vscode",
   type = "executable",
   command = "lldb-vscode",
@@ -80,46 +96,64 @@ cmd "packadd nvim-lspconfig"
 cmd("luafile " .. vim.env.MYVIMRUNTIME .. "/lua/lsp_conf.lua")
 
 -- Mappings {{{1
+-- nvim-gps {{{2
+-- show tree-sitter context alongside cursor location info
+plugin_conf.echo_cursor_info = function()
+  vim.cmd(t "normal! g<c-g>")
+  local gps = require "nvim-gps"
+  if gps.is_available() then
+    local context = gps.get_location()
+    if context ~= "" then
+      vim.cmd("echo '" .. context .. "'")
+    end
+  end
+end
+
+map("n", "g<c-g>", "<cmd>call v:lua.plugin_conf.echo_cursor_info()<cr>")
+
 -- telescope.nvim {{{2
-kmap("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
-kmap("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>")
-kmap(
+map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
+map("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>")
+map(
   "n",
   "<leader>fF",
   "<cmd>Telescope find_files hidden=true no_ignore=true<cr>"
 )
-kmap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
-kmap("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")
-kmap("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>")
-kmap("n", "<leader>fc", "<cmd>Telescope quickfix<cr>")
-kmap("n", "<leader>fl", "<cmd>Telescope loclist<cr>")
-kmap("n", "<leader>ft", "<cmd>Telescope tags<cr>")
-kmap("n", "<leader>fs", "<cmd>Telescope treesitter<cr>")
+map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
+map("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")
+map("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>")
+map("n", "<leader>fc", "<cmd>Telescope quickfix<cr>")
+map("n", "<leader>fl", "<cmd>Telescope loclist<cr>")
+map("n", "<leader>ft", "<cmd>Telescope tags<cr>")
+map("n", "<leader>fs", "<cmd>Telescope treesitter<cr>")
 
 -- git-specific mappings & vim-fugitive overrides
-kmap("n", "<leader>gB", "<cmd>Telescope git_branches<cr>")
-kmap("n", "<leader>gl", "<cmd>Telescope git_bcommits<cr>")
-kmap("n", "<leader>gL", "<cmd>Telescope git_commits<cr>")
+map("n", "<leader>gB", "<cmd>Telescope git_branches<cr>")
+map("n", "<leader>gl", "<cmd>Telescope git_bcommits<cr>")
+map("n", "<leader>gL", "<cmd>Telescope git_commits<cr>")
 
 -- nvim-dap {{{2
-kmap("n", "<leader>dd", "<cmd>lua require'dap'.repl.open()<cr>")
-kmap("n", "<f5>", "<cmd>lua require'dap'.continue()<cr>")
-kmap("n", "<c-f5>", "<cmd>lua require'dap'.run_last()<cr>")
+map("n", "<leader>dd", "<cmd>lua require'dap'.repl.open()<cr>")
+map("n", "<f5>", "<cmd>lua require'dap'.continue()<cr>")
+map("n", "<c-f5>", "<cmd>lua require'dap'.run_last()<cr>")
 
-kmap("n", "<f9>", "<cmd>lua require'dap'.toggle_breakpoint()<cr>")
-kmap(
+map("n", "<f9>", "<cmd>lua require'dap'.toggle_breakpoint()<cr>")
+map(
   "n",
   "<c-f9>",
   "<cmd>lua require'dap'.set_breakpoint("
     .. "vim.fn.input('Breakpoint condition: '))<cr>"
 )
-kmap(
+map(
   "n",
   "<leader>dl",
   "<cmd>lua require'dap'.set_breakpoint(nil, nil, "
     .. "vim.fn.input('Log point message: '))<cr>"
 )
 
-kmap("n", "<f10>", "<cmd>lua require'dap'.step_over()<cr>")
-kmap("n", "<f11>", "<cmd>lua require'dap'.step_into()<cr>")
-kmap("n", "<f12>", "<cmd>lua require'dap'.step_out()<cr>")
+map("n", "<f10>", "<cmd>lua require'dap'.step_over()<cr>")
+map("n", "<f11>", "<cmd>lua require'dap'.step_into()<cr>")
+map("n", "<f12>", "<cmd>lua require'dap'.step_out()<cr>")
+-- }}}2
+
+return plugin_conf

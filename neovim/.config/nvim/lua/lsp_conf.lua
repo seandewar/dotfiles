@@ -4,12 +4,8 @@
 local lsp, api = vim.lsp, vim.api
 local lspconfig = require "lspconfig"
 
-local kmap = function(mode, lhs, rhs)
+local map = function(mode, lhs, rhs)
   api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
-end
-
-local echo = function(message)
-  api.nvim_echo({ { message } }, false, {})
 end
 
 -- Global, as this file isn't usually require()'d (allows reloading)
@@ -107,41 +103,41 @@ local on_attach = function(client, bufnr)
   )
 
   if client.name == "clangd" then
-    kmap("n", "<space>s", "<cmd>ClangdSwitchSourceHeader<cr>")
+    map("n", "<space>s", "<cmd>ClangdSwitchSourceHeader<cr>")
   end
 
-  kmap("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
-  kmap("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
-  kmap("i", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
+  map("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
+  map("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
+  map("i", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
 
-  kmap("n", "<space><space>", "<cmd>Telescope lsp_document_diagnostics<cr>")
-  kmap("n", "]<space>", "<cmd>lua vim.lsp.diagnostic.goto_next()<cr>")
-  kmap("n", "[<space>", "<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>")
+  map("n", "<space><space>", "<cmd>Telescope lsp_document_diagnostics<cr>")
+  map("n", "]<space>", "<cmd>lua vim.lsp.diagnostic.goto_next()<cr>")
+  map("n", "[<space>", "<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>")
 
-  kmap("n", "<c-]>", "<cmd>lua vim.lsp.buf.definition()<cr>")
-  kmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
-  kmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
-  kmap("n", "<space>t", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
-  kmap("n", "<space>i", "<cmd>Telescope lsp_implementations<cr>")
-  kmap("n", "<space>r", "<cmd>Telescope lsp_references<cr>")
+  map("n", "<c-]>", "<cmd>lua vim.lsp.buf.definition()<cr>")
+  map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
+  map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
+  map("n", "<space>t", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
+  map("n", "<space>i", "<cmd>Telescope lsp_implementations<cr>")
+  map("n", "<space>r", "<cmd>Telescope lsp_references<cr>")
 
-  kmap("n", "<space>R", "<cmd>lua vim.lsp.buf.rename()<cr>")
-  kmap(
+  map("n", "<space>R", "<cmd>lua vim.lsp.buf.rename()<cr>")
+  map(
     "n",
     "<space>f",
     "<cmd>echo 'Formatting buffer...'<bar>lua vim.lsp.buf.formatting()<cr>"
   )
-  kmap(
+  map(
     "x",
     "<space>f",
-    "<esc><cmd>echo 'Formatting selection...'<bar>"
+    "<esc><cmd>redraw<bar>echo 'Formatting selection...'<bar>"
       .. "lua vim.lsp.buf.range_formatting()<cr>"
   )
-  kmap("n", "<space>a", "<cmd>Telescope lsp_code_actions<cr>")
-  kmap("x", "<space>a", "<esc><cmd>Telescope lsp_range_code_actions<cr>")
+  map("n", "<space>a", "<cmd>Telescope lsp_code_actions<cr>")
+  map("x", "<space>a", "<esc><cmd>Telescope lsp_range_code_actions<cr>")
 
-  kmap("n", "<space>w", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>")
-  kmap("n", "<space>d", "<cmd>Telescope lsp_document_symbols<cr>")
+  map("n", "<space>w", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>")
+  map("n", "<space>d", "<cmd>Telescope lsp_document_symbols<cr>")
 end
 
 for _, s in pairs(servers) do
@@ -158,11 +154,11 @@ for _, s in pairs(servers) do
       ),
       ["textDocument/formatting"] = function(...)
         lsp.handlers["textDocument/formatting"](...)
-        echo "Buffer formatted!"
+        vim.cmd "echo 'Buffer formatted!'"
       end,
       ["textDocument/rangeFormatting"] = function(...)
         lsp.handlers["textDocument/rangeFormatting"](...)
-        echo "Range formatted!"
+        vim.cmd "echo 'Range formatted!'"
       end,
     },
   }

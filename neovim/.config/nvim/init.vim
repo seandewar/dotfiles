@@ -165,8 +165,8 @@ else
 
     augroup current_statusline_winid_compatibility
         autocmd!
-        autocmd VimEnter,WinEnter * setl statusline=%!StatusLine(1)
-        autocmd WinLeave * setl statusline=%!StatusLine(0)
+        autocmd VimEnter,WinEnter * setlocal statusline=%!StatusLine(1)
+        autocmd WinLeave * setlocal statusline=%!StatusLine(0)
     augroup END
 endif
 
