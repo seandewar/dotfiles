@@ -113,6 +113,8 @@ end
 map("n", "g<c-g>", "<cmd>call v:lua.plugin_conf.echo_cursor_info()<cr>")
 
 -- telescope.nvim {{{2
+map("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>")
+
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
 map("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>")
 map(
@@ -122,7 +124,6 @@ map(
 )
 map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
 map("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")
-map("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>")
 map("n", "<leader>fc", "<cmd>Telescope quickfix<cr>")
 map("n", "<leader>fl", "<cmd>Telescope loclist<cr>")
 map("n", "<leader>ft", "<cmd>Telescope tags<cr>")
@@ -130,8 +131,6 @@ map("n", "<leader>fs", "<cmd>Telescope treesitter<cr>")
 
 -- git-specific mappings & vim-fugitive overrides
 map("n", "<leader>gB", "<cmd>Telescope git_branches<cr>")
-map("n", "<leader>gl", "<cmd>Telescope git_bcommits<cr>")
-map("n", "<leader>gL", "<cmd>Telescope git_commits<cr>")
 
 -- nvim-dap {{{2
 map("n", "<leader>dd", "<cmd>lua require'dap'.repl.open()<cr>")
