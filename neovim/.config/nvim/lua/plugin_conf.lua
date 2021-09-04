@@ -93,7 +93,8 @@ require("dap").adapters["lldb-vscode"] = {
 
 -- Language Server Protocol {{{2
 cmd "packadd nvim-lspconfig"
-cmd("luafile " .. vim.env.MYVIMRUNTIME .. "/lua/lsp_conf.lua")
+package.loaded.lsp_conf = nil
+require "lsp_conf"
 
 -- Mappings {{{1
 -- nvim-gps {{{2

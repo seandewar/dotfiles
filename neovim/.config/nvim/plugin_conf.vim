@@ -107,8 +107,5 @@ nmap [l <plug>(qftoggle_loclist_previous)
 
 " Neovim 0.5+ Lua Plugin Settings {{{1
 if has('nvim-0.5')
-    execute 'luafile ' . $MYVIMRUNTIME . '/lua/plugin_conf.lua'
+    lua package.loaded.plugin_conf = nil; require "plugin_conf"
 endif
-
-" nnoremap g<c-g> <cmd>echo trim(execute('normal! g<c-g>')) .. "\n" ..
-"             \ luaeval('pcall(require"nvim-gps".get_location)')<cr>
