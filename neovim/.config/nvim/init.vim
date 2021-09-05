@@ -38,7 +38,6 @@ set splitbelow splitright
 set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 set textwidth=80
 set title
-set updatetime=1500
 set wildmenu wildmode=list:longest,full wildignorecase
 
 nohlsearch " cancel search highlight from setting hlsearch when reloading
