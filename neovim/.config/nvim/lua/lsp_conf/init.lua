@@ -104,6 +104,14 @@ function lsp_conf.opened_float(buf)
   return win
 end
 
+function lsp_conf.close_float(buf)
+  buf = buf or api.nvim_get_current_buf()
+  local win = lsp_conf.opened_float(buf)
+  if win then
+    api.nvim_win_close(win, true)
+  end
+end
+
 function lsp_conf.restart_diagnostics_timer(ms)
   ms = ms or 750
   lsp_conf.diagnostics_float_timer:stop()
@@ -127,6 +135,8 @@ end
 local function on_attach(client, bufnr)
   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
   vim.opt_local.signcolumn = "yes"
+
+  map("n", "<esc>", "<cmd>lua lsp_conf.close_float()<cr><esc>")
 
   if client.name == "clangd" then
     map("n", "<space>s", "<cmd>ClangdSwitchSourceHeader<cr>")
