@@ -23,22 +23,23 @@ call minpac#add('rust-lang/rust.vim')
 call minpac#add('hrsh7th/vim-vsnip')
 call minpac#add('rafamadriz/friendly-snippets')
 
-" neovim 0.5+ plugins
-if has('nvim-0.5')
-    " language server protocol
-    call minpac#add('neovim/nvim-lspconfig', {'type': 'opt'})
-
-    " debug adapter protocol
-    call minpac#add('mfussenegger/nvim-dap', {'type': 'opt'})
-
-    " treesitter
-    call minpac#add('nvim-treesitter/nvim-treesitter', {'type': 'opt'})
-    call minpac#add('nvim-treesitter/nvim-treesitter-textobjects',
-                \ {'type': 'opt'})
-    call minpac#add('SmiteshP/nvim-gps', {'type': 'opt'})
-
-    " telescope fuzzy finder
-    call minpac#add('nvim-lua/plenary.nvim', {'type': 'opt'})
-    call minpac#add('nvim-telescope/telescope.nvim', {'type': 'opt'})
-    call minpac#add('nvim-telescope/telescope-fzy-native.nvim', {'type': 'opt'})
+" Neovim 0.5+ plugins past this point
+if !has('nvim-0.5')
+    finish
 endif
+
+" language server protocol
+call minpac#add('neovim/nvim-lspconfig', {'type': 'opt'})
+
+" debug adapter protocol
+call minpac#add('mfussenegger/nvim-dap', {'type': 'opt'})
+
+" treesitter
+call minpac#add('nvim-treesitter/nvim-treesitter', {'type': 'opt'})
+call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'type': 'opt'})
+call minpac#add('SmiteshP/nvim-gps', {'type': 'opt'})
+
+" telescope fuzzy finder
+call minpac#add('nvim-lua/plenary.nvim', {'type': 'opt'})
+call minpac#add('nvim-telescope/telescope.nvim', {'type': 'opt'})
+call minpac#add('nvim-telescope/telescope-fzy-native.nvim', {'type': 'opt'})
