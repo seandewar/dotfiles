@@ -21,19 +21,6 @@ silent! colorscheme moonfly
 " neoformat {{{2
 let g:neoformat_basic_format_trim = 1
 
-" NOTE: formatting on save can be globally enabled with g:format_on_save, or
-" overridden on a per-buffer basis with b:format_on_save
-augroup neoformat_on_save
-    autocmd!
-    autocmd BufWritePre *
-                \ if get(b:, 'format_on_save', get(g:, 'format_on_save', 0))
-                \ | silent Neoformat
-                \ | endif
-augroup END
-
-" vim-compiler-luacheck {{{2
-let g:luacheck_makeprg_type = 'cd'
-
 " Status Line Settings {{{1
 " vim-fugitive {{{2
 let g:plugin_statusline_functions  =
@@ -67,13 +54,10 @@ smap <expr> <c-j> vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<c-j>'
 imap <expr> <c-k> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<c-k>'
 smap <expr> <c-k> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<c-k>'
 
-" select or cut text to use as $TM_SELECTED_TEXT in the next snippet
-" (see https://github.com/hrsh7th/vim-vsnip/pull/50)
-" TODO: find a good map for this; s and S is terrible
-" nmap s <plug>(vsnip-select-text)
-" xmap s <plug>(vsnip-select-text)
-" nmap S <plug>(vsnip-cut-text)
-" xmap S <plug>(vsnip-cut-text)
+" cut text to use as $TM_SELECTED_TEXT in the next snippet; the normal mode map
+" accepts a subsequent motion
+xmap <c-j> <plug>(vsnip-cut-text)
+nmap <c-j> <plug>(vsnip-cut-text)
 
 " vim-fugitive {{{2
 nnoremap <silent> <leader>gg :Git<cr>
