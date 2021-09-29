@@ -80,16 +80,6 @@ require("nvim-gps").setup {
   },
 }
 
--- nvim-dap {{{2
-cmd "packadd nvim-dap"
-
-require("dap").adapters["lldb-vscode"] = {
-  name = "lldb-vscode",
-  type = "executable",
-  command = "lldb-vscode",
-  attach = { pidProperty = "pid", pidSelect = "ask" },
-  env = { LLDB_LAUNCH_FLAG_LAUNCH_IN_TTY = "YES" },
-}
 
 -- Language Server Protocol {{{2
 cmd "packadd nvim-lspconfig"
@@ -131,29 +121,6 @@ map("n", "<leader>fs", "<cmd>Telescope treesitter<cr>")
 
 -- git-specific mappings & vim-fugitive overrides
 map("n", "<leader>gB", "<cmd>Telescope git_branches<cr>")
-
--- nvim-dap {{{2
-map("n", "<leader>dd", "<cmd>lua require'dap'.repl.open()<cr>")
-map("n", "<f5>", "<cmd>lua require'dap'.continue()<cr>")
-map("n", "<c-f5>", "<cmd>lua require'dap'.run_last()<cr>")
-
-map("n", "<f9>", "<cmd>lua require'dap'.toggle_breakpoint()<cr>")
-map(
-  "n",
-  "<c-f9>",
-  "<cmd>lua require'dap'.set_breakpoint("
-    .. "vim.fn.input('Breakpoint condition: '))<cr>"
-)
-map(
-  "n",
-  "<leader>dl",
-  "<cmd>lua require'dap'.set_breakpoint(nil, nil, "
-    .. "vim.fn.input('Log point message: '))<cr>"
-)
-
-map("n", "<f10>", "<cmd>lua require'dap'.step_over()<cr>")
-map("n", "<f11>", "<cmd>lua require'dap'.step_into()<cr>")
-map("n", "<f12>", "<cmd>lua require'dap'.step_out()<cr>")
 -- }}}2
 
 return plugin_conf

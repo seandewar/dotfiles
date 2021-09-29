@@ -31,9 +31,6 @@ endif
 " language server protocol
 call minpac#add('neovim/nvim-lspconfig', {'type': 'opt'})
 
-" debug adapter protocol
-call minpac#add('mfussenegger/nvim-dap', {'type': 'opt'})
-
 " treesitter
 call minpac#add('nvim-treesitter/nvim-treesitter', {'type': 'opt'})
 call minpac#add('nvim-treesitter/nvim-treesitter-textobjects', {'type': 'opt'})
