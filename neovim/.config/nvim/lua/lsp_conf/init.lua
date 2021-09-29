@@ -13,12 +13,17 @@ lsp_conf = {
   diagnostics_float_timer = uv.new_timer(),
 }
 
+local function is_attached(buf)
+  buf = buf or api.nvim_get_current_buf()
+  return not vim.tbl_isempty(lsp.buf_get_clients(buf))
+end
+
 -- Status Line Functions {{{1
 function lsp_conf.eval_statusline(is_current)
   is_current = is_current ~= 0
   local progress = is_current and (lsp_conf.progress .. " ") or ""
 
-  if vim.tbl_isempty(lsp.buf_get_clients(0)) then
+  if not is_attached() then
     return progress
   end
 
@@ -52,7 +57,7 @@ function lsp_conf.statusline(is_current)
   return "%{%v:lua.lsp_conf.eval_statusline(" .. is_current .. ")%}"
 end
 
-lsp_conf.update_progress = function()
+function lsp_conf.update_progress()
   local new_msgs = lsp.util.get_progress_messages()
   local msg = new_msgs[#new_msgs]
 
@@ -68,12 +73,8 @@ lsp_conf.update_progress = function()
       if msg.percentage then
         progress = progress .. "(" .. math.floor(msg.percentage) .. "%%)"
       end
-    elseif msg.status then
-      if msg.uri then
-        -- TODO: show this maybe?
-      end
-      progress = progress .. msg.content
     else
+      -- TODO: maybe show URI if msg.status == true?
       progress = progress .. msg.content
     end
   end
@@ -91,8 +92,9 @@ lsp_conf.update_progress = function()
 end
 -- }}}1
 
-local function map(mode, lhs, rhs)
-  api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
+function lsp_conf.update_window(win)
+  win = win or api.nvim_get_current_win()
+  api.nvim_win_set_option(win, "signcolumn", is_attached() and "yes" or "auto")
 end
 
 function lsp_conf.opened_float(buf)
@@ -132,9 +134,13 @@ function lsp_conf.restart_diagnostics_timer(ms)
   )
 end
 
-local function on_attach(client, bufnr)
+local function map(mode, lhs, rhs)
+  api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
+end
+
+local function on_attach(client, _)
+  lsp_conf.update_window()
   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-  vim.opt_local.signcolumn = "yes"
 
   map("n", "<esc>", "<cmd>lua lsp_conf.close_float()<cr><esc>")
 
@@ -214,6 +220,11 @@ vim.cmd [[
     autocmd!
     autocmd User LspProgressUpdate lua lsp_conf.update_progress()
     autocmd User LspDiagnosticsChanged redrawstatus!
+  augroup END
+
+  augroup lsp_conf_update_window
+    autocmd!
+    autocmd BufWinEnter * lua lsp_conf.update_window()
   augroup END
 
   augroup lsp_conf_cursor_diagnostics

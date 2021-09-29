@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 -- Sean Dewar's Neovim 0.5+ Lua Plugin Config <https://github.com/seandewar>  --
 --------------------------------------------------------------------------------
-local api, fn, cmd = vim.api, vim.fn, vim.cmd
+local api, cmd = vim.api, vim.cmd
 
 local map = function(mode, lhs, rhs, opts)
   opts = vim.tbl_extend("keep", opts or {}, { silent = true, noremap = true })
