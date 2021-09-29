@@ -113,7 +113,7 @@ function lsp_conf.close_float(buf)
 end
 
 function lsp_conf.restart_diagnostics_timer(ms)
-  ms = ms or 750
+  ms = ms or 1500
   lsp_conf.diagnostics_float_timer:stop()
   if vim.tbl_isempty(lsp.buf_get_clients(0)) then
     return
@@ -122,7 +122,7 @@ function lsp_conf.restart_diagnostics_timer(ms)
     ms,
     0,
     vim.schedule_wrap(function()
-      if not lsp_conf.opened_float() then
+      if not lsp_conf.opened_float() and api.nvim_get_mode().mode == "n" then
         vim.lsp.diagnostic.show_line_diagnostics {
           focusable = false,
           border = "single",
