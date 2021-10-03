@@ -30,6 +30,7 @@ local M = {
     "clangd",
     "rust_analyzer",
     sumneko_lua_config(),
+    "hls",
   },
 }
 
