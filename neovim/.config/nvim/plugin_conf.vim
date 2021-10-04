@@ -18,6 +18,9 @@ augroup END
 let g:moonflyNormalFloat = 1
 silent! colorscheme moonfly
 
+" localvimrc
+let g:localvimrc_ask = 0
+
 " neoformat {{{2
 let g:neoformat_basic_format_trim = 1
 
