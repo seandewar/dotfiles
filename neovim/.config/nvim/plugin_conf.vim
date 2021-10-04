@@ -7,12 +7,12 @@
 augroup colorscheme_customization
     autocmd!
     autocmd ColorScheme moonfly
-                \ highlight LspDiagnosticsStlError
-                \ ctermfg=1 ctermbg=236 guifg=#ff5454 guibg=#303030
-                \ | highlight LspDiagnosticsStlWarning
-                \ ctermfg=3 ctermbg=236 guifg=#e3c78a guibg=#303030
-                \ | highlight LspDiagnosticsStlInfo
-                \ ctermfg=12 ctermbg=236 guifg=#74b2ff guibg=#303030
+                \ highlight StatusLineError
+                    \ ctermfg=1 ctermbg=236 guifg=#ff5454 guibg=#303030
+                \ | highlight StatusLineWarn
+                    \ ctermfg=3 ctermbg=236 guifg=#e3c78a guibg=#303030
+                \ | highlight StatusLineInfo
+                    \ ctermfg=12 ctermbg=236 guifg=#74b2ff guibg=#303030
 augroup END
 
 let g:moonflyNormalFloat = 1
@@ -23,9 +23,16 @@ let g:neoformat_basic_format_trim = 1
 
 " Status Line Settings {{{1
 " vim-fugitive {{{2
-let g:plugin_statusline_functions  =
+let g:plugin_statusline_functions =
             \ [{is_current -> exists('g:loaded_fugitive') && is_current
                             \ ? '%([%{FugitiveHead(7)}] %)' : ''}]
+
+" Neovim 0.5.1+ Diagnostics {{{2
+if has('nvim-0.5.1')
+    let g:plugin_statusline_functions += [{is_current ->
+                \ luaeval('require(''diagnostic_conf'').statusline(_A)',
+                \         is_current)}]
+end
 
 " Neovim 0.5+ LSP {{{2
 if has('nvim-0.5')

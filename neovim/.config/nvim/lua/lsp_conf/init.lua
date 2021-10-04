@@ -1,9 +1,7 @@
---------------------------------------------------------------------------------
--- Sean Dewar's Neovim 0.5+ LSP Client Config <https://github.com/seandewar>  --
---------------------------------------------------------------------------------
-local lsp, api, uv = vim.lsp, vim.api, vim.loop
+local api = vim.api
+local uv = vim.loop
+local lsp = vim.lsp
 
-package.loaded["lsp_conf.config"] = nil
 local config_mod = require "lsp_conf.config"
 local lspconfig = require "lspconfig"
 
@@ -18,43 +16,11 @@ local function is_attached(buf)
   return not vim.tbl_isempty(lsp.buf_get_clients(buf))
 end
 
--- Status Line Functions {{{1
-function lsp_conf.eval_statusline(is_current)
-  is_current = is_current ~= 0
-  local progress = is_current and (lsp_conf.progress .. " ") or ""
-
-  if not is_attached() then
-    return progress
-  end
-
-  local errors = lsp.diagnostic.get_count(0, "Error")
-  local warns = lsp.diagnostic.get_count(0, "Warning")
-  local infos = lsp.diagnostic.get_count(0, "Info")
-
-  local hi_prefix = "LspDiagnosticsStl"
-  if not is_current then
-    hi_prefix = hi_prefix .. "NC"
-  end
-
-  local parts = {}
-  if errors > 0 then
-    parts[#parts + 1] = "%#" .. hi_prefix .. "Error#" .. errors .. "%*"
-  end
-  if warns > 0 then
-    parts[#parts + 1] = "%#" .. hi_prefix .. "Warning#" .. warns .. "%*"
-  end
-  if infos > 0 then
-    parts[#parts + 1] = "%#" .. hi_prefix .. "Information#" .. infos .. "%*"
-  end
-
-  local status = "["
-    .. (#parts > 0 and table.concat(parts, " ") or "OK")
-    .. "] "
-  return status .. progress
-end
-
 function lsp_conf.statusline(is_current)
-  return "%{%v:lua.lsp_conf.eval_statusline(" .. is_current .. ")%}"
+  if is_current and lsp_conf.progress ~= "" then
+    return "[" .. lsp_conf.progress .. "] "
+  end
+  return vim.tbl_count(lsp.buf_get_clients()) ~= 0 and "[LSP] " or ""
 end
 
 function lsp_conf.update_progress()
@@ -64,14 +30,13 @@ function lsp_conf.update_progress()
   local progress = ""
   if msg then
     progress = msg.name .. ": "
-
     if msg.progress then
       progress = progress .. msg.title .. " "
       if msg.message then
         progress = progress .. msg.message .. " "
       end
       if msg.percentage then
-        progress = progress .. "(" .. math.floor(msg.percentage) .. "%%)"
+        progress = progress .. math.floor(msg.percentage) .. "%%"
       end
     else
       -- TODO: maybe show URI if msg.status == true?
@@ -89,12 +54,6 @@ function lsp_conf.update_progress()
     lsp_conf.progress = ""
     vim.cmd "redrawstatus"
   end, 2750)
-end
--- }}}1
-
-function lsp_conf.update_window(win)
-  win = win or api.nvim_get_current_win()
-  api.nvim_win_set_option(win, "signcolumn", is_attached() and "yes" or "auto")
 end
 
 function lsp_conf.opened_float(buf)
@@ -139,7 +98,6 @@ local function map(mode, lhs, rhs)
 end
 
 local function on_attach(client, _)
-  lsp_conf.update_window()
   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
 
   map("n", "<esc>", "<cmd>lua lsp_conf.close_float()<cr><esc>")
@@ -216,15 +174,9 @@ for _, config in ipairs(config_mod.config) do
 end
 
 vim.cmd [[
-  augroup lsp_conf_update_statusline
+  augroup lsp_conf_update_ui
     autocmd!
     autocmd User LspProgressUpdate lua lsp_conf.update_progress()
-    autocmd User LspDiagnosticsChanged redrawstatus!
-  augroup END
-
-  augroup lsp_conf_update_window
-    autocmd!
-    autocmd BufWinEnter * lua lsp_conf.update_window()
   augroup END
 
   augroup lsp_conf_cursor_diagnostics
@@ -232,14 +184,6 @@ vim.cmd [[
     autocmd CursorMoved * lua lsp_conf.restart_diagnostics_timer()
     autocmd User LspDiagnosticsChanged lua lsp_conf.restart_diagnostics_timer()
   augroup END
-
-  highlight default link LspDiagnosticsStlError LspDiagnosticsSignError
-  highlight default link LspDiagnosticsStlWarning LspDiagnosticsSignWarning
-  highlight default link LspDiagnosticsStlInfo LspDiagnosticsSignInfo
-
-  highlight default link LspDiagnosticsStlNCError LspDiagnosticsStlError
-  highlight default link LspDiagnosticsStlNCWarning LspDiagnosticsStlWarning
-  highlight default link LspDiagnosticsStlNCInfo LspDiagnosticsStlInfo
 ]]
 
 return lsp_conf

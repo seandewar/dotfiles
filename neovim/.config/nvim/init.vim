@@ -169,6 +169,23 @@ else
     augroup END
 endif
 
+" define some default highlights for diagnostics and the status line which can
+" be overrided.
+highlight! default link DiagnosticSignError ErrorMsg
+highlight! default link DiagnosticSignWarn WarningMsg
+highlight! default link DiagnosticSignInfo Question
+highlight! default link DiagnisticSignHint Normal
+
+highlight! default link StatusLineError DiagnosticSignError
+highlight! default link StatusLineWarn DiagnosticSignWarn
+highlight! default link StatusLineInfo DiagnosticSignInfo
+highlight! default link StatusLineHint DiagnisticSignHint
+
+highlight! default link StatusLineNCError StatusLineError
+highlight! default link StatusLineNCWarn StatusLineWarn
+highlight! default link StatusLineNCInfo StatusLineInfo
+highlight! default link StatusLineNCHint StatusLineHint
+
 " Tab Line Settings {{{1
 function! TabLabel(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
