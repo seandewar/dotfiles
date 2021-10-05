@@ -94,7 +94,7 @@ function! s:UpdateColorColumn() abort
     let &l:colorcolumn = &modifiable ? '+1' : '' " hide when nomodifiable
 endfunction
 
-augroup current_window_cursorline_and_colorcolumn
+augroup conf_current_window_cursorline_and_colorcolumn
     autocmd!
     autocmd OptionSet modifiable call s:UpdateColorColumn()
     autocmd WinEnter,BufWinEnter *
@@ -102,19 +102,14 @@ augroup current_window_cursorline_and_colorcolumn
     autocmd WinLeave * setlocal colorcolumn= nocursorline
 augroup END
 
-augroup auto_open_quickfix_or_loclist
+augroup conf_auto_open_quickfix_or_loclist
     autocmd!
     autocmd VimEnter * nested cwindow
 
-    " NOTE: we cannot simply call :c/lwindow here!
-    "
-    " some commands, such as :(l)helpgrep, are not completely finished by the
-    " time QuickfixCmdPost is triggered (for example, :lhelpgrep hasn't created
-    " or entered the help window yet; it hasn't even assigned the populated
-    " location list it uses to any window at that point).
-    "
-    " by calling timer_start() for 0ms, :c/lwindow is deferred until after Vim
-    " is ready to receive user input, which will be after the command finishes.
+    " NOTE: cannot simply use :c/lwindow here, as some commands, such as
+    " :(l)helpgrep, trigger QuickfixCmdPost *before* they're finished (in this
+    " example, the help window isn't open yet). A 0ms timer has the effect of
+    " deferring until Vim is ready for input; the command is likely done by then
     autocmd QuickfixCmdPost [^l]* nested
                 \ call timer_start(0, {-> execute('cwindow')})
     autocmd QuickfixCmdPost l* nested
@@ -162,7 +157,7 @@ if has('patch-8.1.1372') || has('nvim-0.5')
 else
     set statusline=%!StatusLine(0)
 
-    augroup current_statusline_winid_compatibility
+    augroup conf_current_statusline_winid_compatibility
         autocmd!
         autocmd VimEnter,WinEnter * setlocal statusline=%!StatusLine(1)
         autocmd WinLeave * setlocal statusline=%!StatusLine(0)

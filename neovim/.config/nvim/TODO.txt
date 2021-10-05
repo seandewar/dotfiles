@@ -1,5 +1,4 @@
 TODO:
-- prefix config augroups with conf_*
 - use v:true for is_current from init.vim?
 - LSP diagnostics 0.5.0 compatibility support?
 - split .vim config into separate files?

@@ -158,12 +158,12 @@ for _, config in ipairs(servers) do
 end
 
 vim.cmd [[
-  augroup lsp_conf_update_progress
+  augroup conf_lsp_update_progress
     autocmd!
     autocmd User LspProgressUpdate lua require("conf.lsp").update_progress()
   augroup END
 
-  augroup lsp_conf_cursor_diagnostics
+  augroup conf_lsp_cursor_diagnostics
     autocmd!
     autocmd CursorMoved * lua require("conf.lsp").restart_diagnostics_timer()
     autocmd User LspDiagnosticsChanged

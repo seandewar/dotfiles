@@ -24,7 +24,7 @@ function M.statusline(is_current)
 end
 
 vim.cmd [[
-  augroup diagnostic_conf_update_statusline
+  augroup conf_diagnostic_update_statusline
     autocmd!
     autocmd User DiagnosticsChanged redrawstatus!
   augroup END

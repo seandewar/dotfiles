@@ -4,7 +4,7 @@
 
 " General Plugin Settings {{{1
 " color scheme {{{2
-augroup colorscheme_customization
+augroup conf_colorscheme_customization
     autocmd!
     autocmd ColorScheme moonfly
                 \ highlight StatusLineError
