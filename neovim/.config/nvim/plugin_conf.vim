@@ -28,17 +28,14 @@ let g:neoformat_basic_format_trim = 1
 " vim-fugitive {{{2
 let g:plugin_statusline_functions =
             \ [{is_current -> exists('g:loaded_fugitive') && is_current
-                            \ ? '%([%{FugitiveHead(7)}] %)' : ''}]
+            \                 ? '%([%{FugitiveHead(7)}] %)' : ''}]
 
-" Neovim 0.5.1+ Diagnostics {{{2
+" Neovim Diagnostics and LSP {{{2
 if has('nvim-0.5.1')
     let g:plugin_statusline_functions += [{is_current ->
                 \ luaeval('require("conf.diagnostic").statusline(_A)',
                 \         is_current)}]
-end
 
-" Neovim 0.5+ LSP {{{2
-if has('nvim-0.5')
     let g:plugin_statusline_functions += [{is_current ->
                 \ luaeval('require("conf.lsp").statusline(_A)', is_current)}]
 end

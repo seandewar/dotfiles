@@ -2,8 +2,10 @@ local api = vim.api
 local lsp = vim.lsp
 local uv = vim.loop
 
-local servers = require "conf.lsp.servers"
 local lspconfig = require "lspconfig"
+
+local servers = require "conf.lsp.servers"
+local bmap = require("conf.util").bmap
 
 local M = {
   progress = "",
@@ -91,52 +93,36 @@ function M.restart_diagnostics_timer(ms)
   )
 end
 
-local function map(mode, lhs, rhs)
-  api.nvim_buf_set_keymap(0, mode, lhs, rhs, { noremap = true, silent = true })
-end
-
 local function on_attach(client, _)
   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
 
-  map("n", "<esc>", "<cmd>lua require('conf.lsp').close_float()<cr><esc>")
+  bmap("n", "<esc>", "<cmd>lua require('conf.lsp').close_float()<cr><esc>")
 
   if client.name == "clangd" then
-    map("n", "<space>s", "<cmd>ClangdSwitchSourceHeader<cr>")
+    bmap("n", "<space>s", "<cmd>ClangdSwitchSourceHeader<cr>")
   end
 
-  map("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
-  map("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
-  map("i", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
+  bmap("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
+  bmap("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
+  bmap("i", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
 
-  map(
-    "n",
-    "]<space>",
-    "<cmd>lua vim.lsp.diagnostic.goto_next("
-      .. "{popup_opts = {border = 'single'}})<cr>"
-  )
-  map(
-    "n",
-    "[<space>",
-    "<cmd>lua vim.lsp.diagnostic.goto_prev("
-      .. "{popup_opts = {border = 'single'}})<cr>"
-  )
-  map("n", "<space><space>", "<cmd>Telescope lsp_workspace_diagnostics<cr>")
+  bmap("n", "<space><space>", "<cmd>Telescope lsp_workspace_diagnostics<cr>")
 
-  map("n", "<c-]>", "<cmd>lua vim.lsp.buf.definition()<cr>")
-  map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
-  map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
-  map("n", "<space>t", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
-  map("n", "<space>i", "<cmd>Telescope lsp_implementations<cr>")
-  map("n", "<space>r", "<cmd>Telescope lsp_references<cr>")
+  bmap("n", "<c-]>", "<cmd>lua vim.lsp.buf.definition()<cr>")
+  bmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
+  bmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
+  bmap("n", "<space>t", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
+  bmap("n", "<space>i", "<cmd>Telescope lsp_implementations<cr>")
+  bmap("n", "<space>r", "<cmd>Telescope lsp_references<cr>")
 
-  map("n", "<space>R", "<cmd>lua vim.lsp.buf.rename()<cr>")
-  map("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<cr>")
-  map("x", "<space>f", "<esc><cmd>lua vim.lsp.buf.range_formatting()<cr>")
-  map("n", "<space>a", "<cmd>Telescope lsp_code_actions<cr>")
-  map("x", "<space>a", "<esc><cmd>Telescope lsp_range_code_actions<cr>")
+  bmap("n", "<space>R", "<cmd>lua vim.lsp.buf.rename()<cr>")
+  bmap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<cr>")
+  bmap("x", "<space>f", "<esc><cmd>lua vim.lsp.buf.range_formatting()<cr>")
+  bmap("n", "<space>a", "<cmd>Telescope lsp_code_actions<cr>")
+  bmap("x", "<space>a", "<esc><cmd>Telescope lsp_range_code_actions<cr>")
 
-  map("n", "<space>w", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>")
-  map("n", "<space>d", "<cmd>Telescope lsp_document_symbols<cr>")
+  bmap("n", "<space>w", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>")
+  bmap("n", "<space>d", "<cmd>Telescope lsp_document_symbols<cr>")
 end
 
 local default_config = {

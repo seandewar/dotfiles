@@ -1,12 +1,9 @@
 local api = vim.api
 local cmd = vim.cmd
+local fn = vim.fn
 
-local t = require("conf.util").t
-
-local map = function(mode, lhs, rhs, opts)
-  opts = vim.tbl_extend("keep", opts or {}, { silent = true, noremap = true })
-  api.nvim_set_keymap(mode, lhs, rhs, opts)
-end
+local util = require "conf.util"
+local map = util.map
 
 local M = {}
 
@@ -75,15 +72,19 @@ require("nvim-gps").setup {
   },
 }
 
--- Language Server Protocol {{{2
-cmd "packadd nvim-lspconfig"
-require "conf.lsp"
+-- Diagnostics and LSP {{{2
+-- require v0.5.1 over v0.5 for vim.diagnostic and anonymous sourcing fixes
+if fn.has("nvim-0.5.1") == 1 then
+  require "conf.diagnostic"
+  cmd "packadd nvim-lspconfig"
+  require "conf.lsp"
+end
 
 -- Mappings {{{1
 -- nvim-gps {{{2
 -- show tree-sitter context alongside cursor location info
 function M.echo_cursor_info()
-  vim.cmd(t "normal! g<c-g>")
+  vim.cmd(util.t "normal! g<c-g>")
   local gps = require "nvim-gps"
   if gps.is_available() then
     local context = gps.get_location()

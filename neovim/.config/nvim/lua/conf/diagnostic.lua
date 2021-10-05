@@ -1,6 +1,8 @@
 local api = vim.api
 local diagnostic = vim.diagnostic
 
+local map = require("conf.util").map
+
 local M = {}
 
 --- Note: requires recursive statusline evaluation: %{%...%}
@@ -27,5 +29,16 @@ vim.cmd [[
     autocmd User DiagnosticsChanged redrawstatus!
   augroup END
 ]]
+
+map(
+  "n",
+  "]<space>",
+  "<cmd>lua vim.diagnostic.goto_next({popup_opts = {border = 'single'}})<cr>"
+)
+map(
+  "n",
+  "[<space>",
+  "<cmd>lua vim.diagnostic.goto_prev({popup_opts = {border = 'single'}})<cr>"
+)
 
 return M
