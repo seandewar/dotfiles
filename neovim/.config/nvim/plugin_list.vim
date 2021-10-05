@@ -25,7 +25,8 @@ call minpac#add('rafamadriz/friendly-snippets')
 
 if has('nvim-0.5')
     " treesitter
-    call minpac#add('nvim-treesitter/nvim-treesitter', {'type': 'opt'})
+    call minpac#add('nvim-treesitter/nvim-treesitter',
+                \   {'type': 'opt', 'do': 'TSUpdate'})
     call minpac#add('nvim-treesitter/nvim-treesitter-textobjects',
                 \   {'type': 'opt'})
     call minpac#add('SmiteshP/nvim-gps', {'type': 'opt'})

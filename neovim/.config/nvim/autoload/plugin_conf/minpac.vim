@@ -12,6 +12,12 @@ endfunction
 
 function! plugin_conf#minpac#reload() abort
     packadd minpac
+    if !exists('g:loaded_minpac')
+        echohl ErrorMsg
+        echo 'minpac is not installed!'
+        echohl None
+        return
+    endif
 
     " minpac (self-update)
     " on nvim, install to the data dir over the config dir by default

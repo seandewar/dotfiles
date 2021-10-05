@@ -94,7 +94,7 @@ function M.echo_cursor_info()
   end
 end
 
-map("n", "g<c-g>", "<cmd>lua require('conf.plugins').echo_cursor_info()<cr>")
+map("n", "g<c-g>", "<cmd>lua require('conf').echo_cursor_info()<cr>")
 
 -- telescope.nvim {{{2
 map("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>")

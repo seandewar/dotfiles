@@ -33,11 +33,12 @@ let g:plugin_statusline_functions =
 " Neovim Diagnostics and LSP {{{2
 if has('nvim-0.5.1')
     let g:plugin_statusline_functions += [{is_current ->
-                \ luaeval('require("conf.diagnostic").statusline(_A)',
-                \         is_current)}]
+                \ '%{%luaeval(''require("conf.diagnostic").statusline(_A)'','
+                \ .. (is_current ? 'v:true' : 'v:false') .. ')%}'}]
 
     let g:plugin_statusline_functions += [{is_current ->
-                \ luaeval('require("conf.lsp").statusline(_A)', is_current)}]
+                \ '%{%luaeval(''require("conf.lsp").statusline(_A)'','
+                \ .. (is_current ? 'v:true' : 'v:false') .. ')%}'}]
 end
 
 " Commands {{{1
