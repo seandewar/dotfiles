@@ -1,7 +1,5 @@
 TODO:
 - prefix config augroups with conf_*
-- get rid of globals in lua config (if u want reloading then invalidate cache)
-- re-organize lua configs to config/ module (remove *_conf suffix)
-- use v:true for is_current from init.vim
+- use v:true for is_current from init.vim?
 - LSP diagnostics 0.5.0 compatibility support?
 - split .vim config into separate files?

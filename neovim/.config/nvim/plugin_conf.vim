@@ -33,14 +33,14 @@ let g:plugin_statusline_functions =
 " Neovim 0.5.1+ Diagnostics {{{2
 if has('nvim-0.5.1')
     let g:plugin_statusline_functions += [{is_current ->
-                \ luaeval('require(''diagnostic_conf'').statusline(_A)',
+                \ luaeval('require("conf.diagnostic").statusline(_A)',
                 \         is_current)}]
 end
 
 " Neovim 0.5+ LSP {{{2
 if has('nvim-0.5')
     let g:plugin_statusline_functions += [{is_current ->
-                \ v:lua.lsp_conf.statusline(is_current)}]
+                \ luaeval('require("conf.lsp").statusline(_A)', is_current)}]
 end
 
 " Commands {{{1
@@ -101,5 +101,5 @@ nmap [l <plug>(qftoggle_loclist_previous)
 
 " Neovim 0.5+ Lua Plugin Settings {{{1
 if has('nvim-0.5')
-    lua package.loaded.plugin_conf = nil; require "plugin_conf"
+    lua require("conf.util").reload()
 endif

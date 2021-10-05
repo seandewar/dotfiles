@@ -1,29 +1,27 @@
 local api = vim.api
-local uv = vim.loop
 local lsp = vim.lsp
+local uv = vim.loop
 
-local config_mod = require "lsp_conf.config"
+local servers = require "conf.lsp.servers"
 local lspconfig = require "lspconfig"
 
--- Global, as this file isn't usually require()'d (allows reloading)
-lsp_conf = {
+local M = {
   progress = "",
   diagnostics_float_timer = uv.new_timer(),
 }
 
 local function is_attached(buf)
-  buf = buf or api.nvim_get_current_buf()
-  return not vim.tbl_isempty(lsp.buf_get_clients(buf))
+  return vim.tbl_count(lsp.buf_get_clients(buf)) ~= 0
 end
 
-function lsp_conf.statusline(is_current)
-  if is_current and lsp_conf.progress ~= "" then
-    return "[" .. lsp_conf.progress .. "] "
+function M.statusline(is_current)
+  if is_current and M.progress ~= "" then
+    return "[" .. M.progress .. "] "
   end
-  return vim.tbl_count(lsp.buf_get_clients()) ~= 0 and "[LSP] " or ""
+  return is_attached() and "[LSP] " or ""
 end
 
-function lsp_conf.update_progress()
+function M.update_progress()
   local new_msgs = lsp.util.get_progress_messages()
   local msg = new_msgs[#new_msgs]
 
@@ -44,19 +42,19 @@ function lsp_conf.update_progress()
     end
   end
 
-  lsp_conf.progress = progress
+  M.progress = progress
   vim.cmd "redrawstatus"
 
-  if lsp_conf.progress_clear_timer then
-    lsp_conf.progress_clear_timer:stop()
+  if M.progress_clear_timer then
+    M.progress_clear_timer:stop()
   end
-  lsp_conf.progress_clear_timer = vim.defer_fn(function()
-    lsp_conf.progress = ""
+  M.progress_clear_timer = vim.defer_fn(function()
+    M.progress = ""
     vim.cmd "redrawstatus"
   end, 2750)
 end
 
-function lsp_conf.opened_float(buf)
+function M.opened_float(buf)
   buf = buf or api.nvim_get_current_buf()
   local ok, win = pcall(api.nvim_buf_get_var, buf, "lsp_floating_preview")
   if not ok or not api.nvim_win_is_valid(win) then
@@ -65,25 +63,25 @@ function lsp_conf.opened_float(buf)
   return win
 end
 
-function lsp_conf.close_float(buf)
+function M.close_float(buf)
   buf = buf or api.nvim_get_current_buf()
-  local win = lsp_conf.opened_float(buf)
+  local win = M.opened_float(buf)
   if win then
     api.nvim_win_close(win, true)
   end
 end
 
-function lsp_conf.restart_diagnostics_timer(ms)
+function M.restart_diagnostics_timer(ms)
   ms = ms or 1500
-  lsp_conf.diagnostics_float_timer:stop()
-  if vim.tbl_isempty(lsp.buf_get_clients(0)) then
+  M.diagnostics_float_timer:stop()
+  if not is_attached() then
     return
   end
-  lsp_conf.diagnostics_float_timer:start(
+  M.diagnostics_float_timer:start(
     ms,
     0,
     vim.schedule_wrap(function()
-      if not lsp_conf.opened_float() and api.nvim_get_mode().mode == "n" then
+      if not M.opened_float() and api.nvim_get_mode().mode == "n" then
         vim.lsp.diagnostic.show_line_diagnostics {
           focusable = false,
           border = "single",
@@ -100,7 +98,7 @@ end
 local function on_attach(client, _)
   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
 
-  map("n", "<esc>", "<cmd>lua lsp_conf.close_float()<cr><esc>")
+  map("n", "<esc>", "<cmd>lua require('conf.lsp').close_float()<cr><esc>")
 
   if client.name == "clangd" then
     map("n", "<space>s", "<cmd>ClangdSwitchSourceHeader<cr>")
@@ -160,7 +158,7 @@ local default_config = {
   },
 }
 
-for _, config in ipairs(config_mod.config) do
+for _, config in ipairs(servers) do
   local name
   if type(config) == "string" then
     name = config
@@ -174,16 +172,17 @@ for _, config in ipairs(config_mod.config) do
 end
 
 vim.cmd [[
-  augroup lsp_conf_update_ui
+  augroup lsp_conf_update_progress
     autocmd!
-    autocmd User LspProgressUpdate lua lsp_conf.update_progress()
+    autocmd User LspProgressUpdate lua require("conf.lsp").update_progress()
   augroup END
 
   augroup lsp_conf_cursor_diagnostics
     autocmd!
-    autocmd CursorMoved * lua lsp_conf.restart_diagnostics_timer()
-    autocmd User LspDiagnosticsChanged lua lsp_conf.restart_diagnostics_timer()
+    autocmd CursorMoved * lua require("conf.lsp").restart_diagnostics_timer()
+    autocmd User LspDiagnosticsChanged
+        \ lua require("conf.lsp").restart_diagnostics_timer()
   augroup END
 ]]
 
-return lsp_conf
+return M

@@ -1,4 +1,5 @@
-local api, fn = vim.api, vim.fn
+local api = vim.api
+local fn = vim.fn
 
 local function sumneko_lua_config()
   local bin_path = fn.exepath "lua-language-server"
@@ -26,12 +27,10 @@ local function sumneko_lua_config()
 end
 
 local M = {
-  config = {
-    "clangd",
-    "rust_analyzer",
-    sumneko_lua_config(),
-    "hls",
-  },
+  "clangd",
+  "rust_analyzer",
+  sumneko_lua_config(),
+  "hls",
 }
 
 return M

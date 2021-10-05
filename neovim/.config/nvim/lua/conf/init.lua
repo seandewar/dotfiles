@@ -1,19 +1,14 @@
---------------------------------------------------------------------------------
--- Sean Dewar's Neovim 0.5+ Lua Plugin Config <https://github.com/seandewar>  --
---------------------------------------------------------------------------------
-local api, cmd = vim.api, vim.cmd
+local api = vim.api
+local cmd = vim.cmd
+
+local t = require("conf.util").t
 
 local map = function(mode, lhs, rhs, opts)
   opts = vim.tbl_extend("keep", opts or {}, { silent = true, noremap = true })
   api.nvim_set_keymap(mode, lhs, rhs, opts)
 end
 
-local t = function(str)
-  return api.nvim_replace_termcodes(str, true, true, true)
-end
-
--- Global, as this file isn't usually require()'d (allows reloading)
-plugin_conf = {}
+local M = {}
 
 -- General Plugin Settings {{{1
 -- telescope.nvim {{{2
@@ -80,16 +75,14 @@ require("nvim-gps").setup {
   },
 }
 
-
 -- Language Server Protocol {{{2
 cmd "packadd nvim-lspconfig"
-package.loaded.lsp_conf = nil
-require "lsp_conf"
+require "conf.lsp"
 
 -- Mappings {{{1
 -- nvim-gps {{{2
 -- show tree-sitter context alongside cursor location info
-plugin_conf.echo_cursor_info = function()
+function M.echo_cursor_info()
   vim.cmd(t "normal! g<c-g>")
   local gps = require "nvim-gps"
   if gps.is_available() then
@@ -100,7 +93,7 @@ plugin_conf.echo_cursor_info = function()
   end
 end
 
-map("n", "g<c-g>", "<cmd>call v:lua.plugin_conf.echo_cursor_info()<cr>")
+map("n", "g<c-g>", "<cmd>lua require('conf.plugins').echo_cursor_info()<cr>")
 
 -- telescope.nvim {{{2
 map("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>")
@@ -123,4 +116,4 @@ map("n", "<leader>fs", "<cmd>Telescope treesitter<cr>")
 map("n", "<leader>gB", "<cmd>Telescope git_branches<cr>")
 -- }}}2
 
-return plugin_conf
+return M
