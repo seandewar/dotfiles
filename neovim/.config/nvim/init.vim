@@ -18,7 +18,7 @@ set display+=lastline
 set encoding=utf-8
 set foldmethod=marker
 set formatoptions=croqnlj
-set guioptions=M " has to be before :syntax/filetype on, so not in gvimrc
+set guioptions=M  " has to be before :syntax/filetype on, so not in gvimrc
 set hidden
 set hlsearch incsearch ignorecase smartcase
 set nojoinspaces
@@ -26,13 +26,12 @@ set lazyredraw
 set list listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
 set mouse=a mousemodel=popup nomousehide
 set nrformats-=octal
-set path& | let &path .= '**' " use :let.=, as 'path' already ends in a comma
+set path& | let &path .= '**'  " use :let.=, as 'path' already ends in a comma
 set pumheight=12
 set ruler
 set scrolloff=1 sidescroll=5
 set sessionoptions-=options viewoptions-=options
 set shortmess+=IF shortmess-=S
-set noshowcmd
 set spelllang=en_gb
 set splitbelow splitright
 set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
@@ -40,7 +39,7 @@ set textwidth=80
 set title
 set wildmenu wildmode=list:longest,full wildignorecase
 
-nohlsearch " cancel search highlight from setting hlsearch when reloading
+nohlsearch  " cancel search highlight from setting hlsearch when reloading
 filetype plugin indent on
 syntax enable
 
