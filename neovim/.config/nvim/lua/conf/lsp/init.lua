@@ -30,13 +30,14 @@ function M.update_progress()
   local progress = ""
   if msg then
     progress = msg.name .. ": "
+
     if msg.progress then
-      progress = progress .. msg.title .. " "
+      progress = progress .. msg.title
       if msg.message then
-        progress = progress .. msg.message .. " "
+        progress = progress .. " " .. msg.message
       end
       if msg.percentage then
-        progress = progress .. math.floor(msg.percentage) .. "%%"
+        progress = progress .. " " .. math.floor(msg.percentage) .. "%%"
       end
     else
       -- TODO: maybe show URI if msg.status == true?

@@ -1,4 +1,11 @@
 TODO:
+- bind telescope up/down and some other keys to navigate history
+- telescope don't overwrite quickfix list (make a new list instead for [C ]C)
+- general vim.diagnostic picker for telescope? (probably need to wait for it)
+- fix vim-vsnip, friendly-snippets (presumably broken after bfredl-path changes)
+
+- remove automatic line diagnostics popup (not sure i like it)
+- reconsider nvim-dap at some point?
 - use v:true for is_current from init.vim?
 - LSP diagnostics 0.5.0 compatibility support?
 - split .vim config into separate files?
