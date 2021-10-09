@@ -1,4 +1,3 @@
-local api = vim.api
 local cmd = vim.cmd
 local fn = vim.fn
 
@@ -13,7 +12,23 @@ cmd "packadd plenary.nvim"
 cmd "packadd telescope.nvim"
 cmd "packadd telescope-fzy-native.nvim"
 
-require("telescope").load_extension "fzy_native"
+local telescope = require "telescope"
+telescope.load_extension "fzy_native"
+
+local telescope_actions = require "telescope.actions"
+telescope.setup {
+  defaults = {
+    mappings = {
+      i = {
+        -- somewhat mimic command-line mode behaviour
+        ["<Down>"] = telescope_actions.cycle_history_next,
+        ["<Up>"] = telescope_actions.cycle_history_prev,
+        ["<S-Down>"] = telescope_actions.cycle_history_next,
+        ["<S-Up>"] = telescope_actions.cycle_history_prev,
+      },
+    },
+  },
+}
 
 -- nvim-treesitter {{{2
 cmd "packadd nvim-treesitter"
@@ -74,7 +89,7 @@ require("nvim-gps").setup {
 
 -- Diagnostics and LSP {{{2
 -- require v0.5.1 over v0.5 for vim.diagnostic and anonymous sourcing fixes
-if fn.has("nvim-0.5.1") == 1 then
+if fn.has "nvim-0.5.1" == 1 then
   require "conf.diagnostic"
   cmd "packadd nvim-lspconfig"
   require "conf.lsp"
