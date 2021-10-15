@@ -265,6 +265,11 @@ nnoremap <silent> [l :lprevious<cr>zv
 nnoremap <silent> ]L :lnewer<cr>
 nnoremap <silent> [L :lolder<cr>
 
+" Neovim Terminal {{{2
+if has('nvim')
+    tnoremap <silent> <c-w> <c-\><c-n><c-w>
+endif
+
 " Source optional configurations before plugins are loaded {{{1
 runtime init_local.vim " machine-specific settings; un-versioned
 runtime plugin_conf.vim
