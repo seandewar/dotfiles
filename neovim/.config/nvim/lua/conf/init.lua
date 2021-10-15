@@ -20,7 +20,7 @@ telescope.setup {
   defaults = {
     mappings = {
       i = {
-        -- somewhat mimic command-line mode behaviour
+        -- somewhat mimic command-line mode behaviour here
         ["<Down>"] = telescope_actions.cycle_history_next,
         ["<Up>"] = telescope_actions.cycle_history_prev,
         ["<S-Down>"] = telescope_actions.cycle_history_next,

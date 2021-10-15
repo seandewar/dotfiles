@@ -28,7 +28,10 @@ function M.update_progress()
   local msg = new_msgs[#new_msgs]
 
   local progress = ""
-  if msg then
+  -- TODO: not needed after nvim 0.5.2
+  local done = msg.done == true
+
+  if msg and not done then
     progress = msg.name .. ": "
 
     if msg.progress then
@@ -51,10 +54,12 @@ function M.update_progress()
   if M.progress_clear_timer then
     M.progress_clear_timer:stop()
   end
-  M.progress_clear_timer = vim.defer_fn(function()
-    M.progress = ""
-    vim.cmd "redrawstatus"
-  end, 2750)
+  if not done then
+    M.progress_clear_timer = vim.defer_fn(function()
+      M.progress = ""
+      vim.cmd "redrawstatus"
+    end, 2750)
+  end
 end
 
 function M.opened_float(buf)
