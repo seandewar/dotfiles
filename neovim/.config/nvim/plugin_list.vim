@@ -21,7 +21,7 @@ call minpac#add('rust-lang/rust.vim')
 
 " snippets with integrations
 call minpac#add('hrsh7th/vim-vsnip')
-call minpac#add('rafamadriz/friendly-snippets')
+call minpac#add('rafamadriz/friendly-snippets', {'type': 'opt'})
 
 if has('nvim-0.5')
     " treesitter

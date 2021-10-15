@@ -26,6 +26,13 @@ let g:localvimrc_ask = 0
 " neoformat {{{2
 let g:neoformat_basic_format_trim = 1
 
+" friendly-snippets {{{2
+" TODO: After bfredl's &rtp changes in nvim 0.6, start packages aren't shown in
+" &rtp anymore; nvim_get_runtime_file should be used instead. vim-vsnip hasn't
+" been updated to do this, so we need to make friendly-snippets opt and packadd
+" manually so it appears in &rtp and vim-vsnip detects the snippets!
+packadd friendly-snippets
+
 " Status Line Settings {{{1
 " vim-fugitive {{{2
 let g:plugin_statusline_functions =
