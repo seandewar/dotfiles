@@ -3,9 +3,6 @@ TODO:
 - general vim.diagnostic picker for telescope? (probably need to wait for it)
 - vim-vsnip completion?
 
-- remove vim-vsnip, friendly-snippets temp fix until vim-vsnip is updated to
-  work with bfredl-path changes
-
 - remove automatic line diagnostics popup (not sure i like it)
 - reconsider nvim-dap at some point?
 - use v:true for is_current from init.vim?
