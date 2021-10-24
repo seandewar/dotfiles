@@ -34,6 +34,7 @@ local M = {
             "setup",
             "teardown",
           },
+          disable = { "lowercase-global" },
         },
         telemetry = { enable = false },
       },
