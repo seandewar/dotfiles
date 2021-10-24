@@ -1,10 +1,8 @@
 TODO:
-- move diagnostics popup logic to diagnostic module
 - telescope don't overwrite quickfix list (make a new list instead for [C ]C)
 - general vim.diagnostic picker for telescope? (probably need to wait for it)
 - vim-vsnip completion?
 
-- remove automatic line diagnostics popup (not sure i like it)
 - reconsider nvim-dap at some point?
 - use v:true for is_current from init.vim?
 - split .vim config into separate files?

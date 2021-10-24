@@ -1,11 +1,10 @@
-if vim.fn.has "nvim-0.6" == 0 then
+local fn = vim.fn
+if fn.has "nvim-0.6" == 0 then
   return nil
 end
 
-local api = vim.api
 local cmd = vim.cmd
 local lsp = vim.lsp
-local uv = vim.loop
 
 cmd "packadd nvim-lspconfig"
 local lspconfig = require "lspconfig"
@@ -14,8 +13,8 @@ local servers = require "conf.lsp.servers"
 local bmap = require("conf.util").bmap
 
 local M = {
+  progress_clear_ms = 2750,
   progress = "",
-  diagnostics_float_timer = uv.new_timer(),
 }
 
 local function is_attached(buf)
@@ -61,63 +60,24 @@ function M.update_progress()
     M.progress_clear_timer = vim.defer_fn(function()
       M.progress = ""
       cmd "redrawstatus"
-    end, 2750)
+    end, M.progress_clear_ms)
   end
 end
 
-function M.opened_float(buf)
-  buf = buf or api.nvim_get_current_buf()
-  local ok, win = pcall(api.nvim_buf_get_var, buf, "lsp_floating_preview")
-  if not ok or not api.nvim_win_is_valid(win) then
-    return nil
-  end
-  return win
-end
-
-function M.close_float(buf)
-  buf = buf or api.nvim_get_current_buf()
-  local win = M.opened_float(buf)
-  if win then
-    api.nvim_win_close(win, true)
-  end
-end
-
-function M.restart_diagnostics_timer(ms)
-  ms = ms or 1500
-  M.diagnostics_float_timer:stop()
-  if not is_attached() then
-    return
-  end
-  M.diagnostics_float_timer:start(
-    ms,
-    0,
-    vim.schedule_wrap(function()
-      if not M.opened_float() and api.nvim_get_mode().mode == "n" then
-        vim.lsp.diagnostic.show_line_diagnostics {
-          focusable = false,
-          border = "single",
-        }
-      end
-    end)
-  )
-end
-
+-- TODO: set tagfunc when lsp adds that and move lsp_workspace_diagnostics to
+-- diagnostic config when a generic vim.diagnostic picker is added
 local function on_attach(client, _)
   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-
-  bmap("n", "<esc>", "<cmd>lua require('conf.lsp').close_float()<cr><esc>")
 
   if client.name == "clangd" then
     bmap("n", "<space>s", "<cmd>ClangdSwitchSourceHeader<cr>")
   end
 
   bmap("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
-  bmap("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
-  bmap("i", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
+  bmap({ "n", "i" }, "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
 
   bmap("n", "<space><space>", "<cmd>Telescope lsp_workspace_diagnostics<cr>")
 
-  bmap("n", "<c-]>", "<cmd>lua vim.lsp.buf.definition()<cr>")
   bmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
   bmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
   bmap("n", "<space>t", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
@@ -169,16 +129,9 @@ for _, config in ipairs(servers) do
 end
 
 cmd [[
-  augroup conf_lsp_update_progress
+  augroup conf_lsp_progress
     autocmd!
     autocmd User LspProgressUpdate lua require("conf.lsp").update_progress()
-  augroup END
-
-  augroup conf_lsp_cursor_diagnostics
-    autocmd!
-    autocmd CursorMoved * lua require("conf.lsp").restart_diagnostics_timer()
-    autocmd User LspDiagnosticsChanged
-        \ lua require("conf.lsp").restart_diagnostics_timer()
   augroup END
 ]]
 
