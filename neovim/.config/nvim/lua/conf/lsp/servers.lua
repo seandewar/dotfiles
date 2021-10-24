@@ -1,36 +1,44 @@
 local api = vim.api
-local fn = vim.fn
-
-local function sumneko_lua_config()
-  local bin_path = fn.exepath "lua-language-server"
-  if bin_path == "" then
-    return nil
-  end
-
-  local root_path = fn.fnamemodify(bin_path, ":h:h:h")
-  local runtime_path = vim.split(package.path, ";")
-  runtime_path[#runtime_path + 1] = "lua/?.lua"
-  runtime_path[#runtime_path + 1] = "lua/?/init.lua"
-
-  return {
-    name = "sumneko_lua",
-    cmd = { bin_path, "-E", root_path .. "/main.lua" },
-    settings = {
-      Lua = {
-        runtime = { version = "LuaJIT", path = runtime_path },
-        diagnostics = { globals = { "vim" } },
-        workspace = { library = api.nvim_get_runtime_file("", true) },
-        telemetry = { enable = false },
-      },
-    },
-  }
-end
 
 local M = {
   "clangd",
   "rust_analyzer",
-  sumneko_lua_config(),
   "hls",
+  {
+    name = "sumneko_lua",
+    cmd = { "lua-language-server" },
+    settings = {
+      Lua = {
+        workspace = {
+          library = api.nvim_get_runtime_file("", true),
+          maxPreload = 2000,
+          preloadFileSize = 1000,
+        },
+        runtime = {
+          version = "LuaJIT",
+          path = vim.list_extend(
+            vim.split(package.path, ";"),
+            { "lua/?.lua", "lua/?/init.lua" }
+          ),
+        },
+        diagnostics = {
+          globals = {
+            -- (Neo)Vim
+            "vim",
+            -- Busted
+            "after_each",
+            "before_each",
+            "context",
+            "describe",
+            "it",
+            "setup",
+            "teardown",
+          },
+        },
+        telemetry = { enable = false },
+      },
+    },
+  },
 }
 
 return M
