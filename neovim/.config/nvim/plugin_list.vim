@@ -37,7 +37,7 @@ if has('nvim-0.5')
     call minpac#add('nvim-telescope/telescope-fzy-native.nvim', {'type': 'opt'})
 end
 
-if has('nvim-0.5.1')
+if has('nvim-0.6')
     " language server protocol
     call minpac#add('neovim/nvim-lspconfig', {'type': 'opt'})
 end

@@ -1,5 +1,4 @@
 local cmd = vim.cmd
-local fn = vim.fn
 
 local util = require "conf.util"
 local map = util.map
@@ -87,13 +86,9 @@ require("nvim-gps").setup {
   },
 }
 
--- Diagnostics and LSP {{{2
--- require v0.5.1 over v0.5 for vim.diagnostic and anonymous sourcing fixes
-if fn.has "nvim-0.5.1" == 1 then
-  require "conf.diagnostic"
-  cmd "packadd nvim-lspconfig"
-  require "conf.lsp"
-end
+-- LSP and Diagnostics {{{2
+require "conf.diagnostic"
+require "conf.lsp"
 
 -- Mappings {{{1
 -- nvim-gps {{{2

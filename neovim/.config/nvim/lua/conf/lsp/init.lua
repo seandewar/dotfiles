@@ -1,7 +1,13 @@
+if vim.fn.has "nvim-0.6" == 0 then
+  return nil
+end
+
 local api = vim.api
+local cmd = vim.cmd
 local lsp = vim.lsp
 local uv = vim.loop
 
+cmd "packadd nvim-lspconfig"
 local lspconfig = require "lspconfig"
 
 local servers = require "conf.lsp.servers"
@@ -28,10 +34,7 @@ function M.update_progress()
   local msg = new_msgs[#new_msgs]
 
   local progress = ""
-  -- TODO: not needed after nvim 0.5.2
-  local done = msg.done == true
-
-  if msg and not done then
+  if msg and not msg.done then
     progress = msg.name .. ": "
 
     if msg.progress then
@@ -49,15 +52,15 @@ function M.update_progress()
   end
 
   M.progress = progress
-  vim.cmd "redrawstatus"
+  cmd "redrawstatus"
 
   if M.progress_clear_timer then
     M.progress_clear_timer:stop()
   end
-  if not done then
+  if not msg.done then
     M.progress_clear_timer = vim.defer_fn(function()
       M.progress = ""
-      vim.cmd "redrawstatus"
+      cmd "redrawstatus"
     end, 2750)
   end
 end
@@ -134,18 +137,20 @@ end
 local default_config = {
   on_attach = on_attach,
   handlers = {
-    ["textDocument/hover"] = lsp.with(lsp.handlers.hover, { border = "single" }),
+    ["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
+      border = "single",
+    }),
     ["textDocument/signatureHelp"] = lsp.with(
       lsp.handlers.signature_help,
       { border = "single" }
     ),
     ["textDocument/formatting"] = function(...)
       lsp.handlers["textDocument/formatting"](...)
-      vim.cmd "echo 'Buffer formatted!'"
+      cmd "echo 'Buffer formatted!'"
     end,
     ["textDocument/rangeFormatting"] = function(...)
       lsp.handlers["textDocument/rangeFormatting"](...)
-      vim.cmd "echo 'Range formatted!'"
+      cmd "echo 'Range formatted!'"
     end,
   },
 }
@@ -163,7 +168,7 @@ for _, config in ipairs(servers) do
   lspconfig[name].setup(vim.tbl_deep_extend("force", default_config, config))
 end
 
-vim.cmd [[
+cmd [[
   augroup conf_lsp_update_progress
     autocmd!
     autocmd User LspProgressUpdate lua require("conf.lsp").update_progress()

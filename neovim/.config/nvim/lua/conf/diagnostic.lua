@@ -1,6 +1,8 @@
-local api = vim.api
-local diagnostic = vim.diagnostic
+if vim.fn.has "nvim-0.6" == 0 then
+  return nil
+end
 
+local diagnostic = vim.diagnostic
 local map = require("conf.util").map
 
 local M = {}
@@ -9,6 +11,7 @@ local M = {}
 function M.statusline(is_current)
   local hi_prefix = is_current and "StatusLine" or "StatusLineNC"
   local parts = {}
+
   local function add_part(hi_suffix, severity)
     local count = #diagnostic.get(0, { severity = severity })
     if count > 0 then
@@ -23,6 +26,8 @@ function M.statusline(is_current)
   return #parts > 0 and ("[" .. table.concat(parts, " ") .. "] ") or ""
 end
 
+diagnostic.config { severity_sort = true }
+
 vim.cmd [[
   augroup conf_diagnostic_update_statusline
     autocmd!
@@ -33,12 +38,12 @@ vim.cmd [[
 map(
   "n",
   "]<space>",
-  "<cmd>lua vim.diagnostic.goto_next({popup_opts = {border = 'single'}})<cr>"
+  "<cmd>lua vim.diagnostic.goto_next({float = {border = 'single'}})<cr>"
 )
 map(
   "n",
   "[<space>",
-  "<cmd>lua vim.diagnostic.goto_prev({popup_opts = {border = 'single'}})<cr>"
+  "<cmd>lua vim.diagnostic.goto_prev({float = {border = 'single'}})<cr>"
 )
 
 return M

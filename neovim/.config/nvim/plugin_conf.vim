@@ -33,11 +33,10 @@ let g:plugin_statusline_functions =
             \                 ? '%([%{FugitiveHead(7)}] %)' : ''}]
 
 " Neovim Diagnostics and LSP {{{2
-if has('nvim-0.5.1')
+if has('nvim-0.6')
     let g:plugin_statusline_functions += [{is_current ->
                 \ '%{%v:lua.require''conf.diagnostic''.statusline('
                 \ .. (is_current ? 'v:true' : 'v:false') .. ')%}'}]
-
     let g:plugin_statusline_functions += [{is_current ->
                 \ '%{%v:lua.require''conf.lsp''.statusline('
                 \ .. (is_current ? 'v:true' : 'v:false') .. ')%}'}]
