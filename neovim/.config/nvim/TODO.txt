@@ -3,6 +3,7 @@ TODO:
 - general vim.diagnostic picker for telescope? (probably need to wait for it)
 - vim-vsnip completion?
 
+- telescope vim.ui.select
 - reconsider nvim-dap at some point?
 - use v:true for is_current from init.vim?
 - split .vim config into separate files?

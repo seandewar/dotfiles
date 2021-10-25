@@ -38,6 +38,7 @@ set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 set textwidth=80
 set title
 set wildmenu wildmode=list:longest,full wildignorecase
+set nowrap
 
 nohlsearch  " cancel search highlight from setting hlsearch when reloading
 filetype plugin indent on
@@ -68,7 +69,7 @@ if executable('rg')
 endif
 
 " 16-bit true colour is available if Win32 virtual console support is active.
-" If we're using Nvim, turn it on anyway as tgc tends to Just Work TM.
+" If we're using Nvim, turn it on anyway as tgc tends to "Just Work" (TM)
 if has('nvim') || has('vcon')
     set termguicolors
 endif
@@ -80,8 +81,8 @@ if !has('nvim')
     silent! call mkdir($MYVIMRUNTIME . '/undo', 'p')
     silent! call mkdir($MYVIMRUNTIME . '/backup', 'p')
 
-    " NOTE: by using :set^= rather than :let, commas will be added after our
-    " prepended entries by vim if required
+    " NOTE: use :set^= over :let so commas are added after our prepended entries
+    " if required
     execute 'set directory& directory^=' . $MYVIMRUNTIME . '/swap//'
     execute 'set undodir& undodir^=' . $MYVIMRUNTIME . '/undo'
 
@@ -90,25 +91,25 @@ if !has('nvim')
 endif
 
 function! s:UpdateColorColumn() abort
-    let &l:colorcolumn = &modifiable ? '+1' : '' " hide when nomodifiable
+    let &colorcolumn = &modifiable ? '+1' : ''
 endfunction
 
-augroup conf_current_window_cursorline_and_colorcolumn
+augroup conf_active_cursorline
     autocmd!
+    autocmd VimEnter,WinEnter * call s:UpdateColorColumn() | set cursorline
+    autocmd WinLeave * set colorcolumn= nocursorline
+    autocmd BufWinEnter * call s:UpdateColorColumn()
     autocmd OptionSet modifiable call s:UpdateColorColumn()
-    autocmd WinEnter,BufWinEnter *
-                \ call s:UpdateColorColumn() | setlocal cursorline
-    autocmd WinLeave * setlocal colorcolumn= nocursorline
 augroup END
 
-augroup conf_auto_open_quickfix_or_loclist
+augroup conf_auto_quickfix
     autocmd!
     autocmd VimEnter * nested cwindow
 
-    " NOTE: cannot simply use :c/lwindow here, as some commands, such as
-    " :(l)helpgrep, trigger QuickfixCmdPost *before* they're finished (in this
-    " example, the help window isn't open yet). A 0ms timer has the effect of
-    " deferring until Vim is ready for input; the command is likely done by then
+    " NOTE: can't simply use :c/lwindow here.
+    " Some commands (like :helpgrep) trigger QuickfixCmdPost before they
+    " populate the qf list. So use a 0ms timer to defer until Vim is ready for
+    " input; the list should be populated by then.
     autocmd QuickfixCmdPost [^l]* nested
                 \ call timer_start(0, {-> execute('cwindow')})
     autocmd QuickfixCmdPost l* nested
@@ -132,7 +133,6 @@ function! StatusLine(is_current) abort
     let line  = '%(%w %)'                                   " preview win flag
     let line .= '%(%f %)'                                   " file name
     let line .= '%([%M%R] %)'                               " modified, RO flag
-    let line .= '%(%y %)'                                   " file type
     let line .= '%([%{&spell ? &spelllang : ''''}] %)'      " spell check
 
     " plugin-specific status line elements
@@ -271,7 +271,7 @@ if has('nvim')
 endif
 
 " Source optional configurations before plugins are loaded {{{1
-runtime init_local.vim " machine-specific settings; un-versioned
+runtime init_local.vim  " machine-specific settings; un-versioned
 runtime plugin_conf.vim
 
 " Use my vanilla color scheme choice if one wasn't set {{{1
