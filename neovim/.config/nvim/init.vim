@@ -1,6 +1,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Sean Dewar's (Neo)Vim Configuration <https://github.com/seandewar>           "
-" Aims for compatibility with Vim 8.0+ and Neovim 0.3+ (plugins may differ)    "
+" Sean Dewar's Vanilla (Neo)Vim Configuration <https://github.com/seandewar>   "
+" Aims for compatibility with Vim 8.1.2269+ & Neovim 0.3+ (plugins may differ) "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Set $MYVIMRC and $MYVIMRUNTIME for easy access, resolving symlinks {{{1
@@ -58,12 +58,11 @@ if has('patch-8.1.2315') || has('nvim-0.5')
 endif
 
 set completeopt=menu,menuone
-" completion menu can use popups, if available
-if has('patch-8.1.1880')
+if has('patch-8.1.1880')  " doesn't work in Nvim
     set completeopt+=popup
 endif
 
-" prefer ripgrep over grep, if available
+" prefer ripgrep over grep
 if executable('rg')
     set grepprg=rg\ --vimgrep
 endif
@@ -77,17 +76,17 @@ endif
 " Don't crowd working dirs with swap, persistent undo & other files; use the
 " user runtime directory instead. Nvim already does this by default.
 if !has('nvim')
-    silent! call mkdir($MYVIMRUNTIME . '/swap', 'p')
-    silent! call mkdir($MYVIMRUNTIME . '/undo', 'p')
-    silent! call mkdir($MYVIMRUNTIME . '/backup', 'p')
+    silent! call mkdir($MYVIMRUNTIME .. '/swap', 'p')
+    silent! call mkdir($MYVIMRUNTIME .. '/undo', 'p')
+    silent! call mkdir($MYVIMRUNTIME .. '/backup', 'p')
 
     " NOTE: use :set^= over :let so commas are added after our prepended entries
     " if required
-    execute 'set directory& directory^=' . $MYVIMRUNTIME . '/swap//'
-    execute 'set undodir& undodir^=' . $MYVIMRUNTIME . '/undo'
+    execute 'set directory& directory^=' .. $MYVIMRUNTIME .. '/swap//'
+    execute 'set undodir& undodir^=' .. $MYVIMRUNTIME .. '/undo'
 
-    let &backupdir = '.,' . $MYVIMRUNTIME . '/backup'
-    let &viminfofile = $MYVIMRUNTIME . '/viminfo'
+    let &backupdir = '.,' .. $MYVIMRUNTIME .. '/backup'
+    let &viminfofile = $MYVIMRUNTIME .. '/viminfo'
 endif
 
 function! s:UpdateColorColumn() abort
@@ -119,7 +118,7 @@ augroup END
 " Distributed Plugin Settings {{{1
 packadd cfilter
 
-" if nvim, store the .netrwhist file in the data directory
+" If Nvim, store the .netrwhist file in the data directory.
 if has('nvim')
     let g:netrw_home = stdpath('data')
 endif
@@ -163,8 +162,7 @@ else
     augroup END
 endif
 
-" define some default highlights for diagnostics and the status line which can
-" be overrided.
+" Define some default highlights for diagnostics and the status line
 highlight! default link DiagnosticSignError ErrorMsg
 highlight! default link DiagnosticSignWarn WarningMsg
 highlight! default link DiagnosticSignInfo Question
@@ -184,14 +182,14 @@ highlight! default link StatusLineNCHint StatusLineHint
 function! TabLabel(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
     let winnum = tabpagewinnr(a:tabnum)
-    let bufname = expand('#' . buffers[winnum - 1] . ':t')
+    let bufname = expand('#' .. buffers[winnum - 1] .. ':t')
 
     " default to the working directory's tail component if empty
     if empty(bufname)
         let bufname = fnamemodify(getcwd(winnum, a:tabnum), ':t')
     endif
 
-    return a:tabnum . (empty(bufname) ? '' : ' ') . bufname
+    return a:tabnum .. (empty(bufname) ? '' : ' ') .. bufname
 endfunction
 
 function! TabLine() abort
@@ -201,8 +199,8 @@ function! TabLine() abort
         " active tab highlight
         let line .= tabpagenr() == t ? '%#TabLineSel# ' : '%#TabLine# '
 
-        let line .= '%' . t . 'T'                  " tab number for mouse clicks
-        let line .= '%{TabLabel(' . t . ')} '      " tab label
+        let line .= '%' .. t .. 'T'                  " tab number for mouse clicks
+        let line .= '%{TabLabel(' .. t .. ')} '      " tab label
     endfor
 
     let line .= '%#TabLineFill#'                   " fill remaining tab line

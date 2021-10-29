@@ -46,8 +46,8 @@ end
 " minpac {{{2
 " NOTE: use :execute so that expand('<sfile>') results in this script's path
 execute 'command! -bar PackUpdate call plugin_conf#minpac#reload() '
-            \ . '| call minpac#update('''', '
-            \ . '{''do'': ''source ' . expand('<sfile>') . ' | packloadall!''})'
+            \ .. '| call minpac#update('''', {''do'': '
+            \ .. '''source ' .. expand('<sfile>') .. ' | packloadall!''})'
 command! -bar PackClean call plugin_conf#minpac#reload() | call minpac#clean()
 command! -bar PackStatus call plugin_conf#minpac#ensure_init()
             \ | call minpac#status()
