@@ -36,9 +36,6 @@ function! s:ExpandCompletion() abort
         return
     endif
     let user_data = v:completed_item.user_data
-    if type(user_data) != v:t_string
-        return
-    endif
     try
         let user_data = json_decode(user_data)
     catch

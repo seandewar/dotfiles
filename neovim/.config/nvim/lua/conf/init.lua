@@ -7,9 +7,11 @@ local M = {}
 
 -- General Plugin Settings {{{1
 -- telescope.nvim {{{2
-cmd "packadd plenary.nvim"
-cmd "packadd telescope.nvim"
-cmd "packadd telescope-fzy-native.nvim"
+cmd [[
+  packadd plenary.nvim
+  packadd telescope.nvim
+  packadd telescope-fzy-native.nvim
+]]
 
 local telescope = require "telescope"
 telescope.load_extension "fzy_native"
@@ -30,8 +32,10 @@ telescope.setup {
 }
 
 -- nvim-treesitter {{{2
-cmd "packadd nvim-treesitter"
-cmd "packadd nvim-treesitter-textobjects"
+cmd [[
+  packadd nvim-treesitter
+  packadd nvim-treesitter-textobjects
+]]
 
 require("nvim-treesitter.configs").setup {
   ensure_installed = "maintained",
@@ -94,12 +98,13 @@ require "conf.lsp"
 -- nvim-gps {{{2
 -- show tree-sitter context alongside cursor location info
 function M.echo_cursor_info()
-  vim.cmd(util.t "normal! g<c-g>")
+  cmd(util.t "normal! g<c-g>")
+
   local gps = require "nvim-gps"
   if gps.is_available() then
     local context = gps.get_location()
     if context ~= "" then
-      vim.cmd("echo '" .. context .. "'")
+      cmd("echo '" .. context .. "'")
     end
   end
 end
