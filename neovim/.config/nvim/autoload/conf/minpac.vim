@@ -1,16 +1,12 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Sean Dewar's Autoload Configuration for minpac <https://github.com/seandewar>"
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-function! plugin_conf#minpac#ensure_init() abort
+function! conf#minpac#ensure_init() abort
     " assume initialized if we've loaded minpac, which will be the case if it's
     " done via the functions in this autoload script
     if !exists('g:loaded_minpac')
-        call plugin_conf#minpac#reload()
+        call conf#minpac#reload()
     endif
 endfunction
 
-function! plugin_conf#minpac#reload() abort
+function! conf#minpac#reload() abort
     packadd minpac
     if !exists('g:loaded_minpac')
         echohl ErrorMsg

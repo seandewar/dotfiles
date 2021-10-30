@@ -26,6 +26,9 @@ let g:localvimrc_ask = 0
 " neoformat {{{2
 let g:neoformat_basic_format_trim = 1
 
+" vim-vsnip {{{2
+set completefunc=conf#vsnip#completefunc
+
 " Status Line Settings {{{1
 " vim-fugitive {{{2
 let g:plugin_statusline_functions =
@@ -45,12 +48,11 @@ end
 " Commands {{{1
 " minpac {{{2
 " NOTE: use :execute so that expand('<sfile>') results in this script's path
-execute 'command! -bar PackUpdate call plugin_conf#minpac#reload() '
+execute 'command! -bar PackUpdate call conf#minpac#reload() '
             \ .. '| call minpac#update('''', {''do'': '
             \ .. '''source ' .. expand('<sfile>') .. ' | packloadall!''})'
-command! -bar PackClean call plugin_conf#minpac#reload() | call minpac#clean()
-command! -bar PackStatus call plugin_conf#minpac#ensure_init()
-            \ | call minpac#status()
+command! -bar PackClean call conf#minpac#reload() | call minpac#clean()
+command! -bar PackStatus call conf#minpac#ensure_init() | call minpac#status()
 
 " Mappings {{{1
 " neoformat {{{2
