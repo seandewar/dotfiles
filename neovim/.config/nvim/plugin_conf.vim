@@ -18,10 +18,14 @@ augroup conf_colorscheme_customization
 augroup END
 
 let g:moonflyNormalFloat = 1
-silent! colorscheme moonfly
+colorscheme moonfly
 
 " localvimrc
 let g:localvimrc_ask = 0
+
+" copilot.vim {{{2
+" Disable for all filetypes. Enable manually with :Copilot enable.
+let g:copilot_filetypes = {'*': v:false}
 
 " neoformat {{{2
 let g:neoformat_basic_format_trim = 1
@@ -100,7 +104,7 @@ nmap [c <plug>(qftoggle_quickfix_previous)
 nmap ]l <plug>(qftoggle_loclist_next)
 nmap [l <plug>(qftoggle_loclist_previous)
 
-" Neovim 0.5+ Lua Plugin Settings {{{1
+" Neovim 0.5+ Plugins {{{1
 if has('nvim-0.5')
     lua require("conf.util").reload()
 endif

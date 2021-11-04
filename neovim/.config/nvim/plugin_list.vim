@@ -24,21 +24,7 @@ call minpac#add('rust-lang/rust.vim')
 call minpac#add('hrsh7th/vim-vsnip')
 call minpac#add('rafamadriz/friendly-snippets')
 
+" Neovim 0.5+ Plugins {{{1
 if has('nvim-0.5')
-    " treesitter
-    call minpac#add('nvim-treesitter/nvim-treesitter',
-                \   {'type': 'opt', 'do': 'TSUpdate'})
-    call minpac#add('nvim-treesitter/nvim-treesitter-textobjects',
-                \   {'type': 'opt'})
-    call minpac#add('SmiteshP/nvim-gps', {'type': 'opt'})
-
-    " telescope fuzzy finder
-    call minpac#add('nvim-lua/plenary.nvim', {'type': 'opt'})
-    call minpac#add('nvim-telescope/telescope.nvim', {'type': 'opt'})
-    call minpac#add('nvim-telescope/telescope-fzy-native.nvim', {'type': 'opt'})
-end
-
-if has('nvim-0.6')
-    " language server protocol
-    call minpac#add('neovim/nvim-lspconfig', {'type': 'opt'})
+    lua package.loaded["conf.plugin_list"] = nil; require 'conf.plugin_list'
 end

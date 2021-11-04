@@ -1,5 +1,4 @@
-local fn = vim.fn
-if fn.has "nvim-0.6" == 0 then
+if vim.fn.has "nvim-0.6" == 0 then
   return nil
 end
 
