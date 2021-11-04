@@ -2,6 +2,7 @@
 call minpac#add('bluz71/vim-moonfly-colors')
 
 " general plugins
+call minpac#add('github/copilot.vim')
 call minpac#add('editorconfig/editorconfig-vim')
 call minpac#add('sbdchd/neoformat')
 call minpac#add('tpope/vim-commentary')

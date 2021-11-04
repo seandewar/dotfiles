@@ -38,21 +38,13 @@ cmd [[
   augroup END
 ]]
 
+map("n", "]<space>", "<cmd>lua vim.diagnostic.goto_next { float = false }<cr>")
+map("n", "[<space>", "<cmd>lua vim.diagnostic.goto_prev { float = false }<cr>")
 map(
   "n",
-  "]<space>",
-  "<cmd>lua vim.diagnostic.goto_next({float = {border = 'single'}})<cr>"
-)
-map(
-  "n",
-  "[<space>",
-  "<cmd>lua vim.diagnostic.goto_prev({float = {border = 'single'}})<cr>"
-)
-map(
-  "n",
-  { "<space>K", "<space>k" },
+  { "<space>k", "<space>K" },
   "<cmd>lua vim.diagnostic.open_float(nil, "
-    .. "{scope = 'cursor', border = 'single'})<cr>"
+    .. "{ scope = 'cursor', border = 'single' })<cr>"
 )
 
 return M
