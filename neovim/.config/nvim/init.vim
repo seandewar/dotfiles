@@ -14,7 +14,7 @@ set backspace=indent,eol,start
 set belloff=all
 set breakindent
 set cinoptions+=:0,g0,N-s
-set display+=lastline
+set display+=lastline,uhex
 set encoding=utf-8
 set foldmethod=marker
 set formatoptions=croqnlj
@@ -128,7 +128,7 @@ if has('nvim')
     let g:netrw_home = stdpath('data')
 endif
 
-let g:c_no_curly_error = 1 " don't show [{}] as an error; it's valid C++11
+let g:c_no_curly_error = 1  " don't show [{}] as an error; it's valid C++11
 let g:markdown_folding = 1
 let g:qf_disable_statusline = 1
 
