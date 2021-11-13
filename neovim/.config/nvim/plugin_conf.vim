@@ -64,15 +64,15 @@ nnoremap <silent> <f4> :Neoformat<cr>
 vnoremap <silent> <f4> :Neoformat<cr>
 
 " vim-vsnip {{{2
-imap <expr> <c-j> vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<c-j>'
-smap <expr> <c-j> vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<c-j>'
-imap <expr> <c-k> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<c-k>'
-smap <expr> <c-k> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : '<c-k>'
+imap <expr> <Tab> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
+smap <expr> <Tab> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
+imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
+smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
 
-" cut text to use as $TM_SELECTED_TEXT in the next snippet; the normal mode map
-" accepts a subsequent motion
-xmap <c-j> <plug>(vsnip-cut-text)
-nmap <c-j> <plug>(vsnip-cut-text)
+" Cut text to use as $TM_SELECTED_TEXT in the next snippet.
+" The nmap variant accepts a subsequent motion.
+xmap <Tab> <Plug>(vsnip-cut-text)
+nmap <Tab> <Plug>(vsnip-cut-text)
 
 " vim-fugitive {{{2
 nnoremap <silent> <leader>gg :Git<cr>
