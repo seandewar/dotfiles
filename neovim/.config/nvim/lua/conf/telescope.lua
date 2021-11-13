@@ -32,7 +32,7 @@ map("n", "z=", "<cmd>Telescope spell_suggest<cr>")
 
 map("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>")
 map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
-map("n", "<leader>ff", "<cmd>Telescope find_files hidden=true<cr>")
+map("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
 map(
   "n",
   "<leader>fF",
