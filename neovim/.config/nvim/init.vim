@@ -20,7 +20,7 @@ set foldmethod=marker
 set formatoptions=croqnlj
 set guioptions=M  " has to be before :syntax/filetype on, so not in gvimrc
 set hidden
-set hlsearch incsearch ignorecase smartcase
+set incsearch ignorecase smartcase nohlsearch
 set nojoinspaces
 set lazyredraw
 set list listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
@@ -40,7 +40,6 @@ set title
 set wildmenu wildmode=list:longest,full wildignorecase
 set nowrap
 
-nohlsearch  " cancel search highlight from setting hlsearch when reloading
 filetype plugin indent on
 syntax enable
 
@@ -99,6 +98,12 @@ augroup conf_active_cursorline
     autocmd WinLeave * set colorcolumn= nocursorline
     autocmd BufWinEnter * call s:UpdateColorColumn()
     autocmd OptionSet modifiable call s:UpdateColorColumn()
+augroup END
+
+augroup conf_auto_hlsearch
+    autocmd!
+    autocmd CmdlineEnter /,\? set hlsearch
+    autocmd CmdlineLeave /,\? set nohlsearch
 augroup END
 
 augroup conf_auto_quickfix
@@ -213,7 +218,7 @@ set showtabline=1 tabline=%!TabLine()
 " General Mappings {{{2
 nnoremap <silent> <f2> :setlocal spell!<cr>
 inoremap <silent> <f2> <c-\><c-o>:setlocal spell!<cr>
-nnoremap <silent> <c-l> :nohlsearch<bar>diffupdate<cr><c-l>
+nnoremap <silent> <c-l> :diffupdate<cr><c-l>
 
 " disable suspend mapping for nvim on windows as there is no way to resume the
 " process, which causes a lot of frustration!
