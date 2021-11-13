@@ -4,6 +4,7 @@ local M = {
   "clangd",
   "rust_analyzer",
   "hls",
+  "zls",
   {
     name = "sumneko_lua",
     cmd = { "lua-language-server" },

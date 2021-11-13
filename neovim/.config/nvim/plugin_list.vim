@@ -19,6 +19,7 @@ call minpac#add('tpope/vim-rhubarb')
 
 " filetypes and language support
 call minpac#add('rust-lang/rust.vim')
+call minpac#add('ziglang/zig.vim')
 
 " snippets with integrations
 call minpac#add('hrsh7th/vim-vsnip')
