@@ -23,6 +23,7 @@ call minpac#add('ziglang/zig.vim')
 
 " snippets with integrations
 call minpac#add('hrsh7th/vim-vsnip')
+call minpac#add('hrsh7th/vim-vsnip-integ')
 call minpac#add('rafamadriz/friendly-snippets')
 
 " Neovim 0.5+ Plugins {{{1

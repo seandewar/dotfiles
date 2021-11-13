@@ -12,7 +12,7 @@ local servers = require "conf.lsp.servers"
 local bmap = require("conf.util").bmap
 
 local M = {
-  progress_clear_ms = 2750,
+  progress_clear_ms = 3000,
   progress = "",
 }
 
@@ -93,8 +93,13 @@ local function on_attach(client, _)
   bmap("n", "<space>d", "<cmd>Telescope lsp_document_symbols<cr>")
 end
 
+-- vim-vsnip-integ doesn't enable snippetSupport for us
+local capabilities = lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 local default_config = {
   on_attach = on_attach,
+  capabilities = capabilities,
   handlers = {
     ["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
       border = "single",

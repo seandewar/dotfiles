@@ -1,3 +1,8 @@
+" My generic completefunc for vim-vsnip.
+"
+" Requires vim-vsnip-integ to be installed (it handles the expansion and
+" additionalTextEdits).
+
 function! s:SortItems(a, b) abort
     let a = tolower(empty(a:a.abbr) ? a:a.word : a:a.abbr)
     let b = tolower(empty(a:b.abbr) ? a:b.word : a:b.abbr)
@@ -28,41 +33,3 @@ function! conf#vsnip#complete() abort
         call complete(startcol, matches)
     endif
 endfunction
-
-function! s:ExpandCompletion() abort
-    " vsnip user data is a JSON-encoded dict with the key "vsnip", which
-    " contains a list of snippet lines
-    if type(v:completed_item) != v:t_dict
-        return
-    endif
-    let user_data = v:completed_item.user_data
-    try
-        let user_data = json_decode(user_data)
-    catch
-        return
-    endtry
-    if type(user_data) != v:t_dict
-        return
-    endif
-    let user_data = get(user_data, 'vsnip', {})
-    if empty(user_data)
-        return
-    endif
-
-    let snippet = join(user_data.snippet, "\n")
-    if !empty(snippet)
-        " Undo the word inserted via completion
-        let word_len = len(v:completed_item.word)
-        if word_len > 1
-            execute 'normal! ' .. (word_len - 1) .. 'X'
-        endif
-        normal! x
-        call cursor(line('.'), col('.') + 1)
-        call vsnip#anonymous(snippet)
-    endif
-endfunction
-
-augroup conf_vsnip_complete
-    autocmd!
-    autocmd CompleteDone * call s:ExpandCompletion()
-augroup END
