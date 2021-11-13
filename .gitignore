@@ -1,3 +1,8 @@
-# system-specific vim configuration files
-/.config/nvim/init_local.vim
-/.config/nvim/ginit_local.vim
+# neovim
+/neovim/.config/nvim/init_local.vim
+/neovim/.config/nvim/ginit_local.vim
+/neovim/.local/share/
+
+# tmux
+/tmux/.tmux/plugins/
+/tmux/.tmux/resurrect/
