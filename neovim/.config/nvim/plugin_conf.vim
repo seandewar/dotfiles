@@ -4,17 +4,16 @@
 
 " General Plugin Settings {{{1
 " color scheme {{{2
+function! s:DefineMoonlyHighlights() abort
+    highlight StatusLineError ctermfg=1 ctermbg=236 guifg=#ff5454 guibg=#303030
+    highlight StatusLineWarn ctermfg=3 ctermbg=236 guifg=#e3c78a guibg=#303030
+    highlight StatusLineInfo ctermfg=12 ctermbg=236 guifg=#74b2ff guibg=#303030
+    highlight StatusLineHint ctermfg=251 ctermbg=236 guifg=#c6c6c6 guibg=#303030
+endfunction
+
 augroup conf_colorscheme_customization
     autocmd!
-    autocmd ColorScheme moonfly
-                \ highlight StatusLineError
-                    \ ctermfg=1 ctermbg=236 guifg=#ff5454 guibg=#303030
-                \ | highlight StatusLineWarn
-                    \ ctermfg=3 ctermbg=236 guifg=#e3c78a guibg=#303030
-                \ | highlight StatusLineInfo
-                    \ ctermfg=12 ctermbg=236 guifg=#74b2ff guibg=#303030
-                \ | highlight StatusLineHint
-                    \ ctermfg=251 ctermbg=236 guifg=#c6c6c6 guibg=#303030
+    autocmd ColorScheme moonfly call s:DefineMoonlyHighlights()
 augroup END
 
 let g:moonflyNormalFloat = 1

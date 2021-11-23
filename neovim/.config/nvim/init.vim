@@ -22,7 +22,6 @@ set guioptions=M  " has to be before :syntax/filetype on, so not in gvimrc
 set hidden
 set incsearch ignorecase smartcase nohlsearch
 set nojoinspaces
-set lazyredraw
 set list listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
 set mouse=a mousemodel=popup nomousehide
 set nrformats-=octal
@@ -39,6 +38,13 @@ set textwidth=80
 set title
 set wildmenu wildmode=list:longest,full wildignorecase
 set nowrap
+
+" Lazy redrawing can cause glitchiness (e.g: my <C-W> mapping for Nvim's
+" terminal not clearing "-- TERMINAL --" with showmode). As Nvim aims to make
+" lazyredraw a no-op in the future after optimizing redraws, disable it for Nvim
+if !has('nvim')
+    set lazyredraw
+endif
 
 filetype plugin indent on
 syntax enable
