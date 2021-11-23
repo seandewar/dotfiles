@@ -22,9 +22,6 @@ colorscheme moonfly
 " localvimrc
 let g:localvimrc_ask = 0
 
-" copilot.vim {{{2
-" Disable for all filetypes. Enable manually with :Copilot enable.
-let g:copilot_filetypes = {'*': v:false}
 
 " neoformat {{{2
 let g:neoformat_basic_format_trim = 1
@@ -72,6 +69,10 @@ smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
 " The nmap variant accepts a subsequent motion.
 xmap <Tab> <Plug>(vsnip-cut-text)
 nmap <Tab> <Plug>(vsnip-cut-text)
+
+" copilot.vim {{{2
+let g:copilot_no_tab_map = v:true
+imap <silent> <script> <expr> <C-J> copilot#Accept("\<C-J>")
 
 " vim-fugitive {{{2
 nnoremap <silent> <leader>gg :Git<cr>
