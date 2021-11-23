@@ -13,5 +13,10 @@
 	email = seandewar@users.noreply.github.com
 	; fingerprint hash of the public key; no need for me to hide this :)
 	signingkey = 04C8CC2938F069D7B194083908CC2C83AD41B581
+[alias]
+	s = status
+	c = checkout
+	r = rebase
+	a = add
 [include]
 	path = ~/.gitconfig_local
