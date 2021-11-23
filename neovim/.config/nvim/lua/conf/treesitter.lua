@@ -27,6 +27,7 @@ end
 
 configs.setup {
   ensure_installed = "maintained",
+  ignore_install = { "zig" },  -- TODO: remove when zig parser doesn't freeze
 
   highlight = {
     enable = true,
