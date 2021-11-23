@@ -63,10 +63,12 @@ function M.update_progress()
   end
 end
 
--- TODO: set tagfunc when lsp adds that and move lsp_workspace_diagnostics to
--- diagnostic config when a generic vim.diagnostic picker is added
+-- TODO: move lsp_workspace_diagnostics to diagnostic config when a generic
+-- vim.diagnostic picker is added
 local function on_attach(client, _)
   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
+  vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
+  vim.opt_local.formatexpr = "v:lua.vim.lsp.formatexpr()"
 
   if client.name == "clangd" then
     bmap("n", "<space>s", "<cmd>ClangdSwitchSourceHeader<cr>")
