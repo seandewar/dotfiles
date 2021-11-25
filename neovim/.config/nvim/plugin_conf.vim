@@ -65,9 +65,7 @@ imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
 smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
 
 " Cut text to use as $TM_SELECTED_TEXT in the next snippet.
-" The nmap variant accepts a subsequent motion.
 xmap <Tab> <Plug>(vsnip-cut-text)
-nmap <Tab> <Plug>(vsnip-cut-text)
 
 " copilot.vim {{{2
 let g:copilot_no_tab_map = v:true
