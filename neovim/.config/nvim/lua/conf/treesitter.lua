@@ -33,8 +33,17 @@ configs.setup {
     enable = true,
     additional_vim_regex_highlighting = true, -- so spellchecker ignores code
   },
-  incremental_selection = { enable = true },
   -- indent = { enable = true }, -- disabled due to bugs
+
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "<Tab>",
+      node_incremental = "<Tab>",
+      node_decremental = "<S-Tab>",
+      scope_incremental = "<CR>",
+    },
+  },
 
   textobjects = {
     select = {
