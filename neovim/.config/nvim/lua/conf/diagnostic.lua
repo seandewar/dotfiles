@@ -33,7 +33,7 @@ diagnostic.config { severity_sort = true }
 cmd [[
   augroup conf_diagnostic_statusline
     autocmd!
-    autocmd User DiagnosticsChanged redrawstatus!
+    autocmd DiagnosticChanged * redrawstatus!
   augroup END
 ]]
 

@@ -177,12 +177,12 @@ endif
 highlight! default link DiagnosticSignError ErrorMsg
 highlight! default link DiagnosticSignWarn WarningMsg
 highlight! default link DiagnosticSignInfo Question
-highlight! default link DiagnisticSignHint Normal
+highlight! default link DiagnosticSignHint Normal
 
 highlight! default link StatusLineError DiagnosticSignError
 highlight! default link StatusLineWarn DiagnosticSignWarn
 highlight! default link StatusLineInfo DiagnosticSignInfo
-highlight! default link StatusLineHint DiagnisticSignHint
+highlight! default link StatusLineHint DiagnosticSignHint
 
 highlight! default link StatusLineNCError StatusLineError
 highlight! default link StatusLineNCWarn StatusLineWarn
