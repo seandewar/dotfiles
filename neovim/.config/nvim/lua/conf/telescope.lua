@@ -8,12 +8,12 @@ local map = require("conf.util").map
 cmd [[
   packadd plenary.nvim
   packadd telescope.nvim
+  packadd telescope-ui-select.nvim
   packadd telescope-fzy-native.nvim
 ]]
 local telescope = require "telescope"
 local actions = require "telescope.actions"
 
-telescope.load_extension "fzy_native"
 telescope.setup {
   defaults = {
     mappings = {
@@ -27,6 +27,8 @@ telescope.setup {
     },
   },
 }
+telescope.load_extension "ui-select"
+telescope.load_extension "fzy_native"
 
 map("n", "z=", "<cmd>Telescope spell_suggest<cr>")
 

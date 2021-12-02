@@ -71,28 +71,28 @@ local function on_attach(client, _)
   vim.opt_local.formatexpr = "v:lua.vim.lsp.formatexpr()"
 
   if client.name == "clangd" then
-    bmap("n", "<space>s", "<cmd>ClangdSwitchSourceHeader<cr>")
+    bmap("n", "<Space>s", "<Cmd>ClangdSwitchSourceHeader<CR>")
   end
 
-  bmap("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
-  bmap({ "n", "i" }, "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>")
+  bmap("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>")
+  bmap({ "n", "i" }, "<C-K>", "<Cmd>lua vim.lsp.buf.signature_help()<CR>")
 
-  bmap("n", "<space><space>", "<cmd>Telescope lsp_workspace_diagnostics<cr>")
+  bmap("n", "<Space><Space>", "<Cmd>Telescope lsp_workspace_diagnostics<CR>")
 
-  bmap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
-  bmap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
-  bmap("n", "<space>t", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
-  bmap("n", "<space>i", "<cmd>Telescope lsp_implementations<cr>")
-  bmap("n", "<space>r", "<cmd>Telescope lsp_references<cr>")
+  bmap("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>")
+  bmap("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>")
+  bmap("n", "<Space>t", "<Cmd>lua vim.lsp.buf.type_definition()<CR>")
+  bmap("n", "<Space>i", "<Cmd>Telescope lsp_implementations<CR>")
+  bmap("n", "<Space>r", "<Cmd>Telescope lsp_references<CR>")
 
-  bmap("n", "<space>R", "<cmd>lua vim.lsp.buf.rename()<cr>")
-  bmap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<cr>")
-  bmap("x", "<space>f", "<esc><cmd>lua vim.lsp.buf.range_formatting()<cr>")
-  bmap("n", "<space>a", "<cmd>Telescope lsp_code_actions<cr>")
-  bmap("x", "<space>a", "<esc><cmd>Telescope lsp_range_code_actions<cr>")
+  bmap("n", "<Space>R", "<Cmd>lua vim.lsp.buf.rename()<CR>")
+  bmap("n", "<Space>f", "<Cmd>lua vim.lsp.buf.formatting()<CR>")
+  bmap("x", "<Space>f", "<Esc><Cmd>lua vim.lsp.buf.range_formatting()<CR>")
+  bmap("n", "<Space>a", "<Cmd>lua vim.lsp.buf.code_action()<CR>")
+  bmap("x", "<Space>a", "<Esc><Cmd>lua vim.lsp.buf.range_code_action()<CR>")
 
-  bmap("n", "<space>w", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>")
-  bmap("n", "<space>d", "<cmd>Telescope lsp_document_symbols<cr>")
+  bmap("n", "<Space>w", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
+  bmap("n", "<Space>d", "<Cmd>Telescope lsp_document_symbols<CR>")
 end
 
 -- vim-vsnip-integ doesn't enable snippetSupport for us
