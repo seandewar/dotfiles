@@ -1,10 +1,19 @@
 local api = vim.api
+local fn = vim.fn
 
 local M = {
   "clangd",
-  "rust_analyzer",
   "hls",
   "zls",
+  {
+    name = "rust_analyzer",
+    cmd = fn.executable "rust-analyzer" == 1 and { "rust-analyzer" } or {
+      "rustup",
+      "run",
+      "nightly",
+      "rust-analyzer",
+    },
+  },
   {
     name = "sumneko_lua",
     cmd = { "lua-language-server" },
