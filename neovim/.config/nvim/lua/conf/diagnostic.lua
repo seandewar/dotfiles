@@ -37,13 +37,15 @@ cmd [[
   augroup END
 ]]
 
-map("n", "]<space>", "<cmd>lua vim.diagnostic.goto_next { float = false }<cr>")
-map("n", "[<space>", "<cmd>lua vim.diagnostic.goto_prev { float = false }<cr>")
+map("n", "]<Space>", "<Cmd>lua vim.diagnostic.goto_next { float = false }<CR>")
+map("n", "[<Space>", "<Cmd>lua vim.diagnostic.goto_prev { float = false }<CR>")
 map(
   "n",
-  { "<space>k", "<space>K" },
-  "<cmd>lua vim.diagnostic.open_float(nil, "
-    .. "{ scope = 'cursor', border = 'single' })<cr>"
+  { "<Space>k", "<Space>K" },
+  "<Cmd>lua vim.diagnostic.open_float(nil, "
+    .. "{ scope = 'cursor', border = 'single' })<CR>"
 )
+
+map("n", "<Space><Space>", "<Cmd>Telescope diagnostics bufnr=0<CR>")
 
 return M

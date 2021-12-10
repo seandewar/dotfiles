@@ -1,6 +1,5 @@
 TODO:
 - telescope don't overwrite quickfix list (make a new list instead for [C ]C)
-- general vim.diagnostic picker for telescope? (probably need to wait for it)
 
 - reconsider nvim-dap at some point?
 - use v:true for is_current from init.vim?

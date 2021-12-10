@@ -63,8 +63,6 @@ function M.update_progress()
   end
 end
 
--- TODO: move lsp_workspace_diagnostics to diagnostic config when a generic
--- vim.diagnostic picker is added
 local function on_attach(client, _)
   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
   vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
@@ -76,8 +74,6 @@ local function on_attach(client, _)
 
   bmap("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>")
   bmap({ "n", "i" }, "<C-K>", "<Cmd>lua vim.lsp.buf.signature_help()<CR>")
-
-  bmap("n", "<Space><Space>", "<Cmd>Telescope lsp_workspace_diagnostics<CR>")
 
   bmap("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>")
   bmap("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>")
