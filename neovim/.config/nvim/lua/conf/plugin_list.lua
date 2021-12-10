@@ -11,7 +11,7 @@ add "nvim-treesitter/nvim-treesitter-textobjects"
 add "SmiteshP/nvim-gps"
 
 -- telescope
-if fn.has "nvim-0.5.1" == 1 then
+if fn.has "nvim-0.6" == 1 then
   add "nvim-lua/plenary.nvim"
   add "nvim-telescope/telescope.nvim"
   add "nvim-telescope/telescope-ui-select.nvim"
