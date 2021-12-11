@@ -8,7 +8,7 @@ local servers = require "conf.lsp.servers"
 local bmap = require("conf.util").bmap
 
 local M = {
-  progress_clear_ms = 3000,
+  progress_clear_ms = 10000,
   progress = "",
 }
 
@@ -16,15 +16,14 @@ function M.statusline(is_current)
   if is_current and M.progress ~= "" then
     return "[" .. M.progress .. "] "
   else
-    local clients = lsp.buf_get_clients(0)
-    local count = vim.tbl_count(clients)
+    local clients = vim.tbl_values(lsp.buf_get_clients(0))
 
-    if count == 0 then
+    if #clients == 0 then
       return ""
-    elseif count == 1 then
+    elseif #clients == 1 then
       return "[" .. clients[1].name .. "] "
     else
-      return "[" .. count .. " clients] "
+      return "[" .. #clients .. " clients] "
     end
   end
 end
