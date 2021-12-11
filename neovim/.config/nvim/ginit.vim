@@ -2,15 +2,15 @@
 " Sean Dewar's (Neo)Vim GUI Configuration <https://github.com/seandewar>       "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" some nvim GUIs don't set $MYGVIMRC for us.
-" ensure it is set to this file, resolving links along the way.
+" Some nvim GUIs don't set $MYGVIMRC for us.
+" Ensure it is set to this file, resolving links along the way.
 let $MYGVIMRC = resolve(empty($MYGVIMRC) ? expand('<sfile>:p') : $MYGVIMRC)
 
 if exists('g:GuiLoaded')
-    " using a GUI that uses the nvim shim helper plugin (e.g nvim-qt)
+    " Using a GUI that uses the nvim shim helper plugin (e.g nvim-qt)
     GuiTabline 0
     GuiPopupmenu 0
-    silent! GuiRenderLigatures 1 " newer nvim-qt versions support font ligatures
+    GuiRenderLigatures 1
     GuiFont! Iosevka:h13.5
 else
     set guioptions=Mc

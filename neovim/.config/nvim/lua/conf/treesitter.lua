@@ -16,7 +16,7 @@ local gps = require "nvim-gps"
 
 --- show tree-sitter context alongside cursor location info
 function M.echo_cursor_info()
-  cmd(t "normal! g<c-g>")
+  cmd(t "normal! g<C-G>")
   if gps.is_available() then
     local context = gps.get_location()
     if context ~= "" then
@@ -85,6 +85,6 @@ gps.setup {
   },
 }
 
-map("n", "g<c-g>", "<cmd>lua require('conf.treesitter').echo_cursor_info()<cr>")
+map("n", "g<C-G>", "<Cmd>lua require('conf.treesitter').echo_cursor_info()<CR>")
 
 return M

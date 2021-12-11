@@ -1,7 +1,12 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sean Dewar's Vanilla (Neo)Vim Configuration <https://github.com/seandewar>   "
-" Aims for compatibility with Vim 8.1.2269+ & Neovim 0.3+ (plugins may differ) "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+if !has('patch-8.2.2434') && !has('nvim-0.6')
+    echohl WarningMsg
+    echo 'init.vim may not work with this version of (Neo)Vim!'
+    echohl None
+end
 
 " Set $MYVIMRC and $MYVIMRUNTIME for easy access, resolving symlinks {{{1
 let $MYVIMRC = resolve($MYVIMRC)
@@ -31,8 +36,9 @@ set ruler
 set scrolloff=1 sidescroll=5
 set sessionoptions-=options viewoptions-=options
 set shortmess+=IF shortmess-=S
-set spelllang=en_gb
+set spelllang=en_gb spelloptions=camel
 set splitbelow splitright
+set switchbuf+=uselast
 set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 set textwidth=80
 set title
@@ -53,17 +59,8 @@ if exists('+inccommand')
     set inccommand=nosplit
 endif
 
-if exists('+spelloptions')
-    set spelloptions=camel
-endif
-
-" Open QuickFix entries in the previous window always, if available
-if has('patch-8.1.2315') || has('nvim-0.5')
-    set switchbuf+=uselast
-endif
-
 set completeopt=menu,menuone
-if has('patch-8.1.1880')  " doesn't work in Nvim
+if !has('nvim')
     set completeopt+=popup
 endif
 
@@ -85,8 +82,7 @@ if !has('nvim')
     silent! call mkdir($MYVIMRUNTIME .. '/undo', 'p')
     silent! call mkdir($MYVIMRUNTIME .. '/backup', 'p')
 
-    " NOTE: use :set^= over :let so commas are added after our prepended entries
-    " if required
+    " NOTE: use :set^= over :let so commas are added when needed
     execute 'set directory& directory^=' .. $MYVIMRUNTIME .. '/swap//'
     execute 'set undodir& undodir^=' .. $MYVIMRUNTIME .. '/undo'
 
@@ -116,7 +112,7 @@ augroup conf_auto_quickfix
     autocmd!
     autocmd VimEnter * nested cwindow
 
-    " NOTE: can't simply use :c/lwindow here.
+    " NOTE: Cannot use :c/lwindow directly.
     " Some commands (like :helpgrep) trigger QuickfixCmdPost before they
     " populate the qf list. So use a 0ms timer to defer until Vim is ready for
     " input; the list should be populated by then.
@@ -156,22 +152,7 @@ function! StatusLine(is_current) abort
     return line
 endfunction
 
-set laststatus=2
-
-" Let statuslines know if they are attached to the currently-active window or
-" not. Newer versions of (Neo)Vim can do this easily using 'g:statusline_winid',
-" but older versions can achieve the same result using autocommands.
-if has('patch-8.1.1372') || has('nvim-0.5')
-    set statusline=%!StatusLine(g:statusline_winid\ ==\ win_getid())
-else
-    set statusline=%!StatusLine(0)
-
-    augroup conf_current_statusline_winid_compatibility
-        autocmd!
-        autocmd VimEnter,WinEnter * setlocal statusline=%!StatusLine(1)
-        autocmd WinLeave * setlocal statusline=%!StatusLine(0)
-    augroup END
-endif
+set laststatus=2 statusline=%!StatusLine(g:statusline_winid==win_getid())
 
 augroup conf_statusline_highlights
     autocmd! ColorScheme * call conf#colors#def_statusline_hls()
@@ -193,14 +174,13 @@ endfunction
 
 function! TabLine() abort
     let line = ''
-
-    for t in range(1, tabpagenr('$'))
-        " active tab highlight
-        let line .= tabpagenr() == t ? '%#TabLineSel# ' : '%#TabLine# '
-
-        let line .= '%' .. t .. 'T'                  " tab number for mouse clicks
-        let line .= '%{TabLabel(' .. t .. ')} '      " tab label
-    endfor
+    let i = 1
+    while i < tabpagenr('$')
+        let line .= tabpagenr() == i ? '%#TabLineSel# ' : '%#TabLine# ' " active
+        let line .= '%' .. i .. 'T'                " tab number for mouse clicks
+        let line .= '%{TabLabel(' .. i .. ')} '    " tab label
+        let i += 1
+    endwhile
 
     let line .= '%#TabLineFill#'                   " fill remaining tab line
     return line
@@ -210,65 +190,64 @@ set showtabline=1 tabline=%!TabLine()
 
 " Mappings {{{1
 " General Mappings {{{2
-nnoremap <silent> <f2> :setlocal spell!<cr>
-inoremap <silent> <f2> <c-\><c-o>:setlocal spell!<cr>
-nnoremap <silent> <c-l> :diffupdate<cr><c-l>
+nnoremap <silent> <F2> <Cmd>setlocal spell!<CR>
+inoremap <silent> <F2> <Cmd>setlocal spell!<CR>
+nnoremap <silent> <C-L> <Cmd>diffupdate<CR><C-L>
 
-" disable suspend mapping for nvim on windows as there is no way to resume the
-" process, which causes a lot of frustration!
+" disable suspend mapping for nvim on windows as there is no way to resume!
 if has('nvim') && has('win32')
-    nnoremap <silent> <c-z> <nop>
+    nnoremap <silent> <C-Z> <NOP>
 endif
 
 " nvim 0.6 makes Y more sensible (y$), but I'm used to the default behaviour
-if has('nvim-0.6')
+if has('nvim')
     silent! unmap Y
 endif
 
 " NOTE: disable flow control for your terminal to use the <C-S> maps!
 " press <C-Q> to unfreeze the terminal if you have accidentally activated it
-nnoremap <silent> <c-s> :update<cr>
-inoremap <silent> <c-s> <c-\><c-o>:update<cr>
+nnoremap <silent> <C-S> <Cmd>update<CR>
+inoremap <silent> <C-S> <Cmd>update<CR>
 
 " Argument list {{{2
-nnoremap <leader>a :args<cr>
-nnoremap <silent> ]a :next<cr>
-nnoremap <silent> [a :previous<cr>
+nnoremap <Leader>a <Cmd>args<CR>
+nnoremap <silent> ]a <Cmd>next<CR>
+nnoremap <silent> [a <Cmd>previous<CR>
 
 " Buffers, Find, Grep, ... {{{2
-nnoremap <leader>fb :buffer<space>
-nnoremap <leader>ff :find<space>
-nnoremap <leader>fg :grep<space>
-nnoremap <leader>ft :tjump<space>
-nnoremap <leader>fo :browse oldfiles<cr>
+nnoremap <Leader>fb <Cmd>buffer<Space>
+nnoremap <Leader>ff <Cmd>find<Space>
+nnoremap <Leader>fg <Cmd>grep<Space>
+nnoremap <Leader>ft <Cmd>tjump<Space>
+nnoremap <Leader>fo <Cmd>browse oldfiles<CR>
 
-nnoremap <silent> ]b :bnext<cr>2<c-g>
-nnoremap <silent> [b :bprevious<cr>2<c-g>
+nnoremap <silent> ]b <Cmd>bnext<CR>2<C-G>
+nnoremap <silent> [b <Cmd>bprevious<CR>2<C-G>
 
 " QuickFix and Location lists {{{2
-nnoremap <silent> <leader>c :cwindow<cr>
-nnoremap <silent> <leader>l :lwindow<cr>
+nnoremap <silent> <Leader>c <Cmd>cwindow<CR>
+nnoremap <silent> <Leader>l <Cmd>lwindow<CR>
 
-nnoremap <silent> <leader>fc :Cfilter<space>
-nnoremap <silent> <leader>fl :Lfilter<space>
+nnoremap <silent> <Leader>fc <Cmd>Cfilter<Space>
+nnoremap <silent> <Leader>fl <Cmd>Lfilter<Space>
 
-nnoremap <silent> ]c :cnext<cr>zv
-nnoremap <silent> [c :cprevious<cr>zv
-nnoremap <silent> ]C :cnewer<cr>
-nnoremap <silent> [C :colder<cr>
+nnoremap <silent> ]c <Cmd>cnext<CR>zv
+nnoremap <silent> [c <Cmd>cprevious<CR>zv
+nnoremap <silent> ]C <Cmd>cnewer<CR>
+nnoremap <silent> [C <Cmd>colder<CR>
 
-nnoremap <silent> ]l :lnext<cr>zv
-nnoremap <silent> [l :lprevious<cr>zv
-nnoremap <silent> ]L :lnewer<cr>
-nnoremap <silent> [L :lolder<cr>
+nnoremap <silent> ]l <Cmd>lnext<CR>zv
+nnoremap <silent> [l <Cmd>lprevious<CR>zv
+nnoremap <silent> ]L <Cmd>lnewer<CR>
+nnoremap <silent> [L <Cmd>lolder<CR>
 
 " Neovim Terminal {{{2
 if has('nvim')
-    tnoremap <silent> <c-w> <c-\><c-n><c-w>
+    tnoremap <silent> <C-W> <C-\><C-N><C-W>
 endif
 
 " Source optional configurations before plugins are loaded {{{1
-runtime init_local.vim  " machine-specific settings; un-versioned
+runtime init_local.vim  " machine-specific config; un-versioned
 runtime plugin_conf.vim
 
 " Use my vanilla color scheme choice if one wasn't set {{{1

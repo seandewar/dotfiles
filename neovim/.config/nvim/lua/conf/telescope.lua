@@ -1,7 +1,3 @@
-if vim.fn.has "nvim-0.6" == 0 then
-  return
-end
-
 local cmd = vim.cmd
 local map = require("conf.util").map
 

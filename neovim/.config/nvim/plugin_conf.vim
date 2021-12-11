@@ -22,7 +22,7 @@ let g:plugin_statusline_functions =
             \                 ? '%([%{FugitiveHead(7)}] %)' : ''}]
 
 " Neovim Diagnostics and LSP {{{2
-if has('nvim-0.6')
+if has('nvim')
     let g:plugin_statusline_functions += [{is_current ->
                 \ '%{%v:lua.require''conf.diagnostic''.statusline('
                 \ .. (is_current ? 'v:true' : 'v:false') .. ')%}'}]
@@ -42,8 +42,8 @@ command! -bar PackStatus call conf#minpac#ensure_init() | call minpac#status()
 
 " Mappings {{{1
 " neoformat {{{2
-nnoremap <silent> <f4> :Neoformat<cr>
-vnoremap <silent> <f4> :Neoformat<cr>
+nnoremap <silent> <F4> <Cmd>Neoformat<CR>
+vnoremap <silent> <F4> <Cmd>Neoformat<CR>
 
 " vim-vsnip {{{2
 imap <expr> <Tab> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
@@ -59,36 +59,36 @@ let g:copilot_no_tab_map = v:true
 imap <silent> <script> <expr> <C-J> copilot#Accept("\<C-J>")
 
 " vim-fugitive {{{2
-nnoremap <silent> <leader>gg :Git<cr>
-nnoremap <silent> <leader>gl :Git log %<cr>
-nnoremap <silent> <leader>gL :Git log<cr>
-nnoremap <silent> <leader>gs :Git show<cr>
-nnoremap <silent> <leader>gd :Gdiffsplit<cr>
-nnoremap <silent> <leader>gD :G diff<cr>
-nnoremap <silent> <leader>gt :G difftool<cr>
-nnoremap <silent> <leader>gm :G mergetool<cr>
-nnoremap <silent> <leader>gb :Git blame<cr>
-nnoremap <leader>gB :Git checkout<space>
-nnoremap <silent> <leader>gw :Gwrite<cr>
-nnoremap <silent> <leader>gR :Gread<cr>
-nnoremap <leader>gM :GRename <c-r>=expand('%:t')<cr>
-nnoremap <leader>gr :G rebase -i<space>
-nnoremap <silent> <leader>gc :Git commit<cr>
-nnoremap <silent> <leader>gC :Git commit --amend<cr>
-nnoremap <leader>gp :Git pull<cr>
-nnoremap <leader>gP :Git push<cr>
+nnoremap <silent> <Leader>gg <Cmd>Git<CR>
+nnoremap <silent> <Leader>gl <Cmd>Git log %<CR>
+nnoremap <silent> <Leader>gL <Cmd>Git log<CR>
+nnoremap <silent> <Leader>gs <Cmd>Git show<CR>
+nnoremap <silent> <Leader>gd <Cmd>Gdiffsplit<CR>
+nnoremap <silent> <Leader>gD <Cmd>G diff<CR>
+nnoremap <silent> <Leader>gt <Cmd>G difftool<CR>
+nnoremap <silent> <Leader>gm <Cmd>G mergetool<CR>
+nnoremap <silent> <Leader>gb <Cmd>Git blame<CR>
+nnoremap <Leader>gB <Cmd>Git checkout<Space>
+nnoremap <silent> <leader>gw <Cmd>Gwrite<CR>
+nnoremap <silent> <leader>gR <Cmd>Gread<CR>
+nnoremap <Leader>gM <Cmd>GRename <C-R>=expand('%:t')<CR>
+nnoremap <Leader>gr <Cmd>G rebase -i<Space>
+nnoremap <silent> <Leader>gc <Cmd>Git commit<CR>
+nnoremap <silent> <Leader>gC <Cmd>Git commit --amend<CR>
+nnoremap <Leader>gp <Cmd>Git pull<CR>
+nnoremap <Leader>gP <Cmd>Git push<CR>
 
 " vim-qftoggle {{{2
-nmap <leader>c <plug>(qftoggle_toggle_quickfix)
-nmap <leader>l <plug>(qftoggle_toggle_loclist)
+nmap <Leader>c <Plug>(qftoggle_toggle_quickfix)
+nmap <Leader>l <Plug>(qftoggle_toggle_loclist)
 
-nmap ]c <plug>(qftoggle_quickfix_next)
-nmap [c <plug>(qftoggle_quickfix_previous)
+nmap ]c <Plug>(qftoggle_quickfix_next)
+nmap [c <Plug>(qftoggle_quickfix_previous)
 
-nmap ]l <plug>(qftoggle_loclist_next)
-nmap [l <plug>(qftoggle_loclist_previous)
+nmap ]l <Plug>(qftoggle_loclist_next)
+nmap [l <Plug>(qftoggle_loclist_previous)
 
-" Neovim 0.5+ Plugins {{{1
-if has('nvim-0.5')
+" Neovim Plugins {{{1
+if has('nvim')
     lua require("conf.util").reload()
 endif

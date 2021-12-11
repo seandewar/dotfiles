@@ -14,14 +14,10 @@ add "nvim-treesitter/nvim-treesitter-textobjects"
 add "SmiteshP/nvim-gps"
 
 -- telescope
-if fn.has "nvim-0.6" == 1 then
-  add "nvim-lua/plenary.nvim"
-  add "nvim-telescope/telescope.nvim"
-  add "nvim-telescope/telescope-ui-select.nvim"
-  add "nvim-telescope/telescope-fzy-native.nvim"
-end
+add "nvim-lua/plenary.nvim"
+add "nvim-telescope/telescope.nvim"
+add "nvim-telescope/telescope-ui-select.nvim"
+add "nvim-telescope/telescope-fzy-native.nvim"
 
 -- language server protocol
-if fn.has "nvim-0.6" == 1 then
-  add "neovim/nvim-lspconfig"
-end
+add "neovim/nvim-lspconfig"
