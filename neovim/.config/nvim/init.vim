@@ -175,7 +175,7 @@ endfunction
 function! TabLine() abort
     let line = ''
     let i = 1
-    while i < tabpagenr('$')
+    while i <= tabpagenr('$')
         let line .= tabpagenr() == i ? '%#TabLineSel# ' : '%#TabLine# ' " active
         let line .= '%' .. i .. 'T'                " tab number for mouse clicks
         let line .= '%{TabLabel(' .. i .. ')} '    " tab label
