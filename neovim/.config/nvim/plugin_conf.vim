@@ -18,7 +18,7 @@ set completefunc=conf#vsnip#completefunc
 " Status Line Settings {{{1
 " vim-fugitive {{{2
 let g:plugin_statusline_functions =
-            \ [{is_current -> exists('g:loaded_fugitive') && is_current
+            \ [{is_current -> exists('g:loaded_fugitive')
             \                 ? '%([%{FugitiveHead(7)}] %)' : ''}]
 
 " Neovim Diagnostics and LSP {{{2
