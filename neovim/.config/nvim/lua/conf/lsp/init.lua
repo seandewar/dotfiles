@@ -12,15 +12,21 @@ local M = {
   progress = "",
 }
 
-local function is_attached(buf)
-  return vim.tbl_count(lsp.buf_get_clients(buf)) ~= 0
-end
-
 function M.statusline(is_current)
   if is_current and M.progress ~= "" then
     return "[" .. M.progress .. "] "
+  else
+    local clients = lsp.buf_get_clients(0)
+    local count = vim.tbl_count(clients)
+
+    if count == 0 then
+      return ""
+    elseif count == 1 then
+      return "[" .. clients[1].name .. "] "
+    else
+      return "[" .. count .. " clients] "
+    end
   end
-  return is_attached() and "[LSP] " or ""
 end
 
 function M.update_progress()
@@ -33,6 +39,7 @@ function M.update_progress()
 
     if msg.progress then
       progress = progress .. msg.title
+
       if msg.message then
         progress = progress .. " " .. msg.message
       end
