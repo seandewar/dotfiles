@@ -5,6 +5,9 @@ local function add(url, opts)
   fn["minpac#add"](url, opts)
 end
 
+-- color scheme support
+add "rktjmp/lush.nvim"  -- required by zenbones.nvim
+
 -- tree-sitter
 add("nvim-treesitter/nvim-treesitter", { ["do"] = "TSUpdate" })
 add "nvim-treesitter/nvim-treesitter-textobjects"

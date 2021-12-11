@@ -173,21 +173,9 @@ else
     augroup END
 endif
 
-" Define some default highlights for diagnostics and the status line
-highlight! default link DiagnosticSignError ErrorMsg
-highlight! default link DiagnosticSignWarn WarningMsg
-highlight! default link DiagnosticSignInfo Question
-highlight! default link DiagnosticSignHint Normal
-
-highlight! default link StatusLineError DiagnosticSignError
-highlight! default link StatusLineWarn DiagnosticSignWarn
-highlight! default link StatusLineInfo DiagnosticSignInfo
-highlight! default link StatusLineHint DiagnosticSignHint
-
-highlight! default link StatusLineNCError StatusLineError
-highlight! default link StatusLineNCWarn StatusLineWarn
-highlight! default link StatusLineNCInfo StatusLineInfo
-highlight! default link StatusLineNCHint StatusLineHint
+augroup conf_statusline_highlights
+    autocmd! ColorScheme * call conf#colors#def_statusline_hls()
+augroup END
 
 " Tab Line Settings {{{1
 function! TabLabel(tabnum) abort
@@ -286,5 +274,5 @@ runtime plugin_conf.vim
 " Use my vanilla color scheme choice if one wasn't set {{{1
 if !exists('g:colors_name')
     set background=dark
-    silent! colorscheme torte
+    silent! colorscheme ron
 endif
