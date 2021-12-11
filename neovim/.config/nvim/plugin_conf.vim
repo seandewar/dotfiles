@@ -68,11 +68,11 @@ nnoremap <silent> <Leader>gD <Cmd>G diff<CR>
 nnoremap <silent> <Leader>gt <Cmd>G difftool<CR>
 nnoremap <silent> <Leader>gm <Cmd>G mergetool<CR>
 nnoremap <silent> <Leader>gb <Cmd>Git blame<CR>
-nnoremap <Leader>gB <Cmd>Git checkout<Space>
+nnoremap <Leader>gB :Git checkout<Space>
 nnoremap <silent> <leader>gw <Cmd>Gwrite<CR>
 nnoremap <silent> <leader>gR <Cmd>Gread<CR>
 nnoremap <Leader>gM <Cmd>GRename <C-R>=expand('%:t')<CR>
-nnoremap <Leader>gr <Cmd>G rebase -i<Space>
+nnoremap <Leader>gr :G rebase -i<Space>
 nnoremap <silent> <Leader>gc <Cmd>Git commit<CR>
 nnoremap <silent> <Leader>gC <Cmd>Git commit --amend<CR>
 nnoremap <Leader>gp <Cmd>Git pull<CR>

@@ -27,7 +27,7 @@ call minpac#add('hrsh7th/vim-vsnip')
 call minpac#add('hrsh7th/vim-vsnip-integ')
 call minpac#add('rafamadriz/friendly-snippets')
 
-" Neovim 0.5+ Plugins {{{1
-if has('nvim-0.5')
+" Neovim Plugins {{{1
+if has('nvim')
     lua package.loaded["conf.plugin_list"] = nil; require 'conf.plugin_list'
 end

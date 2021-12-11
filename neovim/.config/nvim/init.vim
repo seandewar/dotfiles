@@ -215,10 +215,10 @@ nnoremap <silent> ]a <Cmd>next<CR>
 nnoremap <silent> [a <Cmd>previous<CR>
 
 " Buffers, Find, Grep, ... {{{2
-nnoremap <Leader>fb <Cmd>buffer<Space>
-nnoremap <Leader>ff <Cmd>find<Space>
-nnoremap <Leader>fg <Cmd>grep<Space>
-nnoremap <Leader>ft <Cmd>tjump<Space>
+nnoremap <Leader>fb :buffer<Space>
+nnoremap <Leader>ff :find<Space>
+nnoremap <Leader>fg :grep<Space>
+nnoremap <Leader>ft :tjump<Space>
 nnoremap <Leader>fo <Cmd>browse oldfiles<CR>
 
 nnoremap <silent> ]b <Cmd>bnext<CR>2<C-G>
@@ -228,8 +228,8 @@ nnoremap <silent> [b <Cmd>bprevious<CR>2<C-G>
 nnoremap <silent> <Leader>c <Cmd>cwindow<CR>
 nnoremap <silent> <Leader>l <Cmd>lwindow<CR>
 
-nnoremap <silent> <Leader>fc <Cmd>Cfilter<Space>
-nnoremap <silent> <Leader>fl <Cmd>Lfilter<Space>
+nnoremap <silent> <Leader>fc :Cfilter<Space>
+nnoremap <silent> <Leader>fl :Lfilter<Space>
 
 nnoremap <silent> ]c <Cmd>cnext<CR>zv
 nnoremap <silent> [c <Cmd>cprevious<CR>zv
