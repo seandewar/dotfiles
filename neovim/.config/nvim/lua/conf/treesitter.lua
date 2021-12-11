@@ -9,9 +9,11 @@ local M = {}
 cmd [[
   packadd nvim-treesitter
   packadd nvim-treesitter-textobjects
+  packadd spellsitter.nvim
   packadd nvim-gps
 ]]
 local configs = require "nvim-treesitter.configs"
+local spellsitter = require "spellsitter"
 local gps = require "nvim-gps"
 
 --- show tree-sitter context alongside cursor location info
@@ -27,12 +29,9 @@ end
 
 configs.setup {
   ensure_installed = "maintained",
-  ignore_install = { "zig" },  -- TODO: remove when zig parser doesn't freeze
+  ignore_install = { "zig" }, -- TODO: remove when zig parser doesn't freeze
 
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = true, -- so spellchecker ignores code
-  },
+  highlight = { enable = true },
   -- indent = { enable = true }, -- disabled due to bugs
 
   incremental_selection = {
@@ -75,6 +74,11 @@ configs.setup {
       },
     },
   },
+}
+
+spellsitter.setup {
+  enable = true,
+  spellchecker = "vimfn",
 }
 
 gps.setup {

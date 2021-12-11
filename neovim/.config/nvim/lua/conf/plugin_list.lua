@@ -11,6 +11,7 @@ add "rktjmp/lush.nvim"  -- required by zenbones.nvim
 -- tree-sitter
 add("nvim-treesitter/nvim-treesitter", { ["do"] = "TSUpdate" })
 add "nvim-treesitter/nvim-treesitter-textobjects"
+add "lewis6991/spellsitter.nvim"
 add "SmiteshP/nvim-gps"
 
 -- telescope

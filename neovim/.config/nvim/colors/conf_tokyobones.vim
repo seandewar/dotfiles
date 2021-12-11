@@ -1,4 +1,5 @@
 let g:tokyobones_darkness = 'stark'
+let g:tokyobones_colorize_diagnostic_underline_text = v:true
 let g:tokyobones_solid_float_border = v:true
 let g:tokyobones_lighten_noncurrent_window = v:true
 
