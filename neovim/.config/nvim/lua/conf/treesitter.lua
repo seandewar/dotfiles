@@ -1,3 +1,4 @@
+local api = vim.api
 local cmd = vim.cmd
 
 local util = require "conf.util"
@@ -31,8 +32,14 @@ configs.setup {
   ensure_installed = "maintained",
   ignore_install = { "zig" }, -- TODO: remove when zig parser doesn't freeze
 
-  highlight = { enable = true },
-  -- indent = { enable = true }, -- disabled due to bugs
+  highlight = {
+    enable = true,
+    -- TODO: TS can be slow for big files and vim highlights are inaccurate
+    disable = function(lang, bufnr)
+      return lang == "vim" or api.nvim_buf_line_count(bufnr) > 3000
+    end,
+  },
+  -- indent = { enable = true }, -- TODO: disabled due to bugs
 
   incremental_selection = {
     enable = true,
@@ -83,9 +90,11 @@ spellsitter.setup {
 
 gps.setup {
   icons = {
-    ["class-name"] = "[c] ",
-    ["function-name"] = "[f] ",
-    ["method-name"] = "[m] ",
+    ["class-name"] = "[class] ",
+    ["function-name"] = "[function] ",
+    ["method-name"] = "[method] ",
+    ["container-name"] = "[container] ",
+    ["tag-name"] = "[tag] ",
   },
 }
 
