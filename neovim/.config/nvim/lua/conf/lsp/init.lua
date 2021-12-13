@@ -97,27 +97,31 @@ end
 local capabilities = lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-local default_config = {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  handlers = {
-    ["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
-      border = "single",
-    }),
-    ["textDocument/signatureHelp"] = lsp.with(
-      lsp.handlers.signature_help,
-      { border = "single" }
-    ),
-    ["textDocument/formatting"] = function(...)
-      lsp.handlers["textDocument/formatting"](...)
-      cmd "echo 'Buffer formatted!'"
-    end,
-    ["textDocument/rangeFormatting"] = function(...)
-      lsp.handlers["textDocument/rangeFormatting"](...)
-      cmd "echo 'Range formatted!'"
-    end,
-  },
-}
+lspconfig.util.default_config = vim.tbl_extend(
+  "force",
+  lspconfig.util.default_config,
+  {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    handlers = {
+      ["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
+        border = "single",
+      }),
+      ["textDocument/signatureHelp"] = lsp.with(
+        lsp.handlers.signature_help,
+        { border = "single" }
+      ),
+      ["textDocument/formatting"] = function(...)
+        lsp.handlers["textDocument/formatting"](...)
+        cmd "echo 'Buffer formatted!'"
+      end,
+      ["textDocument/rangeFormatting"] = function(...)
+        lsp.handlers["textDocument/rangeFormatting"](...)
+        cmd "echo 'Range formatted!'"
+      end,
+    },
+  }
+)
 
 for _, config in ipairs(servers) do
   local name
@@ -129,7 +133,7 @@ for _, config in ipairs(servers) do
     config.name = nil
   end
 
-  lspconfig[name].setup(vim.tbl_deep_extend("force", default_config, config))
+  lspconfig[name].setup(config)
 end
 
 cmd [[
