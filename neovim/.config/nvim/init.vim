@@ -188,6 +188,10 @@ endfunction
 
 set showtabline=1 tabline=%!TabLine()
 
+" Commands {{{1
+command! -bar Config tabedit $MYVIMRUNTIME | tcd $MYVIMRUNTIME
+            \ | call timer_start(0, {-> search('^init.vim\>', 'c')})
+
 " Mappings {{{1
 " General Mappings {{{2
 nnoremap <silent> <F2> <Cmd>setlocal spell!<CR>

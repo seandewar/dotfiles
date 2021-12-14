@@ -10,7 +10,7 @@ if exists('g:GuiLoaded')
     " Using a GUI that uses the nvim shim helper plugin (e.g nvim-qt)
     GuiTabline 0
     GuiPopupmenu 0
-    GuiRenderLigatures 1
+    silent! GuiRenderLigatures 1  " Not supported by older versions of nvim-qt
     GuiFont! Iosevka:h13.5
 else
     set guioptions=Mc
