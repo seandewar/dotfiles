@@ -30,13 +30,12 @@ end
 
 configs.setup {
   ensure_installed = "maintained",
-  ignore_install = { "zig" }, -- TODO: remove when zig parser doesn't freeze
 
   highlight = {
     enable = true,
-    -- TODO: TS can be slow for big files and vim highlights are inaccurate
+    -- TODO: some parsers can be slow for big files & vim hls are inaccurate
     disable = function(lang, bufnr)
-      return lang == "vim" or api.nvim_buf_line_count(bufnr) > 3000
+      return lang == "vim" or api.nvim_buf_line_count(bufnr) > 4000
     end,
   },
   -- indent = { enable = true }, -- TODO: disabled due to bugs
