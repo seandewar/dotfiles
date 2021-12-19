@@ -94,12 +94,11 @@ function! s:UpdateColorColumn() abort
     let &colorcolumn = &modifiable ? '+1' : ''
 endfunction
 
-augroup conf_active_cursorline
+augroup conf_active_cursorcolumn
     autocmd!
-    autocmd VimEnter,WinEnter * call s:UpdateColorColumn() | set cursorline
-    autocmd WinLeave * set colorcolumn= nocursorline
-    autocmd BufWinEnter * call s:UpdateColorColumn()
     autocmd OptionSet modifiable call s:UpdateColorColumn()
+    autocmd VimEnter,WinEnter,BufWinEnter * call s:UpdateColorColumn()
+    autocmd WinLeave * set colorcolumn=
 augroup END
 
 augroup conf_auto_hlsearch
@@ -130,6 +129,7 @@ if has('nvim')
     let g:netrw_home = stdpath('data')
 endif
 
+let g:netrw_cursor = 0
 let g:c_no_curly_error = 1  " don't show [{}] as an error; it's valid C++11
 let g:markdown_folding = 1
 let g:qf_disable_statusline = 1
