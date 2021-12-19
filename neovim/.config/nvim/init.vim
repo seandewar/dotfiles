@@ -197,6 +197,7 @@ command! -bar Config tabedit $MYVIMRUNTIME | tcd $MYVIMRUNTIME
 nnoremap <silent> <F2> <Cmd>setlocal spell!<CR>
 inoremap <silent> <F2> <Cmd>setlocal spell!<CR>
 nnoremap <silent> <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
+nnoremap <silent> <Leader>/ <Cmd>set hlsearch!<CR>
 
 " disable suspend mapping for nvim on windows as there is no way to resume!
 if has('nvim') && has('win32')

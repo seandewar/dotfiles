@@ -26,22 +26,22 @@ telescope.setup {
 telescope.load_extension "ui-select"
 telescope.load_extension "fzy_native"
 
-map("n", "z=", "<cmd>Telescope spell_suggest<cr>")
+map("n", "z=", "<Cmd>Telescope spell_suggest<CR>")
 
-map("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>")
-map("n", "<leader>fb", "<cmd>Telescope buffers<cr>")
-map("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
+map("n", "<Leader>f/", "<Cmd>Telescope current_buffer_fuzzy_find<CR>")
+map("n", "<Leader>fb", "<Cmd>Telescope buffers<CR>")
+map("n", "<Leader>ff", "<Cmd>Telescope find_files<CR>")
 map(
   "n",
-  "<leader>fF",
-  "<cmd>Telescope find_files hidden=true no_ignore=true<cr>"
+  "<Leader>fF",
+  "<Cmd>Telescope find_files hidden=true no_ignore=true<CR>"
 )
-map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
-map("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>")
-map("n", "<leader>fc", "<cmd>Telescope quickfix<cr>")
-map("n", "<leader>fl", "<cmd>Telescope loclist<cr>")
-map("n", "<leader>ft", "<cmd>Telescope tags<cr>")
-map("n", "<leader>fs", "<cmd>Telescope treesitter<cr>")
+map("n", "<Leader>fg", "<Cmd>Telescope live_grep<CR>")
+map("n", "<Leader>fo", "<Cmd>Telescope oldfiles<CR>")
+map("n", "<Leader>fc", "<Cmd>Telescope quickfix<CR>")
+map("n", "<Leader>fl", "<Cmd>Telescope loclist<CR>")
+map("n", "<Leader>ft", "<Cmd>Telescope tags<CR>")
+map("n", "<Leader>fs", "<Cmd>Telescope treesitter<CR>")
 
 -- git-specific mappings & vim-fugitive overrides
-map("n", "<leader>gB", "<cmd>Telescope git_branches<cr>")
+map("n", "<Leader>gB", "<Cmd>Telescope git_branches<CR>")
