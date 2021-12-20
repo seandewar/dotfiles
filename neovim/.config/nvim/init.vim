@@ -130,9 +130,10 @@ if has('nvim')
 endif
 
 let g:netrw_cursor = 0
+let g:qf_disable_statusline = 1
 let g:c_no_curly_error = 1  " don't show [{}] as an error; it's valid C++11
 let g:markdown_folding = 1
-let g:qf_disable_statusline = 1
+let g:rustfmt_autosave = 1
 
 " Status Line Settings {{{1
 function! StatusLine(is_current) abort
