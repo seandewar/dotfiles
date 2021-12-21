@@ -1,3 +1,4 @@
+local api = vim.api
 local cmd = vim.cmd
 local diagnostic = vim.diagnostic
 
@@ -24,12 +25,34 @@ function M.statusline(is_current)
   return #parts > 0 and ("[" .. table.concat(parts, " ") .. "] ") or ""
 end
 
-diagnostic.config { severity_sort = true }
+local virtual_text_ns = api.nvim_create_namespace "conf_diagnostic_virtual_text"
+
+-- Display virtual text for the current line only
+function M.update_virtual_text()
+  if api.nvim_get_mode().mode:match "i" then
+    return
+  end
+  local buf = api.nvim_get_current_buf()
+  local row = api.nvim_win_get_cursor(0)[1]
+  local line_diags = diagnostic.get(buf, { lnum = row - 1 })
+  diagnostic.show(virtual_text_ns, buf, line_diags, { virtual_text = true })
+end
+
+diagnostic.config {
+  severity_sort = true,
+  virtual_text = false,
+}
 
 cmd [[
   augroup conf_diagnostic_statusline
     autocmd!
-    autocmd DiagnosticChanged * redrawstatus!
+    autocmd DiagnosticChanged * redrawstatus
+  augroup END
+
+  augroup conf_diagnostic_virtual_text
+    autocmd!
+    autocmd DiagnosticChanged,CursorMoved *
+            \ lua require('conf.diagnostic').update_virtual_text()
   augroup END
 ]]
 
