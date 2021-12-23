@@ -1,14 +1,28 @@
-local api = vim.api
 local cmd = vim.cmd
+local api = vim.api
+local fn = vim.fn
 local diagnostic = vim.diagnostic
 
 local map = require("conf.util").map
 
 local M = {}
 
+local virtual_text_ns = api.nvim_create_namespace "conf_diagnostic_virtual_text"
+
+-- Display virtual text for the current line only
+function M.update_virtual_text()
+  if api.nvim_get_mode().mode:match "i" then
+    return
+  end
+  local buf = api.nvim_get_current_buf()
+  local row = api.nvim_win_get_cursor(0)[1]
+  local line_diags = diagnostic.get(buf, { lnum = row - 1 })
+  diagnostic.show(virtual_text_ns, buf, line_diags, { virtual_text = true })
+end
+
 ---@note requires recursive statusline evaluation: %{%...%}
-function M.statusline(is_current)
-  local hi_prefix = is_current and "StatusLine" or "StatusLineNC"
+local function statusline(curwin, stlwin)
+  local hi_prefix = curwin == stlwin and "StatusLine" or "StatusLineNC"
   local parts = {}
 
   local function add_part(hi_suffix, severity)
@@ -25,23 +39,12 @@ function M.statusline(is_current)
   return #parts > 0 and ("[" .. table.concat(parts, " ") .. "] ") or ""
 end
 
-local virtual_text_ns = api.nvim_create_namespace "conf_diagnostic_virtual_text"
-
--- Display virtual text for the current line only
-function M.update_virtual_text()
-  if api.nvim_get_mode().mode:match "i" then
-    return
-  end
-  local buf = api.nvim_get_current_buf()
-  local row = api.nvim_win_get_cursor(0)[1]
-  local line_diags = diagnostic.get(buf, { lnum = row - 1 })
-  diagnostic.show(virtual_text_ns, buf, line_diags, { virtual_text = true })
-end
+fn.ConfDefineStatusLineComponent("diagnostic", statusline)
 
 diagnostic.config {
   severity_sort = true,
-  signs = false,
   virtual_text = false,
+  signs = false,
 }
 
 cmd [[

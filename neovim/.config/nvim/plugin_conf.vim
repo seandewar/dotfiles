@@ -20,19 +20,8 @@ set completefunc=conf#vsnip#completefunc
 
 " Status Line Settings {{{1
 " vim-fugitive {{{2
-let g:plugin_statusline_functions =
-            \ [{is_current -> exists('g:loaded_fugitive')
-            \                 ? '%([%{FugitiveHead(7)}] %)' : ''}]
-
-" Neovim Diagnostics and LSP {{{2
-if has('nvim')
-    let g:plugin_statusline_functions += [{is_current ->
-                \ '%{%v:lua.require''conf.diagnostic''.statusline('
-                \ .. (is_current ? 'v:true' : 'v:false') .. ')%}'}]
-    let g:plugin_statusline_functions += [{is_current ->
-                \ '%{%v:lua.require''conf.lsp''.statusline('
-                \ .. (is_current ? 'v:true' : 'v:false') .. ')%}'}]
-end
+let g:conf_statusline_components.git = {->
+            \ exists('g:loaded_fugitive') ? '%([%{FugitiveHead(7)}] %)' : ''}
 
 " Commands {{{1
 " minpac {{{2

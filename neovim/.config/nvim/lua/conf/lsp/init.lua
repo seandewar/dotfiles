@@ -1,4 +1,5 @@
 local cmd = vim.cmd
+local fn = vim.fn
 local lsp = vim.lsp
 
 cmd "packadd nvim-lspconfig"
@@ -11,22 +12,6 @@ local M = {
   progress_clear_ms = 10000,
   progress = "",
 }
-
-function M.statusline(is_current)
-  if is_current and M.progress ~= "" then
-    return "[" .. M.progress .. "] "
-  else
-    local clients = vim.tbl_values(lsp.buf_get_clients(0))
-
-    if #clients == 0 then
-      return ""
-    elseif #clients == 1 then
-      return "[" .. clients[1].name .. "] "
-    else
-      return "[" .. #clients .. " clients] "
-    end
-  end
-end
 
 function M.update_progress()
   local new_msgs = lsp.util.get_progress_messages()
@@ -64,6 +49,24 @@ function M.update_progress()
     end, M.progress_clear_ms)
   end
 end
+
+local function statusline(curwin, stlwin)
+  if curwin == stlwin and M.progress ~= "" then
+    return "[" .. M.progress .. "] "
+  else
+    local clients = vim.tbl_values(lsp.buf_get_clients(0))
+
+    if #clients == 0 then
+      return ""
+    elseif #clients == 1 then
+      return "[" .. clients[1].name .. "] "
+    else
+      return "[" .. #clients .. " clients] "
+    end
+  end
+end
+
+fn.ConfDefineStatusLineComponent("lsp", statusline)
 
 local function on_attach(client, _)
   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"

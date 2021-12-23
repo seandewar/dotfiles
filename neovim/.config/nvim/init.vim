@@ -136,31 +136,30 @@ let g:markdown_folding = 1
 let g:rustfmt_autosave = 1
 
 " Status Line Settings {{{1
-function! StatusLine(is_current) abort
-    let line  = '%(%w %)'                                   " preview win flag
-    let line .= '%(%f %)'                                   " file name
-    let line .= '%([%M%R] %)'                               " modified, RO flag
-    let line .= '%([%{&spell ? &spelllang : ''''}] %)'      " spell check
+let g:conf_statusline_components = #{
+            \ buf: '%(%w %)%(%f %)%([%M%R] %)',
+            \ spell: '%([%{&spell ? &spelllang : ''''}] %)',
+            \ position: '%=%-14(%l,%c%V%) %P',
+            \ }
+let g:conf_statusline_order =
+            \ ['buf', 'spell', 'git', 'diagnostic', 'lsp', 'position']
 
-    " plugin-specific status line elements
-    for Fn in get(g:, 'plugin_statusline_functions', [])
-        let line .= Fn(a:is_current)
-    endfor
-
-    let line .= '%='                                        " align right
-    let line .= '%-14(%l,%c%V%) '                           " cursor line & col
-    let line .= '%P'                                        " scroll percentage
-    return line
+function! ConfStatusLine() abort
+    let parts = copy(g:conf_statusline_order)
+                \ ->map({_, k -> get(g:conf_statusline_components, k, '')})
+                \ ->map({_, v ->
+                \ type(v) == v:t_func ? v(win_getid(), g:statusline_winid) : v})
+    return join(parts, '')
 endfunction
 
-set laststatus=2 statusline=%!StatusLine(g:statusline_winid==win_getid())
+set laststatus=2 statusline=%!ConfStatusLine()
 
 augroup conf_statusline_highlights
     autocmd! ColorScheme * call conf#colors#def_statusline_hls()
 augroup END
 
 " Tab Line Settings {{{1
-function! TabLabel(tabnum) abort
+function! ConfTabLabel(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
     let winnum = tabpagewinnr(a:tabnum)
     let bufname = expand('#' .. buffers[winnum - 1] .. ':t')
@@ -173,7 +172,7 @@ function! TabLabel(tabnum) abort
     return a:tabnum .. (empty(bufname) ? '' : ' ') .. bufname
 endfunction
 
-function! TabLine() abort
+function! ConfTabLine() abort
     let line = ''
     let i = 1
     while i <= tabpagenr('$')
@@ -187,18 +186,13 @@ function! TabLine() abort
     return line
 endfunction
 
-set showtabline=1 tabline=%!TabLine()
+set showtabline=1 tabline=%!ConfTabLine()
 
 " Commands {{{1
-function! s:OpenDir(dir) abort
-    execute 'tabedit ' .. a:dir .. ' | tcd ' .. a:dir
-endfunction
-
-command! -bar ConfigDir call s:OpenDir($MYVIMRUNTIME)
+command! -bar ConfigDir call conf#tabedit_dir($MYVIMRUNTIME)
             \ | call timer_start(0, {-> search('^init.vim\>', 'c')})
-
-command! -bar DataDir call s:OpenDir(exists('*stdpath') ? stdpath('data')
-            \ : $MYVIMRUNTIME)
+command! -bar DataDir call conf#tabedit_dir(
+            \ exists('*stdpath') ? stdpath('data') : $MYVIMRUNTIME)
 
 " Mappings {{{1
 " General Mappings {{{2

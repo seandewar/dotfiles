@@ -1,6 +1,4 @@
 TODO:
 - telescope don't overwrite quickfix list (make a new list instead for [C ]C)
-
 - reconsider nvim-dap at some point?
-- use v:true for is_current from init.vim?
 - split .vim config into separate files?
