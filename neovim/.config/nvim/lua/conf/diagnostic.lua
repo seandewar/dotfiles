@@ -40,6 +40,7 @@ end
 
 diagnostic.config {
   severity_sort = true,
+  signs = false,
   virtual_text = false,
 }
 
