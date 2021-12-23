@@ -176,13 +176,13 @@ function! ConfTabLine() abort
     let line = ''
     let i = 1
     while i <= tabpagenr('$')
-        let line .= tabpagenr() == i ? '%#TabLineSel# ' : '%#TabLine# ' " active
-        let line .= '%' .. i .. 'T'                " tab number for mouse clicks
-        let line .= '%{TabLabel(' .. i .. ')} '    " tab label
+        let line .= tabpagenr() == i ? '%#TabLineSel# ' : '%#TabLine# '
+        let line .= '%' .. i .. 'T'
+        let line .= '%{ConfTabLabel(' .. i .. ')} '
         let i += 1
     endwhile
 
-    let line .= '%#TabLineFill#'                   " fill remaining tab line
+    let line .= '%#TabLineFill#'
     return line
 endfunction
 
