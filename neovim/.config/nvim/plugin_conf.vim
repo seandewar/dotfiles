@@ -4,7 +4,7 @@
 
 " General Plugin Settings {{{1
 " color scheme {{{2
-colorscheme conf_codedark
+colorscheme paramount
 
 " localvimrc
 let g:localvimrc_ask = 0

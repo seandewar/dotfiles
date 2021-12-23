@@ -17,10 +17,10 @@ function! conf#minpac#reload() abort
 
     " minpac (self-update)
     " on nvim, install to the data dir over the config dir by default
-    call minpac#init({'dir': get(g:, 'minpac_base_dir',
+    call minpac#init(#{dir: get(g:, 'minpac_base_dir',
                 \ has('nvim') ? stdpath('data') . '/site' : ''),
-                \ 'progress_open': 'none'})
-    call minpac#add('k-takata/minpac', {'type': 'opt'})
+                \ progress_open: 'none', status_auto: 1})
+    call minpac#add('k-takata/minpac', #{type: 'opt'})
 
     runtime plugin_list.vim
 endfunction

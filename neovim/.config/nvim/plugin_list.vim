@@ -1,7 +1,7 @@
 " color schemes
+call minpac#add('owickstrom/vim-colors-paramount', #{type: 'opt'})
 call minpac#add('tomasiser/vim-code-dark', #{type: 'opt'})
 call minpac#add('bluz71/vim-moonfly-colors', #{type: 'opt'})
-call minpac#add('mcchrish/zenbones.nvim', #{type: 'opt'})
 
 " general plugins
 call minpac#add('github/copilot.vim')
