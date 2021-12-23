@@ -10,8 +10,8 @@ end
 
 " Set $MYVIMRC and $MYVIMRUNTIME for easy access, resolving symlinks {{{1
 let $MYVIMRC = resolve($MYVIMRC)
-let $MYVIMRUNTIME = resolve(has('nvim') ? stdpath('config')
-                          \ : expand(has('win32') ? '~/vimfiles' : '~/.vim'))
+let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
+            \ : expand(has('win32') ? '~/vimfiles' : '~/.vim'))
 
 " General Settings {{{1
 set autoread
@@ -190,8 +190,15 @@ endfunction
 set showtabline=1 tabline=%!TabLine()
 
 " Commands {{{1
-command! -bar Config tabedit $MYVIMRUNTIME | tcd $MYVIMRUNTIME
+function! s:OpenDir(dir) abort
+    execute 'tabedit ' .. a:dir .. ' | tcd ' .. a:dir
+endfunction
+
+command! -bar ConfigDir call s:OpenDir($MYVIMRUNTIME)
             \ | call timer_start(0, {-> search('^init.vim\>', 'c')})
+
+command! -bar DataDir call s:OpenDir(exists('*stdpath') ? stdpath('data')
+            \ : $MYVIMRUNTIME)
 
 " Mappings {{{1
 " General Mappings {{{2
