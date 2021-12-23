@@ -20,8 +20,7 @@ set completefunc=conf#vsnip#completefunc
 
 " Status Line Settings {{{1
 " vim-fugitive {{{2
-let g:conf_statusline_components.git = {->
-            \ exists('g:loaded_fugitive') ? '%([%{FugitiveHead(7)}] %)' : ''}
+let g:conf_statusline_components.git = '%([%{FugitiveHead(7)}] %)'
 
 " Commands {{{1
 " minpac {{{2
