@@ -23,10 +23,11 @@ end
 ---@note requires recursive statusline evaluation: %{%...%}
 local function statusline(curwin, stlwin)
   local hi_prefix = curwin == stlwin and "StatusLine" or "StatusLineNC"
+  local buf = api.nvim_win_get_buf(stlwin)
   local parts = {}
 
   local function add_part(hi_suffix, severity)
-    local count = #diagnostic.get(0, { severity = severity })
+    local count = #diagnostic.get(buf, { severity = severity })
     if count > 0 then
       parts[#parts + 1] = ("%%#%s%s#%d%%*"):format(hi_prefix, hi_suffix, count)
     end

@@ -1,4 +1,5 @@
 local cmd = vim.cmd
+local api = vim.api
 local fn = vim.fn
 local lsp = vim.lsp
 
@@ -54,8 +55,9 @@ local function statusline(curwin, stlwin)
   if curwin == stlwin and M.progress ~= "" then
     return "[" .. M.progress .. "] "
   else
-    local clients = vim.tbl_values(lsp.buf_get_clients(0))
-
+    local clients = vim.tbl_values(
+      lsp.buf_get_clients(api.nvim_win_get_buf(stlwin))
+    )
     if #clients == 0 then
       return ""
     elseif #clients == 1 then
