@@ -3,12 +3,13 @@ function! s:HlAttrMap(name) abort
     let name = a:name
     while 1
         if !hlexists(name) | return {} | endif
-        let parts = split(trim(execute('highlight ' .. name)))
-        if parts[2] ==# 'cleared' | return {} | endif
-        if parts[2] !=# 'links' | break | endif
-        let name = parts[4]
+        let lines = split(trim(execute('highlight ' .. name)), "\n")
+        let parts = split(lines[-1])[(len(lines) == 1 ? 2 : 0):]
+        if parts[0] ==# 'cleared' | return {} | endif
+        if parts[0] !=# 'links' | break | endif
+        let name = parts[2]
     endwhile
-    let attrs = map(parts[2:], {_, v -> split(v, '=')})
+    let attrs = map(parts, {_, v -> split(v, '=')})
     let attr_map = {}
     for [k, v] in attrs
         let attr_map[k] = v
