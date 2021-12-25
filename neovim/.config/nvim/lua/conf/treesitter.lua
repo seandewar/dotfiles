@@ -23,7 +23,7 @@ function M.echo_cursor_info()
   if gps.is_available() then
     local context = gps.get_location()
     if context ~= "" then
-      cmd("echo '" .. context .. "'")
+      cmd("echo 'Context:' '" .. context .. "'")
     end
   end
 end
@@ -87,15 +87,7 @@ spellsitter.setup {
   spellchecker = "vimfn",
 }
 
-gps.setup {
-  icons = {
-    ["class-name"] = "[class] ",
-    ["function-name"] = "[function] ",
-    ["method-name"] = "[method] ",
-    ["container-name"] = "[container] ",
-    ["tag-name"] = "[tag] ",
-  },
-}
+gps.setup { disable_icons = true }
 
 map("n", "g<C-G>", "<Cmd>lua require('conf.treesitter').echo_cursor_info()<CR>")
 
