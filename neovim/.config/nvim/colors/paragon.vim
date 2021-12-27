@@ -42,32 +42,35 @@ let s:dark_yellow   = {'gui': '#a89c14', 'cterm': '3'  }
 
 let s:background = &background
 if &background == 'dark'
+    let s:purple         = s:light_purple
+    let s:cyan           = s:light_cyan
+    let s:green          = s:light_green
+    let s:red            = s:light_red
+    let s:yellow         = s:light_yellow
+
     let s:bg             = s:black
     let s:bg_subtle      = s:lighter_black
     let s:bg_very_subtle = s:subtle_black
     let s:bg_most_subtle = s:light_black
     let s:norm           = s:lighter_gray
     let s:norm_subtle    = s:medium_gray
-    let s:purple         = s:light_purple
-    let s:cyan           = s:light_cyan
-    let s:green          = s:light_green
-    let s:red            = s:light_red
-    let s:visual         = s:light_purple
-    let s:yellow         = s:light_yellow
 else
+    let s:purple         = s:dark_purple
+    let s:cyan           = s:dark_cyan
+    let s:green          = s:dark_green
+    let s:red            = s:dark_red
+    let s:yellow         = s:dark_yellow
+
     let s:bg             = s:actual_white
     let s:bg_subtle      = s:light_gray
     let s:bg_very_subtle = s:lightest_gray
     let s:bg_most_subtle = s:white
     let s:norm           = s:light_black
     let s:norm_subtle    = s:medium_gray
-    let s:purple         = s:dark_purple
-    let s:cyan           = s:dark_cyan
-    let s:green          = s:dark_green
-    let s:red            = s:dark_red
-    let s:visual         = s:dark_purple
-    let s:yellow         = s:dark_yellow
 endif
+
+let s:accent = s:orange
+let s:accent_contrast = s:black
 
 " https://github.com/noahfrederick/vim-hemisu/
 function! s:h(group, style) abort
@@ -89,10 +92,10 @@ if &background != s:background
     execute 'set background=' . s:background
 endif
 
-call s:h('Cursor',   {'bg': s:purple, 'fg': s:norm})
-call s:h('Comment',  {'fg': s:bg_subtle, 'gui': 'italic'})
+call s:h('Cursor',   {'bg': s:accent, 'fg': s:norm})
+call s:h('Comment',  {'fg': s:bg_subtle, 'gui': 'italic', 'cterm': 'italic'})
 
-call s:h('Constant', {'fg': s:purple})
+call s:h('Constant', {'fg': s:accent})
 hi! link Character Constant
 hi! link Number    Constant
 hi! link Boolean   Constant
@@ -102,7 +105,6 @@ hi! link String    Constant
 hi! link Identifier Normal
 hi! link Function   Identifier
 
-call s:h('Operator',  {'fg': s:norm, 'cterm': 'bold', 'gui': 'bold'})
 call s:h('Statement', {'fg': s:norm_subtle})
 hi! link Conditonal Statement
 hi! link Repeat     Statement
@@ -121,39 +123,41 @@ hi! link StorageClass Type
 hi! link Structure    Type
 hi! link Typedef      Type
 
-call s:h('Special',   {'fg': s:norm_subtle})
-hi! link SpecialChar    Special
-hi! link Tag            Special
-hi! link Delimiter      Special
+call s:h('Operator',   {'fg': s:norm, 'cterm': 'bold', 'gui': 'bold'})
+call s:h('Tag',        {'fg': s:norm_subtle})
+call s:h('Debug',      {'fg': s:norm_subtle})
+
+call s:h('Special',    {'fg': s:norm_subtle})
+call s:h('SpecialKey', {'fg': s:blue, 'gui': 'italic', 'cterm': 'italic'})
 hi! link SpecialComment Special
-hi! link Debug          Special
+hi! link SpecialChar    Special
+hi! link Delimiter      Special
 
 call s:h('Underlined', {'fg': s:norm, 'gui': 'underline', 'cterm': 'underline'})
-call s:h('Error',      {'fg': s:actual_white, 'bg': s:red, 'cterm': 'bold'})
-call s:h('Todo',       {'fg': s:purple,
+call s:h('Todo',       {'fg': s:accent,
             \           'gui': 'underline', 'cterm': 'underline'})
-call s:h('SpecialKey', {'fg': s:light_green})
+call s:h('Error',      {'fg': s:actual_white, 'bg': s:red, 'cterm': 'bold'})
 
 call s:h('Ignore',     {})
-call s:h('NonText',    {'fg': s:medium_gray})
+call s:h('NonText',    {'fg': s:bg_subtle})
 hi! link Conceal NonText
 
-call s:h('Directory',  {'fg': s:dark_blue})
+call s:h('Directory',  {'fg': s:accent})
 call s:h('ErrorMsg',   {'fg': s:red})
-call s:h('IncSearch',  {'bg': s:yellow, 'fg': s:bg})
-call s:h('Search',     {'bg': s:light_green, 'fg': s:bg})
+call s:h('IncSearch',  {'bg': s:yellow, 'fg': s:black})
+call s:h('Search',     {'bg': s:blue, 'fg': s:black})
 
 call s:h('MoreMsg',    {'fg': s:medium_gray, 'cterm': 'bold', 'gui': 'bold'})
 hi! link ModeMsg MoreMsg
 
 call s:h('LineNr',       {'fg': s:bg_subtle})
-call s:h('CursorLineNr', {'fg': s:purple, 'bg': s:bg_very_subtle})
-call s:h('Question',     {'fg': s:light_green})
+call s:h('CursorLineNr', {'fg': s:accent, 'bg': s:bg_very_subtle})
+call s:h('Question',     {'fg': s:blue})
 call s:h('StatusLine',   {'bg': s:bg_most_subtle})
-call s:h('StatusLineNC', {'bg': s:bg_most_subtle, 'fg': s:medium_gray})
+call s:h('StatusLineNC', {'bg': s:bg_most_subtle, 'fg': s:norm_subtle})
 call s:h('VertSplit',    {'fg': s:bg_most_subtle})
-call s:h('Title',        {'fg': s:dark_blue})
-call s:h('Visual',       {'fg': s:bg, 'bg': s:visual})
+call s:h('Title',        {'fg': s:purple})
+call s:h('Visual',       {'fg': s:accent_contrast, 'bg': s:accent})
 call s:h('VisualNOS',    {'fg': s:norm, 'bg': s:bg_subtle})
 call s:h('WarningMsg',   {'fg': s:yellow})
 call s:h('WildMenu',     {'fg': s:bg, 'bg': s:norm})
@@ -162,8 +166,8 @@ call s:h('FoldColumn',   {'fg': s:bg_subtle})
 call s:h('DiffAdd',      {'fg': s:green})
 call s:h('DiffDelete',   {'fg': s:red})
 call s:h('DiffChange',   {'fg': s:dark_yellow})
-call s:h('DiffText',     {'fg': s:dark_blue})
-call s:h('SignColumn',   {'fg': s:light_green})
+call s:h('DiffText',     {'fg': s:accent})
+call s:h('SignColumn',   {'fg': s:accent})
 call s:h('SpellBad',     {'gui': 'undercurl', 'cterm': 'underline',
             \             'sp': s:red})
 call s:h('SpellCap',     {'gui': 'undercurl', 'cterm': 'underline',
@@ -178,16 +182,17 @@ hi! link PmenuSel   Visual
 hi! link PmenuThumb Visual
 hi! link PmenuSbar  Pmenu
 
-call s:h('TabLine',      {'fg': s:norm, 'bg': s:bg_most_subtle})
-call s:h('TabLineSel',   {'fg': s:purple, 'bg': s:bg_subtle,
-            \             'gui': 'bold',  'cterm': 'bold'})
+call s:h('TabLine',      {'fg': s:norm_subtle, 'bg': s:bg_most_subtle})
+call s:h('TabLineSel',   {'fg': s:accent_contrast, 'bg': s:accent})
 hi! link TabLineFill TabLine
 
 call s:h('ColorColumn',  {'bg': s:bg_most_subtle})
 call s:h('CursorLine',   {'bg': s:bg_very_subtle})
 hi! link CursorColumn CursorLine
 
-" Neovim:
+call s:h('MatchParen', {'bg': s:bg_subtle, 'fg': s:norm})
+
+" Neovim: {{{1
 call s:h('FloatBorder',  {'fg': s:bg_subtle, 'bg': s:bg_most_subtle})
 
 " vim.diagnostic
@@ -205,13 +210,14 @@ call s:h('DiagnosticUnderlineHint',  {'gui': 'undercurl', 'cterm': 'underline',
 call s:h('DiagnosticUnderlineInfo',  {'gui': 'undercurl', 'cterm': 'underline',
             \                         'sp': s:norm})
 
-" nvim-treesitter
-hi! link TSConstBuiltin Constant
-
-" Plugins:
-call s:h('MatchParen', {'bg': s:bg_subtle, 'fg': s:norm})
-
+" Plugins: {{{1
 " diff.vim
 hi! link diffAdded   DiffAdd
 hi! link diffChanged DiffChange
 hi! link diffRemoved DiffDelete
+
+" nvim-treesitter
+hi! link TSConstBuiltin Constant
+
+" telescope.nvim
+hi! link TelescopeMatching Search
