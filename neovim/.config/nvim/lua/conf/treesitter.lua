@@ -82,11 +82,7 @@ configs.setup {
   },
 }
 
-spellsitter.setup {
-  enable = true,
-  spellchecker = "vimfn",
-}
-
+spellsitter.setup { enable = true }
 gps.setup { disable_icons = true }
 
 map("n", "g<C-G>", "<Cmd>lua require('conf.treesitter').echo_cursor_info()<CR>")
