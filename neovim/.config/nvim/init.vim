@@ -124,9 +124,9 @@ augroup END
 " Distributed Plugin Settings {{{1
 packadd cfilter
 
-" If Nvim, store the .netrwhist file in the data directory.
 if has('nvim')
-    let g:netrw_home = stdpath('data')
+    let g:netrw_home = stdpath('data')  " store .netrwhist in the data directory
+    let g:do_filetype_lua = 1  " use filetype.lua for ft detection
 endif
 
 let g:qf_disable_statusline = 1
