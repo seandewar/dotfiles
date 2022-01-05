@@ -136,7 +136,7 @@ let g:rustfmt_autosave = 1
 
 " Status Line Settings {{{1
 let g:conf_statusline_components = #{
-            \ buf: '%(%w %)%(%f %)%([%M%R] %)',
+            \ buf: '%(%w %)%(%f %)%([%M%R] %)%(%y %)',
             \ spell: '%([%{&spell ? &spelllang : ''''}] %)',
             \ position: '%=%-14(%l,%c%V%) %P',
             \ }
