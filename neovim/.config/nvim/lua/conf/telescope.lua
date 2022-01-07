@@ -1,5 +1,5 @@
 local cmd = vim.cmd
-local map = require("conf.util").map
+local map = vim.keymap.set
 
 cmd [[
   packadd plenary.nvim
@@ -43,5 +43,8 @@ map("n", "<Leader>fl", "<Cmd>Telescope loclist<CR>")
 map("n", "<Leader>ft", "<Cmd>Telescope tags<CR>")
 map("n", "<Leader>fs", "<Cmd>Telescope treesitter<CR>")
 
--- git-specific mappings & vim-fugitive overrides
+-- vim.diagnostic
+map("n", "<Space><Space>", "<Cmd>Telescope diagnostics bufnr=0<CR>")
+
+-- git
 map("n", "<Leader>gB", "<Cmd>Telescope git_branches<CR>")

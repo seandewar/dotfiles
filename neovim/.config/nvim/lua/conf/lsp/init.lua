@@ -3,11 +3,10 @@ local api = vim.api
 local fn = vim.fn
 local lsp = vim.lsp
 
+local servers = require "conf.lsp.servers"
+
 cmd "packadd nvim-lspconfig"
 local lspconfig = require "lspconfig"
-
-local servers = require "conf.lsp.servers"
-local bmap = require("conf.util").bmap
 
 local M = {
   progress_clear_ms = 10000,
@@ -54,48 +53,52 @@ end
 local function statusline(curwin, stlwin)
   if curwin == stlwin and M.progress ~= "" then
     return "[" .. M.progress .. "] "
+  end
+  local clients = vim.tbl_values(
+    lsp.buf_get_clients(api.nvim_win_get_buf(stlwin))
+  )
+  if #clients == 0 then
+    return ""
+  elseif #clients == 1 then
+    return "[" .. clients[1].name .. "] "
   else
-    local clients = vim.tbl_values(
-      lsp.buf_get_clients(api.nvim_win_get_buf(stlwin))
-    )
-    if #clients == 0 then
-      return ""
-    elseif #clients == 1 then
-      return "[" .. clients[1].name .. "] "
-    else
-      return "[" .. #clients .. " clients] "
-    end
+    return "[" .. #clients .. " clients] "
   end
 end
 
 fn.ConfDefineStatusLineComponent("lsp", statusline)
 
 local function on_attach(client, _)
-  vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-  vim.opt_local.tagfunc = "v:lua.vim.lsp.tagfunc"
-  vim.opt_local.formatexpr = "v:lua.vim.lsp.formatexpr()"
-
-  if client.name == "clangd" then
-    bmap("n", "<Space>s", "<Cmd>ClangdSwitchSourceHeader<CR>")
+  local opt = vim.opt_local
+  local map = function(mode, lhs, rhs, desc)
+    vim.keymap.set(mode, lhs, rhs, { buffer = true, desc = desc })
   end
 
-  bmap("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>")
-  bmap({ "n", "i" }, "<C-K>", "<Cmd>lua vim.lsp.buf.signature_help()<CR>")
+  opt.omnifunc = "v:lua.vim.lsp.omnifunc"
+  opt.tagfunc = "v:lua.vim.lsp.tagfunc"
+  opt.formatexpr = "v:lua.vim.lsp.formatexpr()"
 
-  bmap("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>")
-  bmap("n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>")
-  bmap("n", "<Space>t", "<Cmd>lua vim.lsp.buf.type_definition()<CR>")
-  bmap("n", "<Space>i", "<Cmd>Telescope lsp_implementations<CR>")
-  bmap("n", "<Space>r", "<Cmd>Telescope lsp_references<CR>")
+  map("n", "K", lsp.buf.hover, "LSP Hover")
+  map({ "n", "i" }, "<C-K>", lsp.buf.signature_help, "LSP Signature Help")
+  map("n", "gd", lsp.buf.definition, "LSP Goto Definition")
+  map("n", "gD", lsp.buf.declaration, "LSP Goto Declaration")
+  map("n", "<Space>t", lsp.buf.type_definition, "LSP Goto Type Definition")
+  map("n", "<Space>R", lsp.buf.rename, "LSP Rename")
+  map("n", "<Space>f", lsp.buf.formatting, "LSP Formatting")
+  map("n", "<Space>a", lsp.buf.code_action, "LSP Code Action")
+  map("x", "<Space>f", "<Esc><Cmd>lua vim.lsp.buf.range_formatting()<CR>")
+  map("x", "<Space>a", "<Esc><Cmd>lua vim.lsp.buf.range_code_action()<CR>")
 
-  bmap("n", "<Space>R", "<Cmd>lua vim.lsp.buf.rename()<CR>")
-  bmap("n", "<Space>f", "<Cmd>lua vim.lsp.buf.formatting()<CR>")
-  bmap("x", "<Space>f", "<Esc><Cmd>lua vim.lsp.buf.range_formatting()<CR>")
-  bmap("n", "<Space>a", "<Cmd>lua vim.lsp.buf.code_action()<CR>")
-  bmap("x", "<Space>a", "<Esc><Cmd>lua vim.lsp.buf.range_code_action()<CR>")
+  -- telescope.nvim
+  map("n", "<Space>i", "<Cmd>Telescope lsp_implementations<CR>")
+  map("n", "<Space>r", "<Cmd>Telescope lsp_references<CR>")
+  map("n", "<Space>w", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
+  map("n", "<Space>d", "<Cmd>Telescope lsp_document_symbols<CR>")
 
-  bmap("n", "<Space>w", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
-  bmap("n", "<Space>d", "<Cmd>Telescope lsp_document_symbols<CR>")
+  -- server-specific commands
+  if client.name == "clangd" then
+    map("n", "<Space>s", "<Cmd>ClangdSwitchSourceHeader<CR>")
+  end
 end
 
 -- vim-vsnip-integ doesn't enable snippetSupport for us
@@ -138,7 +141,6 @@ for _, config in ipairs(servers) do
     name = config.name
     config.name = nil
   end
-
   lspconfig[name].setup(config)
 end
 

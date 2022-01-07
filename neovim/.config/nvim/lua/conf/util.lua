@@ -26,31 +26,4 @@ function M.t(str)
   return api.nvim_replace_termcodes(str, true, true, true)
 end
 
-local function map(fn, mode, lhs, rhs, opts)
-  opts = vim.tbl_extend("keep", opts or {}, { silent = true, noremap = true })
-  mode = type(mode) ~= "table" and { mode } or mode
-  lhs = type(lhs) ~= "table" and { lhs } or lhs
-
-  for _, m in ipairs(mode) do
-    for _, l in ipairs(lhs) do
-      fn(m, l, rhs, opts)
-    end
-  end
-end
-
---- defines a global key mapping via nvim_set_keymap.
---- defaults to a silent, non-recursive mapping
----@note mode and lhs can be a table
-function M.map(...)
-  map(api.nvim_set_keymap, ...)
-end
-
---- like @{map}, but define a local mapping for the current buffer via
---- nvim_buf_set_keymap
-function M.bmap(...)
-  map(function(...)
-    api.nvim_buf_set_keymap(0, ...)
-  end, ...)
-end
-
 return M

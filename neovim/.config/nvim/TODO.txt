@@ -1,4 +1,8 @@
 TODO:
+- paragon: can't see signature help highlights
+- paragon: can't see links in vimdoc
+- lsp progress message statusline doesn't redraw sometimes
+- not sure I like the new hlsearch behaviour I added
 - telescope don't overwrite quickfix list (make a new list instead for [C ]C)
 - reconsider nvim-dap at some point?
 - split .vim config into separate files?

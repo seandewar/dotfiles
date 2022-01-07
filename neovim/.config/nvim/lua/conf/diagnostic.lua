@@ -1,13 +1,12 @@
 local cmd = vim.cmd
 local api = vim.api
 local fn = vim.fn
+local map = vim.keymap.set
 local diagnostic = vim.diagnostic
-
-local map = require("conf.util").map
 
 local M = {}
 
-local virtual_text_ns = api.nvim_create_namespace "conf_diagnostic_virtual_text"
+local virt_text_ns = api.nvim_create_namespace "conf_diagnostic_virt_text"
 
 -- Display virtual text for the current line only
 function M.update_virtual_text()
@@ -17,7 +16,7 @@ function M.update_virtual_text()
   local buf = api.nvim_get_current_buf()
   local row = api.nvim_win_get_cursor(0)[1]
   local line_diags = diagnostic.get(buf, { lnum = row - 1 })
-  diagnostic.show(virtual_text_ns, buf, line_diags, { virtual_text = true })
+  diagnostic.show(virt_text_ns, buf, line_diags, { virtual_text = true })
 end
 
 ---@note requires recursive statusline evaluation: %{%...%}
@@ -61,15 +60,21 @@ cmd [[
   augroup END
 ]]
 
-map("n", "]<Space>", "<Cmd>lua vim.diagnostic.goto_next { float = false }<CR>")
-map("n", "[<Space>", "<Cmd>lua vim.diagnostic.goto_prev { float = false }<CR>")
-map(
-  "n",
-  { "<Space>k", "<Space>K" },
-  "<Cmd>lua vim.diagnostic.open_float(nil, "
-    .. "{ scope = 'cursor', border = 'single' })<CR>"
-)
+map("n", "]<Space>", function()
+  diagnostic.goto_next { float = false }
+end, {
+  desc = "Goto Next Diagnostic",
+})
+map("n", "[<Space>", function()
+  diagnostic.goto_prev { float = false }
+end, {
+  desc = "Goto Previous Diagnostic",
+})
 
-map("n", "<Space><Space>", "<Cmd>Telescope diagnostics bufnr=0<CR>")
+map("n", "<Space>k", function()
+  diagnostic.open_float(nil, { scope = "cursor", border = "single" })
+end, {
+  desc = "Show Diagnostics Under Cursor",
+})
 
 return M

@@ -1,9 +1,8 @@
 local api = vim.api
 local cmd = vim.cmd
+local map = vim.keymap.set
 
-local util = require "conf.util"
-local map = util.map
-local t = util.t
+local t = require("conf.util").t
 
 local M = {}
 
@@ -16,17 +15,6 @@ cmd [[
 local configs = require "nvim-treesitter.configs"
 local spellsitter = require "spellsitter"
 local gps = require "nvim-gps"
-
---- show tree-sitter context alongside cursor location info
-function M.echo_cursor_info()
-  cmd(t "normal! g<C-G>")
-  if gps.is_available() then
-    local context = gps.get_location()
-    if context ~= "" then
-      cmd("echo 'Context:' '" .. context .. "'")
-    end
-  end
-end
 
 configs.setup {
   ensure_installed = "maintained",
@@ -85,6 +73,17 @@ configs.setup {
 spellsitter.setup { enable = true }
 gps.setup { disable_icons = true }
 
-map("n", "g<C-G>", "<Cmd>lua require('conf.treesitter').echo_cursor_info()<CR>")
+--- show tree-sitter context alongside cursor location info
+local function echo_cursor_context()
+  cmd(t "normal! g<C-G>")
+  if gps.is_available() then
+    local context = gps.get_location()
+    if context ~= "" then
+      cmd("echo 'Context:' '" .. context .. "'")
+    end
+  end
+end
+
+map("n", "g<C-G>", echo_cursor_context)
 
 return M

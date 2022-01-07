@@ -2,7 +2,7 @@
 " Sean Dewar's Vanilla (Neo)Vim Configuration <https://github.com/seandewar>   "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-if !has('patch-8.2.2434') && !has('nvim-0.6')
+if !has('patch-8.2.2434') && !has('nvim-0.7')
     echohl WarningMsg
     echo 'init.vim may not work with this version of (Neo)Vim!'
     echohl None
