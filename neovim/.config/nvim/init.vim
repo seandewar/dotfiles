@@ -110,16 +110,7 @@ augroup END
 
 augroup conf_auto_quickfix
     autocmd!
-    autocmd VimEnter * nested cwindow
-
-    " NOTE: Cannot use :c/lwindow directly.
-    " Some commands (like :helpgrep) trigger QuickfixCmdPost before they
-    " populate the qf list. So use a 0ms timer to defer until Vim is ready for
-    " input; the list should be populated by then.
-    autocmd QuickfixCmdPost [^l]* nested
-                \ call timer_start(0, {-> execute('cwindow')})
-    autocmd QuickfixCmdPost l* nested
-                \ call timer_start(0, {-> execute('lwindow', 'silent!')})
+    autocmd VimEnter * ++nested cwindow
 augroup END
 
 " Distributed Plugin Settings {{{1
