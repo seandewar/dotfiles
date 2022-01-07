@@ -25,7 +25,7 @@ set foldmethod=marker
 set formatoptions=croqnlj
 set guioptions=M  " has to be before :syntax/filetype on, so not in gvimrc
 set hidden
-set incsearch ignorecase smartcase nohlsearch
+set incsearch ignorecase smartcase hlsearch
 set nojoinspaces
 set list listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
 set mouse=a mousemodel=popup nomousehide
@@ -54,6 +54,7 @@ endif
 
 filetype plugin indent on
 syntax enable
+nohlsearch  " setting hlsearch above re-enables old highlights; disable them
 
 if exists('+inccommand')
     set inccommand=nosplit
@@ -103,8 +104,8 @@ augroup END
 
 augroup conf_auto_hlsearch
     autocmd!
-    autocmd CmdlineEnter /,\? set hlsearch
-    autocmd CmdlineLeave /,\? set nohlsearch
+    autocmd CmdlineEnter /,\? let s:save_hlsearch = &hlsearch | set hlsearch
+    autocmd CmdlineLeave /,\? let &hlsearch = s:save_hlsearch
 augroup END
 
 augroup conf_auto_quickfix

@@ -1,5 +1,4 @@
 TODO:
-- not sure I like the new hlsearch behaviour I added
 - telescope don't overwrite quickfix list (make a new list instead for [C ]C)
 - reconsider nvim-dap at some point?
 - split .vim config into separate files?
