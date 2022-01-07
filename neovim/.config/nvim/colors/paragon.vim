@@ -156,7 +156,7 @@ call s:h('Question',     {'fg': s:blue})
 call s:h('StatusLine',   {'bg': s:bg_most_subtle})
 call s:h('StatusLineNC', {'bg': s:bg_most_subtle, 'fg': s:norm_subtle})
 call s:h('VertSplit',    {'fg': s:bg_most_subtle})
-call s:h('Title',        {'fg': s:purple})
+call s:h('Title',        {'fg': s:blue})
 call s:h('Visual',       {'fg': s:accent_contrast, 'bg': s:accent})
 call s:h('VisualNOS',    {'fg': s:norm, 'bg': s:bg_subtle})
 call s:h('WarningMsg',   {'fg': s:yellow})
@@ -190,8 +190,6 @@ call s:h('ColorColumn',  {'bg': s:bg_most_subtle})
 call s:h('CursorLine',   {'bg': s:bg_very_subtle})
 hi! link CursorColumn CursorLine
 
-call s:h('MatchParen', {'bg': s:bg_subtle, 'fg': s:norm})
-
 " Neovim: {{{1
 call s:h('FloatBorder',  {'fg': s:bg_subtle, 'bg': s:bg_most_subtle})
 
@@ -210,12 +208,22 @@ call s:h('DiagnosticUnderlineHint',  {'gui': 'undercurl', 'cterm': 'underline',
 call s:h('DiagnosticUnderlineInfo',  {'gui': 'undercurl', 'cterm': 'underline',
             \                         'sp': s:norm})
 
-" Plugins: {{{1
+" vim.lsp
+call s:h('LspSignatureActiveParameter', {'fg': s:accent})
+
+" Standard Plugins: {{{1
+" matchparen.vim
+call s:h('MatchParen',        {'bg': s:bg_subtle, 'fg': s:norm})
+
+" help.vim
+call s:h('helpHyperTextJump', {'fg': s:blue})
+
 " diff.vim
 hi! link diffAdded   DiffAdd
 hi! link diffChanged DiffChange
 hi! link diffRemoved DiffDelete
 
+" Other Plugins: {{{1
 " nvim-treesitter
 hi! link TSConstBuiltin Constant
 
