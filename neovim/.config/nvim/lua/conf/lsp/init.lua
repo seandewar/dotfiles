@@ -37,7 +37,7 @@ function M.update_progress()
   end
 
   M.progress = progress
-  cmd "redrawstatus"
+  cmd "redrawstatus!"
 
   if M.progress_clear_timer then
     M.progress_clear_timer:stop()
@@ -45,7 +45,7 @@ function M.update_progress()
   if not msg.done then
     M.progress_clear_timer = vim.defer_fn(function()
       M.progress = ""
-      cmd "redrawstatus"
+      cmd "redrawstatus!"
     end, M.progress_clear_ms)
   end
 end
