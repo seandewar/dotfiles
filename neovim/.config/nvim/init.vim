@@ -52,7 +52,12 @@ if !has('nvim')
     set lazyredraw
 endif
 
+" Enable Nvim 0.7+'s filetype.lua for ft detection.
+if has('nvim')
+    let g:do_filetype_lua = 1
+endif
 filetype plugin indent on
+
 syntax enable
 nohlsearch  " setting hlsearch above re-enables old highlights; disable them
 
@@ -118,7 +123,6 @@ packadd cfilter
 
 if has('nvim')
     let g:netrw_home = stdpath('data')  " store .netrwhist in the data directory
-    let g:do_filetype_lua = 1  " use filetype.lua for ft detection
 endif
 
 let g:qf_disable_statusline = 1
