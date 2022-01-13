@@ -3,13 +3,13 @@ call minpac#add('bluz71/vim-moonfly-colors', #{type: 'opt'})
 
 " general plugins
 call minpac#add('github/copilot.vim')
-call minpac#add('editorconfig/editorconfig-vim')
 call minpac#add('sbdchd/neoformat')
 call minpac#add('tpope/vim-commentary')
 call minpac#add('tpope/vim-dispatch')
 call minpac#add('embear/vim-localvimrc')
 call minpac#add('seandewar/vim-qftoggle')
 call minpac#add('tpope/vim-repeat')
+call minpac#add('tpope/vim-sleuth')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-vinegar')
 
