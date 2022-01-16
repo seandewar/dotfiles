@@ -75,13 +75,17 @@ gps.setup { disable_icons = true }
 
 --- show tree-sitter context alongside cursor location info
 local function echo_cursor_context()
-  cmd(t "normal! g<C-G>")
+  local chunks = { { api.nvim_exec(t "normal! g<C-G>", true) } }
   if gps.is_available() then
     local context = gps.get_location()
     if context ~= "" then
-      cmd("echo 'Context:' '" .. context .. "'")
+      vim.list_extend(
+        chunks,
+        { { "\n" }, { "Context:", "Directory" }, { " " .. context } }
+      )
     end
   end
+  api.nvim_echo(chunks, false, {})
 end
 
 map("n", "g<C-G>", echo_cursor_context)
