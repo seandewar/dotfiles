@@ -144,8 +144,8 @@ hi! link Conceal NonText
 
 call s:h('Directory',  {'fg': s:accent})
 call s:h('ErrorMsg',   {'fg': s:red})
-call s:h('IncSearch',  {'bg': s:yellow, 'fg': s:black})
-call s:h('Search',     {'bg': s:blue, 'fg': s:black})
+call s:h('IncSearch',  {'bg': s:blue, 'fg': s:black})
+call s:h('Search',     {'bg': s:accent, 'fg': s:accent_contrast})
 
 call s:h('MoreMsg',    {'fg': s:medium_gray, 'cterm': 'bold', 'gui': 'bold'})
 hi! link ModeMsg MoreMsg
@@ -157,7 +157,7 @@ call s:h('StatusLine',   {'bg': s:bg_most_subtle})
 call s:h('StatusLineNC', {'bg': s:bg_most_subtle, 'fg': s:norm_subtle})
 call s:h('VertSplit',    {'fg': s:bg_most_subtle})
 call s:h('Title',        {'fg': s:blue})
-call s:h('Visual',       {'fg': s:accent_contrast, 'bg': s:accent})
+call s:h('Visual',       {'fg': s:black, 'bg': s:blue})
 call s:h('VisualNOS',    {'fg': s:norm, 'bg': s:bg_subtle})
 call s:h('WarningMsg',   {'fg': s:yellow})
 call s:h('WildMenu',     {'fg': s:bg, 'bg': s:norm})
@@ -165,8 +165,9 @@ call s:h('Folded',       {'fg': s:medium_gray})
 call s:h('FoldColumn',   {'fg': s:bg_subtle})
 call s:h('DiffAdd',      {'fg': s:green})
 call s:h('DiffDelete',   {'fg': s:red})
-call s:h('DiffChange',   {'fg': s:dark_yellow})
-call s:h('DiffText',     {'fg': s:accent})
+call s:h('DiffChange',   {'fg': s:yellow})
+call s:h('DiffText',     {'gui': 'underline', 'cterm': 'underline',
+            \             'sp': s:dark_yellow, 'fg': s:dark_yellow})
 call s:h('SignColumn',   {'fg': s:accent})
 call s:h('SpellBad',     {'gui': 'undercurl', 'cterm': 'underline',
             \             'sp': s:red})
@@ -178,12 +179,12 @@ call s:h('SpellLocal',   {'gui': 'undercurl', 'cterm': 'underline',
             \             'sp': s:dark_green})
 
 call s:h('Pmenu',        {'fg': s:norm, 'bg': s:bg_most_subtle})
-hi! link PmenuSel   Visual
-hi! link PmenuThumb Visual
+hi! link PmenuSel   Search
+hi! link PmenuThumb Search
 hi! link PmenuSbar  Pmenu
 
 call s:h('TabLine',      {'fg': s:norm_subtle, 'bg': s:bg_most_subtle})
-call s:h('TabLineSel',   {'fg': s:accent_contrast, 'bg': s:accent})
+hi! link TabLineSel Search
 hi! link TabLineFill TabLine
 
 call s:h('ColorColumn',  {'bg': s:bg_most_subtle})
@@ -228,4 +229,5 @@ hi! link diffRemoved DiffDelete
 hi! link TSConstBuiltin Constant
 
 " telescope.nvim
-hi! link TelescopeMatching Search
+hi! link TelescopeSelection Search
+hi! link TelescopeMatching  IncSearch
