@@ -134,8 +134,7 @@ hi! link SpecialChar    Special
 hi! link Delimiter      Special
 
 call s:h('Underlined', {'fg': s:norm, 'gui': 'underline', 'cterm': 'underline'})
-call s:h('Todo',       {'fg': s:accent,
-            \           'gui': 'underline', 'cterm': 'underline'})
+call s:h('Todo',       {'fg': s:norm_subtle, 'gui': 'bold', 'cterm': 'bold'})
 call s:h('Error',      {'fg': s:actual_white, 'bg': s:red, 'cterm': 'bold'})
 
 call s:h('Ignore',     {})
@@ -227,6 +226,7 @@ hi! link diffRemoved DiffDelete
 " Other Plugins: {{{1
 " nvim-treesitter
 hi! link TSConstBuiltin Constant
+hi! link TSDanger Todo
 
 " telescope.nvim
 hi! link TelescopeSelection Search
