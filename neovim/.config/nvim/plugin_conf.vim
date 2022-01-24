@@ -8,6 +8,7 @@ colorscheme paragon
 
 " localvimrc
 let g:localvimrc_ask = 0
+let g:localvimrc_name = ['.lvimrc', '.vim/lvimrc']
 
 " copilot.vim {{{2
 let g:copilot_enabled = 0
