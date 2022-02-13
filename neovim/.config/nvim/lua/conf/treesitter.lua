@@ -1,4 +1,5 @@
 local api = vim.api
+local fn = vim.fn
 local cmd = vim.cmd
 local map = vim.keymap.set
 
@@ -17,7 +18,18 @@ local spellsitter = require "spellsitter"
 local gps = require "nvim-gps"
 
 configs.setup {
-  ensure_installed = "maintained",
+  -- NOTE: the install experience on Windows is pretty rough, so just install
+  -- parsers that we're likely to want
+  ensure_installed = fn.has "win32" == 0 and "maintained" or {
+    "c",
+    "cmake",
+    "cpp",
+    "glsl",
+    "lua",
+    "rust",
+    "vim",
+    "zig",
+  },
 
   highlight = {
     enable = true,
