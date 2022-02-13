@@ -19,5 +19,4 @@ endif
 
 if exists('g:neovide')
     let g:neovide_cursor_animation_length = 0
-    silent! set guifont=Iosevka:h18
 endif
