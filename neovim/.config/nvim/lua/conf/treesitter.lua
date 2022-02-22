@@ -11,11 +11,10 @@ cmd [[
   packadd nvim-treesitter
   packadd nvim-treesitter-textobjects
   packadd spellsitter.nvim
-  packadd nvim-gps
 ]]
 local configs = require "nvim-treesitter.configs"
 local spellsitter = require "spellsitter"
-local gps = require "nvim-gps"
+local gps
 
 configs.setup {
   -- NOTE: the install experience on Windows is pretty rough, so just install
@@ -83,10 +82,15 @@ configs.setup {
 }
 
 spellsitter.setup { enable = true }
-gps.setup { disable_icons = true }
 
 --- show tree-sitter context alongside cursor location info
 local function echo_cursor_context()
+  if package.loaded["nvim-gps"] == nil then
+    vim.cmd "packadd nvim-gps"
+    gps = require "nvim-gps"
+    gps.setup { disable_icons = true }
+  end
+
   local chunks = { { api.nvim_exec(t "normal! g<C-G>", true) } }
   if gps.is_available() then
     local context = gps.get_location()
