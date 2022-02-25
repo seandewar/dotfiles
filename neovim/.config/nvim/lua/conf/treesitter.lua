@@ -30,9 +30,8 @@ configs.setup {
 
   highlight = {
     enable = true,
-    -- TODO: some parsers can be slow for big files & vim hls are inaccurate
-    disable = function(lang, bufnr)
-      return lang == "vim" or api.nvim_buf_line_count(bufnr) > 4000
+    disable = function(lang, _)
+      return lang == "vim" -- TODO: disabled due to inaccurate highlights
     end,
   },
   -- indent = { enable = true }, -- TODO: disabled due to bugs
