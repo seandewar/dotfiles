@@ -26,9 +26,9 @@ let g:conf_statusline_components.git = '%([%{FugitiveHead(7)}] %)'
 " Commands {{{1
 " minpac {{{2
 " NOTE: use :execute so that expand('<sfile>') results in this script's path
-execute 'command! -bar PackUpdate call conf#minpac#reload() '
-            \ .. '| call minpac#update('''', {''do'': '
-            \ .. '''source ' .. expand('<sfile>') .. ' | packloadall!''})'
+execute 'command! -bar PackUpdate '
+            \ .. 'call conf#minpac#reload() | call minpac#update("", '
+            \ .. '#{do: "source ' .. expand('<sfile>') .. ' | packloadall!"})'
 command! -bar PackClean call conf#minpac#reload() | call minpac#clean()
 command! -bar PackStatus call conf#minpac#ensure_init() | call minpac#status()
 

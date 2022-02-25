@@ -17,17 +17,15 @@ local spellsitter = require "spellsitter"
 local gps
 
 configs.setup {
-  -- NOTE: the install experience on Windows is pretty rough, so just install
-  -- parsers that we're likely to want
-  ensure_installed = fn.has "win32" == 0 and "maintained" or {
+  -- Install only a minimal set of parsers that I'm likely to want.
+  -- Other parsers can be installed when wanted with :TSInstall
+  ensure_installed = {
     "c",
     "cmake",
     "cpp",
-    "glsl",
     "lua",
     "rust",
     "vim",
-    "zig",
   },
 
   highlight = {
