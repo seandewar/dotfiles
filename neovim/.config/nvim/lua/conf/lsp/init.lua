@@ -8,51 +8,49 @@ local servers = require "conf.lsp.servers"
 cmd "packadd nvim-lspconfig"
 local lspconfig = require "lspconfig"
 
-local M = {
-  progress_clear_ms = 10000,
-  progress = "",
-}
+local progress_text = ""
+local progress_clear_timer
 
-function M.update_progress()
+local function update_progress()
   local new_msgs = lsp.util.get_progress_messages()
   local msg = new_msgs[#new_msgs]
 
-  local progress = ""
+  local text = ""
   if msg and not msg.done then
-    progress = msg.name .. ": "
+    text = msg.name .. ": "
 
     if msg.progress then
-      progress = progress .. msg.title
+      text = text .. msg.title
 
       if msg.message then
-        progress = progress .. " " .. msg.message
+        text = text .. " " .. msg.message
       end
       if msg.percentage then
-        progress = progress .. " " .. math.floor(msg.percentage) .. "%%"
+        text = text .. " " .. math.floor(msg.percentage) .. "%%"
       end
     else
       -- TODO: maybe show URI if msg.status == true?
-      progress = progress .. msg.content
+      text = text .. msg.content
     end
   end
 
-  M.progress = progress
+  progress_text = text
   cmd "redrawstatus!"
 
-  if M.progress_clear_timer then
-    M.progress_clear_timer:stop()
+  if progress_clear_timer then
+    progress_clear_timer:stop()
   end
   if not msg.done then
-    M.progress_clear_timer = vim.defer_fn(function()
-      M.progress = ""
+    progress_clear_timer = vim.defer_fn(function()
+      text = ""
       cmd "redrawstatus!"
-    end, M.progress_clear_ms)
+    end, 10000)
   end
 end
 
 local function statusline(curwin, stlwin)
-  if curwin == stlwin and M.progress ~= "" then
-    return "[" .. M.progress .. "] "
+  if curwin == stlwin and progress_text ~= "" then
+    return "[" .. progress_text .. "] "
   end
   local clients = vim.tbl_values(
     lsp.buf_get_clients(api.nvim_win_get_buf(stlwin))
@@ -144,11 +142,10 @@ for _, config in ipairs(servers) do
   lspconfig[name].setup(config)
 end
 
-cmd [[
-  augroup conf_lsp_progress
-    autocmd!
-    autocmd User LspProgressUpdate lua require("conf.lsp").update_progress()
-  augroup END
-]]
-
-return M
+api.nvim_create_augroup { name = "conf_lsp_progress" }
+api.nvim_create_autocmd {
+  group = "conf_lsp_progress",
+  event = "User",
+  pattern = "LspProgressUpdate",
+  callback = update_progress,
+}

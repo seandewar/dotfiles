@@ -1,15 +1,12 @@
-local cmd = vim.cmd
 local api = vim.api
 local fn = vim.fn
 local map = vim.keymap.set
 local diagnostic = vim.diagnostic
 
-local M = {}
-
 local virt_text_ns = api.nvim_create_namespace "conf_diagnostic_virt_text"
 
 -- Display virtual text for the current line only
-function M.update_virtual_text()
+local function update_virtual_text()
   if api.nvim_get_mode().mode:match "i" then
     return
   end
@@ -47,18 +44,13 @@ diagnostic.config {
   signs = false,
 }
 
-cmd [[
-  augroup conf_diagnostic_statusline
-    autocmd!
-    autocmd DiagnosticChanged * redrawstatus
-  augroup END
-
-  augroup conf_diagnostic_virtual_text
-    autocmd!
-    autocmd DiagnosticChanged,CursorMoved *
-            \ lua require('conf.diagnostic').update_virtual_text()
-  augroup END
-]]
+api.nvim_create_augroup { name = "conf_diagnostic_virtual_text" }
+api.nvim_create_autocmd {
+  group = "conf_diagnostic_virtual_text",
+  event = { "DiagnosticChanged", "CursorMoved" },
+  pattern = "*",
+  callback = update_virtual_text,
+}
 
 map("n", "]<Space>", function()
   diagnostic.goto_next { float = false }
@@ -76,5 +68,3 @@ map("n", "<Space>k", function()
 end, {
   desc = "Show Diagnostics Under Cursor",
 })
-
-return M
