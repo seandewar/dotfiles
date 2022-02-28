@@ -45,6 +45,7 @@ map("n", "<Leader>fs", "<Cmd>Telescope treesitter<CR>")
 
 -- vim.diagnostic
 map("n", "<Space><Space>", "<Cmd>Telescope diagnostics bufnr=0<CR>")
+map("n", "<Space><C-Space>", "<Cmd>Telescope diagnostics<CR>")
 
 -- git
 map("n", "<Leader>gB", "<Cmd>Telescope git_branches<CR>")
