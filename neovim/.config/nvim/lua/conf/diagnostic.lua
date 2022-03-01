@@ -44,13 +44,11 @@ diagnostic.config {
   signs = false,
 }
 
-api.nvim_create_augroup { name = "conf_diagnostic_virtual_text" }
-api.nvim_create_autocmd {
+api.nvim_create_augroup("conf_diagnostic_virtual_text", {})
+api.nvim_create_autocmd({ "DiagnosticChanged", "CursorMoved" }, {
   group = "conf_diagnostic_virtual_text",
-  event = { "DiagnosticChanged", "CursorMoved" },
-  pattern = "*",
   callback = update_virtual_text,
-}
+})
 
 map("n", "]<Space>", function()
   diagnostic.goto_next { float = false }
