@@ -23,6 +23,11 @@ set completefunc=conf#vsnip#completefunc
 " vim-fugitive {{{2
 let g:conf_statusline_components.git = '%([%{FugitiveHead(7)}] %)'
 
+augroup conf_fugitive_redraw_statusline
+    autocmd!
+    autocmd User FugitiveChanged redrawstatus!
+augroup END
+
 " Commands {{{1
 " minpac {{{2
 " NOTE: use :execute so that expand('<sfile>') results in this script's path
