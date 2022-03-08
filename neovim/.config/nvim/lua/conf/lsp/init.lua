@@ -142,9 +142,8 @@ for _, config in ipairs(servers) do
   lspconfig[name].setup(config)
 end
 
-api.nvim_create_augroup("conf_lsp_progress", {})
 api.nvim_create_autocmd("User", {
-  group = "conf_lsp_progress",
+  group = api.nvim_create_augroup("conf_lsp_progress", {}),
   pattern = "LspProgressUpdate",
   callback = update_progress,
 })

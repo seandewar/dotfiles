@@ -44,9 +44,8 @@ diagnostic.config {
   signs = false,
 }
 
-api.nvim_create_augroup("conf_diagnostic_virtual_text", {})
 api.nvim_create_autocmd({ "DiagnosticChanged", "CursorMoved" }, {
-  group = "conf_diagnostic_virtual_text",
+  group = api.nvim_create_augroup("conf_diagnostic_virtual_text", {}),
   callback = update_virtual_text,
 })
 
