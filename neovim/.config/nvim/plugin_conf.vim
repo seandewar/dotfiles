@@ -25,7 +25,8 @@ let g:conf_statusline_components.git = '%([%{FugitiveHead(7)}] %)'
 
 augroup conf_fugitive_redraw_statusline
     autocmd!
-    autocmd User FugitiveChanged redrawstatus!
+    autocmd User FugitiveChanged
+                \ call timer_start(0, {-> execute('redrawstatus!', '')})
 augroup END
 
 " Commands {{{1
