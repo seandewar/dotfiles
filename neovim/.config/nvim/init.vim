@@ -52,9 +52,10 @@ if !has('nvim')
     set lazyredraw
 endif
 
-" Enable Nvim 0.7+'s filetype.lua for ft detection.
+" Use Nvim 0.7+'s filetype.lua over filetype.vim
 if has('nvim')
     let g:do_filetype_lua = 1
+    let g:did_load_filetypes = 0  " disable filetype.vim
 endif
 filetype plugin indent on
 
