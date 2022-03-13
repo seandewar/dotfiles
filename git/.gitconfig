@@ -15,9 +15,10 @@
 	signingkey = 04C8CC2938F069D7B194083908CC2C83AD41B581
 [alias]
 	s = status
+	sh = show
 	c = checkout
+	b = branch
 	r = rebase
-	a = add
 	cp = cherry-pick
 [include]
 	path = ~/.gitconfig_local
