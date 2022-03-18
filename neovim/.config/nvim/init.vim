@@ -148,7 +148,8 @@ function! ConfStatusLine() abort
     return join(parts, '')
 endfunction
 
-set laststatus=2 statusline=%!ConfStatusLine()
+let &laststatus = has('nvim') ? 3 : 2  " Enable global statusline if supported
+set statusline=%!ConfStatusLine()
 
 augroup conf_statusline_highlights
     autocmd! ColorScheme * call conf#colors#def_statusline_hls()
