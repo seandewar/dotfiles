@@ -6,9 +6,11 @@
 " color scheme {{{2
 colorscheme paragon
 
-" localvimrc
-let g:localvimrc_ask = 0
+" localvimrc {{{2
 let g:localvimrc_name = ['.lvimrc', '.vim/lvimrc']
+
+" Sandbox is easy to escape and causes another prompt; just check manually.
+let g:localvimrc_sandbox = 0
 
 " copilot.vim {{{2
 let g:copilot_enabled = 0
