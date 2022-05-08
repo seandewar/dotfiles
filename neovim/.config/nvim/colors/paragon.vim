@@ -145,6 +145,7 @@ call s:h('Directory',  {'fg': s:accent})
 call s:h('ErrorMsg',   {'fg': s:red})
 call s:h('IncSearch',  {'bg': s:blue, 'fg': s:black})
 call s:h('Search',     {'bg': s:accent, 'fg': s:accent_contrast})
+hi! link CurSearch IncSearch
 
 call s:h('MoreMsg',    {'fg': s:medium_gray, 'cterm': 'bold', 'gui': 'bold'})
 hi! link ModeMsg MoreMsg
