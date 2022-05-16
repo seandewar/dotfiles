@@ -46,15 +46,11 @@ nnoremap <silent> <F4> <Cmd>Neoformat<CR>
 vnoremap <silent> <F4> <Cmd>Neoformat<CR>
 
 " vim-vsnip {{{2
-imap <expr> <Tab> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
-smap <expr> <Tab> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<Tab>'
-imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
-smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
-xmap <Tab> <Plug>(vsnip-cut-text)
-
-" copilot.vim {{{2
-let g:copilot_no_tab_map = v:true
-imap <silent> <script> <expr> <C-J> copilot#Accept("\<C-J>")
+imap <expr> <C-J> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-J>'
+smap <expr> <C-J> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-J>'
+imap <expr> <C-K> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-K>'
+smap <expr> <C-K> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<C-K>'
+xmap <C-J> <Plug>(vsnip-cut-text)
 
 " vim-fugitive {{{2
 nnoremap <silent> <Leader>gg <Cmd>Git<CR>
