@@ -19,3 +19,9 @@ add "nvim-telescope/telescope-fzy-native.nvim"
 
 -- language server protocol
 add "neovim/nvim-lspconfig"
+
+-- firenvim (web browser integration)
+add(
+  "glacambre/firenvim",
+  { ["do"] = "packadd firenvim | call firenvim#install(0)" }
+)
