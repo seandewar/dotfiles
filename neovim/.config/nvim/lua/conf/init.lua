@@ -12,6 +12,7 @@ cmd [[
 -- firenvim
 if vim.g.started_by_firenvim then
   cmd "packadd firenvim"
+  cmd "runtime ginit.vim"
 end
 
 -- Others
