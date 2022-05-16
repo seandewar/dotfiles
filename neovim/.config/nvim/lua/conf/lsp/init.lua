@@ -1,3 +1,8 @@
+-- LSP is pretty useless when using firenvim
+if vim.g.started_by_firenvim then
+  return
+end
+
 local cmd = vim.cmd
 local api = vim.api
 local fn = vim.fn
