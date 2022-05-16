@@ -89,12 +89,10 @@ if !has('nvim')
     silent! call mkdir($MYVIMRUNTIME .. '/undo', 'p')
     silent! call mkdir($MYVIMRUNTIME .. '/backup', 'p')
 
-    " NOTE: use :set^= over :let so commas are added when needed
-    execute 'set directory& directory^=' .. $MYVIMRUNTIME .. '/swap//'
-    execute 'set undodir& undodir^=' .. $MYVIMRUNTIME .. '/undo'
-
-    let &backupdir = '.,' .. $MYVIMRUNTIME .. '/backup'
-    let &viminfofile = $MYVIMRUNTIME .. '/viminfo'
+    set directory& directory^=$MYVIMRUNTIME/swap//
+    set undodir& undodir^=$MYVIMRUNTIME/undo
+    set backupdir=.,$MYVIMRUNTIME/backup
+    set viminfofile=$MYVIMRUNTIME/viminfo
 endif
 
 function! s:UpdateColorColumn() abort
@@ -250,9 +248,13 @@ if has('nvim')
     tnoremap <silent> <C-W> <C-\><C-N><C-W>
 endif
 
-" Source optional configurations before plugins are loaded {{{1
-runtime init_local.vim  " machine-specific config; un-versioned
-runtime plugin_conf.vim
+" Source optional configurations before loading plugins {{{1
+if filereadable(expand("$MYVIMRUNTIME/init_local.vim"))
+    source $MYVIMRUNTIME/init_local.vim  " Machine-specific config; unversioned
+end
+if filereadable(expand("$MYVIMRUNTIME/plugin_conf.vim"))
+    source $MYVIMRUNTIME/plugin_conf.vim
+end
 
 " Use my vanilla color scheme choice if one wasn't set {{{1
 if !exists('g:colors_name')
