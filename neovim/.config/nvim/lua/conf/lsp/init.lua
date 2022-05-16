@@ -3,6 +3,7 @@ local api = vim.api
 local fn = vim.fn
 local lsp = vim.lsp
 
+local echo = require("conf.util").echo
 local servers = require "conf.lsp.servers"
 
 cmd "packadd nvim-lspconfig"
@@ -122,11 +123,11 @@ lspconfig.util.default_config = vim.tbl_extend(
       ),
       ["textDocument/formatting"] = function(...)
         lsp.handlers["textDocument/formatting"](...)
-        cmd "echo 'Buffer formatted!'"
+        echo "Buffer formatted!"
       end,
       ["textDocument/rangeFormatting"] = function(...)
         lsp.handlers["textDocument/rangeFormatting"](...)
-        cmd "echo 'Range formatted!'"
+        echo "Range formatted!"
       end,
     },
   }
