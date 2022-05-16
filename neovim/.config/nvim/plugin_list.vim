@@ -1,6 +1,3 @@
-" color schemes
-call minpac#add('bluz71/vim-moonfly-colors', #{type: 'opt'})
-
 " general plugins
 call minpac#add('github/copilot.vim')
 call minpac#add('sbdchd/neoformat')
