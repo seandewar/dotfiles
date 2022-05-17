@@ -247,4 +247,3 @@ nnoremap <silent> [L <Cmd>lolder<CR>
 if has('nvim')
     tnoremap <silent> <C-W> <C-\><C-N><C-W>
 endif
-

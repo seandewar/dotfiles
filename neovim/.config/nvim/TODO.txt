@@ -1,5 +1,3 @@
 TODO:
-- convert autoload/conf/colors.vim to Lua and API-ify it to use nvim_get_hl
-  (this stuff is only used for nvim diagnostics in the stl)
 - make telescope.nvim update the jump list
 - reconsider nvim-dap at some point?
