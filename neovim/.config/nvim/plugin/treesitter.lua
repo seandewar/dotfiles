@@ -1,11 +1,8 @@
 local api = vim.api
-local fn = vim.fn
 local cmd = vim.cmd
 local map = vim.keymap.set
 
 local t = require("conf.util").t
-
-local M = {}
 
 cmd [[
   packadd nvim-treesitter
@@ -102,5 +99,3 @@ local function echo_cursor_context()
 end
 
 map("n", "g<C-G>", echo_cursor_context)
-
-return M

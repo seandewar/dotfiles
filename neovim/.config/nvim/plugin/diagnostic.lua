@@ -36,7 +36,7 @@ local function statusline(curwin, stlwin)
   return #parts > 0 and ("[" .. table.concat(parts, " ") .. "] ") or ""
 end
 
-fn.ConfDefineStatusLineComponent("diagnostic", statusline)
+fn["conf#statusline#define_component"]("diagnostic", statusline)
 
 -- Define highlight groups for the statusline from the current colour scheme
 -- TODO: API-ify this via nvim_set_hl

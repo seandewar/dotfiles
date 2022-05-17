@@ -65,7 +65,7 @@ nnoremap <silent> <Leader>gb <Cmd>Git blame<CR>
 nnoremap <Leader>gB :Git checkout<Space>
 nnoremap <silent> <leader>gw <Cmd>Gwrite<CR>
 nnoremap <silent> <leader>gR <Cmd>Gread<CR>
-nnoremap <Leader>gM <Cmd>GRename <C-R>=expand('%:t')<CR>
+nnoremap <Leader>gM :GMove <C-R>=expand('%:p')<CR>
 nnoremap <Leader>gr :G rebase -i<Space>
 nnoremap <silent> <Leader>gc <Cmd>Git commit<CR>
 nnoremap <silent> <Leader>gC <Cmd>Git commit --amend<CR>
