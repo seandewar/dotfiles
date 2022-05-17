@@ -39,7 +39,6 @@ end
 fn["conf#statusline#define_component"]("diagnostic", statusline)
 
 -- Define highlight groups for the statusline from the current colour scheme
--- TODO: API-ify this via nvim_set_hl
 local function define_stl_hls()
   local function define_hl(suffix, override)
     vim.cmd(
