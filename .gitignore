@@ -1,6 +1,5 @@
 # neovim
-/neovim/.config/nvim/init_local.vim
-/neovim/.config/nvim/ginit_local.vim
+/neovim/.config/nvim/plugin/local_conf.vim
 /neovim/.local/share/
 
 # tmux

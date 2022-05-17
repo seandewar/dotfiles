@@ -38,6 +38,43 @@ end
 
 fn.ConfDefineStatusLineComponent("diagnostic", statusline)
 
+-- Define highlight groups for the statusline from the current colour scheme
+-- TODO: API-ify this via nvim_set_hl
+local function define_stl_hls()
+  local function define_hl(suffix, override)
+    vim.cmd(
+      ([[
+         highlight StatusLine%s %s
+         highlight StatusLineNC%s %s
+       ]]):format(
+        suffix,
+        fn["conf#colors#hl_override"](
+          "StatusLine",
+          override,
+          { "ctermfg", "guifg" }
+        ),
+        suffix,
+        fn["conf#colors#hl_override"](
+          "StatusLineNC",
+          override,
+          { "ctermfg", "guifg" }
+        )
+      )
+    )
+  end
+
+  define_hl("Error", "DiagnosticSignError")
+  define_hl("Warn", "DiagnosticSignWarn")
+  define_hl("Info", "DiagnosticSignInfo")
+  define_hl("Hint", "DiagnosticSignHint")
+end
+
+api.nvim_create_autocmd("ColorScheme", {
+  group = api.nvim_create_augroup("conf_diagnostic_statusline_highlights", {}),
+  callback = define_stl_hls,
+})
+define_stl_hls()
+
 diagnostic.config {
   severity_sort = true,
   virtual_text = false,

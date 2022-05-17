@@ -35,9 +35,9 @@ augroup END
 " minpac {{{2
 " NOTE: use :execute so that expand('<sfile>') results in this script's path
 execute 'command! -bar PackUpdate '
-            \ .. 'call conf#minpac#reload() | call minpac#update("", '
+            \ .. 'call conf#minpac#ensure_init() | call minpac#update("", '
             \ .. '#{do: "source ' .. expand('<sfile>') .. ' | packloadall!"})'
-command! -bar PackClean call conf#minpac#reload() | call minpac#clean()
+command! -bar PackClean call conf#minpac#ensure_init() | call minpac#clean()
 command! -bar PackStatus call conf#minpac#ensure_init() | call minpac#status()
 
 " Mappings {{{1
@@ -82,7 +82,3 @@ nmap [c <Plug>(qftoggle_quickfix_previous)
 nmap ]l <Plug>(qftoggle_loclist_next)
 nmap [l <Plug>(qftoggle_loclist_previous)
 
-" Neovim Plugins {{{1
-if has('nvim')
-    lua require("conf.util").reload()
-endif

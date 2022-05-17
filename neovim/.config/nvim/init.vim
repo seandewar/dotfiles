@@ -141,17 +141,13 @@ let g:conf_statusline_order =
 function! ConfStatusLine() abort
     let parts = copy(g:conf_statusline_order)
                 \ ->map({_, k -> get(g:conf_statusline_components, k, '')})
-                \ ->map({_, v ->
-                \ type(v) == v:t_func ? v(win_getid(), g:statusline_winid) : v})
+                \ ->map({_, v -> type(v) == v:t_func
+                \                ? v(win_getid(), g:statusline_winid) : v})
     return join(parts, '')
 endfunction
 
 set laststatus=2
 set statusline=%!ConfStatusLine()
-
-augroup conf_statusline_highlights
-    autocmd! ColorScheme * call conf#colors#def_statusline_hls()
-augroup END
 
 " Tab Line Settings {{{1
 function! ConfTabLabel(tabnum) abort
@@ -184,9 +180,13 @@ endfunction
 set showtabline=1 tabline=%!ConfTabLine()
 
 " Commands {{{1
-command! -bar ConfigDir call conf#tabedit_dir($MYVIMRUNTIME)
+function! s:TabEditDir(dir) abort
+    execute 'tabedit ' .. a:dir .. ' | tcd ' .. a:dir
+endfunction
+
+command! -bar ConfigDir call s:TabEditDir($MYVIMRUNTIME)
             \ | call timer_start(0, {-> search('^init.vim\>', 'c')})
-command! -bar DataDir call conf#tabedit_dir(
+command! -bar DataDir call s:TabEditDir(
             \ exists('*stdpath') ? stdpath('data') : $MYVIMRUNTIME)
 
 " Mappings {{{1
@@ -248,16 +248,3 @@ if has('nvim')
     tnoremap <silent> <C-W> <C-\><C-N><C-W>
 endif
 
-" Source optional configurations before loading plugins {{{1
-if filereadable(expand("$MYVIMRUNTIME/init_local.vim"))
-    source $MYVIMRUNTIME/init_local.vim  " Machine-specific config; unversioned
-end
-if filereadable(expand("$MYVIMRUNTIME/plugin_conf.vim"))
-    source $MYVIMRUNTIME/plugin_conf.vim
-end
-
-" Use my vanilla color scheme choice if one wasn't set {{{1
-if !exists('g:colors_name')
-    set background=dark
-    silent! colorscheme ron
-endif

@@ -35,20 +35,3 @@ function! conf#colors#hl_override(base, override, attr_list) abort
     endfor
     return join(map(items(map), {_, kv -> kv[0] .. '=' .. kv[1]}), ' ')
 endfunction
-
-function! s:StlHlDef(suffix, override) abort
-    execute printf('highlight StatusLine%s %s', a:suffix,
-                \ conf#colors#hl_override('StatusLine', a:override,
-                \ ['ctermfg', 'guifg']))
-    execute printf('highlight StatusLineNC%s %s', a:suffix,
-                \ conf#colors#hl_override('StatusLineNC', a:override,
-                \ ['ctermfg', 'guifg']))
-endfunction
-
-" Automatically define highlights for the statusline
-function! conf#colors#def_statusline_hls() abort
-    call s:StlHlDef('Error', 'DiagnosticSignError')
-    call s:StlHlDef('Warn', 'DiagnosticSignWarn')
-    call s:StlHlDef('Info', 'DiagnosticSignInfo')
-    call s:StlHlDef('Hint', 'DiagnosticSignHint')
-endfunction
