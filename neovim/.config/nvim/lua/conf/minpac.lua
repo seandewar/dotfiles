@@ -1,8 +1,6 @@
-local fn = vim.fn
-
 local function add(url, opts)
   opts = vim.tbl_extend("force", { type = "opt" }, opts or {})
-  fn["minpac#add"](url, opts)
+  vim.fn["minpac#add"](url, opts)
 end
 
 -- tree-sitter
