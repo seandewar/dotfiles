@@ -185,7 +185,7 @@ function! s:TabEditDir(dir) abort
 endfunction
 
 command! -bar ConfigDir call s:TabEditDir($MYVIMRUNTIME)
-            \ | call timer_start(0, {-> search('^init.vim\>', 'c')})
+            \ | call timer_start(0, {-> search('^init.vim\|^vimrc\>', 'c')})
 command! -bar DataDir call s:TabEditDir(
             \ exists('*stdpath') ? stdpath('data') : $MYVIMRUNTIME)
 
