@@ -11,10 +11,10 @@ if exists('g:GuiLoaded')
     GuiTabline 0
     GuiPopupmenu 0
     silent! GuiRenderLigatures 1  " Not supported by older versions of nvim-qt
-    GuiFont! Iosevka\ Term:h12
+    GuiFont! Iosevka\ Term:h11
 else
     set guioptions+=c
-    silent! set guifont=Iosevka\ Term:h12
+    silent! set guifont=Iosevka\ Term:h11
 endif
 
 if exists('g:neovide')
