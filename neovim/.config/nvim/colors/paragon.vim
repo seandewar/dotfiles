@@ -7,9 +7,6 @@
 " https://github.com/owickstrom/vim-colors-paramount
 
 hi clear
-if exists('g:syntax_on')
-    syntax reset
-endif
 let g:colors_name = 'paragon'
 
 let s:black         = {'gui': '#000000', 'cterm': '232'}
@@ -118,7 +115,7 @@ hi! link Define    PreProc
 hi! link Macro     PreProc
 hi! link PreCondit PreProc
 
-hi! link Type Normal
+hi! link Type         Normal
 hi! link StorageClass Type
 hi! link Structure    Type
 hi! link Typedef      Type
@@ -188,7 +185,7 @@ hi! link TabLineSel Search
 hi! link TabLineFill TabLine
 
 call s:h('ColorColumn',  {'bg': s:bg_most_subtle})
-call s:h('CursorLine',   {'bg': s:bg_very_subtle})
+call s:h('CursorLine',   {'bg': s:bg_most_subtle})
 hi! link CursorColumn CursorLine
 
 " Neovim: {{{1

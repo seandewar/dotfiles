@@ -10,7 +10,7 @@ function! conf#minpac#ensure_init() abort
     endif
 
     " minpac self-updating; on Nvim, install to the site dir by default
-    let dir = get(g:, 'minpac_base_dir',
+    let dir = get(g:, 'conf_minpac_base_dir',
                 \ has('nvim') ? stdpath('data') .. '/site' : '')
     call minpac#init(#{dir: dir, progress_open: 'none', status_auto: 1})
     call minpac#add('k-takata/minpac', #{type: 'opt'})

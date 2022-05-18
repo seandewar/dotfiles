@@ -6,29 +6,24 @@
 if !exists('s:was_loaded')
     let s:was_loaded = 1
 
-    let g:neovim_stow_package_dir =
+    let g:conf_neovim_stow_package_dir =
                 \ fnamemodify(resolve(expand('<sfile>')), ':p:h:h:h')
-                \ . '/neovim'
-
-    let config_dir = g:neovim_stow_package_dir . '/.config/nvim'
-    let data_dir = g:neovim_stow_package_dir . '/.local/share/nvim/site'
-
-    let g:minpac_base_dir = data_dir
+                \ .. '/neovim'
+    let config_dir = g:conf_neovim_stow_package_dir .. '/.config/nvim'
+    let data_dir = g:conf_neovim_stow_package_dir .. '/.local/share/nvim/site'
+    let g:conf_minpac_base_dir = data_dir
 
     " NOTE: by using :set^= and :set+= rather than :let, commas will be added
     " before and after our prepended and appended entries by vim if required
-    execute 'set runtimepath^=' . config_dir . ',' . data_dir
-           \ . ' runtimepath+=' . config_dir . '/after,' . data_dir . '/after'
+    execute printf('set runtimepath^=%s,%s runtimepath+=%s/after,%s/after',
+                 \ config_dir, data_dir, config_dir, data_dir)
 
     let &packpath = &runtimepath
 endif
 
 " use neovim's rc file instead
-let s:nvimrc = g:neovim_stow_package_dir . '/.config/nvim/init.vim'
-
+let s:nvimrc = g:conf_neovim_stow_package_dir .. '/.config/nvim/init.vim'
 if filereadable(s:nvimrc)
-    let $MYVIMRC = s:nvimrc
-    execute 'source ' . s:nvimrc
+    execute 'source ' .. s:nvimrc
 endif
-
 unlet s:nvimrc

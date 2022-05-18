@@ -7,7 +7,7 @@ local map = vim.keymap.set
 
 vim.cmd [[
   packadd firenvim
-  source $MYVIMRUNTIME/ginit.vim
+  runtime ginit.vim
 ]]
 
 vim.g.firenvim_config = {
