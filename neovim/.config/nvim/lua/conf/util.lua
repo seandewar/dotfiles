@@ -1,4 +1,5 @@
 local api = vim.api
+local keymap = vim.keymap
 
 local M = {}
 
@@ -9,6 +10,14 @@ end
 
 function M.echo(msg)
   api.nvim_echo({ msg }, false, {})
+end
+
+function M.bmap(mode, lhs, rhs, desc)
+  keymap.set(mode, lhs, rhs, { buffer = true, desc = desc })
+end
+
+function M.bunmap(mode, lhs)
+  keymap.del(mode, lhs, { buffer = 0 })
 end
 
 return M
