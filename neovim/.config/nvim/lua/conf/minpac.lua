@@ -4,7 +4,13 @@ local function add(url, opts)
 end
 
 -- tree-sitter
-add("nvim-treesitter/nvim-treesitter", { ["do"] = "TSUpdate" })
+add("nvim-treesitter/nvim-treesitter", {
+  ["do"] = function()
+    if vim.g.loaded_nvim_treesitter ~= nil then
+      vim.cmd "TSUpdate"
+    end
+  end,
+})
 add "nvim-treesitter/nvim-treesitter-textobjects"
 add "lewis6991/spellsitter.nvim"
 add "SmiteshP/nvim-gps"
