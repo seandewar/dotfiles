@@ -42,8 +42,14 @@ set switchbuf+=uselast
 set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 set textwidth=80
 set title
-set wildmenu wildmode=list:longest,full wildignorecase
+set wildmenu wildmode=list:longest,full
 set nowrap
+
+" A Vim bug causes glob expansion to fail with 'wildignorecase' if a parent
+" directory lacks read perms (neovim#6787). This messes up netrw on Termux.
+if !has('termux')
+    set wildignorecase
+end
 
 " Lazy redrawing can cause glitchiness (e.g: my <C-W> mapping for Nvim's
 " terminal not clearing "-- TERMINAL --" with showmode). As Nvim aims to make
