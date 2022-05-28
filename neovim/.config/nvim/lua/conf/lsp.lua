@@ -67,6 +67,11 @@ function M.bopt(option, value)
 end
 
 function M.attach_buffer()
+  -- Continue only for the first client attaching to the buffer.
+  if vim.tbl_count(lsp.buf_get_clients()) > 1 then
+    return
+  end
+
   M.bopt("omnifunc", "v:lua.vim.lsp.omnifunc")
   M.bopt("tagfunc", "v:lua.vim.lsp.tagfunc")
   M.bopt("formatexpr", "v:lua.vim.lsp.formatexpr()")
@@ -98,6 +103,15 @@ function M.lspconfig_attach_buffer(client)
 end
 
 function M.detach_buffer(args)
+  -- Last progress message may not be from any client attached to this buffer,
+  -- but as we can't tell, just clear it so we don't have a lingering message.
+  last_progress_text = ""
+
+  -- Continue only for the last client detaching from the buffer.
+  if vim.tbl_count(lsp.buf_get_clients()) > 0 then
+    return
+  end
+
   bunmap("n", "K")
   bunmap({ "n", "i" }, "<C-K>")
   bunmap("n", "gd")
@@ -115,17 +129,13 @@ function M.detach_buffer(args)
   bunmap("n", "<Space>w")
   bunmap("n", "<Space>d")
 
-  -- lspconfig on_attach
-  bunmap("n", "<Space>s")
+  -- lspconfig's on_attach (may not be defined)
+  pcall(bunmap, "n", "<Space>s")
 
   for option, old_value in ipairs(buf_old_opts[args.buf] or {}) do
     vim.bo[option] = old_value
   end
   buf_old_opts[args.buf] = nil
-
-  -- Last progress message may not be from any client attached to this buffer,
-  -- but as we can't tell, just clear it so we don't have a lingering message.
-  last_progress_text = ""
 end
 
 return M
