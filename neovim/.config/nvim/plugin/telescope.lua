@@ -23,8 +23,19 @@ telescope.setup {
     },
   },
 }
-telescope.load_extension "ui-select"
-telescope.load_extension "fzy_native"
+
+-- Failure to load extensions shouldn't abort running the rest of this script.
+local function safe_load_extension(name)
+  local ok, error = pcall(telescope.load_extension, name)
+  if not ok then
+    vim.api.nvim_err_writeln(
+      ('Error loading telescope extension "%s": %s'):format(name, error)
+    )
+  end
+end
+
+safe_load_extension "ui-select"
+safe_load_extension "fzy_native"
 
 map("n", "z=", "<Cmd>Telescope spell_suggest<CR>")
 
