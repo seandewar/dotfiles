@@ -12,12 +12,12 @@ function M.echo(msg)
   api.nvim_echo({ msg }, false, {})
 end
 
-function M.bmap(mode, lhs, rhs, desc)
-  keymap.set(mode, lhs, rhs, { buffer = true, desc = desc })
+function M.bmap(buf, mode, lhs, rhs, desc)
+  keymap.set(mode, lhs, rhs, { buffer = buf, desc = desc })
 end
 
-function M.bunmap(mode, lhs)
-  keymap.del(mode, lhs, { buffer = 0 })
+function M.bunmap(buf, mode, lhs)
+  keymap.del(mode, lhs, { buffer = buf })
 end
 
 return M

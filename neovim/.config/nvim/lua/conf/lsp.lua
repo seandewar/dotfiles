@@ -2,8 +2,6 @@ local api = vim.api
 local lsp = vim.lsp
 
 local util = require "conf.util"
-local bmap = util.bmap
-local bunmap = util.bunmap
 
 local M = {}
 
@@ -55,26 +53,32 @@ end
 
 local buf_old_opts = {}
 
-function M.bopt(option, value)
-  local buf = api.nvim_get_current_buf()
+function M.bopt(buf, option, value)
   buf_old_opts[buf] = vim.tbl_extend(
     "keep",
     buf_old_opts[buf] or {},
-    { [option] = vim.bo[option] }
+    { [option] = vim.bo[buf][option] }
   )
 
-  vim.bo[option] = value
+  vim.bo[buf][option] = value
 end
 
-function M.attach_buffer()
+function M.attach_buffer(args)
   -- Continue only for the first client attaching to the buffer.
-  if vim.tbl_count(lsp.buf_get_clients()) > 1 then
+  if vim.tbl_count(lsp.buf_get_clients(args.buf)) > 1 then
     return
   end
 
-  M.bopt("omnifunc", "v:lua.vim.lsp.omnifunc")
-  M.bopt("tagfunc", "v:lua.vim.lsp.tagfunc")
-  M.bopt("formatexpr", "v:lua.vim.lsp.formatexpr()")
+  local function bopt(...)
+    M.bopt(args.buf, ...)
+  end
+  local function bmap(...)
+    util.bmap(args.buf, ...)
+  end
+
+  bopt("omnifunc", "v:lua.vim.lsp.omnifunc")
+  bopt("tagfunc", "v:lua.vim.lsp.tagfunc")
+  bopt("formatexpr", "v:lua.vim.lsp.formatexpr()")
 
   bmap("n", "K", lsp.buf.hover, "LSP Hover")
   bmap({ "n", "i" }, "<C-K>", lsp.buf.signature_help, "LSP Signature Help")
@@ -96,9 +100,9 @@ function M.attach_buffer()
   bmap("n", "<Space>d", "<Cmd>Telescope lsp_document_symbols<CR>")
 end
 
-function M.lspconfig_attach_buffer(client)
+function M.lspconfig_attach_curbuf(client)
   if client.name == "clangd" then
-    bmap("n", "<Space>s", "<Cmd>ClangdSwitchSourceHeader<CR>")
+    util.bmap(0, "n", "<Space>s", "<Cmd>ClangdSwitchSourceHeader<CR>")
   end
 end
 
@@ -108,8 +112,12 @@ function M.detach_buffer(args)
   last_progress_text = ""
 
   -- Continue only for the last client detaching from the buffer.
-  if not vim.tbl_isempty(lsp.buf_get_clients()) then
+  if not vim.tbl_isempty(lsp.buf_get_clients(args.buf)) then
     return
+  end
+
+  local function bunmap(...)
+    util.bunmap(args.buf, ...)
   end
 
   bunmap("n", "K")
@@ -133,7 +141,7 @@ function M.detach_buffer(args)
   pcall(bunmap, "n", "<Space>s")
 
   for option, old_value in ipairs(buf_old_opts[args.buf] or {}) do
-    vim.bo[option] = old_value
+    vim.bo[args.buf][option] = old_value
   end
   buf_old_opts[args.buf] = nil
 end

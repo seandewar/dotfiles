@@ -8,8 +8,8 @@ end)
 api.nvim_create_autocmd("User", {
   group = api.nvim_create_augroup("conf_lsp_progress", {}),
   pattern = "LspProgressUpdate",
-  callback = function()
-    require("conf.lsp").update_progress()
+  callback = function(args)
+    require("conf.lsp").update_progress(args)
   end,
 })
 
@@ -22,8 +22,8 @@ local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
 
 api.nvim_create_autocmd("LspAttach", {
   group = attach_group,
-  callback = function()
-    require("conf.lsp").attach_buffer()
+  callback = function(args)
+    require("conf.lsp").attach_buffer(args)
   end,
 })
 api.nvim_create_autocmd("LspDetach", {
