@@ -1,2 +1,0 @@
-execute 'lcd ' .. g:localvimrc_script_dir
-setlocal path=,,**

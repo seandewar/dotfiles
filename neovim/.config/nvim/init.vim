@@ -1,7 +1,3 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Sean Dewar's Vanilla (Neo)Vim Configuration <https://github.com/seandewar>   "
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 if !has('patch-8.2.2434') && !has('nvim-0.7')
     echohl WarningMsg
     echo 'init.vim may not work with this version of (Neo)Vim!'
@@ -11,7 +7,7 @@ end
 " Set $MYVIMRC and $MYVIMRUNTIME for easy access, resolving symlinks {{{1
 let $MYVIMRC = resolve($MYVIMRC)
 let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
-            \ : expand(has('win32') ? '~/vimfiles' : '~/.vim'))
+                  \ : expand(has('win32') ? '~/vimfiles' : '~/.vim'))
 
 " General Settings {{{1
 set autoread
@@ -23,14 +19,14 @@ set display+=lastline,uhex
 set encoding=utf-8
 set foldmethod=marker
 set formatoptions=croqnlj
-set guioptions=M  " has to be before :syntax/filetype on, so not in gvimrc
+set guioptions=M  " Can't be in gvimrc; has to be before :syntax on/:filetype on
 set hidden
 set incsearch ignorecase smartcase hlsearch
 set nojoinspaces
 set list listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
 set mouse=a mousemodel=popup nomousehide
 set nrformats-=octal
-set path& | let &path .= '**'  " use :let.=, as 'path' already ends in a comma
+set path& | let &path .= '**'  " Use :let.=, as 'path' already ends in a comma
 set pumheight=12
 set ruler
 set scrolloff=1 sidescroll=5
@@ -52,7 +48,7 @@ if !has('termux')
 end
 
 " Lazy redrawing can cause glitchiness (e.g: my <C-W> mapping for Nvim's
-" terminal not clearing "-- TERMINAL --" with showmode). As Nvim aims to make
+" terminal not clearing "-- TERMINAL --" with 'showmode'). As Nvim aims to make
 " lazyredraw a no-op in the future after optimizing redraws, disable it for Nvim
 if !has('nvim')
     set lazyredraw
@@ -60,13 +56,13 @@ endif
 
 " Use Nvim 0.7+'s filetype.lua over filetype.vim
 if has('nvim')
+    let g:did_load_filetypes = 0
     let g:do_filetype_lua = 1
-    let g:did_load_filetypes = 0  " disable filetype.vim
 endif
 filetype plugin indent on
 
 syntax enable
-nohlsearch  " setting hlsearch above re-enables old highlights; disable them
+nohlsearch  " Setting 'hlsearch' above shows old highlights; disable them again
 
 if exists('+inccommand')
     set inccommand=nosplit
@@ -77,7 +73,7 @@ if !has('nvim')
     set completeopt+=popup
 endif
 
-" prefer ripgrep over grep
+" Prefer ripgrep over grep
 if executable('rg')
     set grepprg=rg\ --vimgrep
 endif
@@ -126,12 +122,8 @@ augroup END
 " Distributed Plugin Settings {{{1
 packadd cfilter
 
-if has('nvim')
-    let g:netrw_home = stdpath('data')  " store .netrwhist in the data directory
-endif
-
 let g:qf_disable_statusline = 1
-let g:c_no_curly_error = 1  " don't show [{}] as an error; it's valid C++11
+let g:c_no_curly_error = 1  " Don't show [{}] as an error; it's valid C++11
 let g:markdown_folding = 1
 let g:rustfmt_autosave = 1
 
@@ -152,8 +144,7 @@ function! ConfStatusLine() abort
     return join(parts, '')
 endfunction
 
-set laststatus=2
-set statusline=%!ConfStatusLine()
+set laststatus=2 statusline=%!ConfStatusLine()
 
 " Tab Line Settings {{{1
 function! ConfTabLabel(tabnum) abort
@@ -161,7 +152,7 @@ function! ConfTabLabel(tabnum) abort
     let winnum = tabpagewinnr(a:tabnum)
     let bufname = expand('#' .. buffers[winnum - 1] .. ':t')
 
-    " default to the working directory's tail component if empty
+    " Default to the working directory's tail component if empty
     if empty(bufname)
         let bufname = fnamemodify(getcwd(winnum, a:tabnum), ':t')
     endif
@@ -202,18 +193,18 @@ inoremap <silent> <F2> <Cmd>setlocal spell!<CR>
 nnoremap <silent> <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 nnoremap <silent> <Leader>/ <Cmd>set hlsearch!<CR>
 
-" disable suspend mapping for nvim on windows as there is no way to resume!
+" Disable suspend mapping for Nvim on Windows as there's no way to resume!
 if has('nvim') && has('win32')
     nnoremap <silent> <C-Z> <NOP>
 endif
 
-" nvim 0.6 makes Y more sensible (y$), but I'm used to the default behaviour
+" Nvim 0.6 makes Y more sensible (y$), but I'm used to the default behaviour
 if has('nvim')
     silent! unmap Y
 endif
 
-" NOTE: disable flow control for your terminal to use the <C-S> maps!
-" press <C-Q> to unfreeze the terminal if you have accidentally activated it
+" NOTE: Disable your terminal's flow control to use these <C-S> maps!
+" Press <C-Q> to unfreeze the terminal if you have accidentally activated it
 nnoremap <silent> <C-S> <Cmd>update<CR>
 inoremap <silent> <C-S> <Cmd>update<CR>
 

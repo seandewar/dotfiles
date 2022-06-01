@@ -1,9 +1,9 @@
-" use neovim's GUI rc file instead
-let s:gnvimrc = g:neovim_stow_package_dir . '/.config/nvim/ginit.vim'
+" Use Neovim's GUI init file instead.
+let s:gnvimrc = g:neovim_stow_package_dir .. '/.config/nvim/ginit.vim'
 
 if filereadable(s:gnvimrc)
     let $MYGVIMRC = s:gnvimrc
-    execute 'source ' . s:gnvimrc
+    execute 'source ' .. s:gnvimrc
 endif
 
 unlet s:gnvimrc

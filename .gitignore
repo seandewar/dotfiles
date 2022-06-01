@@ -1,6 +1,10 @@
-# neovim
-/neovim/.config/nvim/plugin/local_conf.vim
+# Neovim
+/neovim/.config/nvim/plugin/local.vim
+/neovim/.config/nvim/ginit_local.vim
 /neovim/.local/share/
+
+# Vim
+/neovim-vim-compat/.vim/pack/
 
 # tmux
 /tmux/.tmux/plugins/

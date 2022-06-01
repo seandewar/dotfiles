@@ -1,3 +1,7 @@
 TODO:
-- make telescope.nvim update the jump list
-- reconsider nvim-dap at some point?
+
+- paragon: CurSearch highlight conflicts with Visual's
+- treesitter: textobjects' <CR> mapping overrides netrw's sometimes
+- telescope: More pickers should update the jump list; this should be a thing
+             upstream...
+- nvim-dap: Reconsider at some point? It looks cool, but I'm already used to gdb
