@@ -1,7 +1,7 @@
 let g:fzf_history_dir = (has('nvim') ? stdpath('data') : $MYVIMRUNTIME)
             \           .. '/fzf-history'
 
-" Mimic Vim's pum behaviour a lil' (and move the history mapping somewhere else)
+" Mimic Vim's pum behaviour a lil' (and move the history maps elsewhere)
 let $FZF_DEFAULT_OPTS ..= ' --cycle'
              \         .. ' --bind=ctrl-n:down,ctrl-p:up'
              \         .. ' --bind=down:next-history,up:previous-history'
@@ -13,11 +13,9 @@ nnoremap <leader>ff <Cmd>Files<CR>
 nnoremap <leader>fo <Cmd>History<CR>
 nnoremap <leader>ft <Cmd>Tags<CR>
 
-" Search file contents
+" Search file contents with ripgrep
 if executable('rg')
     nnoremap <leader>fs <Cmd>Rg<CR>
-elseif executable('ag')
-    nnoremap <leader>fs <Cmd>Ag<CR>
 endif
 
 " Git

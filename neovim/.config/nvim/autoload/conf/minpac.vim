@@ -37,11 +37,6 @@ function! conf#minpac#ensure_init() abort
     call minpac#add('rust-lang/rust.vim')
     call minpac#add('ziglang/zig.vim')
 
-    " Snippets with integrations
-    call minpac#add('hrsh7th/vim-vsnip')
-    call minpac#add('hrsh7th/vim-vsnip-integ')
-    call minpac#add('rafamadriz/friendly-snippets')
-
     " Neovim plugins
     if has('nvim')
         lua require "conf.minpac"

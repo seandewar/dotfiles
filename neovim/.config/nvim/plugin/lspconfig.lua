@@ -60,12 +60,9 @@ local servers = {
 }
 
 local lsp = vim.lsp
+
 local lspconfig = require "lspconfig"
 local echo = require("conf.util").echo
-
--- vim-vsnip-integ doesn't enable snippetSupport for us
-local capabilities = lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lspconfig.util.default_config = vim.tbl_extend(
   "force",
@@ -85,7 +82,6 @@ lspconfig.util.default_config = vim.tbl_extend(
       require("conf.lsp").lspconfig_attach_curbuf(client)
     end,
 
-    capabilities = capabilities,
     flags = { debounce_text_changes = 150 },
 
     handlers = {
