@@ -8,14 +8,12 @@ local spellsitter = require "spellsitter"
 local gps
 
 configs.setup {
-  -- Install only a minimal set of parsers that I'm likely to want.
-  -- Other parsers can be installed when wanted with :TSInstall
+  -- Install a minimal set of parsers.
+  -- Others can be installed on-demand with :TSInstall
   ensure_installed = {
     "c",
-    "cmake",
     "cpp",
     "lua",
-    "rust",
     "vim",
   },
 

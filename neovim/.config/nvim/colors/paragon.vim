@@ -225,3 +225,19 @@ hi! link diffRemoved DiffDelete
 " nvim-treesitter
 hi! link TSConstBuiltin Constant
 hi! link TSDanger Todo
+
+" fzf.vim
+let g:fzf_colors = {'bg+': ['bg', 'CursorLine'], 'fg+': ['fg', 'CursorLine'],
+                  \ 'bg': ['bg', 'Normal'], 'fg': ['fg', 'Normal'],
+                  \ 'hl+': ['bg', 'Search'], 'hl': ['bg', 'Search'],
+                  \ 'pointer': ['bg', 'PmenuSel'],
+                  \ 'marker': ['bg', 'Visual'],
+                  \ 'header': ['fg', 'Comment'],
+                  \ 'prompt': ['fg', 'Title'],
+                  \ 'query': ['fg', 'Normal'],
+                  \ 'disabled': ['fg', 'Comment'],
+                  \ 'spinner': ['fg', 'Comment'],
+                  \ 'info': ['fg', 'Comment'],
+                  \ 'gutter': ['bg', 'StatusLine'],
+                  \ 'preview-bg': ['bg', 'Normal'],
+                  \ 'preview-fg': ['fg', 'Normal']}
