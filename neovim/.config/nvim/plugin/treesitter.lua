@@ -1,14 +1,8 @@
 local api = vim.api
-local cmd = vim.cmd
 local map = vim.keymap.set
 
 local t = require("conf.util").t
 
-cmd [[
-  packadd nvim-treesitter
-  packadd nvim-treesitter-textobjects
-  packadd spellsitter.nvim
-]]
 local configs = require "nvim-treesitter.configs"
 local spellsitter = require "spellsitter"
 local gps
@@ -77,7 +71,7 @@ configs.setup {
 
 spellsitter.setup { enable = true }
 
---- show tree-sitter context alongside cursor location info
+--- Show tree-sitter context with cursor location info
 local function echo_cursor_context()
   if package.loaded["nvim-gps"] == nil then
     vim.cmd "packadd nvim-gps"

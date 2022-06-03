@@ -99,5 +99,18 @@ end, {
 map("n", "<Space>k", function()
   diagnostic.open_float(nil, { scope = "cursor", border = "single" })
 end, {
-  desc = "Show Diagnostics Under Cursor",
+  desc = "Diagnostics Under Cursor",
+})
+
+map("n", "<Space><Space>", function()
+  diagnostic.setloclist({ title = "Buffer Diagnostics", open = false })
+  vim.cmd "lwindow"
+end, {
+  desc = "Buffer Diagnostics",
+})
+map("n", "<Space><C-Space>", function()
+  diagnostic.setqflist({ title = "All Diagnostics", open = false })
+  vim.cmd "cwindow"
+end, {
+  desc = "All Diagnostics",
 })

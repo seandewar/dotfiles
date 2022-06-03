@@ -2,7 +2,6 @@ local fn = vim.fn
 
 local servers = {
   "clangd",
-  "hls",
   "zls",
 
   {
@@ -61,10 +60,7 @@ local servers = {
 }
 
 local lsp = vim.lsp
-
-vim.cmd "packadd nvim-lspconfig"
 local lspconfig = require "lspconfig"
-
 local echo = require("conf.util").echo
 
 -- vim-vsnip-integ doesn't enable snippetSupport for us

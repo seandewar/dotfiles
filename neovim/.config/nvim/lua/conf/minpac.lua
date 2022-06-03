@@ -1,31 +1,35 @@
-local function add(url, opts)
-  opts = vim.tbl_extend("force", { type = "opt" }, opts or {})
+-- Helper functions {{{1
+local function start(url, opts)
+  opts = vim.tbl_extend("force", { type = "start" }, opts or {})
   vim.fn["minpac#add"](url, opts)
 end
 
--- tree-sitter
-add("nvim-treesitter/nvim-treesitter", {
+local function opt(url, opts)
+  opts = vim.tbl_extend("force", { type = "opt" }, opts or {})
+  vim.fn["minpac#add"](url, opts)
+end
+-- }}}
+
+-- vim.ui.input, vim.ui.select
+start "stevearc/dressing.nvim"
+
+-- Tree-sitter
+start("nvim-treesitter/nvim-treesitter", {
   ["do"] = function()
     if vim.g.loaded_nvim_treesitter ~= nil then
       vim.cmd "TSUpdate"
     end
   end,
 })
-add "nvim-treesitter/nvim-treesitter-textobjects"
-add "lewis6991/spellsitter.nvim"
-add "SmiteshP/nvim-gps"
+start "nvim-treesitter/nvim-treesitter-textobjects"
+start "lewis6991/spellsitter.nvim"
+opt "SmiteshP/nvim-gps"
 
--- telescope
-add "nvim-lua/plenary.nvim"
-add "nvim-telescope/telescope.nvim"
-add "nvim-telescope/telescope-ui-select.nvim"
-add "nvim-telescope/telescope-fzy-native.nvim"
+-- Language server protocol
+start "neovim/nvim-lspconfig"
 
--- language server protocol
-add "neovim/nvim-lspconfig"
-
--- firenvim (web browser integration)
-add(
+-- Firenvim (web browser integration)
+opt(
   "glacambre/firenvim",
   { ["do"] = "packadd firenvim | call firenvim#install(0)" }
 )

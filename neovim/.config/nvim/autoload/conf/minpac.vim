@@ -20,13 +20,16 @@ function! conf#minpac#ensure_init() abort
     call minpac#add('tpope/vim-commentary')
     call minpac#add('tpope/vim-dispatch')
     call minpac#add('embear/vim-localvimrc')
-    call minpac#add('seandewar/vim-qftoggle')
     call minpac#add('tpope/vim-repeat')
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-vinegar')
 
-    " git integration
+    " Fzf integration
+    call minpac#add('junegunn/fzf')
+    call minpac#add('junegunn/fzf.vim')
+
+    " Git integration
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-rhubarb')
 

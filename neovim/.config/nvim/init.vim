@@ -216,7 +216,7 @@ nnoremap <silent> [a <Cmd>previous<CR>
 " Buffers, Find, Grep, ... {{{2
 nnoremap <Leader>fb :buffer<Space>
 nnoremap <Leader>ff :find<Space>
-nnoremap <Leader>fg :grep<Space>
+nnoremap <Leader>fs :grep<Space>
 nnoremap <Leader>ft :tjump<Space>
 nnoremap <Leader>fo <Cmd>browse oldfiles<CR>
 
@@ -226,9 +226,6 @@ nnoremap <silent> [b <Cmd>bprevious<CR>2<C-G>
 " QuickFix and Location lists {{{2
 nnoremap <silent> <Leader>c <Cmd>cwindow<CR>
 nnoremap <silent> <Leader>l <Cmd>lwindow<CR>
-
-nnoremap <silent> <Leader>fc :Cfilter<Space>
-nnoremap <silent> <Leader>fl :Lfilter<Space>
 
 nnoremap <silent> ]c <Cmd>cnext<CR>zv
 nnoremap <silent> [c <Cmd>cprevious<CR>zv

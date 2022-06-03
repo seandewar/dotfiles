@@ -78,9 +78,16 @@ function M.attach_buffer(args)
 
     bmap("n", "K", lsp.buf.hover, "LSP Hover")
     bmap({ "n", "i" }, "<C-K>", lsp.buf.signature_help, "LSP Signature Help")
+
+    bmap("n", "<Space>i", lsp.buf.implementation, "LSP Implementations")
+    bmap("n", "<Space>r", lsp.buf.references, "LSP References")
+    bmap("n", "<Space>w", lsp.buf.workspace_symbol, "LSP Workspace Symbols")
+    bmap("n", "<Space>d", lsp.buf.document_symbol, "LSP Document Symbols")
+
     bmap("n", "gd", lsp.buf.definition, "LSP Goto Definition")
     bmap("n", "gD", lsp.buf.declaration, "LSP Goto Declaration")
     bmap("n", "<Space>t", lsp.buf.type_definition, "LSP Goto Type Definition")
+
     bmap("n", "<Space>R", lsp.buf.rename, "LSP Rename")
     bmap("n", "<Space>f", function()
       lsp.buf.format { async = true }
@@ -88,12 +95,6 @@ function M.attach_buffer(args)
     bmap("n", "<Space>a", lsp.buf.code_action, "LSP Code Action")
     bmap("x", "<Space>f", "<Esc><Cmd>lua vim.lsp.buf.range_formatting()<CR>")
     bmap("x", "<Space>a", "<Esc><Cmd>lua vim.lsp.buf.range_code_action()<CR>")
-
-    -- telescope.nvim
-    bmap("n", "<Space>i", "<Cmd>Telescope lsp_implementations<CR>")
-    bmap("n", "<Space>r", "<Cmd>Telescope lsp_references<CR>")
-    bmap("n", "<Space>w", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>")
-    bmap("n", "<Space>d", "<Cmd>Telescope lsp_document_symbols<CR>")
   end)
 end
 
@@ -116,20 +117,21 @@ function M.detach_buffer(args)
   api.nvim_buf_call(args.buf, function()
     bunmap("n", "K")
     bunmap({ "n", "i" }, "<C-K>")
+
+    bunmap("n", "<Space>i")
+    bunmap("n", "<Space>r")
+    bunmap("n", "<Space>w")
+    bunmap("n", "<Space>d")
+
     bunmap("n", "gd")
     bunmap("n", "gD")
     bunmap("n", "<Space>t")
+
     bunmap("n", "<Space>R")
     bunmap("n", "<Space>f")
     bunmap("n", "<Space>a")
     bunmap("x", "<Space>f")
     bunmap("x", "<Space>a")
-
-    -- telescope.nvim
-    bunmap("n", "<Space>i")
-    bunmap("n", "<Space>r")
-    bunmap("n", "<Space>w")
-    bunmap("n", "<Space>d")
 
     -- lspconfig's on_attach (may not be defined)
     pcall(bunmap, "n", "<Space>s")

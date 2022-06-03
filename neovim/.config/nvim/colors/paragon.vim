@@ -225,10 +225,3 @@ hi! link diffRemoved DiffDelete
 " nvim-treesitter
 hi! link TSConstBuiltin Constant
 hi! link TSDanger Todo
-
-" telescope.nvim
-hi! link TelescopeSelection Search
-hi! link TelescopeMatching  IncSearch
-
-hi! link TelescopePreviewLine Search
-hi! link TelescopePreviewMatch IncSearch
