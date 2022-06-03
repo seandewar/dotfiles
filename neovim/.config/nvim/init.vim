@@ -216,7 +216,7 @@ nnoremap <silent> [a <Cmd>previous<CR>
 " Buffers, Find, Grep, ... {{{2
 nnoremap <Leader>fb :buffer<Space>
 nnoremap <Leader>ff :find<Space>
-nnoremap <Leader>fs :grep<Space>
+nnoremap <Leader>fg :grep<Space>
 nnoremap <Leader>ft :tjump<Space>
 nnoremap <Leader>fo <Cmd>browse oldfiles<CR>
 
