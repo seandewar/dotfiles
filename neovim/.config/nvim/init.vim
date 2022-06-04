@@ -128,13 +128,18 @@ let g:markdown_folding = 1
 let g:rustfmt_autosave = 1
 
 " Status Line Settings {{{1
+function! ConfStlQfTitle() abort
+    let title = get(w:, 'quickfix_title', '')
+    return title !=# ':setqflist()' && title!=# ':setloclist()' ? title : ''
+endfunction
+
 let g:conf_statusline_components = #{
-            \ buf: '%(%w %)%(%f %)%([%M%R] %)%(%y %)',
+            \ main: '%(%w %)%(%f %)%(%{ConfStlQfTitle()} %)%([%M%R] %)%(%y %)',
             \ spell: '%([%{&spell ? &spelllang : ''''}] %)',
             \ position: '%=%-14(%l,%c%V%) %P',
             \ }
 let g:conf_statusline_order =
-            \ ['buf', 'spell', 'git', 'diagnostic', 'lsp', 'position']
+            \ ['main', 'spell', 'git', 'diagnostic', 'lsp', 'position']
 
 function! ConfStatusLine() abort
     let parts = copy(g:conf_statusline_order)
