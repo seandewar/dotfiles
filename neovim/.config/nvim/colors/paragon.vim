@@ -189,6 +189,7 @@ call s:h('CursorLine',   {'bg': s:bg_most_subtle})
 hi! link CursorColumn CursorLine
 
 " Neovim: {{{1
+call s:h('FloatTitle',  {'fg': s:norm, 'bg': s:bg_most_subtle})
 call s:h('FloatBorder',  {'fg': s:bg_subtle, 'bg': s:bg_most_subtle})
 
 " vim.diagnostic
