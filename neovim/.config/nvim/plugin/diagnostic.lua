@@ -7,13 +7,16 @@ local virt_text_ns = api.nvim_create_namespace "conf_diagnostic_virt_text"
 
 -- Display virtual text for the current line only
 local function update_virtual_text()
-  if api.nvim_get_mode().mode:match "i" then
-    return
-  end
+  diagnostic.hide(virt_text_ns) -- Clear stale virtual text
   local buf = api.nvim_get_current_buf()
   local row = api.nvim_win_get_cursor(0)[1]
   local line_diags = diagnostic.get(buf, { lnum = row - 1 })
-  diagnostic.show(virt_text_ns, buf, line_diags, { virtual_text = true })
+  diagnostic.show(
+    virt_text_ns,
+    buf,
+    line_diags,
+    { virtual_text = true, underline = false, signs = false }
+  )
 end
 
 ---@note requires recursive statusline evaluation: %{%...%}
@@ -103,13 +106,13 @@ end, {
 })
 
 map("n", "<Space><Space>", function()
-  diagnostic.setloclist({ title = "Buffer Diagnostics", open = false })
+  diagnostic.setloclist { title = "Buffer Diagnostics", open = false }
   vim.cmd "lwindow"
 end, {
   desc = "Buffer Diagnostics",
 })
 map("n", "<Space><C-Space>", function()
-  diagnostic.setqflist({ title = "All Diagnostics", open = false })
+  diagnostic.setqflist { title = "All Diagnostics", open = false }
   vim.cmd "cwindow"
 end, {
   desc = "All Diagnostics",
