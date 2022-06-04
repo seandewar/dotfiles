@@ -198,9 +198,9 @@ call s:h('DiagnosticHint',  {'fg': s:blue})
 hi! link DiagnosticInfo Normal
 
 call s:h('DiagnosticUnderlineError', {'gui': 'undercurl', 'cterm': 'underline',
-            \                         'fg': s:red, 'sp': s:red})
+            \                         'sp': s:red})
 call s:h('DiagnosticUnderlineWarn',  {'gui': 'undercurl', 'cterm': 'underline',
-            \                         'fg': s:yellow, 'sp': s:yellow})
+            \                         'sp': s:yellow})
 call s:h('DiagnosticUnderlineHint',  {'gui': 'undercurl', 'cterm': 'underline',
             \                         'sp': s:blue})
 call s:h('DiagnosticUnderlineInfo',  {'gui': 'undercurl', 'cterm': 'underline',
