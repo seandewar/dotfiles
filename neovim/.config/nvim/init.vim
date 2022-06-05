@@ -13,7 +13,7 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
 set autoread
 set backspace=indent,eol,start
 set belloff=all
-set breakindent
+set breakindent showbreak=>\
 set cinoptions+=:0,g0,N-s
 set display+=lastline,uhex
 set encoding=utf-8
@@ -39,7 +39,6 @@ set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 set textwidth=80
 set title
 set wildmenu wildmode=list:longest,full
-set nowrap
 
 " A Vim bug causes glob expansion to fail with 'wildignorecase' if a parent
 " directory lacks read perms (neovim#6787). This messes up netrw on Termux.
