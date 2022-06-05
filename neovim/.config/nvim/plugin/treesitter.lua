@@ -1,7 +1,8 @@
 local api = vim.api
 local map = vim.keymap.set
 
-local t = require("conf.util").t
+local util = require "conf.util"
+local echo = util.echo
 
 local configs = require "nvim-treesitter.configs"
 local spellsitter = require "spellsitter"
@@ -77,7 +78,7 @@ local function echo_cursor_context()
     gps.setup { disable_icons = true }
   end
 
-  local chunks = { { api.nvim_exec(t "normal! g<C-G>", true) } }
+  local chunks = { { api.nvim_exec(util.t "normal! g<C-G>", true) } }
   if gps.is_available() then
     local context = gps.get_location()
     if context ~= "" then
@@ -87,7 +88,7 @@ local function echo_cursor_context()
       )
     end
   end
-  api.nvim_echo(chunks, false, {})
+  echo(chunks)
 end
 
 map("n", "g<C-G>", echo_cursor_context)

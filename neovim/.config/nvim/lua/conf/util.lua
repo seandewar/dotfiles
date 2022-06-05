@@ -1,5 +1,4 @@
 local api = vim.api
-local keymap = vim.keymap
 
 local M = {}
 
@@ -9,15 +8,8 @@ function M.t(str)
 end
 
 function M.echo(msg)
-  api.nvim_echo({ msg }, false, {})
-end
-
-function M.bmap(mode, lhs, rhs, desc)
-  keymap.set(mode, lhs, rhs, { buffer = true, desc = desc })
-end
-
-function M.bunmap(mode, lhs)
-  keymap.del(mode, lhs, { buffer = true })
+  msg = type(msg) == "string" and { { msg } } or msg
+  api.nvim_echo(msg, false, {})
 end
 
 return M

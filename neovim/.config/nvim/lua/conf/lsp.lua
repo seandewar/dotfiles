@@ -1,15 +1,15 @@
 local api = vim.api
+local fn = vim.fn
 local lsp = vim.lsp
 
-local util = require "conf.util"
-local bmap = util.bmap
-local bunmap = util.bunmap
+local map = vim.keymap.set
+local unmap = vim.keymap.del
 
 local M = {}
 
 local last_progress_text = ""
 
-function M.update_progress()
+local function update_progress()
   local new_msgs = lsp.util.get_progress_messages()
   local msg = new_msgs[#new_msgs]
 
@@ -33,10 +33,16 @@ function M.update_progress()
   end
 
   last_progress_text = text
-  vim.cmd "redrawstatus!"
+  vim.cmd "redrawstatus"
 end
 
-function M.statusline(curwin, stlwin)
+api.nvim_create_autocmd("User", {
+  group = api.nvim_create_augroup("conf_lsp_progress", {}),
+  pattern = "LspProgressUpdate",
+  callback = update_progress,
+})
+
+local function statusline(curwin, stlwin)
   if curwin == stlwin and last_progress_text ~= "" then
     return "[" .. last_progress_text .. "] "
   end
@@ -53,13 +59,23 @@ function M.statusline(curwin, stlwin)
   end
 end
 
-local buf_old_opts = {}
+fn["conf#statusline#define_component"]("lsp", statusline)
+
+function M.lspconfig_attach_curbuf(client)
+  if client.name == "clangd" then
+    map("n", "<Space>s", "<Cmd>ClangdSwitchSourceHeader<CR>", {
+      buffer = true,
+    })
+  end
+end
+
+local buf_saved_opts = {}
 
 local function bopt(option, value)
   local buf = api.nvim_get_current_buf()
-  buf_old_opts[buf] = vim.tbl_extend(
+  buf_saved_opts[buf] = vim.tbl_extend(
     "keep",
-    buf_old_opts[buf] or {},
+    buf_saved_opts[buf] or {},
     { [option] = vim.bo[option] }
   )
   vim.bo[option] = value
@@ -76,32 +92,21 @@ function M.attach_buffer(args)
     bopt("tagfunc", "v:lua.vim.lsp.tagfunc")
     bopt("formatexpr", "v:lua.vim.lsp.formatexpr()")
 
-    bmap("n", "K", lsp.buf.hover, "LSP Hover")
-    bmap({ "n", "i" }, "<C-K>", lsp.buf.signature_help, "LSP Signature Help")
-
-    bmap("n", "<Space>i", lsp.buf.implementation, "LSP Implementations")
-    bmap("n", "<Space>r", lsp.buf.references, "LSP References")
-    bmap("n", "<Space>w", lsp.buf.workspace_symbol, "LSP Workspace Symbols")
-    bmap("n", "<Space>d", lsp.buf.document_symbol, "LSP Document Symbols")
-
-    bmap("n", "gd", lsp.buf.definition, "LSP Goto Definition")
-    bmap("n", "gD", lsp.buf.declaration, "LSP Goto Declaration")
-    bmap("n", "<Space>t", lsp.buf.type_definition, "LSP Goto Type Definition")
-
-    bmap("n", "<Space>R", lsp.buf.rename, "LSP Rename")
-    bmap("n", "<Space>f", function()
-      lsp.buf.format { async = true }
-    end, "LSP Formatting")
-    bmap("n", "<Space>a", lsp.buf.code_action, "LSP Code Action")
-    bmap("x", "<Space>f", "<Esc><Cmd>lua vim.lsp.buf.range_formatting()<CR>")
-    bmap("x", "<Space>a", "<Esc><Cmd>lua vim.lsp.buf.range_code_action()<CR>")
+    -- These maps have default functions, so define them here as buffer-local.
+    map("n", "K", lsp.buf.hover, { buffer = true, desc = "LSP Hover" })
+    map(
+      "n",
+      "gd",
+      lsp.buf.definition,
+      { buffer = true, desc = "LSP Definition" }
+    )
+    map(
+      "n",
+      "gD",
+      lsp.buf.declaration,
+      { buffer = true, desc = "LSP Declaration" }
+    )
   end)
-end
-
-function M.lspconfig_attach_curbuf(client)
-  if client.name == "clangd" then
-    bmap("n", "<Space>s", "<Cmd>ClangdSwitchSourceHeader<CR>")
-  end
 end
 
 function M.detach_buffer(args)
@@ -115,31 +120,17 @@ function M.detach_buffer(args)
   end
 
   api.nvim_buf_call(args.buf, function()
-    bunmap("n", "K")
-    bunmap({ "n", "i" }, "<C-K>")
+    unmap("n", "K")
+    unmap("n", "gd")
+    unmap("n", "gD")
 
-    bunmap("n", "<Space>i")
-    bunmap("n", "<Space>r")
-    bunmap("n", "<Space>w")
-    bunmap("n", "<Space>d")
+    -- lspconfig (these may not be defined, hence pcall to ignore errors)
+    pcall(unmap, "n", "<Space>s")
 
-    bunmap("n", "gd")
-    bunmap("n", "gD")
-    bunmap("n", "<Space>t")
-
-    bunmap("n", "<Space>R")
-    bunmap("n", "<Space>f")
-    bunmap("n", "<Space>a")
-    bunmap("x", "<Space>f")
-    bunmap("x", "<Space>a")
-
-    -- lspconfig's on_attach (may not be defined)
-    pcall(bunmap, "n", "<Space>s")
-
-    for option, old_value in ipairs(buf_old_opts[args.buf] or {}) do
+    for option, old_value in ipairs(buf_saved_opts[args.buf] or {}) do
       vim.bo[option] = old_value
     end
-    buf_old_opts[args.buf] = nil
+    buf_saved_opts[args.buf] = nil
   end)
 end
 

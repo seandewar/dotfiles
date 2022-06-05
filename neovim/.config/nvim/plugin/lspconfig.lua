@@ -59,10 +59,7 @@ local servers = {
   },
 }
 
-local lsp = vim.lsp
-
 local lspconfig = require "lspconfig"
-local echo = require("conf.util").echo
 
 lspconfig.util.default_config = vim.tbl_extend(
   "force",
@@ -71,6 +68,8 @@ lspconfig.util.default_config = vim.tbl_extend(
     -- Usually don't want LSP when using firenvim (as we'll usually edit single
     -- files, not projects, and not all servers support single files very well)
     autostart = vim.g.started_by_firenvim == nil,
+
+    flags = { debounce_text_changes = 150 },
 
     on_attach = function(client)
       -- LspAttach needs Nvim 0.8
@@ -81,26 +80,6 @@ lspconfig.util.default_config = vim.tbl_extend(
       end
       require("conf.lsp").lspconfig_attach_curbuf(client)
     end,
-
-    flags = { debounce_text_changes = 150 },
-
-    handlers = {
-      ["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
-        border = "single",
-      }),
-      ["textDocument/signatureHelp"] = lsp.with(
-        lsp.handlers.signature_help,
-        { border = "single" }
-      ),
-      ["textDocument/formatting"] = function(...)
-        lsp.handlers["textDocument/formatting"](...)
-        echo "Buffer formatted!"
-      end,
-      ["textDocument/rangeFormatting"] = function(...)
-        lsp.handlers["textDocument/rangeFormatting"](...)
-        echo "Range formatted!"
-      end,
-    },
   }
 )
 

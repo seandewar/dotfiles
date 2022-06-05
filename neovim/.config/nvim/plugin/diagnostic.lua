@@ -91,18 +91,18 @@ api.nvim_create_autocmd({ "DiagnosticChanged", "CursorMoved" }, {
 map("n", "]<Space>", function()
   diagnostic.goto_next { float = false }
 end, {
-  desc = "Goto Next Diagnostic",
+  desc = "Next Diagnostic",
 })
 map("n", "[<Space>", function()
   diagnostic.goto_prev { float = false }
 end, {
-  desc = "Goto Previous Diagnostic",
+  desc = "Previous Diagnostic",
 })
 
 map("n", "<Space>k", function()
   diagnostic.open_float(nil, { scope = "cursor", border = "single" })
 end, {
-  desc = "Diagnostics Under Cursor",
+  desc = "Cursor Diagnostics",
 })
 
 map("n", "<Space><Space>", function()
