@@ -13,7 +13,7 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
 set autoread
 set backspace=indent,eol,start
 set belloff=all
-set breakindent showbreak=>\
+set breakindent showbreak=>
 set cinoptions+=:0,g0,N-s
 set display+=lastline,uhex
 set encoding=utf-8

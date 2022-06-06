@@ -120,12 +120,12 @@ function M.detach_buffer(args)
   end
 
   api.nvim_buf_call(args.buf, function()
-    unmap("n", "K")
-    unmap("n", "gd")
-    unmap("n", "gD")
+    unmap("n", "K", { buffer = true })
+    unmap("n", "gd", { buffer = true })
+    unmap("n", "gD", { buffer = true })
 
     -- lspconfig (these may not be defined, hence pcall to ignore errors)
-    pcall(unmap, "n", "<Space>s")
+    pcall(unmap, "n", "<Space>s", { buffer = true })
 
     for option, old_value in ipairs(buf_saved_opts[args.buf] or {}) do
       vim.bo[option] = old_value

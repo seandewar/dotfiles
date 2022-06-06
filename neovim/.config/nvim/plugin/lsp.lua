@@ -123,6 +123,18 @@ map("n", "<Space>d", lsp.buf.document_symbol, {
 })
 
 map("n", "<Space>w", function()
+  local supported = false
+  for _, client in ipairs(lsp.get_active_clients { bufnr = 0 }) do
+    if client.server_capabilities.workspaceSymbolProvider then
+      supported = true
+      break
+    end
+  end
+  if not supported then
+    echo { { "No attached servers support Workspace symbols", "ErrorMsg" } }
+    return
+  end
+
   vim.ui.input({ prompt = "Workspace symbols query:" }, function(input)
     if input then
       lsp.buf.workspace_symbol(input)
