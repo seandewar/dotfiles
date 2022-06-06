@@ -71,8 +71,15 @@ local function define_stl_hls()
   define_hl("Hint", "DiagnosticSignHint")
 end
 
+local stl_group = api.nvim_create_augroup("conf_diagnostic_statusline", {})
+
+api.nvim_create_autocmd("DiagnosticChanged", {
+  group = stl_group,
+  command = "redrawstatus!",
+})
+
 api.nvim_create_autocmd("ColorScheme", {
-  group = api.nvim_create_augroup("conf_diagnostic_statusline_highlights", {}),
+  group = stl_group,
   callback = define_stl_hls,
 })
 define_stl_hls()
