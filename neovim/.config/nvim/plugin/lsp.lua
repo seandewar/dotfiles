@@ -68,7 +68,7 @@ local function response_select_handler(err, result, ctx, config)
   }, function(choice, _)
     if choice then
       vim.cmd(
-        ([[edit +call\ cursor(%d,%d) %s]]):format(
+        ([[edit +call\ cursor(%d,%d)|normal!\ zz %s]]):format(
           choice.lnum,
           choice.col,
           choice.filename
