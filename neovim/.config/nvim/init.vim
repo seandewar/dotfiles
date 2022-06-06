@@ -13,7 +13,7 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
 set autoread
 set backspace=indent,eol,start
 set belloff=all
-set breakindent showbreak=>
+set breakindent breakindentopt=sbr showbreak=>
 set cinoptions+=:0,g0,N-s
 set display+=lastline,uhex
 set encoding=utf-8
@@ -23,7 +23,7 @@ set guioptions=M  " Can't be in gvimrc; has to be before :syntax on/:filetype on
 set hidden
 set incsearch ignorecase smartcase hlsearch
 set nojoinspaces
-set list listchars=tab:>\ ,trail:.,nbsp:~,extends:>,precedes:<
+set list listchars=tab:_\ ,trail:.,nbsp:~,extends:>,precedes:<
 set mouse=a mousemodel=popup nomousehide
 set nrformats-=octal
 set path& | let &path .= '**'  " Use :let.=, as 'path' already ends in a comma
