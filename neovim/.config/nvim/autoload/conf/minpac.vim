@@ -25,10 +25,6 @@ function! conf#minpac#ensure_init() abort
     call minpac#add('tpope/vim-surround')
     call minpac#add('tpope/vim-vinegar')
 
-    " Fzf integration
-    call minpac#add('junegunn/fzf')
-    call minpac#add('junegunn/fzf.vim')
-
     " Git integration
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-rhubarb')

@@ -112,15 +112,11 @@ end, {
   desc = "Cursor Diagnostics",
 })
 
-map("n", "<Space><Space>", function()
-  diagnostic.setloclist { title = "Buffer Diagnostics", open = false }
-  vim.cmd "lwindow"
-end, {
+-- Although the command name implies LSP, :FzfLua uses vim.diagnostic instead if
+-- it's available.
+map("n", "<Space><Space>", "<Cmd>FzfLua lsp_document_diagnostics<CR>", {
   desc = "Buffer Diagnostics",
 })
-map("n", "<Space><C-Space>", function()
-  diagnostic.setqflist { title = "All Diagnostics", open = false }
-  vim.cmd "cwindow"
-end, {
+map("n", "<Space><C-Space>", "<Cmd>FzfLua lsp_workspace_diagnostics<CR>", {
   desc = "All Diagnostics",
 })

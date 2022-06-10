@@ -228,6 +228,9 @@ hi! link TSConstBuiltin Constant
 hi! link TSDanger Todo
 
 " fzf.vim
+" Be a good citizen and delete our color choices if another scheme is sourced.
+autocmd ColorSchemePre * ++once silent! unlet g:fzf_colors
+
 let g:fzf_colors = {'bg+': ['bg', 'CursorLine'], 'fg+': ['fg', 'CursorLine'],
                   \ 'bg': ['bg', 'Normal'], 'fg': ['fg', 'Normal'],
                   \ 'hl+': ['bg', 'Search'], 'hl': ['bg', 'Search'],

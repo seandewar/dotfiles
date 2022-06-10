@@ -10,9 +10,6 @@ local function opt(url, opts)
 end
 -- }}}
 
--- vim.ui.input, vim.ui.select
-start "stevearc/dressing.nvim"
-
 -- Tree-sitter
 start("nvim-treesitter/nvim-treesitter", {
   ["do"] = function()
@@ -24,6 +21,9 @@ start("nvim-treesitter/nvim-treesitter", {
 start "nvim-treesitter/nvim-treesitter-textobjects"
 start "lewis6991/spellsitter.nvim"
 opt "SmiteshP/nvim-gps"
+
+-- Fzf integration
+start "ibhagwan/fzf-lua"
 
 -- Language server protocol
 start "neovim/nvim-lspconfig"

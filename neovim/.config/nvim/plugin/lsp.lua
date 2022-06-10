@@ -42,52 +42,6 @@ lsp.handlers["textDocument/rangeFormatting"] = lsp.with(formatting_handler, {
   request = "textDocument/rangeFormatting",
 })
 
-local function response_select_handler(err, result, ctx, config)
-  if err then
-    echo {
-      { "Failed to get " .. config.name .. ":", "WarningMsg" },
-      { " " .. err.message },
-    }
-    return
-  end
-  if not result or vim.tbl_isempty(result) then
-    echo("No " .. config.name .. " found")
-    return
-  end
-
-  local items = lsp.util.symbols_to_items(result, ctx.bufnr)
-  vim.ui.select(items, {
-    prompt = config.prompt,
-    format_item = function(item)
-      return ("%s  %s(%s)"):format(
-        item.text,
-        (" "):rep(math.max(0, 38 - #item.text)),
-        fn.fnamemodify(item.filename, ":~:.")
-      )
-    end,
-  }, function(choice, _)
-    if choice then
-      vim.cmd(
-        ([[edit +call\ cursor(%d,%d)|normal!\ zz %s]]):format(
-          choice.lnum,
-          choice.col,
-          choice.filename
-        )
-      )
-    end
-  end)
-end
-
-lsp.handlers["textDocument/documentSymbol"] =
-  lsp.with(response_select_handler, {
-    name = "Document symbols",
-    prompt = "Document symbol:",
-  })
-lsp.handlers["workspace/symbol"] = lsp.with(response_select_handler, {
-  name = "Workspace symbols",
-  prompt = "Workspace symbol:",
-})
-
 -- LspAttach, LspDetach needs Nvim 0.8
 if fn.has "nvim-0.8" == 1 then
   local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
@@ -118,35 +72,10 @@ map({ "n", "i" }, "<C-K>", lsp.buf.signature_help, {
   desc = "LSP Signature Help",
 })
 
-map("n", "<Space>d", lsp.buf.document_symbol, {
+map("n", "<Space>d", "<Cmd>FzfLua lsp_document_symbols<CR>", {
   desc = "LSP Document Symbols",
 })
-
-map("n", "<Space>w", function()
-  local supported = false
-  for _, client in ipairs(lsp.get_active_clients { bufnr = 0 }) do
-    if client.server_capabilities.workspaceSymbolProvider then
-      supported = true
-      break
-    end
-  end
-  if not supported then
-    echo { { "No attached servers support Workspace symbols", "ErrorMsg" } }
-    return
-  end
-
-  vim.ui.input({ prompt = "Workspace symbols query:" }, function(input)
-    if input then
-      lsp.buf.workspace_symbol(input)
-    end
-  end)
-end, {
-  desc = "LSP Query Workspace Symbols",
-})
-
-map("n", "<Space>W", function()
-  lsp.buf.workspace_symbol ""
-end, {
+map("n", "<Space>w", "<Cmd>FzfLua lsp_live_workspace_symbols<CR>", {
   desc = "LSP Workspace Symbols",
 })
 
