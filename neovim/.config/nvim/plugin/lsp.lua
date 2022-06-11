@@ -62,7 +62,6 @@ end
 
 map("n", "<Space>t", lsp.buf.type_definition, { desc = "LSP Type Definition" })
 map("n", "<Space>i", lsp.buf.implementation, { desc = "LSP Implementations" })
-map("n", "<Space>r", lsp.buf.references, { desc = "LSP References" })
 map("n", "<Space>R", lsp.buf.rename, { desc = "LSP Rename" })
 map("n", "<Space>a", lsp.buf.code_action, { desc = "LSP Code Action" })
 map("x", "<Space>f", "<Esc><Cmd>lua vim.lsp.buf.range_formatting()<CR>")
@@ -71,16 +70,12 @@ map("x", "<Space>a", "<Esc><Cmd>lua vim.lsp.buf.range_code_action()<CR>")
 map({ "n", "i" }, "<C-K>", lsp.buf.signature_help, {
   desc = "LSP Signature Help",
 })
-
-map("n", "<Space>d", "<Cmd>FzfLua lsp_document_symbols<CR>", {
-  desc = "LSP Document Symbols",
-})
-map("n", "<Space>w", "<Cmd>FzfLua lsp_live_workspace_symbols<CR>", {
-  desc = "LSP Workspace Symbols",
-})
-
 map("n", "<Space>f", function()
   lsp.buf.format { async = true }
 end, {
   desc = "LSP Formatting",
 })
+
+map("n", "<Space>r", "<Cmd>FzfLua lsp_references<CR>")
+map("n", "<Space>d", "<Cmd>FzfLua lsp_document_symbols<CR>")
+map("n", "<Space>w", "<Cmd>FzfLua lsp_live_workspace_symbols<CR>")

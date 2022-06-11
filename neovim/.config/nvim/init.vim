@@ -15,7 +15,7 @@ set backspace=indent,eol,start
 set belloff=all
 set breakindent breakindentopt=sbr showbreak=>
 set cinoptions+=:0,g0,N-s
-set display+=lastline,uhex
+set display+=lastline
 set encoding=utf-8
 set foldmethod=marker
 set formatoptions=croqnlj
