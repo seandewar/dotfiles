@@ -15,7 +15,6 @@ function! conf#minpac#ensure_init() abort
     call minpac#add('k-takata/minpac', #{type: 'opt'})
 
     " General plugins
-    call minpac#add('github/copilot.vim', #{type: 'opt'})
     call minpac#add('sbdchd/neoformat')
     call minpac#add('tpope/vim-commentary')
     call minpac#add('tpope/vim-dispatch')
