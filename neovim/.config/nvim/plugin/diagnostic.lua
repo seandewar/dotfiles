@@ -97,11 +97,13 @@ api.nvim_create_autocmd({ "DiagnosticChanged", "CursorMoved" }, {
 
 map("n", "]<Space>", function()
   diagnostic.goto_next { float = false }
+  vim.cmd "normal! zz"
 end, {
   desc = "Next Diagnostic",
 })
 map("n", "[<Space>", function()
   diagnostic.goto_prev { float = false }
+  vim.cmd "normal! zz"
 end, {
   desc = "Previous Diagnostic",
 })
