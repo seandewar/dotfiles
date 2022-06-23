@@ -230,8 +230,8 @@ nnoremap <silent> [b <Cmd>bprevious<CR>2<C-G>
 nnoremap <silent> <Leader>c <Cmd>cwindow<CR>
 nnoremap <silent> <Leader>l <Cmd>lwindow<CR>
 
-nnoremap <silent> ]c <Cmd>cnext<CR>zvzz
-nnoremap <silent> [c <Cmd>cprevious<CR>zvzz
+nnoremap <silent> ]c <Cmd>cnext<CR>zv
+nnoremap <silent> [c <Cmd>cprevious<CR>zv
 nnoremap <silent> ]C <Cmd>cnewer<CR>
 nnoremap <silent> [C <Cmd>colder<CR>
 
