@@ -10,7 +10,7 @@ fzf.setup {
     .. " --bind=ctrl-n:down,ctrl-p:up"
     .. " --bind=down:next-history,up:previous-history",
 
-  fzf_opts = { ["--cycle"] = "", ["--keep-right"] = "" },
+  fzf_opts = { ["--cycle"] = "" },
   nbsp = "\xc2\xa0",
 
   lsp = {
