@@ -53,8 +53,9 @@ if !has('nvim')
     set lazyredraw
 endif
 
-" Use Nvim 0.7+'s filetype.lua over filetype.vim
-if has('nvim')
+" Use Nvim 0.7+'s filetype.lua over filetype.vim.
+" This is enabled by default in Nvim 0.8+.
+if has('nvim') && !has('nvim-0.8')
     let g:did_load_filetypes = 0
     let g:do_filetype_lua = 1
 endif
