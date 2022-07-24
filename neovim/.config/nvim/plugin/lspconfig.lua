@@ -1,4 +1,5 @@
 local fn = vim.fn
+local lsp = vim.lsp
 
 local lspconfig = require "lspconfig"
 
@@ -11,7 +12,6 @@ lspconfig.util.default_config = vim.tbl_extend(
     autostart = vim.g.started_by_firenvim == nil,
 
     flags = { debounce_text_changes = 150 },
-
     on_attach = function(client)
       -- LspAttach needs Nvim 0.8
       if fn.has "nvim-0.8" == 0 then
@@ -41,6 +41,15 @@ lspconfig.rust_analyzer.setup {
       },
     },
   },
+  handlers = {
+    ["window/showMessage"] = function(err, result, ctx, config)
+      -- Ignore the "overly long loop turn" message shown by nightly builds of
+      -- rust-analyzer.
+      if not result or not result.message:match "^overly long loop turn" then
+        lsp.handlers["window/showMessage"](err, result, ctx, config)
+      end
+    end,
+  },
 }
 
 lspconfig.sumneko_lua.setup {
@@ -61,7 +70,7 @@ lspconfig.sumneko_lua.setup {
       },
       diagnostics = {
         globals = {
-          -- (Neo)Vim
+          -- (Neo)vim
           "vim",
           -- Busted
           "after_each",
