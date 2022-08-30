@@ -196,6 +196,7 @@ command! -bar DataDir call s:TabEditDir(
 nnoremap <silent> <F2> <Cmd>setlocal spell!<CR>
 inoremap <silent> <F2> <Cmd>setlocal spell!<CR>
 nnoremap <silent> <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
+nnoremap <silent> gV `[v`]
 
 " Disable suspend mapping for Nvim on Windows as there's no way to resume!
 if has('nvim') && has('win32')
