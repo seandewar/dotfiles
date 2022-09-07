@@ -1,4 +1,4 @@
-if !has('patch-8.2.2434') && !has('nvim-0.7')
+if !has('patch-8.2.2434') && !has('nvim-0.8')
     echohl WarningMsg
     echo 'init.vim may not work with this version of (Neo)Vim!'
     echohl None
@@ -53,14 +53,7 @@ if !has('nvim')
     set lazyredraw
 endif
 
-" Use Nvim 0.7+'s filetype.lua over filetype.vim.
-" This is enabled by default in Nvim 0.8+.
-if has('nvim') && !has('nvim-0.8')
-    let g:did_load_filetypes = 0
-    let g:do_filetype_lua = 1
-endif
 filetype plugin indent on
-
 syntax enable
 nohlsearch  " Setting 'hlsearch' above shows old highlights; disable them again
 
@@ -183,7 +176,7 @@ set showtabline=1 tabline=%!ConfTabLine()
 
 " Commands {{{1
 function! s:TabEditDir(dir) abort
-    execute 'tabedit ' .. a:dir .. ' | tcd ' .. a:dir
+    execute 'Texplore ' .. a:dir .. ' | tcd ' .. a:dir
 endfunction
 
 command! -bar ConfigDir call s:TabEditDir($MYVIMRUNTIME)

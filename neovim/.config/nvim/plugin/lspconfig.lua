@@ -13,12 +13,6 @@ lspconfig.util.default_config = vim.tbl_extend(
 
     flags = { debounce_text_changes = 150 },
     on_attach = function(client)
-      -- LspAttach needs Nvim 0.8
-      if fn.has "nvim-0.8" == 0 then
-        require("conf.lsp").attach_buffer {
-          buf = vim.api.nvim_get_current_buf(),
-        }
-      end
       require("conf.lsp").lspconfig_attach_curbuf(client)
     end,
   }

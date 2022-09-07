@@ -5,7 +5,6 @@ local util = require "conf.util"
 local echo = util.echo
 
 local configs = require "nvim-treesitter.configs"
-local spellsitter = require "spellsitter"
 local gps
 
 configs.setup {
@@ -67,8 +66,6 @@ configs.setup {
     },
   },
 }
-
-spellsitter.setup { enable = true }
 
 --- Show tree-sitter context with cursor location info
 local function echo_cursor_context()

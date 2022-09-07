@@ -19,7 +19,6 @@ start("nvim-treesitter/nvim-treesitter", {
   end,
 })
 start "nvim-treesitter/nvim-treesitter-textobjects"
-start "lewis6991/spellsitter.nvim"
 opt "SmiteshP/nvim-gps"
 
 -- Fzf integration

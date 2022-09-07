@@ -1,5 +1,4 @@
 local api = vim.api
-local fn = vim.fn
 local lsp = vim.lsp
 local map = vim.keymap.set
 
@@ -42,23 +41,19 @@ lsp.handlers["textDocument/rangeFormatting"] = lsp.with(formatting_handler, {
   request = "textDocument/rangeFormatting",
 })
 
--- LspAttach, LspDetach needs Nvim 0.8
-if fn.has "nvim-0.8" == 1 then
-  local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
-
-  api.nvim_create_autocmd("LspAttach", {
-    group = attach_group,
-    callback = function(args)
-      require("conf.lsp").attach_buffer(args)
-    end,
-  })
-  api.nvim_create_autocmd("LspDetach", {
-    group = attach_group,
-    callback = function(args)
-      require("conf.lsp").detach_buffer(args)
-    end,
-  })
-end
+local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
+api.nvim_create_autocmd("LspAttach", {
+  group = attach_group,
+  callback = function(args)
+    require("conf.lsp").attach_buffer(args)
+  end,
+})
+api.nvim_create_autocmd("LspDetach", {
+  group = attach_group,
+  callback = function(args)
+    require("conf.lsp").detach_buffer(args)
+  end,
+})
 
 map("n", "<Space>t", lsp.buf.type_definition, { desc = "LSP Type Definition" })
 map("n", "<Space>i", lsp.buf.implementation, { desc = "LSP Implementations" })
