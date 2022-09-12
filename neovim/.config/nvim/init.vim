@@ -26,7 +26,7 @@ set nojoinspaces
 set list listchars=tab:_\ ,trail:.,nbsp:~,extends:>,precedes:<
 set mouse=a mousemodel=popup nomousehide
 set nrformats-=octal
-set path& | let &path .= '**'  " Use :let.=, as 'path' already ends in a comma
+set path& | let &path ..= '**'  " Use :let..=, as 'path' already ends in a comma
 set pumheight=12
 set ruler
 set scrolloff=1 sidescroll=5
@@ -39,6 +39,13 @@ set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 set textwidth=80
 set title
 set wildmenu wildmode=list:longest,full
+
+" Some color schemes assume a blinking cursor for their highlights, which Vim
+" does by default. (E.g: `quiet` uses inverse for MatchParen, which makes the
+" cursor hard to see unless it is blinking).
+if has('nvim')
+    set guicursor+=a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+end
 
 " A Vim bug causes glob expansion to fail with 'wildignorecase' if a parent
 " directory lacks read perms (neovim#6787). This messes up netrw on Termux.
@@ -56,10 +63,6 @@ endif
 filetype plugin indent on
 syntax enable
 nohlsearch  " Setting 'hlsearch' above shows old highlights; disable them again
-
-if exists('+inccommand')
-    set inccommand=nosplit
-endif
 
 set completeopt=menu,menuone
 if !has('nvim')
@@ -129,10 +132,10 @@ endfunction
 let g:conf_statusline_components = #{
             \ main: '%(%w %)%(%f %)%(%{ConfStlQfTitle()} %)%([%M%R] %)%(%y %)',
             \ spell: '%([%{&spell ? &spelllang : ''''}] %)',
-            \ position: '%=%-14(%l,%c%V%) %P',
+            \ ruler: '%=%-14(%l,%c%V%) %P',
             \ }
 let g:conf_statusline_order =
-            \ ['main', 'spell', 'git', 'diagnostic', 'lsp', 'position']
+            \ ['main', 'spell', 'git', 'diagnostic', 'lsp', 'ruler']
 
 function! ConfStatusLine() abort
     let parts = copy(g:conf_statusline_order)
@@ -162,13 +165,13 @@ function! ConfTabLine() abort
     let line = ''
     let i = 1
     while i <= tabpagenr('$')
-        let line .= tabpagenr() == i ? '%#TabLineSel# ' : '%#TabLine# '
-        let line .= '%' .. i .. 'T'
-        let line .= '%{ConfTabLabel(' .. i .. ')} '
+        let line ..= tabpagenr() == i ? '%#TabLineSel# ' : '%#TabLine# '
+        let line ..= '%' .. i .. 'T'
+        let line ..= '%{ConfTabLabel(' .. i .. ')} '
         let i += 1
     endwhile
 
-    let line .= '%#TabLineFill#'
+    let line ..= '%#TabLineFill#'
     return line
 endfunction
 
@@ -176,7 +179,7 @@ set showtabline=1 tabline=%!ConfTabLine()
 
 " Commands {{{1
 function! s:TabEditDir(dir) abort
-    execute 'Texplore ' .. a:dir .. ' | tcd ' .. a:dir
+    execute 'Texplore' a:dir '| tcd' a:dir
 endfunction
 
 command! -bar ConfigDir call s:TabEditDir($MYVIMRUNTIME)
@@ -200,11 +203,6 @@ endif
 if has('nvim')
     silent! unmap Y
 endif
-
-" NOTE: Disable your terminal's flow control to use these <C-S> maps!
-" Press <C-Q> to unfreeze the terminal if you have accidentally activated it
-nnoremap <silent> <C-S> <Cmd>update<CR>
-inoremap <silent> <C-S> <Cmd>update<CR>
 
 " Argument list {{{2
 nnoremap <Leader>a <Cmd>args<CR>
