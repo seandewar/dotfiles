@@ -3,7 +3,7 @@ function! s:HlAttrMap(name) abort
     let name = a:name
     while 1
         if !hlexists(name) | return {} | endif
-        let lines = split(trim(execute('highlight ' .. name)), "\n")
+        let lines = split(trim(execute('0verbose highlight ' .. name)), "\n")
         let parts = split(lines[-1])[(len(lines) == 1 ? 2 : 0):]
         if parts[0] ==# 'cleared' | return {} | endif
         if parts[0] !=# 'links' | break | endif
@@ -29,7 +29,7 @@ function! conf#colors#hl_override(base, override, attr_list) abort
     let override_map = s:HlAttrMap(a:override)
     let map = s:HlAttrMap(a:base)
     for a in a:attr_list
-        if exists('override_map[''' .. a .. ''']')
+        if has_key(override_map, a)
             let map[a] = override_map[a]
         endif
     endfor
