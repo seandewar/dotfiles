@@ -14,7 +14,7 @@ set autoread
 set backspace=indent,eol,start
 set belloff=all
 set breakindent breakindentopt=sbr showbreak=> nowrap
-set cinoptions+=:0,g0,N-s
+set cinoptions+=:0,g0,N-s,j1
 set display+=lastline
 set encoding=utf-8
 set foldmethod=marker
