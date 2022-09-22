@@ -25,7 +25,7 @@ lspconfig.rust_analyzer.setup {
   cmd = fn.executable "rust-analyzer" == 1 and { "rust-analyzer" } or {
     "rustup",
     "run",
-    "nightly",
+    "stable",
     "rust-analyzer",
   },
   settings = {
@@ -37,8 +37,7 @@ lspconfig.rust_analyzer.setup {
   },
   handlers = {
     ["window/showMessage"] = function(err, result, ctx, config)
-      -- Ignore the "overly long loop turn" message shown by nightly builds of
-      -- rust-analyzer.
+      -- Ignore the "overly long loop turn" message shown by nightly builds.
       if not result or not result.message:match "^overly long loop turn" then
         lsp.handlers["window/showMessage"](err, result, ctx, config)
       end
