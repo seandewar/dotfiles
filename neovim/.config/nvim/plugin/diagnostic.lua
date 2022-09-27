@@ -112,11 +112,9 @@ end, {
   desc = "Cursor Diagnostics",
 })
 
--- Although the command name implies LSP, :FzfLua uses vim.diagnostic instead if
--- it's available.
-map("n", "<Space><Space>", "<Cmd>FzfLua lsp_document_diagnostics<CR>", {
+map("n", "<Space><Space>", "<Cmd>FzfLua diagnostics_document<CR>", {
   desc = "Buffer Diagnostics",
 })
-map("n", "<Space><C-Space>", "<Cmd>FzfLua lsp_workspace_diagnostics<CR>", {
+map("n", "<Space><C-Space>", "<Cmd>FzfLua diagnostics_workspace<CR>", {
   desc = "All Diagnostics",
 })
