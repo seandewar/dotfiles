@@ -19,9 +19,8 @@ configs.setup {
 
   highlight = {
     enable = true,
-    disable = function(lang, _)
-      return lang == "vim" -- TODO: disabled due to inaccurate highlights
-    end,
+    -- Disabled due to inaccurate highlights. Reconsider these in the future.
+    disable = { "vim", "help" },
   },
   -- indent = { enable = true }, -- TODO: disabled due to bugs
 
