@@ -4,6 +4,7 @@ local map = vim.keymap.set
 
 local util = require "conf.util"
 local echo = util.echo
+local echomsg = util.echomsg
 
 -- NOTE: handlers is a metatable, so we can't tbl_extend directly.
 lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
@@ -16,7 +17,7 @@ lsp.handlers["textDocument/signatureHelp"] = lsp.with(
 
 local function formatting_handler(err, result, ctx, config)
   if err then
-    echo {
+    echomsg {
       { config.name .. " format failed:", "WarningMsg" },
       { " " .. err.message },
     }
@@ -34,11 +35,9 @@ end
 
 lsp.handlers["textDocument/formatting"] = lsp.with(formatting_handler, {
   name = "Buffer",
-  request = "textDocument/formatting",
 })
 lsp.handlers["textDocument/rangeFormatting"] = lsp.with(formatting_handler, {
   name = "Range",
-  request = "textDocument/rangeFormatting",
 })
 
 local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
@@ -55,20 +54,18 @@ api.nvim_create_autocmd("LspDetach", {
   end,
 })
 
-map("n", "<Space>t", lsp.buf.type_definition, { desc = "LSP Type Definition" })
-map("n", "<Space>i", lsp.buf.implementation, { desc = "LSP Implementations" })
-map("n", "<Space>R", lsp.buf.rename, { desc = "LSP Rename" })
-map("n", "<Space>a", lsp.buf.code_action, { desc = "LSP Code Action" })
-map("x", "<Space>f", "<Esc><Cmd>lua vim.lsp.buf.range_formatting()<CR>")
-map("x", "<Space>a", "<Esc><Cmd>lua vim.lsp.buf.range_code_action()<CR>")
-
 map({ "n", "i" }, "<C-K>", lsp.buf.signature_help, {
   desc = "LSP Signature Help",
 })
-map("n", "<Space>f", function()
+
+map("n", "<Space>t", lsp.buf.type_definition, { desc = "LSP Type Definition" })
+map("n", "<Space>i", lsp.buf.implementation, { desc = "LSP Implementations" })
+map("n", "<Space>R", lsp.buf.rename, { desc = "LSP Rename" })
+map({ "n", "x" }, "<Space>a", lsp.buf.code_action, { desc = "LSP Code Action" })
+map({ "n", "x" }, "<Space>f", function()
   lsp.buf.format { async = true }
 end, {
-  desc = "LSP Formatting",
+  desc = "LSP Format",
 })
 
 map("n", "<Space>r", "<Cmd>FzfLua lsp_references<CR>")

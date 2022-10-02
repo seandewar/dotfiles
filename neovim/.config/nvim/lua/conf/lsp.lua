@@ -115,7 +115,7 @@ function M.detach_buffer(args)
   last_progress_text = ""
 
   -- Continue only for the last client detaching from the buffer.
-  if not vim.tbl_isempty(lsp.buf_get_clients(args.buf)) then
+  if vim.tbl_count(lsp.buf_get_clients(args.buf)) > 1 then
     return
   end
 
