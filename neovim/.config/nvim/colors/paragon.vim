@@ -126,7 +126,7 @@ call s:h('NonText', #{fg: s:bg_subtle})
 highlight! link Conceal NonText
 call s:h('SpecialKey', #{fg: s:blue, gui: 'italic', cterm: 'italic'})
 
-call s:h('Visual', #{cterm: 'reverse', gui: 'reverse'})
+call s:h('Visual', #{fg: s:blue, bg: s:subtle_black})
 call s:h('VisualNOS', #{fg: s:white, bg: s:bg_subtle})
 
 call s:h('Search', #{fg: s:accent_contrast, bg: s:accent})

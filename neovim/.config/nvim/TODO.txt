@@ -1,4 +1,3 @@
 TODO:
-- paragon: CurSearch highlight conflicts with Visual's
 - treesitter: textobjects' <CR> mapping overrides netrw's sometimes
 - nvim-dap: Reconsider at some point? It looks cool, but I'm already used to gdb
