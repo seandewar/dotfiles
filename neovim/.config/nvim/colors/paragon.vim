@@ -5,6 +5,13 @@
 "
 " A minimal colour scheme for Vim and Neovim based on paramount.vim:
 " https://github.com/owickstrom/vim-colors-paramount
+"
+" Unlike the name "paramount", "paragon" has no real meaning.
+" The name was chosen because it also begins with a "p".
+" However, @3N4N came up with a great excuse for me:
+"
+" > Well paragon means people with high virtue.
+" > It's similar, like, in a metaphorical sense. :)
 
 highlight clear
 let g:colors_name = 'paragon'
