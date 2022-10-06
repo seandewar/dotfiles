@@ -10,16 +10,21 @@ local gps
 configs.setup {
   -- Install a minimal set of parsers.
   -- Others can be installed on-demand with :TSInstall
+  --
+  -- C, Lua, Vim and Vimdoc parsers are bundled with Nvim, but are more
+  -- up-to-date via nvim-treesitter. (Also some distros don't package them,
+  -- annoyingly)
   ensure_installed = {
     "c",
     "cpp",
+    "help",
     "lua",
     "vim",
   },
 
   highlight = {
     enable = true,
-    -- Disabled due to inaccurate highlights. Reconsider these in the future.
+    -- Disabled due to inaccurate highlights. Reconsider in the future.
     disable = { "vim", "help" },
   },
   -- indent = { enable = true }, -- TODO: disabled due to bugs
