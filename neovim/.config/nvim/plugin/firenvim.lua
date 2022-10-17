@@ -2,13 +2,12 @@ if not vim.g.started_by_firenvim then
   return
 end
 
+local cmd = vim.cmd
 local fn = vim.fn
 local map = vim.keymap.set
 
-vim.cmd [[
-  packadd firenvim
-  runtime ginit.vim
-]]
+cmd.packadd "firenvim"
+cmd.runtime "ginit.vim"
 
 vim.g.firenvim_config = {
   localSettings = {

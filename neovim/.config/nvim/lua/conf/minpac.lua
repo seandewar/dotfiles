@@ -14,11 +14,12 @@ end
 start("nvim-treesitter/nvim-treesitter", {
   ["do"] = function()
     if vim.g.loaded_nvim_treesitter ~= nil then
-      vim.cmd "TSUpdate"
+      vim.cmd.TSUpdate()
     end
   end,
 })
 start "nvim-treesitter/nvim-treesitter-textobjects"
+start "nvim-treesitter/playground"
 opt "SmiteshP/nvim-gps"
 
 -- Fzf integration

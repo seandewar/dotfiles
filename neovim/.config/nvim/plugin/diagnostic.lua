@@ -1,4 +1,5 @@
 local api = vim.api
+local cmd = vim.cmd
 local fn = vim.fn
 local map = vim.keymap.set
 local diagnostic = vim.diagnostic
@@ -44,25 +45,22 @@ fn["conf#statusline#define_component"]("diagnostic", statusline)
 -- Define highlight groups for the statusline from the current colour scheme
 local function define_stl_hls()
   local function define_hl(suffix, override)
-    vim.cmd(
-      ([[
-         highlight StatusLine%s %s
-         highlight StatusLineNC%s %s
-       ]]):format(
-        suffix,
-        fn["conf#colors#hl_override"](
-          "StatusLine",
-          override,
-          { "ctermfg", "guifg" }
-        ),
-        suffix,
-        fn["conf#colors#hl_override"](
-          "StatusLineNC",
-          override,
-          { "ctermfg", "guifg" }
-        )
-      )
-    )
+    cmd.highlight {
+      "StatusLine" .. suffix,
+      fn["conf#colors#hl_override"](
+        "StatusLine",
+        override,
+        { "ctermfg", "guifg" }
+      ),
+    }
+    cmd.highlight {
+      "StatusLineNC" .. suffix,
+      fn["conf#colors#hl_override"](
+        "StatusLineNC",
+        override,
+        { "ctermfg", "guifg" }
+      ),
+    }
   end
 
   define_hl("Error", "DiagnosticSignError")

@@ -33,7 +33,7 @@ local function update_progress()
   end
 
   last_progress_text = text
-  vim.cmd "redrawstatus"
+  vim.cmd.redrawstatus()
 end
 
 api.nvim_create_autocmd("User", {

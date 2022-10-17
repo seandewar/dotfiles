@@ -222,32 +222,8 @@ highlight! link diffRemoved DiffDelete
 
 " Other Plugins: {{{1
 " nvim-treesitter
-highlight! link TSConstBuiltin Constant
-highlight! link TSDanger Todo
-
-" fzf.vim
-" Be a good citizen and delete our color choices if another scheme is sourced.
-augroup paragon_unlet_fzf_colors
-    autocmd!
-    autocmd ColorSchemePre * ++once silent! unlet g:fzf_colors
-augroup END
-
-let g:fzf_colors = {'bg+': ['bg', 'CursorLine'],
-                  \ 'fg+': ['fg', 'CursorLine'],
-                  \ 'hl+': ['bg', 'Search'],
-                  \ 'bg': ['bg', 'Normal'],
-                  \ 'fg': ['fg', 'Normal'],
-                  \ 'hl': ['bg', 'Search'],
-                  \ 'pointer': ['bg', 'PmenuSel'],
-                  \ 'marker': ['bg', 'Visual'],
-                  \ 'header': ['fg', 'Comment'],
-                  \ 'prompt': ['fg', 'Title'],
-                  \ 'query': ['fg', 'Normal'],
-                  \ 'disabled': ['fg', 'Comment'],
-                  \ 'spinner': ['fg', 'Comment'],
-                  \ 'info': ['fg', 'Comment'],
-                  \ 'gutter': ['bg', 'StatusLine'],
-                  \ 'preview-bg': ['bg', 'Normal'],
-                  \ 'preview-fg': ['fg', 'Normal']}
+highlight! link @text.note Todo
+highlight! link @constant.builtin Constant
+highlight! link @variable.builtin Special
 
 " vim: et tw=80 sw=4

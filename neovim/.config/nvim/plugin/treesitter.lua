@@ -16,18 +16,19 @@ configs.setup {
   -- annoyingly)
   ensure_installed = {
     "c",
+    "comment",
     "cpp",
     "help",
     "lua",
+    "query", -- For the playground
     "vim",
   },
 
   highlight = {
     enable = true,
-    -- Disabled due to inaccurate highlights. Reconsider in the future.
+    -- Disabled due to inaccurate highlights. TODO: reconsider in the future
     disable = { "vim", "help" },
   },
-  -- indent = { enable = true }, -- TODO: disabled due to bugs
 
   incremental_selection = {
     enable = true,
@@ -69,12 +70,14 @@ configs.setup {
       },
     },
   },
+
+  playground = { enable = true },
 }
 
---- Show tree-sitter context with cursor location info
+--- Show tree-sitter context with cursor location info.
 local function echo_cursor_context()
   if package.loaded["nvim-gps"] == nil then
-    vim.cmd "packadd nvim-gps"
+    vim.cmd.packadd "nvim-gps"
     gps = require "nvim-gps"
     gps.setup { disable_icons = true }
   end
@@ -89,7 +92,11 @@ local function echo_cursor_context()
       )
     end
   end
+
   echo(chunks)
 end
 
 map("n", "g<C-G>", echo_cursor_context)
+
+-- Also works for Vim syntax groups, so useful as a binding.
+map("n", "<Leader>h", "<Cmd>TSHighlightCapturesUnderCursor<CR>")
