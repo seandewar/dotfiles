@@ -86,6 +86,7 @@ diagnostic.config {
   severity_sort = true,
   virtual_text = false,
   signs = false,
+  float = { border = "single" },
 }
 
 api.nvim_create_autocmd({ "DiagnosticChanged", "CursorMoved" }, {
@@ -105,7 +106,7 @@ end, {
 })
 
 map("n", "<Space>k", function()
-  diagnostic.open_float(nil, { scope = "cursor", border = "single" })
+  diagnostic.open_float(nil, { scope = "cursor" })
 end, {
   desc = "Cursor Diagnostics",
 })

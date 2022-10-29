@@ -186,7 +186,23 @@ highlight! link PmenuSel Search
 highlight! link PmenuThumb Search
 highlight! link PmenuSbar Pmenu
 
+" Standard Plugins: {{{1
+" matchparen.vim
+call s:h('MatchParen', #{fg: s:norm, bg: s:bg_subtle})
+
+" help.vim
+call s:h('helpHyperTextJump', #{fg: s:blue})
+
+" diff.vim
+highlight! link diffAdded DiffAdd
+highlight! link diffChanged DiffChange
+highlight! link diffRemoved DiffDelete
+
 " Neovim: {{{1
+if !has('nvim')
+    finish
+endif
+
 call s:h('FloatTitle', #{fg: s:norm, bg: s:bg_most_subtle})
 call s:h('FloatBorder', #{fg: s:bg_subtle, bg: s:bg_most_subtle})
 
@@ -208,19 +224,6 @@ call s:h('DiagnosticUnderlineInfo', #{gui: 'undercurl', cterm: 'underline',
 " vim.lsp
 call s:h('LspSignatureActiveParameter', #{fg: s:accent})
 
-" Standard Plugins: {{{1
-" matchparen.vim
-call s:h('MatchParen', #{fg: s:norm, bg: s:bg_subtle})
-
-" help.vim
-call s:h('helpHyperTextJump', #{fg: s:blue})
-
-" diff.vim
-highlight! link diffAdded DiffAdd
-highlight! link diffChanged DiffChange
-highlight! link diffRemoved DiffDelete
-
-" Other Plugins: {{{1
 " nvim-treesitter
 highlight! link @text.note Todo
 highlight! link @constant.builtin Constant
