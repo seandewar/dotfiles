@@ -4,18 +4,17 @@ local fn = vim.fn
 local map = vim.keymap.set
 local diagnostic = vim.diagnostic
 
-local virt_text_ns = api.nvim_create_namespace "conf_diagnostic_virt_text"
+local vtext_ns = api.nvim_create_namespace "conf_diagnostic_virt_text"
 
 -- Display virtual text for the current line only
-local function update_virtual_text()
-  diagnostic.hide(virt_text_ns) -- Clear stale virtual text
-  local buf = api.nvim_get_current_buf()
+local function update_virtual_text(info)
+  diagnostic.hide(vtext_ns) -- Clear stale virtual text
+  local buf = info.buf
   local row = api.nvim_win_get_cursor(0)[1]
-  local line_diags = diagnostic.get(buf, { lnum = row - 1 })
   diagnostic.show(
-    virt_text_ns,
+    vtext_ns,
     buf,
-    line_diags,
+    diagnostic.get(buf, { lnum = row - 1 }),
     { virtual_text = true, underline = false, signs = false }
   )
 end
@@ -75,7 +74,6 @@ api.nvim_create_autocmd("DiagnosticChanged", {
   group = stl_group,
   command = "redrawstatus!",
 })
-
 api.nvim_create_autocmd("ColorScheme", {
   group = stl_group,
   callback = define_stl_hls,
@@ -89,8 +87,17 @@ diagnostic.config {
   float = { border = "single" },
 }
 
-api.nvim_create_autocmd({ "DiagnosticChanged", "CursorMoved" }, {
-  group = api.nvim_create_augroup("conf_diagnostic_virtual_text", {}),
+local vtext_group = api.nvim_create_augroup("conf_diagnostic_virtual_text", {})
+api.nvim_create_autocmd("DiagnosticChanged", {
+  group = vtext_group,
+  callback = function(info)
+    if info.buf == api.nvim_get_current_buf() then
+      update_virtual_text(info)
+    end
+  end,
+})
+api.nvim_create_autocmd("CursorMoved", {
+  group = vtext_group,
   callback = update_virtual_text,
 })
 
