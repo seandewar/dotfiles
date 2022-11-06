@@ -1,4 +1,5 @@
 local api = vim.api
+local fn = vim.fn
 local map = vim.keymap.set
 
 local util = require "conf.util"
@@ -26,12 +27,15 @@ configs.setup {
 
   highlight = {
     enable = true,
-    -- Disabled due to inaccurate highlights. TODO: reconsider in the future
+    -- Disabled for now due to inaccurate highlights.
     disable = { "vim", "help" },
   },
 
   incremental_selection = {
     enable = true,
+    disable = function()
+      return fn.getcmdwintype() ~= ""
+    end,
     keymaps = {
       init_selection = "<CR>",
       scope_incremental = "<CR>",
@@ -43,6 +47,7 @@ configs.setup {
   textobjects = {
     select = {
       enable = true,
+      lookahead = true,
       keymaps = {
         ["af"] = "@function.outer",
         ["if"] = "@function.inner",
