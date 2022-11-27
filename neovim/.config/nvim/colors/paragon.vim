@@ -112,7 +112,7 @@ highlight! link Macro PreProc
 highlight! link PreCondit PreProc
 
 highlight! link Type Normal
-highlight! link StorageClass Type
+highlight! link StorageClass Keyword
 highlight! link Structure Type
 highlight! link Typedef Type
 
