@@ -1,2 +1,5 @@
 TODO:
-- nvim-dap: Reconsider at some point? It looks cool, but I'm already used to gdb
+
+- Still possible for the vim.diagnostic cache to break in cases where BufWipeout
+  is not triggered with the current line virtual text stuff I have.
+  Need to find a way to workaround this (maybe this should be fixed in core).
