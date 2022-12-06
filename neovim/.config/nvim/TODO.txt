@@ -1,5 +1,3 @@
 TODO:
-
-- Still possible for the vim.diagnostic cache to break in cases where BufWipeout
-  is not triggered with the current line virtual text stuff I have.
-  Need to find a way to workaround this (maybe this should be fixed in core).
+- diagnostic: don't break the diagnostic_cache with the current line
+  virtual_text stuff. See the FIXME comment.

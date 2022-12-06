@@ -187,16 +187,16 @@ highlight! link PmenuThumb Search
 highlight! link PmenuSbar Pmenu
 
 " Standard Plugins: {{{1
-" matchparen.vim
-call s:h('MatchParen', #{fg: s:norm, bg: s:bg_subtle})
-
-" help.vim
-call s:h('helpHyperTextJump', #{fg: s:blue})
-
 " diff.vim
 highlight! link diffAdded DiffAdd
 highlight! link diffChanged DiffChange
 highlight! link diffRemoved DiffDelete
+
+" help.vim
+call s:h('helpHyperTextJump', #{fg: s:blue})
+
+" matchparen.vim
+call s:h('MatchParen', #{fg: s:norm, bg: s:bg_subtle})
 
 " Neovim: {{{1
 if !has('nvim')
