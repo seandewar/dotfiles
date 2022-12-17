@@ -102,6 +102,3 @@ local function echo_cursor_context()
 end
 
 map("n", "g<C-G>", echo_cursor_context)
-
--- Also works for Vim syntax groups, so useful as a binding.
-map("n", "<Leader>h", "<Cmd>TSHighlightCapturesUnderCursor<CR>")

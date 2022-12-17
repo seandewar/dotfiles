@@ -13,7 +13,7 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
 set autoread
 set backspace=indent,eol,start
 set belloff=all
-set breakindent breakindentopt=sbr showbreak=> nowrap
+set showbreak=> nowrap
 set cinoptions+=:0,g0,N-s,j1
 set display+=lastline
 set encoding=utf-8
@@ -193,6 +193,8 @@ nnoremap <silent> <F2> <Cmd>setlocal spell!<CR>
 inoremap <silent> <F2> <Cmd>setlocal spell!<CR>
 nnoremap <silent> <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 nnoremap <silent> gV `[v`]
+" K is overridden by LSP for Hover, but sometimes 'keywordprg' is useful.
+nnoremap <silent> gK K
 
 " Disable suspend mapping for Nvim on Windows as there's no way to resume!
 if has('nvim') && has('win32')
