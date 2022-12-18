@@ -87,25 +87,19 @@ diagnostic.config {
   float = { border = "single" },
 }
 
--- FIXME: my current line virtual_text stuff may break the vim.diagnostic
--- diagnostic_cache in cases where BufWipeout is not triggered.
--- Need to find a way to workaround this (maybe this should be fixed in core).
--- For now, just enable the default virtual_text handler.
-diagnostic.config { virtual_text = true }
-
--- local vtext_group = api.nvim_create_augroup("conf_diagnostic_virtual_text", {})
--- api.nvim_create_autocmd("DiagnosticChanged", {
---   group = vtext_group,
---   callback = function(info)
---     if info.buf == api.nvim_get_current_buf() then
---       update_virtual_text(info)
---     end
---   end,
--- })
--- api.nvim_create_autocmd("CursorMoved", {
---   group = vtext_group,
---   callback = update_virtual_text,
--- })
+local vtext_group = api.nvim_create_augroup("conf_diagnostic_virtual_text", {})
+api.nvim_create_autocmd("DiagnosticChanged", {
+  group = vtext_group,
+  callback = function(info)
+    if info.buf == api.nvim_get_current_buf() then
+      update_virtual_text(info)
+    end
+  end,
+})
+api.nvim_create_autocmd("CursorMoved", {
+  group = vtext_group,
+  callback = update_virtual_text,
+})
 
 map("n", "]<Space>", function()
   diagnostic.goto_next { float = false }
