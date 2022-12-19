@@ -160,7 +160,7 @@ call s:h('Title', #{fg: s:blue})
 call s:h('Question', #{fg: s:blue})
 call s:h('Directory', #{fg: s:accent})
 
-call s:h('Cursor', #{bg: s:accent, fg: s:accent_contrast})
+call s:h('Cursor', #{})
 call s:h('CursorLine', #{bg: s:bg_most_subtle})
 highlight! link CursorColumn CursorLine
 call s:h('CursorLineNr', #{fg: s:accent, bg: s:bg_very_subtle})
