@@ -228,5 +228,6 @@ call s:h('LspSignatureActiveParameter', #{fg: s:accent})
 highlight! link @text.note Todo
 highlight! link @constant.builtin Constant
 highlight! link @variable.builtin Special
+highlight! link @type.qualifier Keyword
 
 " vim: et tw=80 sw=4
