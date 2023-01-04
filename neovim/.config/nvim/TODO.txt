@@ -1,4 +1,5 @@
-TODO:
+ vi:set tw=80 fo+=t:
+
 - Use Nvim 0.9's built-in EditorConfig support over vim-sleuth if Nvim detects
   an EditorConfig file for a buffer?
 - Use Nvim's exrc support over localvimrc? (Make sure exrc isn't enabled for
