@@ -1,3 +1,7 @@
 TODO:
-- diagnostic: don't break the diagnostic_cache with the current line
-  virtual_text stuff. See the FIXME comment.
+- Use Nvim 0.9's built-in EditorConfig support over vim-sleuth if Nvim detects
+  an EditorConfig file for a buffer?
+- Use Nvim's exrc support over localvimrc? (Make sure exrc isn't enabled for
+  Vim! It does not have vim.secure, and the sandbox is useless)
+- Use nvim-dap? GCC also has built-in DAP support now... (but termdebug is
+  pretty good)

@@ -60,3 +60,5 @@ keymap.set("n", "<Leader>fg", "<Cmd>FzfLua live_grep<CR>")
 keymap.set("n", "<Leader>ft", "<Cmd>FzfLua tags<CR>")
 
 keymap.set("n", "<Leader>gf", "<Cmd>FzfLua git_files<CR>")
+
+keymap.set("n", "z=", "<Cmd>FzfLua spell_suggest<CR>")
