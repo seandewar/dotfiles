@@ -13,7 +13,7 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
 set autoread
 set backspace=indent,eol,start
 set belloff=all
-set showbreak=> nowrap
+set showbreak=>
 set cinoptions+=:0,g0,N-s,j1
 set display+=lastline
 set encoding=utf-8
@@ -93,6 +93,26 @@ if !has('nvim')
     set viminfofile=$MYVIMRUNTIME/viminfo
 endif
 
+" Change some settings depending on available screen size.
+function! s:ReactiveResize(cmdheight_only) abort
+    if has('nvim')
+        let &cmdheight = &lines < 24 ? 0 : 1
+    endif
+    if a:cmdheight_only | return | endif
+    let &laststatus = &lines < 24 ? 1 : 2
+    let &wrap = &columns < 80
+endfunction
+
+call s:ReactiveResize(0)
+augroup conf_reactive_resize
+    autocmd!
+    autocmd VimResized * call s:ReactiveResize(0)
+    if has('nvim')
+        autocmd RecordingEnter * let &cmdheight = max([1, &cmdheight])
+        autocmd RecordingLeave * call s:ReactiveResize(1)
+    endif
+augroup END
+
 function! s:UpdateColorColumn() abort
     let &colorcolumn = &modifiable ? '+1' : ''
 endfunction
@@ -145,7 +165,7 @@ function! ConfStatusLine() abort
     return join(parts, '')
 endfunction
 
-set laststatus=2 statusline=%!ConfStatusLine()
+set statusline=%!ConfStatusLine()
 
 " Tab Line Settings {{{1
 function! ConfTabLabel(tabnum) abort
@@ -207,7 +227,6 @@ if has('nvim')
 endif
 
 " Argument list {{{2
-nnoremap <Leader>a <Cmd>args<CR>
 nnoremap <silent> ]a <Cmd>next<CR>
 nnoremap <silent> [a <Cmd>previous<CR>
 
@@ -218,13 +237,7 @@ nnoremap <Leader>fg :grep<Space>
 nnoremap <Leader>ft :tjump<Space>
 nnoremap <Leader>fo <Cmd>browse oldfiles<CR>
 
-nnoremap <silent> ]b <Cmd>bnext<CR>2<C-G>
-nnoremap <silent> [b <Cmd>bprevious<CR>2<C-G>
-
 " QuickFix and Location lists {{{2
-nnoremap <silent> <Leader>c <Cmd>cwindow<CR>
-nnoremap <silent> <Leader>l <Cmd>lwindow<CR>
-
 nnoremap <silent> ]c <Cmd>cnext<CR>zv
 nnoremap <silent> [c <Cmd>cprevious<CR>zv
 nnoremap <silent> ]C <Cmd>cnewer<CR>

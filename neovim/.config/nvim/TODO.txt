@@ -17,3 +17,6 @@
 - Maybe change some 'list' stuff (possibly highlights) to look less like text.
   (E.g: I sometimes think trailing spaces are actual "."s, and I don't like
   using Unicode symbols...)
+- Yeet netrw (and vim-vinegar)? Netrw's bugs are annoying.
+- Make :ConfDir, :DataDir work with a split modifier (maybe use :lcd over :tcd
+  in that case).
