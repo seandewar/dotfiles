@@ -6,7 +6,6 @@ augroup conf_fugitive_redraw_statusline
                 \ call timer_start(0, {-> execute('redrawstatus!', '')})
 augroup END
 
-nnoremap <silent> <Leader>gg <Cmd>Git<CR>
 nnoremap <silent> <Leader>gl <Cmd>Git log %<CR>
 nnoremap <silent> <Leader>gL <Cmd>Git log<CR>
 nnoremap <silent> <Leader>gs <Cmd>Git show<CR>
@@ -22,5 +21,3 @@ nnoremap <Leader>gM :GMove <C-R>=expand('%:p')<CR>
 nnoremap <Leader>gr :G rebase -i<Space>
 nnoremap <silent> <Leader>gc <Cmd>Git commit<CR>
 nnoremap <silent> <Leader>gC <Cmd>Git commit --amend<CR>
-nnoremap <Leader>gp <Cmd>Git pull<CR>
-nnoremap <Leader>gP <Cmd>Git push<CR>

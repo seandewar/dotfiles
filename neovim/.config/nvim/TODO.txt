@@ -7,3 +7,12 @@ TODO:
   pretty good)
 - Make 'tabline' work better when there's not enough &columns.
 - Make 'tabline' show whether a tabpage is viewing &modified buffers.
+- Use neoformat with gq? Maybe also instead remap gq to use LSP's async
+  formatting, as the LSP 'formatexpr' blocks and can time out (plus, Lua cannot
+  be interrupted yet; if interrupt support is added, maybe consider using LSP's
+  'formatexpr' with no timeout?).
+- Maybe change 'spell' and neoformat mappings to use <leader>, not sure I like
+  using F-keys...
+- Maybe change some 'list' stuff (possibly highlights) to look less like text.
+  (E.g: I sometimes think trailing spaces are actual "."s, and I don't like
+  using Unicode symbols...)
