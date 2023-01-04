@@ -5,3 +5,5 @@ TODO:
   Vim! It does not have vim.secure, and the sandbox is useless)
 - Use nvim-dap? GCC also has built-in DAP support now... (but termdebug is
   pretty good)
+- Make 'tabline' work better when there's not enough &columns.
+- Make 'tabline' show whether a tabpage is viewing &modified buffers.
