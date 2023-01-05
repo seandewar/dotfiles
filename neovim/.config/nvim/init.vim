@@ -97,6 +97,10 @@ endif
 function! s:ReactiveResize(cmdheight_only) abort
     if has('nvim')
         let &cmdheight = &lines < 24 ? 0 : 1
+        " With 'cmdheight' == 0, 'showcmd' might still cause messages to be
+        " truncated even though the command is not visible.
+        " This should probably be fixed upstream.
+        let &showcmd = &cmdheight > 0
     endif
     if a:cmdheight_only | return | endif
     let &laststatus = &lines < 24 ? 1 : 2

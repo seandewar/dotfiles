@@ -16,6 +16,7 @@
 [alias]
 	s = status
 	sh = show
+	d = diff
 	c = checkout
 	b = branch
 	r = rebase
