@@ -174,6 +174,13 @@ set statusline=%!ConfStatusLine()
 " Tab Line Settings {{{1
 function! ConfTabLabel(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
+    let modified = 0
+    for buf in buffers
+        if getbufvar(buf, '&modified')
+            let modified = 1
+            break
+        endif
+    endfor
     let winnum = tabpagewinnr(a:tabnum)
     let bufname = expand('#' .. buffers[winnum - 1] .. ':t')
 
@@ -183,6 +190,7 @@ function! ConfTabLabel(tabnum) abort
     endif
 
     return a:tabnum .. (empty(bufname) ? '' : ' ') .. bufname
+                \   .. (modified ? ' +' : '')
 endfunction
 
 function! ConfTabLine() abort

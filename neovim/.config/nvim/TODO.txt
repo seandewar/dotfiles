@@ -7,7 +7,6 @@
 - Use nvim-dap? GCC also has built-in DAP support now... (but termdebug is
   pretty good)
 - Make 'tabline' work better when there's not enough &columns.
-- Make 'tabline' show whether a tabpage is viewing &modified buffers.
 - Use neoformat with gq? Maybe also instead remap gq to use LSP's async
   formatting, as the LSP 'formatexpr' blocks and can time out (plus, Lua cannot
   be interrupted yet; if interrupt support is added, maybe consider using LSP's
