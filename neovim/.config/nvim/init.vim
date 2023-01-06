@@ -40,13 +40,6 @@ set textwidth=80
 set title
 set wildmenu wildmode=list:longest,full
 
-" Some color schemes assume a blinking cursor for their highlights, which Vim
-" does by default. (E.g: `quiet` uses inverse for MatchParen, which makes the
-" cursor hard to see unless it is blinking).
-if has('nvim')
-    set guicursor+=a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-end
-
 " A Vim bug causes glob expansion to fail with 'wildignorecase' if a parent
 " directory lacks read perms (neovim#6787). This messes up netrw on Termux.
 if !has('termux')
@@ -215,7 +208,6 @@ function! s:TabEditDir(dir) abort
 endfunction
 
 command! -bar ConfigDir call s:TabEditDir($MYVIMRUNTIME)
-            \ | call timer_start(0, {-> search('^init.vim\|^vimrc\>', 'c')})
 command! -bar DataDir call s:TabEditDir(
             \ exists('*stdpath') ? stdpath('data') : $MYVIMRUNTIME)
 
