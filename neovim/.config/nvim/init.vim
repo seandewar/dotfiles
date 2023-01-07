@@ -87,27 +87,15 @@ if !has('nvim')
 endif
 
 " Change some settings depending on available screen size.
-function! s:ReactiveResize(cmdheight_only) abort
-    if has('nvim')
-        let &cmdheight = &lines < 24 ? 0 : 1
-        " With 'cmdheight' == 0, 'showcmd' might still cause messages to be
-        " truncated even though the command is not visible.
-        " This should probably be fixed upstream.
-        let &showcmd = &cmdheight > 0
-    endif
-    if a:cmdheight_only | return | endif
+function! s:ReactiveResize() abort
     let &laststatus = &lines < 24 ? 1 : 2
     let &wrap = &columns < 80
 endfunction
 
-call s:ReactiveResize(0)
+call s:ReactiveResize()
 augroup conf_reactive_resize
     autocmd!
-    autocmd VimResized * call s:ReactiveResize(0)
-    if has('nvim')
-        autocmd RecordingEnter * let &cmdheight = max([1, &cmdheight])
-        autocmd RecordingLeave * call s:ReactiveResize(1)
-    endif
+    autocmd VimResized * call s:ReactiveResize()
 augroup END
 
 function! s:UpdateColorColumn() abort

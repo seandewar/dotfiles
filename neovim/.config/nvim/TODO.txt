@@ -19,3 +19,7 @@
 - Yeet netrw (and vim-vinegar)? Netrw's bugs are annoying.
 - Make :ConfDir, :DataDir work with a split modifier (maybe use :lcd over :tcd
   in that case).
+- Set &cmdheight=0 when low amount of &lines when the feature triggers less
+  pointless press-enter prompts. We may also want to temporarily set
+  &cmdheight=1 when recording a macro, and unset &showcmd if it still causes
+  :file to be truncated.

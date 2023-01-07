@@ -1,12 +1,14 @@
+local fn = vim.fn
+
 -- Helper functions {{{1
 local function start(url, opts)
   opts = vim.tbl_extend("force", { type = "start" }, opts or {})
-  vim.fn["minpac#add"](url, opts)
+  fn["minpac#add"](url, opts)
 end
 
 local function opt(url, opts)
   opts = vim.tbl_extend("force", { type = "opt" }, opts or {})
-  vim.fn["minpac#add"](url, opts)
+  fn["minpac#add"](url, opts)
 end
 -- }}}
 
@@ -19,11 +21,12 @@ start("nvim-treesitter/nvim-treesitter", {
   end,
 })
 start "nvim-treesitter/nvim-treesitter-textobjects"
-start "nvim-treesitter/playground"
 opt "SmiteshP/nvim-gps"
 
--- Fzf integration
-start "ibhagwan/fzf-lua"
+-- Fzf integration (fzf-lua doesn't work on Windows)
+if fn.has "win32" == 0 then
+  start "ibhagwan/fzf-lua"
+end
 
 -- Language server protocol
 start "neovim/nvim-lspconfig"

@@ -1,3 +1,7 @@
+if vim.fn.has "win32" == 1 then -- Doesn't support Windows
+  return
+end
+
 local keymap = vim.keymap
 
 local fzf = require "fzf-lua"

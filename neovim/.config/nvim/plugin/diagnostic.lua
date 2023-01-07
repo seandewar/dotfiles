@@ -118,9 +118,21 @@ end, {
   desc = "Cursor Diagnostics",
 })
 
-map("n", "<Space><Space>", "<Cmd>FzfLua diagnostics_document<CR>", {
+map("n", "<Space><Space>", function()
+  if vim.g.loaded_fzf_lua ~= nil then
+    require("fzf-lua").diagnostics_document()
+  else
+    diagnostic.setloclist { title = "Buffer Diagnostics" }
+  end
+end, {
   desc = "Buffer Diagnostics",
 })
-map("n", "<Space><C-Space>", "<Cmd>FzfLua diagnostics_workspace<CR>", {
+map("n", "<Space><C-Space>", function()
+  if vim.g.loaded_fzf_lua ~= nil then
+    require("fzf-lua").diagnostics_workspace()
+  else
+    diagnostic.setqflist { title = "All Diagnostics" }
+  end
+end, {
   desc = "All Diagnostics",
 })

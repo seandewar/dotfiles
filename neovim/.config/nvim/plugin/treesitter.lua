@@ -21,7 +21,6 @@ configs.setup {
     "cpp",
     "help",
     "lua",
-    "query", -- For the playground
     "vim",
   },
 
@@ -75,8 +74,6 @@ configs.setup {
       },
     },
   },
-
-  playground = { enable = true },
 }
 
 --- Show tree-sitter context with cursor location info.

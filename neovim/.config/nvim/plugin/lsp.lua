@@ -68,6 +68,24 @@ end, {
   desc = "LSP Format",
 })
 
-map("n", "<Space>r", "<Cmd>FzfLua lsp_references<CR>")
-map("n", "<Space>d", "<Cmd>FzfLua lsp_document_symbols<CR>")
-map("n", "<Space>w", "<Cmd>FzfLua lsp_live_workspace_symbols<CR>")
+map("n", "<Space>r", function()
+  if vim.g.loaded_fzf_lua ~= nil then
+    require("fzf-lua").lsp_references()
+  else
+    lsp.buf.references()
+  end
+end, { desc = "LSP References" })
+map("n", "<Space>d", function()
+  if vim.g.loaded_fzf_lua ~= nil then
+    require("fzf-lua").lsp_document_symbols()
+  else
+    lsp.buf.document_symbol()
+  end
+end, { desc = "LSP Document Symbols" })
+map("n", "<Space>w", function()
+  if vim.g.loaded_fzf_lua ~= nil then
+    require("fzf-lua").lsp_workspace_symbols()
+  else
+    lsp.buf.workspace_symbol()
+  end
+end, { desc = "LSP Workspace Symbols" })
