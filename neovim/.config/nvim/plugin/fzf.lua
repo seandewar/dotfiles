@@ -1,4 +1,3 @@
-local api = vim.api
 local keymap = vim.keymap
 
 local fzf = require "fzf-lua"
@@ -9,47 +8,32 @@ fzf.setup {
   fzf_args = ("--history=" .. vim.fn.stdpath "data" .. "/fzf_history")
     .. " --bind=ctrl-n:down,ctrl-p:up"
     .. " --bind=down:next-history,up:previous-history",
-
   fzf_opts = { ["--cycle"] = "" },
   nbsp = "\xc2\xa0",
 
-  lsp = {
-    icons = {
-      ["Error"] = { icon = "E", color = "red" },
-      ["Warning"] = { icon = "W", color = "yellow" },
-      ["Information"] = { icon = "I", color = "blue" },
-      ["Hint"] = { icon = "H", color = "magenta" },
+  winopts = {
+    preview = {
+      default = "cat",
     },
   },
+
+  fzf_colors = {
+    ["fg"] = { "fg", "CursorLine" },
+    ["bg"] = { "bg", "Normal" },
+    ["hl"] = { "fg", "Comment" },
+    ["fg+"] = { "fg", "Normal" },
+    ["bg+"] = { "bg", "CursorLine" },
+    ["hl+"] = { "fg", "Statement" },
+    ["info"] = { "fg", "PreProc" },
+    ["prompt"] = { "fg", "Conditional" },
+    ["pointer"] = { "fg", "Exception" },
+    ["marker"] = { "fg", "Keyword" },
+    ["spinner"] = { "fg", "Label" },
+    ["header"] = { "fg", "Comment" },
+    ["gutter"] = { "bg", "Normal" },
+  },
 }
-
 fzf.register_ui_select()
-
-local function setup_colors()
-  fzf.setup {
-    fzf_colors = vim.tbl_extend("keep", vim.g.fzf_colors or {}, {
-      ["fg"] = { "fg", "CursorLine" },
-      ["bg"] = { "bg", "Normal" },
-      ["hl"] = { "fg", "Comment" },
-      ["fg+"] = { "fg", "Normal" },
-      ["bg+"] = { "bg", "CursorLine" },
-      ["hl+"] = { "fg", "Statement" },
-      ["info"] = { "fg", "PreProc" },
-      ["prompt"] = { "fg", "Conditional" },
-      ["pointer"] = { "fg", "Exception" },
-      ["marker"] = { "fg", "Keyword" },
-      ["spinner"] = { "fg", "Label" },
-      ["header"] = { "fg", "Comment" },
-      ["gutter"] = { "bg", "Normal" },
-    }),
-  }
-end
-
-api.nvim_create_autocmd("ColorScheme", {
-  group = api.nvim_create_augroup("conf_fzf_colors", {}),
-  callback = setup_colors,
-})
-setup_colors()
 
 keymap.set("n", "<Leader>f<Space>", "<Cmd>FzfLua<CR>")
 keymap.set("n", "<Leader>ff", "<Cmd>FzfLua files<CR>")
