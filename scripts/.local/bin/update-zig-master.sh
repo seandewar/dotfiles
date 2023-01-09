@@ -10,7 +10,7 @@ if type ~/.local/lib/zig/zig >/dev/null 2>&1; then
     echo "installed version is $installed_zig_version"
     if [ "$installed_zig_version" == "$zig_version" ]; then
         echo 'latest version is already installed; nothing to do'
-        rm -rf $tmpdir
+        rm -rf "$tmpdir"
         exit 0
     fi
 else
@@ -20,11 +20,11 @@ fi
 tmpdir=$(mktemp -d --tmpdir zig.XXXXXXXXXX)
 echo "using $tmpdir as the temporary directory"
 echo "downloading zig..."
-jq -r '."x86_64-linux".tarball' "$tmpdir/zig-master.json" \
+echo "$metadata" | jq -r '."x86_64-linux".tarball' \
     | wget -i - -O "$tmpdir/zig-master"
 
 echo 'verifying checksum...'
-zig_checksum=$(jq -r '."x86_64-linux".shasum' "$tmpdir/zig-master.json")
+zig_checksum=$(echo "$metadata" | jq -r '."x86_64-linux".shasum')
 echo "$zig_checksum $tmpdir/zig-master" | sha256sum -c
 
 echo 'checking archive...'

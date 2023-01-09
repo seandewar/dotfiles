@@ -23,3 +23,8 @@
   pointless press-enter prompts. We may also want to temporarily set
   &cmdheight=1 when recording a macro, and unset &showcmd if it still causes
   :file to be truncated.
+- Open quickfix automatically on :grep, .etc that automatically jump to the
+  list. Make sure it doesn't trigger for stuff like vim-dispatch. Ensure it
+  plays nicely with all relevant commands.
+- Automatically resize the quickfix list to fit the number of items. Ideally,
+  should also work properly when &wrap is set.
