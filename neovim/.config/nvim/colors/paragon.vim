@@ -108,7 +108,7 @@ highlight! link Exception Statement
 call s:h('PreProc', #{fg: s:norm_subtle})
 highlight! link Include PreProc
 highlight! link Define PreProc
-highlight! link Macro PreProc
+highlight! link Macro Identifier
 highlight! link PreCondit PreProc
 
 highlight! link Type Normal
@@ -205,6 +205,8 @@ highlight! link vimOperParen Special
 " zig.vim
 highlight! link zigVarDecl Keyword
 highlight! link zigStructure Keyword
+highlight! link zigMacro Keyword
+highlight! link zigMultilineStringDelimiter String
 " }}}
 
 if !has('nvim')
@@ -236,6 +238,7 @@ call s:h('LspSignatureActiveParameter', #{fg: s:accent})
 highlight! link @text.note Todo
 highlight! link @constant.builtin Constant
 highlight! link @variable.builtin Special
+highlight! link @type.builtin Keyword
 highlight! link @type.qualifier Keyword
 
 " vim: et tw=80 sw=4
