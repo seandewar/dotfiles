@@ -71,6 +71,7 @@ lspconfig.sumneko_lua.setup {
           "context",
           "describe",
           "it",
+          "pending",
           "setup",
           "teardown",
         },

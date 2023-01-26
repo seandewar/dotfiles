@@ -108,7 +108,6 @@ highlight! link Exception Statement
 call s:h('PreProc', #{fg: s:norm_subtle})
 highlight! link Include PreProc
 highlight! link Define PreProc
-highlight! link Macro Identifier
 highlight! link PreCondit PreProc
 
 highlight! link Type Normal
@@ -160,7 +159,6 @@ call s:h('Title', #{fg: s:blue})
 call s:h('Question', #{fg: s:blue})
 call s:h('Directory', #{fg: s:accent})
 
-call s:h('Cursor', #{})
 call s:h('CursorLine', #{bg: s:bg_most_subtle})
 highlight! link CursorColumn CursorLine
 call s:h('CursorLineNr', #{fg: s:accent, bg: s:bg_very_subtle})
@@ -187,6 +185,10 @@ highlight! link PmenuThumb Search
 highlight! link PmenuSbar Pmenu
 
 " Standard Plugins: {{{1
+" c.vim
+highlight! link cStructure Keyword
+highlight! link cTypedef Keyword
+
 " diff.vim
 highlight! link diffAdded DiffAdd
 highlight! link diffChanged DiffChange
@@ -195,18 +197,21 @@ highlight! link diffRemoved DiffDelete
 " help.vim
 call s:h('helpHyperTextJump', #{fg: s:blue})
 
+" lua.vim
+highlight! link luaFunction Keyword
+
 " matchparen.vim
 call s:h('MatchParen', #{fg: s:norm, bg: s:bg_subtle})
 
 " vim.vim
 highlight! link vimOperParen Special
 
-" 3rd-Party Plugins {{{1
 " zig.vim
-highlight! link zigVarDecl Keyword
-highlight! link zigStructure Keyword
+highlight! link zigDummyVariable Special
 highlight! link zigMacro Keyword
 highlight! link zigMultilineStringDelimiter String
+highlight! link zigStructure Keyword
+highlight! link zigVarDecl Keyword
 " }}}
 
 if !has('nvim')
@@ -235,10 +240,12 @@ call s:h('DiagnosticUnderlineInfo', #{gui: 'undercurl', cterm: 'underline',
 call s:h('LspSignatureActiveParameter', #{fg: s:accent})
 
 " nvim-treesitter
-highlight! link @text.note Todo
 highlight! link @constant.builtin Constant
-highlight! link @variable.builtin Special
+highlight! link @label Identifier
+highlight! link @macro Identifier
+highlight! link @text.note Todo
 highlight! link @type.builtin Keyword
 highlight! link @type.qualifier Keyword
+highlight! link @variable.builtin Special
 
 " vim: et tw=80 sw=4

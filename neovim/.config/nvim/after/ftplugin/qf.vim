@@ -4,6 +4,8 @@ if exists('w:did_qf_ftplugin_after')
 endif
 let w:did_qf_ftplugin_after = 1
 
+setlocal cursorline
+
 " Open QuickFix window at the bottom of the screen if errors are always to be
 " opened in the previous window due to 'uselast' set in 'switchbuf' (as the
 " QuickFix window doesn't really relate to the window it's split from)
