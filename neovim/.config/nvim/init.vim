@@ -86,9 +86,8 @@ if !has('nvim')
     set viminfofile=$MYVIMRUNTIME/viminfo
 endif
 
-" Change some settings depending on available screen size.
+" Change &wrap depending on available screen size.
 function! s:ReactiveResize() abort
-    let &laststatus = &lines < 24 ? 1 : 2
     let &wrap = &columns < 80
 endfunction
 
@@ -119,6 +118,24 @@ augroup conf_auto_quickfix
     autocmd!
     autocmd VimEnter * ++nested cwindow
 augroup END
+
+" Neovim's terminal doesn't automatically tail to the output.
+" Make sure the cursor is on the last line so it does.
+if has('nvim')
+    function s:DeferredLastLine(win) abort
+        if mode() ==# 'n' && nvim_win_is_valid(a:win)
+            call win_execute(a:win, 'normal! G')
+        endif
+    endfunction
+
+    augroup conf_terminal_tailing
+        autocmd!
+        autocmd TermOpen * normal! G
+        " Need to defer this so moving the cursor works.
+        autocmd TermLeave * execute 'call timer_start(0, '
+                    \ .. '{-> s:DeferredLastLine(' .. win_getid() .. ')})'
+    augroup END
+endif
 
 " Distributed Plugin Settings {{{1
 packadd cfilter
