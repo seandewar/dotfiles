@@ -30,7 +30,7 @@ lspconfig.rust_analyzer.setup {
   },
   settings = {
     ["rust-analyzer"] = {
-      checkOnSave = {
+      check = {
         command = "clippy",
       },
     },

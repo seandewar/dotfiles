@@ -112,20 +112,20 @@ highlight! link PreCondit PreProc
 
 highlight! link Type Normal
 highlight! link StorageClass Keyword
-highlight! link Structure Type
+highlight! link Structure Keyword
 highlight! link Typedef Type
 
 call s:h('Special', #{fg: s:norm_subtle})
-highlight! link SpecialChar Special
-call s:h('Tag', #{fg: s:norm_subtle})
+call s:h('SpecialChar', #{fg: s:accent, gui: 'bold'})
+call s:h('Tag', #{fg: s:blue})
 highlight! link Delimiter Special
-highlight! link SpecialComment Special
+call s:h('SpecialComment', #{fg: s:norm_subtle, gui: 'italic', cterm: 'italic'})
 call s:h('Debug', #{fg: s:norm_subtle})
 
 call s:h('Underlined', #{fg: s:norm, gui: 'underline', cterm: 'underline'})
 call s:h('Ignore', {})
 call s:h('Error', #{fg: s:actual_white, bg: s:red, cterm: 'bold'})
-call s:h('Todo', #{fg: s:norm_subtle, gui: 'bold', cterm: 'bold'})
+highlight! link Todo SpecialComment
 
 " Other Highlights: {{{1
 call s:h('NonText', #{fg: s:bg_subtle})
@@ -185,17 +185,13 @@ highlight! link PmenuThumb Search
 highlight! link PmenuSbar Pmenu
 
 " Standard Plugins: {{{1
-" c.vim
-highlight! link cStructure Keyword
-highlight! link cTypedef Keyword
-
 " diff.vim
 highlight! link diffAdded DiffAdd
 highlight! link diffChanged DiffChange
 highlight! link diffRemoved DiffDelete
 
 " help.vim
-call s:h('helpHyperTextJump', #{fg: s:blue})
+highlight! link helpHyperTextJump Tag
 
 " lua.vim
 highlight! link luaFunction Keyword
@@ -203,14 +199,20 @@ highlight! link luaFunction Keyword
 " matchparen.vim
 call s:h('MatchParen', #{fg: s:norm, bg: s:bg_subtle})
 
+" rust.vim
+highlight! link rustLifetime StorageClass
+highlight! link rustModPath Identifier
+highlight! link rustSelf Keyword
+
 " vim.vim
+highlight! link vimCommentString Comment
+highlight! link vimHiBang Special
 highlight! link vimOperParen Special
 
 " zig.vim
 highlight! link zigDummyVariable Special
 highlight! link zigMacro Keyword
 highlight! link zigMultilineStringDelimiter String
-highlight! link zigStructure Keyword
 highlight! link zigVarDecl Keyword
 " }}}
 
@@ -237,14 +239,21 @@ call s:h('DiagnosticUnderlineInfo', #{gui: 'undercurl', cterm: 'underline',
             \                         sp: s:norm})
 
 " vim.lsp
+highlight! link @builtinType Type
+highlight! link @class Identifier
+highlight! link @documentation Comment
+highlight! link @generic Normal
+highlight! link @macro Identifier
+highlight! link @struct Identifier
+
 call s:h('LspSignatureActiveParameter', #{fg: s:accent})
 
 " nvim-treesitter
 highlight! link @constant.builtin Constant
+highlight! link @constant.comment SpecialComment
+highlight! link @function.macro Identifier
 highlight! link @label Identifier
-highlight! link @macro Identifier
 highlight! link @text.note Todo
-highlight! link @type.builtin Keyword
 highlight! link @type.qualifier Keyword
 highlight! link @variable.builtin Special
 

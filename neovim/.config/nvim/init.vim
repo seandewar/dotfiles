@@ -122,18 +122,12 @@ augroup END
 " Neovim's terminal doesn't automatically tail to the output.
 " Make sure the cursor is on the last line so it does.
 if has('nvim')
-    function s:DeferredLastLine(win) abort
-        if mode() ==# 'n' && nvim_win_is_valid(a:win)
-            call win_execute(a:win, 'normal! G')
-        endif
-    endfunction
-
     augroup conf_terminal_tailing
         autocmd!
         autocmd TermOpen * normal! G
-        " Need to defer this so moving the cursor works.
-        autocmd TermLeave * execute 'call timer_start(0, '
-                    \ .. '{-> s:DeferredLastLine(' .. win_getid() .. ')})'
+        " NOTE: Do not use TermLeave! It requires a defer to move the cursor,
+        " and even worse: it fires AFTER TermClose if the job exited; wtf?
+        autocmd ModeChanged t:nt normal! G
     augroup END
 endif
 
