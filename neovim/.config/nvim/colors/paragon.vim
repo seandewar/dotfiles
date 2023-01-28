@@ -211,6 +211,7 @@ highlight! link vimOperParen Special
 
 " zig.vim
 highlight! link zigDummyVariable Special
+highlight! link zigEscape SpecialChar
 highlight! link zigMacro Keyword
 highlight! link zigMultilineStringDelimiter String
 highlight! link zigVarDecl Keyword
