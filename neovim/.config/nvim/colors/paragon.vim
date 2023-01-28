@@ -123,13 +123,15 @@ call s:h('SpecialComment', #{fg: s:norm_subtle, gui: 'italic', cterm: 'italic'})
 call s:h('Debug', #{fg: s:norm_subtle})
 
 call s:h('Underlined', #{fg: s:norm, gui: 'underline', cterm: 'underline'})
-call s:h('Ignore', {})
 call s:h('Error', #{fg: s:actual_white, bg: s:red, cterm: 'bold'})
 highlight! link Todo SpecialComment
 
 " Other Highlights: {{{1
-call s:h('NonText', #{fg: s:bg_subtle})
-highlight! link Conceal NonText
+call s:h('NonText', #{fg: s:bg_subtle, bg: s:bg_most_subtle})
+call s:h('EndOfBuffer', #{fg: s:bg_subtle})
+call s:h('Ignore', #{fg: s:bg_subtle})
+highlight! link Conceal Ignore
+highlight! link Whitespace Ignore
 call s:h('SpecialKey', #{fg: s:blue, gui: 'italic', cterm: 'italic'})
 
 call s:h('Visual', #{fg: s:blue, bg: s:subtle_black})

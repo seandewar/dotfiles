@@ -161,7 +161,7 @@ function! ConfStatusLine() abort
     return join(parts, '')
 endfunction
 
-set statusline=%!ConfStatusLine()
+set statusline=%!ConfStatusLine() laststatus=2
 
 " Tab Line Settings {{{1
 function! ConfTabLabel(tabnum) abort
