@@ -1,8 +1,10 @@
 #!/bin/bash
 set -eo pipefail
 
-echo 'downloading metadata...'
-metadata=$(wget -nv https://ziglang.org/download/index.json -O - | jq '.master')
+# url=https://ziglang.org/download/index.json
+url=https://raw.githubusercontent.com/ziglang/www.ziglang.org/master/data/releases.json
+echo "downloading metadata from $url ..."
+metadata=$(wget -nv $url -O - | jq '.master')
 zig_version=$(echo "$metadata" | jq -r '.version')
 echo "zig master (precompiled) version is $zig_version"
 if type ~/.local/lib/zig/zig >/dev/null 2>&1; then

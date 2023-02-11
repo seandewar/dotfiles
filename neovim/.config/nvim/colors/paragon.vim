@@ -157,7 +157,7 @@ call s:h('MoreMsg', #{fg: s:medium_gray, gui: 'bold', cterm: 'bold'})
 highlight! link ModeMsg MoreMsg
 call s:h('WarningMsg', #{fg: s:yellow})
 call s:h('ErrorMsg', #{fg: s:red})
-call s:h('Title', #{fg: s:blue})
+call s:h('Title', #{fg: s:norm_subtle})
 call s:h('Question', #{fg: s:blue})
 call s:h('Directory', #{fg: s:accent})
 
@@ -194,6 +194,7 @@ highlight! link diffRemoved DiffDelete
 
 " help.vim
 highlight! link helpHyperTextJump Tag
+highlight! link helpURL Underlined
 
 " lua.vim
 highlight! link luaFunction Keyword
@@ -251,13 +252,17 @@ highlight! link @struct Identifier
 
 call s:h('LspSignatureActiveParameter', #{fg: s:accent})
 
-" nvim-treesitter
+" vim.treesitter
+highlight! link @conceal Conceal
 highlight! link @constant.builtin Constant
 highlight! link @constant.comment SpecialComment
 highlight! link @function.macro Identifier
 highlight! link @label Identifier
 highlight! link @text.note Todo
+highlight! link @text.reference Tag
 highlight! link @type.qualifier Keyword
 highlight! link @variable.builtin Special
+
+highlight! link @label.help String
 
 " vim: et tw=80 sw=4

@@ -82,6 +82,13 @@ local function bopt(option, value)
 end
 
 function M.attach_buffer(args)
+  local client = vim.lsp.get_client_by_id(args.data.client_id)
+  if client.name == "zls" then
+    -- zls already runs zig ast-check, so no need to have zig.vim run it too.
+    -- Unfortunately, this cannot be set per-buffer.
+    vim.g.zig_fmt_parse_errors = false
+  end
+
   -- Continue only for the first client attaching to the buffer.
   if vim.tbl_count(lsp.buf_get_clients(args.buf)) > 1 then
     return
