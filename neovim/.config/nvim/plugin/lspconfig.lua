@@ -45,8 +45,7 @@ lspconfig.rust_analyzer.setup {
   },
 }
 
-lspconfig.sumneko_lua.setup {
-  cmd = { "lua-language-server" },
+lspconfig.lua_ls.setup {
   settings = {
     Lua = {
       workspace = {

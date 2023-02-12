@@ -17,7 +17,7 @@ set showbreak=>
 set cinoptions+=:0,g0,N-s,j1
 set display+=lastline
 set encoding=utf-8
-set foldmethod=marker
+set foldlevelstart=99 foldmethod=marker
 set formatoptions=croqnlj
 set guioptions=M  " Can't be in gvimrc; has to be before :syntax on/:filetype on
 set hidden
