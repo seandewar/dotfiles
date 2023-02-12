@@ -21,7 +21,6 @@ start("nvim-treesitter/nvim-treesitter", {
   end,
 })
 start "nvim-treesitter/nvim-treesitter-textobjects"
-opt "SmiteshP/nvim-gps"
 
 -- Fzf integration (fzf-lua doesn't work on Windows)
 if fn.has "win32" == 0 then

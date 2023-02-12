@@ -1,12 +1,6 @@
-local api = vim.api
 local fn = vim.fn
-local map = vim.keymap.set
-
-local util = require "conf.util"
-local echo = util.echo
 
 local configs = require "nvim-treesitter.configs"
-local gps
 
 configs.setup {
   -- Install a minimal set of parsers.
@@ -75,27 +69,3 @@ configs.setup {
     },
   },
 }
-
---- Show tree-sitter context with cursor location info.
-local function echo_cursor_context()
-  if package.loaded["nvim-gps"] == nil then
-    vim.cmd.packadd "nvim-gps"
-    gps = require "nvim-gps"
-    gps.setup { disable_icons = true }
-  end
-
-  local chunks = { { api.nvim_exec(util.t "normal! g<C-G>", true) } }
-  if gps.is_available() then
-    local context = gps.get_location()
-    if context ~= "" then
-      vim.list_extend(
-        chunks,
-        { { "\n" }, { "Context:", "Directory" }, { " " .. context } }
-      )
-    end
-  end
-
-  echo(chunks)
-end
-
-map("n", "g<C-G>", echo_cursor_context)
