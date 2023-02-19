@@ -11,7 +11,7 @@ configs.setup {
   -- annoyingly)
   ensure_installed = {
     "c",
-    "comment",
+    -- "comment", -- TODO: is slow.
     "cpp",
     "help",
     "lua",
