@@ -264,7 +264,9 @@ highlight! link @type.qualifier Keyword
 highlight! link @variable.builtin Special
 
 highlight! link @label.help String
-" In what universe is stuff like "comptime" considered an *attribute*?!?
+
+" Zig omg stop misusing these captures plz
 highlight! link @attribute.zig Keyword
+highlight! link @type.definition.zig Keyword
 
 " vim: et tw=80 sw=4
