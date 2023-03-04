@@ -267,6 +267,5 @@ highlight! link @label.help String
 
 " Zig omg stop misusing these captures plz
 highlight! link @attribute.zig Keyword
-highlight! link @type.definition.zig Keyword
 
 " vim: et tw=80 sw=4
