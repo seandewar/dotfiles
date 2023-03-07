@@ -242,30 +242,57 @@ call s:h('DiagnosticUnderlineHint', #{gui: 'undercurl', cterm: 'underline',
 call s:h('DiagnosticUnderlineInfo', #{gui: 'undercurl', cterm: 'underline',
             \                         sp: s:norm})
 
-" vim.lsp
-highlight! link @builtinType Type
-highlight! link @class Identifier
-highlight! link @documentation Comment
-highlight! link @generic Normal
-highlight! link @macro Identifier
-highlight! link @struct Identifier
-
-call s:h('LspSignatureActiveParameter', #{fg: s:accent})
-
 " vim.treesitter
 highlight! link @conceal Conceal
 highlight! link @constant.builtin Constant
 highlight! link @constant.comment SpecialComment
 highlight! link @function.macro Identifier
 highlight! link @label Identifier
+highlight! link @macro Identifier
+highlight! link @structure Identifier
 highlight! link @text.note Todo
 highlight! link @text.reference Tag
 highlight! link @type.qualifier Keyword
 highlight! link @variable.builtin Special
 
 highlight! link @label.help String
-
 " Zig omg stop misusing these captures plz
 highlight! link @attribute.zig Keyword
+
+" vim.lsp
+" These are linked to tree-sitter groups where applicable to make things easier.
+highlight! link @lsp.type.boolean @boolean
+highlight! link @lsp.type.builtinType @type
+highlight! link @lsp.type.character @character
+highlight! link @lsp.type.class @type
+highlight! link @lsp.type.comment @comment
+highlight! link @lsp.type.decorator @function
+highlight! link @lsp.type.enum @type
+highlight! link @lsp.type.enumMember @constant
+highlight! link @lsp.type.escapeSequence @string.escape
+highlight! link @lsp.type.function @function
+highlight! link @lsp.type.generic Normal
+highlight! link @lsp.type.interface @type
+highlight! link @lsp.type.keyword @keyword
+highlight! link @lsp.type.lifetime @storageclass.lifetime
+highlight! link @lsp.type.macro @macro
+highlight! link @lsp.type.method @method
+highlight! link @lsp.type.namespace @namespace
+highlight! link @lsp.type.number @constant
+highlight! link @lsp.type.operator @operator
+highlight! link @lsp.type.parameter @parameter
+highlight! link @lsp.type.property @property
+highlight! link @lsp.type.selfKeyword @keyword
+highlight! link @lsp.type.selfTypeKeyword @keyword
+highlight! link @lsp.type.string @string
+highlight! link @lsp.type.struct @structure
+highlight! link @lsp.type.type @type
+highlight! link @lsp.type.typeAlias @type
+highlight! link @lsp.type.typeParameter @type.definition
+highlight! link @lsp.type.variable @variable
+
+highlight! link @lsp.typemod.variable.constant @constant
+
+call s:h('LspSignatureActiveParameter', #{fg: s:accent})
 
 " vim: et tw=80 sw=4

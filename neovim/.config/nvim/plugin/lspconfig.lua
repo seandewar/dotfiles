@@ -45,38 +45,39 @@ lspconfig.rust_analyzer.setup {
   },
 }
 
-lspconfig.lua_ls.setup {
-  settings = {
-    Lua = {
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true),
-        maxPreload = 2000,
-        preloadFileSize = 1000,
-      },
-      runtime = {
-        version = "LuaJIT",
-        path = vim.list_extend(
-          vim.split(package.path, ";"),
-          { "lua/?.lua", "lua/?/init.lua" }
-        ),
-      },
-      diagnostics = {
-        globals = {
-          -- (Neo)vim
-          "vim",
-          -- Busted
-          "after_each",
-          "before_each",
-          "context",
-          "describe",
-          "it",
-          "pending",
-          "setup",
-          "teardown",
-        },
-        disable = { "lowercase-global" },
-      },
-      telemetry = { enable = false },
-    },
-  },
-}
+-- TODO: Sure, I have quite a few runtime files and maybe I should be more
+-- choosy with which ones I index, but lua_ls is still too slow (and kicks my
+-- CPU's butt) when indexing, so disable for now.
+-- lspconfig.lua_ls.setup {
+--   settings = {
+--     Lua = {
+--       workspace = {
+--         library = vim.api.nvim_get_runtime_file("", true),
+--       },
+--       runtime = {
+--         version = "LuaJIT",
+--         path = vim.list_extend(
+--           vim.split(package.path, ";"),
+--           { "lua/?.lua", "lua/?/init.lua" }
+--         ),
+--       },
+--       diagnostics = {
+--         globals = {
+--           -- (Neo)vim
+--           "vim",
+--           -- Busted
+--           "after_each",
+--           "before_each",
+--           "context",
+--           "describe",
+--           "it",
+--           "pending",
+--           "setup",
+--           "teardown",
+--         },
+--         disable = { "lowercase-global" },
+--       },
+--       telemetry = { enable = false },
+--     },
+--   },
+-- }
