@@ -28,7 +28,6 @@ set mouse=a mousemodel=popup nomousehide
 set nrformats-=octal
 set path& | let &path ..= '**'  " Use :let..=, as 'path' already ends in a comma
 set pumheight=12
-set ruler
 set scrolloff=1 sidescroll=5
 set sessionoptions-=options viewoptions-=options
 set shortmess+=IF shortmess-=S
@@ -88,7 +87,7 @@ endif
 
 " Change &wrap depending on available screen size.
 function! s:ReactiveResize() abort
-    let &wrap = &columns < 80
+    let &wrap = &columns < 100
 endfunction
 
 call s:ReactiveResize()
@@ -148,7 +147,7 @@ endfunction
 let g:conf_statusline_components = #{
             \ main: '%(%w %)%(%f %)%(%{ConfStlQfTitle()} %)%([%M%R] %)%(%y %)',
             \ spell: '%([%{&spell ? &spelllang : ''''}] %)',
-            \ ruler: '%=%-14(%l,%c%V%) %P',
+            \ ruler: '%=%(%l,%c%V | %P%)',
             \ }
 let g:conf_statusline_order =
             \ ['main', 'spell', 'git', 'diagnostic', 'lsp', 'ruler']
@@ -161,7 +160,8 @@ function! ConfStatusLine() abort
     return join(parts, '')
 endfunction
 
-set statusline=%!ConfStatusLine() laststatus=2
+set statusline=%!ConfStatusLine() laststatus=2 ruler
+let &rulerformat = g:conf_statusline_components.ruler
 
 " Tab Line Settings {{{1
 function! ConfTabLabel(tabnum) abort
