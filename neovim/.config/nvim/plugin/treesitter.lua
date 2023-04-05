@@ -13,15 +13,15 @@ configs.setup {
     "c",
     -- "comment", -- TODO: is slow.
     "cpp",
-    "help",
     "lua",
     "vim",
+    "vimdoc",
   },
 
   highlight = {
     enable = true,
     -- Disabled for now due to inaccurate highlights.
-    disable = { "vim", "help" },
+    disable = { "vim", "vimdoc" },
   },
 
   incremental_selection = {

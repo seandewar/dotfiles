@@ -113,9 +113,16 @@ end, {
 })
 
 map("n", "<Space>k", function()
-  diagnostic.open_float(nil, { scope = "cursor" })
+  -- Attempt to show either cursor or line diagnostics, in that order.
+  if
+    diagnostic.open_float { scope = "c", header = "Cursor Diagnostics:" }
+    or diagnostic.open_float { scope = "l", header = "Line Diagnostics:" }
+  then
+    return
+  end
+  require("conf.util").echo { { "No diagnostics found", "WarningMsg" } }
 end, {
-  desc = "Cursor Diagnostics",
+  desc = "Floating Diagnostics",
 })
 
 map("n", "<Space><Space>", function()

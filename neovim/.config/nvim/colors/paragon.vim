@@ -265,7 +265,6 @@ highlight! link @lsp.type.boolean @boolean
 highlight! link @lsp.type.builtinType @type
 highlight! link @lsp.type.character @character
 highlight! link @lsp.type.class @type
-highlight! link @lsp.type.comment @comment
 highlight! link @lsp.type.decorator @function
 highlight! link @lsp.type.enum @type
 highlight! link @lsp.type.enumMember @constant
