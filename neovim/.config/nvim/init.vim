@@ -209,6 +209,7 @@ endfunction
 command! -bar ConfigDir call s:TabEditDir($MYVIMRUNTIME)
 command! -bar DataDir call s:TabEditDir(
             \ exists('*stdpath') ? stdpath('data') : $MYVIMRUNTIME)
+command! -bar RuntimeDir call s:TabEditDir($VIMRUNTIME)
 
 " Mappings {{{1
 " General Mappings {{{2

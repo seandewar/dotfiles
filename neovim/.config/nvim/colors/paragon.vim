@@ -242,6 +242,11 @@ call s:h('DiagnosticUnderlineHint', #{gui: 'undercurl', cterm: 'underline',
 call s:h('DiagnosticUnderlineInfo', #{gui: 'undercurl', cterm: 'underline',
             \                         sp: s:norm})
 
+call s:h('DiagnosticUnnecessary', #{gui: 'undercurl', cterm: 'underline',
+            \                       sp: s:norm})
+call s:h('DiagnosticDeprecated', #{gui: 'strikethrough', cterm: 'strikethrough',
+            \                       sp: s:norm})
+
 " vim.treesitter
 highlight! link @conceal Conceal
 highlight! link @constant.builtin Constant
