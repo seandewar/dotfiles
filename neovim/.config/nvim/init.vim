@@ -44,6 +44,7 @@ set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
 set textwidth=80
 set title
 set wildmenu wildmode=list:longest,full
+let &wrap = &columns < 100
 
 " A Vim bug causes glob expansion to fail with 'wildignorecase' if a parent
 " directory lacks read perms (neovim#6787). This messes up netrw on Termux.
@@ -90,17 +91,6 @@ if !has('nvim')
     set backupdir=.,$MYVIMRUNTIME/backup
     set viminfofile=$MYVIMRUNTIME/viminfo
 endif
-
-" Change &wrap depending on available screen size.
-function! s:ReactiveResize() abort
-    let &wrap = &columns < 100
-endfunction
-
-call s:ReactiveResize()
-augroup conf_reactive_resize
-    autocmd!
-    autocmd VimResized * call s:ReactiveResize()
-augroup END
 
 function! s:UpdateColorColumn() abort
     let &colorcolumn = &modifiable ? '+1' : ''

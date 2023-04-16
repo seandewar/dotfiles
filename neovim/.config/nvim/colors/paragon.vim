@@ -17,35 +17,32 @@ highlight clear
 let g:colors_name = 'paragon'
 
 let s:white         = #{gui: '#f2f2f2', cterm: '255'}
-let s:lighter_gray  = #{gui: '#c6c6c6', cterm: '251'}
-let s:medium_gray   = #{gui: '#707070', cterm: '242'}
+let s:lighter_gray  = #{gui: '#dadada', cterm: '188'}
+let s:medium_gray   = #{gui: '#909090', cterm: '242'}
 let s:dark_gray     = #{gui: '#4e4e4e', cterm: '238'}
 let s:darker_gray   = #{gui: '#2a2a2a', cterm: '235'}
 let s:light_black   = #{gui: '#101010', cterm: '233'}
 let s:black         = #{gui: '#000000', cterm: '16' }
 
-let s:light_orange  = #{gui: '#d7af87', cterm: '180'}
 let s:light_blue    = #{gui: '#a3a3eb', cterm: '105'}
+let s:light_orange  = #{gui: '#d7af87', cterm: '180'}
 let s:light_pink    = #{gui: '#d787af', cterm: '175'}
 let s:light_red     = #{gui: '#d75f5f', cterm: '167'}
 let s:light_yellow  = #{gui: '#d7d75f', cterm: '184'}
-let s:light_green   = #{gui: '#87d75f', cterm: '114'}
 let s:light_teal    = #{gui: '#5fd7af', cterm: '79' }
 
-let s:dark_blue     = #{gui: '#2f2fbf', cterm: '62' }
-let s:dark_orange   = #{gui: '#8f5f2f', cterm: '137'}
-let s:dark_pink     = #{gui: '#8f2f87', cterm: '132'}
-let s:dark_red      = #{gui: '#8f2f2f', cterm: '131'}
-let s:dark_yellow   = #{gui: '#8f8f2f', cterm: '185'}
-let s:dark_green    = #{gui: '#2f8f2f', cterm: '65' }
-let s:dark_teal     = #{gui: '#2f8f8f', cterm: '74' }
+let s:dark_blue     = #{gui: '#4f4fdf', cterm: '63' }
+let s:dark_orange   = #{gui: '#df5f5f', cterm: '167'}
+let s:dark_pink     = #{gui: '#df5fdf', cterm: '171'}
+let s:dark_red      = #{gui: '#df5f5f', cterm: '167'}
+let s:dark_yellow   = #{gui: '#ffaf00', cterm: '214'}
+let s:dark_teal     = #{gui: '#00875f', cterm: '30' }
 
 let s:background = &background
 if &background ==# 'dark'
     let s:red             = s:light_red
-    let s:green           = s:light_green
+    let s:green           = s:light_teal
     let s:yellow          = s:light_yellow
-    let s:teal            = s:light_teal
     let s:pink            = s:light_pink
     let s:blue            = s:light_blue
     let s:orange          = s:light_orange
@@ -57,9 +54,8 @@ if &background ==# 'dark'
     let s:bg              = s:black
 else
     let s:red             = s:dark_red
-    let s:green           = s:dark_green
+    let s:green           = s:dark_teal
     let s:yellow          = s:dark_yellow
-    let s:teal            = s:dark_teal
     let s:pink            = s:dark_pink
     let s:blue            = s:dark_blue
     let s:orange          = s:dark_orange
@@ -103,13 +99,13 @@ highlight! link Float Constant
 highlight! link Identifier Normal
 highlight! link Function Identifier
 
-call s:h('Statement', #{fg: s:norm_subtle})
-highlight! link Conditonal Statement
-highlight! link Repeat Statement
-highlight! link Label Statement
-call s:h('Operator', #{fg: s:norm_subtle, cterm: 'bold', gui: 'bold'})
-highlight! link Keyword Statement
-highlight! link Exception Statement
+call s:h('Keyword', #{fg: s:norm_subtle})
+highlight! link Conditonal Keyword
+highlight! link Repeat Keyword
+highlight! link Operator Keyword
+highlight! link Statement Keyword
+highlight! link Exception Keyword
+call s:h('Label', #{fg: s:norm_subtle, gui: 'italic', cterm: 'italic'})
 
 call s:h('PreProc', #{fg: s:norm_subtle})
 highlight! link Include PreProc
@@ -140,12 +136,12 @@ highlight! link Conceal Ignore
 highlight! link Whitespace Ignore
 call s:h('SpecialKey', #{fg: s:pink, gui: 'italic', cterm: 'italic'})
 
-call s:h('Visual', #{fg: s:bg, bg: s:orange})
+call s:h('Visual', #{fg: s:bg, bg: s:green})
 call s:h('VisualNOS', #{fg: s:norm, bg: s:bg_subtle})
 
 call s:h('Search', #{fg: s:bg, bg: s:blue})
 call s:h('IncSearch', #{fg: s:bg, bg: s:orange})
-call s:h('CurSearch', #{fg: s:bg, bg: s:teal})
+call s:h('CurSearch', #{fg: s:bg, bg: s:orange})
 
 call s:h('DiffAdd', #{fg: s:green, bg: s:bg_most_subtle})
 call s:h('DiffChange', #{fg: s:norm, bg: s:bg_most_subtle})
@@ -154,7 +150,7 @@ call s:h('DiffText', #{fg: s:blue, bg: s:bg_most_subtle})
 
 call s:h('SpellBad', #{gui: 'undercurl', cterm: 'underline', sp: s:red})
 call s:h('SpellCap', #{gui: 'undercurl', cterm: 'underline', sp: s:yellow})
-call s:h('SpellRare', #{gui: 'undercurl', cterm: 'underline', sp: s:teal})
+call s:h('SpellRare', #{gui: 'undercurl', cterm: 'underline', sp: s:pink})
 call s:h('SpellLocal', #{gui: 'undercurl', cterm: 'underline', sp: s:norm})
 
 call s:h('ErrorMsg', #{fg: s:red})
@@ -162,7 +158,7 @@ call s:h('WarningMsg', #{fg: s:yellow})
 call s:h('MoreMsg', #{fg: s:norm_subtle, gui: 'bold', cterm: 'bold'})
 highlight! link ModeMsg MoreMsg
 call s:h('Title', #{fg: s:norm_subtle})
-call s:h('Question', #{fg: s:teal})
+call s:h('Question', #{fg: s:green})
 call s:h('Directory', #{fg: s:blue})
 
 call s:h('CursorLine', #{bg: s:bg_most_subtle})
@@ -207,7 +203,7 @@ highlight! link luaFunction Keyword
 call s:h('MatchParen', #{fg: s:norm, bg: s:bg_subtle})
 
 " rust.vim
-highlight! link rustLifetime StorageClass
+highlight! link rustLifetime Label
 highlight! link rustModPath Identifier
 highlight! link rustSelf Keyword
 
@@ -236,7 +232,7 @@ call s:h('FloatBorder', #{fg: s:bg_subtle, bg: s:bg_most_subtle})
 " vim.diagnostic
 call s:h('DiagnosticError', #{fg: s:red})
 call s:h('DiagnosticWarn', #{fg: s:yellow})
-call s:h('DiagnosticHint', #{fg: s:teal})
+call s:h('DiagnosticHint', #{fg: s:blue})
 highlight! link DiagnosticInfo Normal
 
 call s:h('DiagnosticUnderlineError', #{gui: 'undercurl', cterm: 'underline',
@@ -244,7 +240,7 @@ call s:h('DiagnosticUnderlineError', #{gui: 'undercurl', cterm: 'underline',
 call s:h('DiagnosticUnderlineWarn', #{gui: 'undercurl', cterm: 'underline',
             \                         sp: s:yellow})
 call s:h('DiagnosticUnderlineHint', #{gui: 'undercurl', cterm: 'underline',
-            \                         sp: s:teal})
+            \                         sp: s:blue})
 call s:h('DiagnosticUnderlineInfo', #{gui: 'undercurl', cterm: 'underline',
             \                         sp: s:norm})
 
@@ -254,12 +250,14 @@ call s:h('DiagnosticDeprecated', #{gui: 'strikethrough', cterm: 'strikethrough',
             \                       sp: s:norm})
 
 " vim.treesitter
+highlight! link @attribute PreProc
 highlight! link @conceal Conceal
 highlight! link @constant.builtin Constant
 highlight! link @constant.comment SpecialComment
-highlight! link @function.macro Identifier
 highlight! link @macro Identifier
-highlight! link @structure Identifier
+highlight! link @function.macro @macro
+highlight! link @storageclass.lifetime Label
+highlight! link @structure Type
 highlight! link @text.note Todo
 highlight! link @text.reference Tag
 highlight! link @type.qualifier Keyword
@@ -292,7 +290,6 @@ highlight! link @lsp.type.operator @operator
 highlight! link @lsp.type.parameter @parameter
 highlight! link @lsp.type.property @property
 highlight! link @lsp.type.selfKeyword @keyword
-highlight! link @lsp.type.selfTypeKeyword @keyword
 highlight! link @lsp.type.string @string
 highlight! link @lsp.type.struct @structure
 highlight! link @lsp.type.type @type
@@ -300,6 +297,7 @@ highlight! link @lsp.type.typeAlias @type
 highlight! link @lsp.type.typeParameter @type.definition
 highlight! link @lsp.type.variable @variable
 
+highlight! link @lsp.mod.attribute @attribute
 highlight! link @lsp.typemod.variable.constant @constant
 highlight! link @lsp.typemod.type.namespace @namespace
 
