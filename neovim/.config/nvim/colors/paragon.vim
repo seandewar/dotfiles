@@ -112,14 +112,14 @@ highlight! link Include PreProc
 highlight! link Define PreProc
 highlight! link PreCondit PreProc
 
-call s:h('Type', #{fg: s:orange})
+call s:h('Type', #{gui: 'italic', cterm: 'italic'})
 highlight! link StorageClass Keyword
 highlight! link Structure Keyword
 highlight! link Typedef Type
 
 call s:h('Special', #{fg: s:norm_subtle})
 call s:h('SpecialChar', #{fg: s:blue, gui: 'bold'})
-call s:h('Tag', #{fg: s:blue})
+call s:h('Tag', #{fg: s:orange})
 highlight! link Delimiter Special
 call s:h('SpecialComment', #{fg: s:norm_subtle, gui: 'italic', cterm: 'italic'})
 call s:h('Debug', #{fg: s:norm_subtle})
@@ -144,9 +144,9 @@ call s:h('IncSearch', #{fg: s:bg, bg: s:orange})
 call s:h('CurSearch', #{fg: s:bg, bg: s:orange})
 
 call s:h('DiffAdd', #{fg: s:green, bg: s:bg_most_subtle})
-call s:h('DiffChange', #{fg: s:norm, bg: s:bg_most_subtle})
 call s:h('DiffDelete', #{fg: s:red, bg: s:bg_most_subtle})
-call s:h('DiffText', #{fg: s:blue, bg: s:bg_most_subtle})
+call s:h('DiffText', #{fg: s:orange, bg: s:bg_most_subtle})
+call s:h('DiffChange', #{bg: s:bg_most_subtle})
 
 call s:h('SpellBad', #{gui: 'undercurl', cterm: 'underline', sp: s:red})
 call s:h('SpellCap', #{gui: 'undercurl', cterm: 'underline', sp: s:yellow})
@@ -210,7 +210,6 @@ highlight! link rustSelf Keyword
 " vim.vim
 highlight! link vimCommentTitle SpecialComment
 highlight! link vimCommentString Comment
-highlight! link vimGroup Normal
 highlight! link vimHiBang Special
 highlight! link vimOperParen Special
 
@@ -247,15 +246,16 @@ call s:h('DiagnosticUnderlineInfo', #{gui: 'undercurl', cterm: 'underline',
 call s:h('DiagnosticUnnecessary', #{gui: 'undercurl', cterm: 'underline',
             \                       sp: s:norm})
 call s:h('DiagnosticDeprecated', #{gui: 'strikethrough', cterm: 'strikethrough',
-            \                       sp: s:norm})
+            \                      sp: s:norm})
 
 " vim.treesitter
 highlight! link @attribute PreProc
 highlight! link @conceal Conceal
 highlight! link @constant.builtin Constant
 highlight! link @constant.comment SpecialComment
-highlight! link @macro Identifier
 highlight! link @function.macro @macro
+highlight! link @macro Identifier
+call s:h('@namespace', #{fg: s:norm, gui: 'nocombine', cterm: 'nocombine'})
 highlight! link @storageclass.lifetime Label
 highlight! link @structure Type
 highlight! link @text.note Todo
@@ -298,8 +298,8 @@ highlight! link @lsp.type.typeParameter @type.definition
 highlight! link @lsp.type.variable @variable
 
 highlight! link @lsp.mod.attribute @attribute
+highlight! link @lsp.mod.namespace @namespace
 highlight! link @lsp.typemod.variable.constant @constant
-highlight! link @lsp.typemod.type.namespace @namespace
 
 call s:h('LspSignatureActiveParameter', #{fg: s:blue})
 

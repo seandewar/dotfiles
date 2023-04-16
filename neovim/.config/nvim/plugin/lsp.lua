@@ -84,7 +84,7 @@ map("n", "<Space>d", function()
 end, { desc = "LSP Document Symbols" })
 map("n", "<Space>w", function()
   if vim.g.loaded_fzf_lua ~= nil then
-    require("fzf-lua").lsp_workspace_symbols()
+    require("fzf-lua").lsp_live_workspace_symbols()
   else
     lsp.buf.workspace_symbol()
   end
