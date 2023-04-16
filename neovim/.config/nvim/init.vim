@@ -4,6 +4,12 @@ if !has('patch-8.2.2434') && !has('nvim-0.8')
     echohl None
 end
 
+" Enable Nvim 0.9+'s new (experimental) Lua loader, which byte-compiles and
+" caches Lua files. Enable it for v0.10+, just to make sure it's more stable.
+if has('nvim-0.10')
+    lua vim.loader.enable()
+endif
+
 " Set $MYVIMRC and $MYVIMRUNTIME for easy access, resolving symlinks {{{1
 let $MYVIMRC = resolve($MYVIMRC)
 let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')

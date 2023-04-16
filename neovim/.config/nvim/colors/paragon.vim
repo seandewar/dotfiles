@@ -16,54 +16,60 @@
 highlight clear
 let g:colors_name = 'paragon'
 
-let s:white         = #{gui: '#f1f1f1', cterm: '15' }
-let s:actual_white  = #{gui: '#ffffff', cterm: '231'}
-let s:medium_gray   = #{gui: '#767676', cterm: '243'}
-let s:light_gray    = #{gui: '#a8a8a8', cterm: '248'}
+let s:white         = #{gui: '#f2f2f2', cterm: '255'}
 let s:lighter_gray  = #{gui: '#c6c6c6', cterm: '251'}
-let s:lightest_gray = #{gui: '#eeeeee', cterm: '255'}
-let s:black         = #{gui: '#000000', cterm: '232'}
-let s:light_black   = #{gui: '#262626', cterm: '235'}
-let s:subtle_black  = #{gui: '#303030', cterm: '236'}
-let s:lighter_black = #{gui: '#4e4e4e', cterm: '239'}
-let s:light_red     = #{gui: '#e22633', cterm: '1'  }
-let s:dark_red      = #{gui: '#c10714', cterm: '1'  }
-let s:light_green   = #{gui: '#5fd7a7', cterm: '10' }
-let s:dark_green    = #{gui: '#10a778', cterm: '2'  }
-let s:light_yellow  = #{gui: '#ffff87', cterm: '228'}
-let s:dark_yellow   = #{gui: '#a89c14', cterm: '3'  }
-let s:light_orange  = #{gui: '#d7875f', cterm: '173'}
-let s:dark_orange   = #{gui: '#af5f00', cterm: '130'}
-let s:blue          = #{gui: '#00afff', cterm: '39' }
-let s:pink          = #{gui: '#fb007a', cterm: '9'  }
+let s:medium_gray   = #{gui: '#707070', cterm: '242'}
+let s:dark_gray     = #{gui: '#4e4e4e', cterm: '238'}
+let s:darker_gray   = #{gui: '#2a2a2a', cterm: '235'}
+let s:light_black   = #{gui: '#101010', cterm: '233'}
+let s:black         = #{gui: '#000000', cterm: '16' }
+
+let s:light_orange  = #{gui: '#d7af87', cterm: '180'}
+let s:light_blue    = #{gui: '#a3a3eb', cterm: '105'}
+let s:light_pink    = #{gui: '#d787af', cterm: '175'}
+let s:light_red     = #{gui: '#d75f5f', cterm: '167'}
+let s:light_yellow  = #{gui: '#d7d75f', cterm: '184'}
+let s:light_green   = #{gui: '#87d75f', cterm: '114'}
+let s:light_teal    = #{gui: '#5fd7af', cterm: '79' }
+
+let s:dark_blue     = #{gui: '#2f2fbf', cterm: '62' }
+let s:dark_orange   = #{gui: '#8f5f2f', cterm: '137'}
+let s:dark_pink     = #{gui: '#8f2f87', cterm: '132'}
+let s:dark_red      = #{gui: '#8f2f2f', cterm: '131'}
+let s:dark_yellow   = #{gui: '#8f8f2f', cterm: '185'}
+let s:dark_green    = #{gui: '#2f8f2f', cterm: '65' }
+let s:dark_teal     = #{gui: '#2f8f8f', cterm: '74' }
 
 let s:background = &background
 if &background ==# 'dark'
-    let s:red            = s:light_red
-    let s:green          = s:light_green
-    let s:yellow         = s:light_yellow
+    let s:red             = s:light_red
+    let s:green           = s:light_green
+    let s:yellow          = s:light_yellow
+    let s:teal            = s:light_teal
+    let s:pink            = s:light_pink
+    let s:blue            = s:light_blue
+    let s:orange          = s:light_orange
 
-    let s:accent         = s:light_orange
-    let s:norm           = s:lighter_gray
-    let s:norm_subtle    = s:medium_gray
-    let s:bg             = s:black
-    let s:bg_subtle      = s:lighter_black
-    let s:bg_very_subtle = s:subtle_black
-    let s:bg_most_subtle = s:light_black
+    let s:norm            = s:lighter_gray
+    let s:norm_subtle     = s:medium_gray
+    let s:bg_subtle       = s:dark_gray
+    let s:bg_most_subtle  = s:light_black
+    let s:bg              = s:black
 else
-    let s:red            = s:dark_red
-    let s:green          = s:dark_green
-    let s:yellow         = s:dark_yellow
+    let s:red             = s:dark_red
+    let s:green           = s:dark_green
+    let s:yellow          = s:dark_yellow
+    let s:teal            = s:dark_teal
+    let s:pink            = s:dark_pink
+    let s:blue            = s:dark_blue
+    let s:orange          = s:dark_orange
 
-    let s:accent         = s:dark_orange
-    let s:norm           = s:black
-    let s:norm_subtle    = s:light_black
-    let s:bg             = s:actual_white
-    let s:bg_subtle      = s:medium_gray
-    let s:bg_very_subtle = s:light_gray
-    let s:bg_most_subtle = s:white
+    let s:norm            = s:darker_gray
+    let s:norm_subtle     = s:light_black
+    let s:bg_subtle       = s:medium_gray
+    let s:bg_most_subtle  = s:lighter_gray
+    let s:bg              = s:white
 endif
-let s:accent_contrast = s:black
 
 " https://github.com/noahfrederick/vim-hemisu/
 function! s:h(group, style) abort
@@ -77,7 +83,7 @@ function! s:h(group, style) abort
             \ 'cterm='   has_key(a:style, 'cterm') ? a:style.cterm    : 'NONE'
 endfunction
 
-call s:h('Normal', #{fg: s:norm})
+call s:h('Normal', #{fg: s:norm, bg: s:bg})
 " Restore &background's value in case changing Normal changed &background.
 " (`:help :hi-normal-cterm`)
 if &background !=# s:background
@@ -87,7 +93,7 @@ endif
 " Syntax Highlights: (ordered as in `:h group-name`) {{{1
 call s:h('Comment', #{fg: s:bg_subtle, gui: 'italic', cterm: 'italic'})
 
-call s:h('Constant', #{fg: s:accent})
+call s:h('Constant', #{fg: s:blue})
 highlight! link String Constant
 highlight! link Character Constant
 highlight! link Number Constant
@@ -110,20 +116,20 @@ highlight! link Include PreProc
 highlight! link Define PreProc
 highlight! link PreCondit PreProc
 
-highlight! link Type Normal
+call s:h('Type', #{fg: s:orange})
 highlight! link StorageClass Keyword
 highlight! link Structure Keyword
 highlight! link Typedef Type
 
 call s:h('Special', #{fg: s:norm_subtle})
-call s:h('SpecialChar', #{fg: s:accent, gui: 'bold'})
+call s:h('SpecialChar', #{fg: s:blue, gui: 'bold'})
 call s:h('Tag', #{fg: s:blue})
 highlight! link Delimiter Special
 call s:h('SpecialComment', #{fg: s:norm_subtle, gui: 'italic', cterm: 'italic'})
 call s:h('Debug', #{fg: s:norm_subtle})
 
 call s:h('Underlined', #{fg: s:norm, gui: 'underline', cterm: 'underline'})
-call s:h('Error', #{fg: s:actual_white, bg: s:red, cterm: 'bold'})
+call s:h('Error', #{fg: s:red, gui: 'bold', cterm: 'bold'})
 highlight! link Todo SpecialComment
 
 " Other Highlights: {{{1
@@ -132,44 +138,42 @@ call s:h('EndOfBuffer', #{fg: s:bg_subtle})
 call s:h('Ignore', #{fg: s:bg_subtle})
 highlight! link Conceal Ignore
 highlight! link Whitespace Ignore
-call s:h('SpecialKey', #{fg: s:blue, gui: 'italic', cterm: 'italic'})
+call s:h('SpecialKey', #{fg: s:pink, gui: 'italic', cterm: 'italic'})
 
-call s:h('Visual', #{fg: s:blue, bg: s:subtle_black})
-call s:h('VisualNOS', #{fg: s:white, bg: s:bg_subtle})
+call s:h('Visual', #{fg: s:bg, bg: s:orange})
+call s:h('VisualNOS', #{fg: s:norm, bg: s:bg_subtle})
 
-call s:h('Search', #{fg: s:accent_contrast, bg: s:accent})
-call s:h('IncSearch', #{fg: s:light_black, bg: s:blue})
-highlight! link CurSearch IncSearch
+call s:h('Search', #{fg: s:bg, bg: s:blue})
+call s:h('IncSearch', #{fg: s:bg, bg: s:orange})
+call s:h('CurSearch', #{fg: s:bg, bg: s:teal})
 
-call s:h('DiffAdd', #{fg: s:green})
-call s:h('DiffDelete', #{fg: s:red})
-call s:h('DiffChange', #{fg: s:yellow})
-call s:h('DiffText', #{gui: 'underline', cterm: 'underline', sp: s:dark_yellow,
-            \          fg: s:dark_yellow})
+call s:h('DiffAdd', #{fg: s:green, bg: s:bg_most_subtle})
+call s:h('DiffChange', #{fg: s:norm, bg: s:bg_most_subtle})
+call s:h('DiffDelete', #{fg: s:red, bg: s:bg_most_subtle})
+call s:h('DiffText', #{fg: s:blue, bg: s:bg_most_subtle})
 
 call s:h('SpellBad', #{gui: 'undercurl', cterm: 'underline', sp: s:red})
-call s:h('SpellCap', #{gui: 'undercurl', cterm: 'underline', sp: s:light_green})
-call s:h('SpellRare', #{gui: 'undercurl', cterm: 'underline', sp: s:pink})
-call s:h('SpellLocal', #{gui: 'undercurl', cterm: 'underline',
-            \            sp: s:dark_green})
+call s:h('SpellCap', #{gui: 'undercurl', cterm: 'underline', sp: s:yellow})
+call s:h('SpellRare', #{gui: 'undercurl', cterm: 'underline', sp: s:teal})
+call s:h('SpellLocal', #{gui: 'undercurl', cterm: 'underline', sp: s:norm})
 
-call s:h('MoreMsg', #{fg: s:medium_gray, gui: 'bold', cterm: 'bold'})
-highlight! link ModeMsg MoreMsg
-call s:h('WarningMsg', #{fg: s:yellow})
 call s:h('ErrorMsg', #{fg: s:red})
+call s:h('WarningMsg', #{fg: s:yellow})
+call s:h('MoreMsg', #{fg: s:norm_subtle, gui: 'bold', cterm: 'bold'})
+highlight! link ModeMsg MoreMsg
 call s:h('Title', #{fg: s:norm_subtle})
-call s:h('Question', #{fg: s:blue})
-call s:h('Directory', #{fg: s:accent})
+call s:h('Question', #{fg: s:teal})
+call s:h('Directory', #{fg: s:blue})
 
 call s:h('CursorLine', #{bg: s:bg_most_subtle})
 highlight! link CursorColumn CursorLine
-call s:h('CursorLineNr', #{fg: s:accent, bg: s:bg_very_subtle})
+call s:h('CursorLineNr', #{fg: s:blue, bg: s:bg_most_subtle})
 call s:h('LineNr', #{fg: s:bg_subtle})
 
 call s:h('ColorColumn', #{bg: s:bg_most_subtle})
-call s:h('SignColumn', #{fg: s:accent})
+call s:h('SignColumn', #{fg: s:blue})
 call s:h('FoldColumn', #{fg: s:bg_subtle})
-call s:h('Folded', #{fg: s:medium_gray})
+call s:h('Folded', #{fg: s:norm_subtle})
 
 call s:h('StatusLine', #{bg: s:bg_most_subtle})
 call s:h('StatusLineNC', #{fg: s:norm_subtle, bg: s:bg_most_subtle})
@@ -208,7 +212,9 @@ highlight! link rustModPath Identifier
 highlight! link rustSelf Keyword
 
 " vim.vim
+highlight! link vimCommentTitle SpecialComment
 highlight! link vimCommentString Comment
+highlight! link vimGroup Normal
 highlight! link vimHiBang Special
 highlight! link vimOperParen Special
 
@@ -230,7 +236,7 @@ call s:h('FloatBorder', #{fg: s:bg_subtle, bg: s:bg_most_subtle})
 " vim.diagnostic
 call s:h('DiagnosticError', #{fg: s:red})
 call s:h('DiagnosticWarn', #{fg: s:yellow})
-call s:h('DiagnosticHint', #{fg: s:blue})
+call s:h('DiagnosticHint', #{fg: s:teal})
 highlight! link DiagnosticInfo Normal
 
 call s:h('DiagnosticUnderlineError', #{gui: 'undercurl', cterm: 'underline',
@@ -238,7 +244,7 @@ call s:h('DiagnosticUnderlineError', #{gui: 'undercurl', cterm: 'underline',
 call s:h('DiagnosticUnderlineWarn', #{gui: 'undercurl', cterm: 'underline',
             \                         sp: s:yellow})
 call s:h('DiagnosticUnderlineHint', #{gui: 'undercurl', cterm: 'underline',
-            \                         sp: s:blue})
+            \                         sp: s:teal})
 call s:h('DiagnosticUnderlineInfo', #{gui: 'undercurl', cterm: 'underline',
             \                         sp: s:norm})
 
@@ -252,7 +258,6 @@ highlight! link @conceal Conceal
 highlight! link @constant.builtin Constant
 highlight! link @constant.comment SpecialComment
 highlight! link @function.macro Identifier
-highlight! link @label Identifier
 highlight! link @macro Identifier
 highlight! link @structure Identifier
 highlight! link @text.note Todo
@@ -296,7 +301,8 @@ highlight! link @lsp.type.typeParameter @type.definition
 highlight! link @lsp.type.variable @variable
 
 highlight! link @lsp.typemod.variable.constant @constant
+highlight! link @lsp.typemod.type.namespace @namespace
 
-call s:h('LspSignatureActiveParameter', #{fg: s:accent})
+call s:h('LspSignatureActiveParameter', #{fg: s:blue})
 
 " vim: et tw=80 sw=4
