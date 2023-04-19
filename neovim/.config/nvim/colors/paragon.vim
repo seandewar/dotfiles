@@ -57,7 +57,12 @@ function! s:h(group, style) abort
             \ 'cterm='   has_key(a:style, 'cterm') ? a:style.cterm    : 'NONE'
 endfunction
 
-call s:h('Normal', #{fg: s:norm, bg: s:bg})
+if get(g:, 'paragon_transparent_bg')
+    call s:h('Normal', #{fg: s:norm})
+else
+    call s:h('Normal', #{fg: s:norm, bg: s:bg})
+endif
+
 " Restore &background's value in case changing Normal changed &background.
 " (`:help :hi-normal-cterm`)
 if &background !=# s:background
@@ -67,7 +72,7 @@ endif
 " Syntax Highlights: (ordered as in `:h group-name`) {{{1
 call s:h('Comment', #{fg: s:norm_most_subtle, gui: 'italic', cterm: 'italic'})
 
-call s:h('Constant', #{fg: s:blue})
+call s:h('Constant', #{fg: s:orange})
 highlight! link String Constant
 highlight! link Character Constant
 highlight! link Number Constant
@@ -96,8 +101,8 @@ highlight! link Structure Keyword
 highlight! link Typedef Type
 
 call s:h('Special', #{fg: s:norm_subtle})
-call s:h('SpecialChar', #{fg: s:blue, gui: 'bold', cterm: 'bold'})
-call s:h('Tag', #{fg: s:orange})
+call s:h('SpecialChar', #{fg: s:orange, gui: 'bold', cterm: 'bold'})
+call s:h('Tag', #{fg: s:blue})
 highlight! link Delimiter Special
 call s:h('SpecialComment', #{fg: s:norm_subtle, gui: 'italic', cterm: 'italic'})
 call s:h('Debug', #{fg: s:norm_subtle})
@@ -117,13 +122,13 @@ call s:h('SpecialKey', #{fg: s:pink, gui: 'italic', cterm: 'italic'})
 call s:h('Visual', #{fg: s:bg, bg: s:teal})
 call s:h('VisualNOS', #{fg: s:norm, bg: s:norm_most_subtle})
 
-call s:h('Search', #{fg: s:bg, bg: s:blue})
-call s:h('IncSearch', #{fg: s:bg, bg: s:orange})
-call s:h('CurSearch', #{fg: s:bg, bg: s:orange})
+call s:h('Search', #{fg: s:bg, bg: s:orange})
+call s:h('IncSearch', #{fg: s:bg, bg: s:blue})
+call s:h('CurSearch', #{fg: s:bg, bg: s:blue})
 
 call s:h('DiffAdd', #{fg: s:teal, bg: s:bg_subtle})
 call s:h('DiffDelete', #{fg: s:red, bg: s:bg_subtle})
-call s:h('DiffText', #{fg: s:orange, bg: s:bg_subtle})
+call s:h('DiffText', #{fg: s:blue, bg: s:bg_subtle})
 call s:h('DiffChange', #{bg: s:bg_subtle})
 
 call s:h('SpellBad', #{gui: 'undercurl', cterm: 'underline', sp: s:red})
@@ -137,15 +142,15 @@ call s:h('MoreMsg', #{fg: s:norm_subtle, gui: 'bold', cterm: 'bold'})
 highlight! link ModeMsg MoreMsg
 call s:h('Title', #{fg: s:norm_subtle})
 call s:h('Question', #{fg: s:teal})
-call s:h('Directory', #{fg: s:blue})
+call s:h('Directory', #{fg: s:orange})
 
 call s:h('CursorLine', #{bg: s:bg_subtle})
 highlight! link CursorColumn CursorLine
-call s:h('CursorLineNr', #{fg: s:blue, bg: s:bg_subtle})
+call s:h('CursorLineNr', #{fg: s:orange, bg: s:bg_subtle})
 call s:h('LineNr', #{fg: s:norm_most_subtle})
 
 call s:h('ColorColumn', #{bg: s:bg_subtle})
-call s:h('SignColumn', #{fg: s:blue})
+call s:h('SignColumn', #{fg: s:orange})
 call s:h('FoldColumn', #{fg: s:norm_most_subtle})
 call s:h('Folded', #{fg: s:norm_subtle})
 
@@ -212,7 +217,7 @@ call s:h('FloatBorder', #{fg: s:norm_most_subtle, bg: s:bg_subtle})
 " vim.diagnostic
 call s:h('DiagnosticError', #{fg: s:red})
 call s:h('DiagnosticWarn', #{fg: s:yellow})
-call s:h('DiagnosticHint', #{fg: s:blue})
+call s:h('DiagnosticHint', #{fg: s:orange})
 highlight! link DiagnosticInfo Normal
 
 call s:h('DiagnosticUnderlineError', #{gui: 'undercurl', cterm: 'underline',
@@ -220,7 +225,7 @@ call s:h('DiagnosticUnderlineError', #{gui: 'undercurl', cterm: 'underline',
 call s:h('DiagnosticUnderlineWarn', #{gui: 'undercurl', cterm: 'underline',
             \                         sp: s:yellow})
 call s:h('DiagnosticUnderlineHint', #{gui: 'undercurl', cterm: 'underline',
-            \                         sp: s:blue})
+            \                         sp: s:orange})
 call s:h('DiagnosticUnderlineInfo', #{gui: 'undercurl', cterm: 'underline',
             \                         sp: s:norm})
 
@@ -283,6 +288,6 @@ highlight! link @lsp.type.variable @variable
 highlight! link @lsp.mod.attribute @attribute
 highlight! link @lsp.typemod.variable.constant @constant
 
-call s:h('LspSignatureActiveParameter', #{fg: s:blue})
+call s:h('LspSignatureActiveParameter', #{fg: s:orange})
 
 " vim: et tw=80 sw=4
