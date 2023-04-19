@@ -11,5 +11,6 @@ echo "moving old zls to $tmpdir/zls-old ..."
 mv ~/.local/bin/zls "$tmpdir/zls-old" || true
 
 echo 'moving new zls to ~/.local/bin/zls ...'
+mkdir -p ~/.local/bin
 mv "$tmpdir/zls-master" ~/.local/bin/zls
 chmod +x ~/.local/bin/zls

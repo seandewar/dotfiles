@@ -44,4 +44,11 @@ echo "moving old zig to $tmpdir/zig-old ..."
 mv ~/.local/lib/zig "$tmpdir/zig-old" || true
 
 echo 'moving new zig to ~/.local/lib/zig ...'
+mkdir -p ~/.local/lib
 mv "$tmpdir/$toplevel_files" ~/.local/lib/zig
+
+if [[ ! -f ~/.local/bin/zig ]]; then
+    echo 'creating symbolic link at ~/.local/bin/zig ...'
+    mkdir -p ~/.local/bin
+    ln -s ~/.local/lib/zig/zig ~/.local/bin/zig
+fi
