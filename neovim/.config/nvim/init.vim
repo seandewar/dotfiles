@@ -21,13 +21,14 @@ set backspace=indent,eol,start
 set belloff=all
 set showbreak=>
 set cinoptions+=:0,g0,N-s,j1
+set completeopt=menu,menuone
 set display+=lastline
 set encoding=utf-8
 set foldlevelstart=99 foldmethod=marker
 set formatoptions=croqnlj
-set guioptions=M  " Can't be in gvimrc; has to be before :syntax on/:filetype on
+set guioptions=M  " Has to be before :filetype/syntax on, so not in the gvimrc
 set hidden
-set incsearch ignorecase smartcase hlsearch
+set incsearch ignorecase smartcase hlsearch | nohlsearch
 set nojoinspaces
 set list listchars=tab:_\ ,trail:.,nbsp:~,extends:>,precedes:<
 set mouse=a mousemodel=popup nomousehide
@@ -46,32 +47,16 @@ set title
 set wildmenu wildmode=list:longest,full
 let &wrap = &columns < 100
 
+" Prefer ripgrep over grep
+if executable('rg')
+    set grepprg=rg\ --vimgrep
+endif
+
 " A Vim bug causes glob expansion to fail with 'wildignorecase' if a parent
 " directory lacks read perms (neovim#6787). This messes up netrw on Termux.
 if !has('termux')
     set wildignorecase
 end
-
-" Lazy redrawing can cause glitchiness (e.g: my <C-W> mapping for Nvim's
-" terminal not clearing "-- TERMINAL --" with 'showmode'). As Nvim aims to make
-" lazyredraw a no-op in the future after optimizing redraws, disable it for Nvim
-if !has('nvim')
-    set lazyredraw
-endif
-
-filetype plugin indent on
-syntax enable
-nohlsearch  " Setting 'hlsearch' above shows old highlights; disable them again
-
-set completeopt=menu,menuone
-if !has('nvim')
-    set completeopt+=popup
-endif
-
-" Prefer ripgrep over grep
-if executable('rg')
-    set grepprg=rg\ --vimgrep
-endif
 
 " 16-bit true colour is available if Win32 virtual console support is active.
 " If we're using Nvim, turn it on anyway as tgc tends to "Just Work" (TM)
@@ -79,9 +64,17 @@ if has('nvim') || has('vcon')
     set termguicolors
 endif
 
-" Don't crowd working dirs with swap, persistent undo & other files; use the
-" user runtime directory instead. Nvim already does this by default.
 if !has('nvim')
+    " Vim supports using popup windows for completion previews.
+    set completeopt+=popup
+
+    " Lazy redrawing can leave stale stuff on the screen (e.g: my Nvim terminal
+    " <C-W> mapping not clearing "-- TERMINAL --" with 'showmode'). As Nvim aims
+    " to make it a no-op after optimizing redraws, don't enable it for Nvim.
+    set lazyredraw
+
+    " Don't crowd working dirs with swap, persistent undo & other files; use the
+    " user runtime directory instead. Nvim already does this by default.
     silent! call mkdir($MYVIMRUNTIME .. '/swap', 'p')
     silent! call mkdir($MYVIMRUNTIME .. '/undo', 'p')
     silent! call mkdir($MYVIMRUNTIME .. '/backup', 'p')
@@ -90,6 +83,10 @@ if !has('nvim')
     set undodir& undodir^=$MYVIMRUNTIME/undo
     set backupdir=.,$MYVIMRUNTIME/backup
     set viminfofile=$MYVIMRUNTIME/viminfo
+
+    " Nvim enables filetype detection and syntax highlighting by default.
+    filetype plugin indent on
+    syntax enable
 endif
 
 function! s:UpdateColorColumn() abort
@@ -121,7 +118,7 @@ if has('nvim')
         autocmd!
         autocmd TermOpen * normal! G
         " NOTE: Do not use TermLeave! It requires a defer to move the cursor,
-        " and even worse: it fires AFTER TermClose if the job exited; wtf?
+        " and even worse, it fires AFTER TermClose if the job exited... wtf?
         autocmd ModeChanged t:nt normal! G
     augroup END
 endif
@@ -141,12 +138,15 @@ function! ConfStlQfTitle() abort
 endfunction
 
 let g:conf_statusline_components = #{
-            \ main: '%(%w %)%(%f %)%(%{ConfStlQfTitle()} %)%([%M%R] %)%(%y %)',
-            \ spell: '%([%{&spell ? &spelllang : ''''}] %)',
+            \ main: '%(%w %)%(%{expand(''%:~:.'')} %)' ..
+            \       '%(%{ConfStlQfTitle()} %)' ..
+            \       '%([%M%R%{&binary ? '',BIN'' : ''''}' ..
+            \       '%{!empty(&filetype) ? '','' .. &filetype : ''''}' ..
+            \       '%{&spell ? '','' .. &spelllang : ''''}] %)',
             \ ruler: '%=%(%l,%c%V | %P%)',
             \ }
 let g:conf_statusline_order =
-            \ ['main', 'spell', 'git', 'diagnostic', 'lsp', 'ruler']
+            \ ['main', 'git', 'diagnostic', 'lsp', 'ruler']
 
 function! ConfStatusLine() abort
     let parts = copy(g:conf_statusline_order)
@@ -169,14 +169,9 @@ function! ConfTabLabel(tabnum) abort
             break
         endif
     endfor
+
     let winnum = tabpagewinnr(a:tabnum)
-    let bufname = expand('#' .. buffers[winnum - 1] .. ':t')
-
-    " Default to the working directory's tail component if empty
-    if empty(bufname)
-        let bufname = fnamemodify(getcwd(winnum, a:tabnum), ':t')
-    endif
-
+    let bufname = pathshorten(expand('#' .. buffers[winnum - 1] .. ':p:~'))
     return a:tabnum .. (empty(bufname) ? '' : ' ') .. bufname
                 \   .. (modified ? ' +' : '')
 endfunction
@@ -213,25 +208,32 @@ nnoremap <silent> <F2> <Cmd>setlocal spell!<CR>
 inoremap <silent> <F2> <Cmd>setlocal spell!<CR>
 nnoremap <silent> <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 nnoremap <silent> gV `[v`]
-" K is overridden by LSP for Hover, but sometimes 'keywordprg' is useful.
+
+" I override K for LSP Hover, but sometimes 'keywordprg' is useful.
 nnoremap <silent> gK K
 
-" Disable suspend mapping for Nvim on Windows as there's no way to resume!
-if has('nvim') && has('win32')
-    nnoremap <silent> <C-Z> <NOP>
-endif
-
-" Nvim 0.6 makes Y more sensible (y$), but I'm used to the default behaviour
 if has('nvim')
+    tnoremap <silent> <C-W> <C-\><C-N><C-W>
+
+    " Nvim 0.6 makes Y more sensible (y$), but I'm used to the default behaviour
     silent! unmap Y
+
+    " Disable suspend mapping for Nvim on Windows as there's no way to resume!
+    if has('win32')
+        nnoremap <silent> <C-Z> <NOP>
+    endif
 endif
 
 " Argument list {{{2
-nnoremap <silent> ]a <Cmd>next<CR>
-nnoremap <silent> [a <Cmd>previous<CR>
+nnoremap <silent> ]a <Cmd>next<Bar>args<CR>
+nnoremap <silent> [a <Cmd>previous<Bar>args<CR>
 
-" Buffers, Find, Grep, ... {{{2
+" Buffers {{{2
+nnoremap <silent> ]b <Cmd>bnext<CR>2<C-G>
+nnoremap <silent> [b <Cmd>bprevious<CR>2<C-G>
 nnoremap <Leader>fb :buffer<Space>
+
+" Find, Grep, ... {{{2
 nnoremap <Leader>ff :find<Space>
 nnoremap <Leader>fg :grep<Space>
 nnoremap <Leader>ft :tjump<Space>
@@ -247,8 +249,3 @@ nnoremap <silent> ]l <Cmd>lnext<CR>zv
 nnoremap <silent> [l <Cmd>lprevious<CR>zv
 nnoremap <silent> ]L <Cmd>lnewer<CR>
 nnoremap <silent> [L <Cmd>lolder<CR>
-
-" Neovim Terminal {{{2
-if has('nvim')
-    tnoremap <silent> <C-W> <C-\><C-N><C-W>
-endif
