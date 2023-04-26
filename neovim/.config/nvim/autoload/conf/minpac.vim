@@ -14,6 +14,9 @@ function! conf#minpac#ensure_init() abort
     call minpac#init(#{dir: dir, progress_open: 'none', status_auto: 1})
     call minpac#add('k-takata/minpac', #{type: 'opt'})
 
+    " Colour scheme
+    call minpac#add('seandewar/paragon.vim')
+
     " General plugins
     call minpac#add('sbdchd/neoformat')
     call minpac#add('tpope/vim-commentary')
