@@ -47,9 +47,8 @@ local function statusline(curwin, stlwin)
     return "[" .. last_progress_text .. "] "
   end
 
-  local clients = vim.tbl_values(
-    lsp.buf_get_clients(api.nvim_win_get_buf(stlwin))
-  )
+  local clients =
+    vim.tbl_values(lsp.buf_get_clients(api.nvim_win_get_buf(stlwin)))
   if #clients == 0 then
     return ""
   elseif #clients == 1 then

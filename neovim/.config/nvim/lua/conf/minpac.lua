@@ -35,3 +35,6 @@ opt(
   "glacambre/firenvim",
   { ["do"] = "packadd firenvim | call firenvim#install(0)" }
 )
+
+-- TOP SECRET
+start "echasnovski/neovim-default-colorscheme"
