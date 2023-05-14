@@ -10,10 +10,8 @@ local echomsg = util.echomsg
 lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
   border = "single",
 })
-lsp.handlers["textDocument/signatureHelp"] = lsp.with(
-  lsp.handlers.signature_help,
-  { border = "single" }
-)
+lsp.handlers["textDocument/signatureHelp"] =
+  lsp.with(lsp.handlers.signature_help, { border = "single" })
 
 local function formatting_handler(err, result, ctx, config)
   if err then

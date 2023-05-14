@@ -14,6 +14,12 @@ lspconfig.util.default_config =
     end,
   })
 
+-- TODO: Mitigate bugs from the LibUV bump that may cause Nvim to hang on exit
+-- or for job spawning to fail from having too many polled files.
+local capabilities = lsp.protocol.make_client_capabilities()
+capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+lspconfig.util.default_config.capabilities = capabilities
+
 local function setup(config_name, config)
   config = config or {}
   -- It is recommended that the default `on_new_config` is also called when
@@ -36,7 +42,7 @@ setup "clangd"
 setup "zls"
 
 setup("rust_analyzer", {
-  -- Use `on_new_config` so we don't check for clippy during startup.
+  -- Use `on_new_config` to avoid doing this logic at startup.
   on_new_config = function(config, _)
     fn.system { "cargo", "clippy", "--version" }
     if vim.v.shell_error == 0 then
