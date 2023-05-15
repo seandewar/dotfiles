@@ -138,7 +138,7 @@ function! ConfStlQfTitle() abort
 endfunction
 
 let g:conf_statusline_components = #{
-            \ main: '%(%w %)%(%{expand(''%:~:.'')} %)' ..
+            \ main: '%(%w %)%(%q %)%(%{expand(''%:~:.'')} %)' ..
             \       '%(%{ConfStlQfTitle()} %)' ..
             \       '%([%M%R%{&binary ? '',BIN'' : ''''}' ..
             \       '%{!empty(&filetype) ? '','' .. &filetype : ''''}' ..
