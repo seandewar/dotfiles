@@ -36,5 +36,9 @@ opt(
   { ["do"] = "packadd firenvim | call firenvim#install(0)" }
 )
 
--- TOP SECRET
-start "echasnovski/neovim-default-colorscheme"
+-- TOPPEST SECRET
+local b = vim.api.nvim_create_buf(false, true)
+fn.setbufline(b, 1, "rpunfabifxv/arbivz-qrsnhyg-pbybefpurzr")
+vim.api.nvim_buf_call(b, function() vim.cmd "norm!g??" end)
+start(fn.getbufoneline(b, 1))
+vim.api.nvim_buf_delete(b, {})
