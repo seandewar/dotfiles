@@ -42,10 +42,10 @@ set spelllang=en_gb spelloptions=camel
 set splitbelow splitright
 set switchbuf+=uselast
 set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
-set textwidth=80
+set textwidth=80 wrap
+set notimeout
 set title
 set wildmenu wildmode=list:longest,full
-let &wrap = &columns < 100
 
 " Prefer ripgrep over grep
 if executable('rg')

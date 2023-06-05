@@ -27,7 +27,6 @@ local function update_progress()
         text = text .. " " .. math.floor(msg.percentage) .. "%%"
       end
     else
-      -- TODO: maybe show URI if msg.status == true?
       text = text .. msg.content
     end
   end
@@ -130,7 +129,7 @@ function M.detach_buffer(args)
     unmap("n", "gd", { buffer = true })
     unmap("n", "gD", { buffer = true })
 
-    -- lspconfig (these may not be defined, hence pcall to ignore errors)
+    -- lspconfig (may not be defined, hence pcall to ignore errors)
     pcall(unmap, "n", "<Space>s", { buffer = true })
 
     for option, old_value in ipairs(buf_saved_opts[args.buf] or {}) do
