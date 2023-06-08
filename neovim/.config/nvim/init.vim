@@ -131,6 +131,22 @@ let g:c_no_curly_error = 1  " Don't show [{}] as an error; it's valid C++11
 let g:markdown_folding = 1
 let g:rustfmt_autosave = 1
 
+" With 'hidden' set, netrw buffers may have no name. This is because netrw does
+" not modify the empty buffer created by Vim when opening a directory, but
+" instead opens a new listing buffer and tries to set its name to that of the
+" empty buffer, which fails when 'hidden' is set:
+" https://github.com/neovim/neovim/issues/17841#issuecomment-1504079552.
+function s:FixNetrwBufName() abort
+    let dir_bufnr = bufnr(b:netrw_curdir)
+    if dir_bufnr == bufnr() | return | endif  " Already has the correct name.
+    execute 'bwipeout' dir_bufnr '| file' b:netrw_curdir
+endfunction
+
+augroup conf_netrw_bufname_fix
+    autocmd!
+    autocmd FileType netrw call s:FixNetrwBufName()
+augroup END
+
 " Status Line Settings {{{1
 function! ConfStlQfTitle() abort
     let title = get(w:, 'quickfix_title', '')
