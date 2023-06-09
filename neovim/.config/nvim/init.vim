@@ -1,14 +1,11 @@
-if !has('patch-8.2.2434') && !has('nvim-0.8')
+if !has('patch-8.2.2434') && !has('nvim-0.10')
     echohl WarningMsg
     echo 'init.vim may not work with this version of (Neo)Vim!'
     echohl None
 end
 
-" Enable Nvim 0.9+'s new (experimental) Lua loader, which byte-compiles and
-" caches Lua files. Enable it for v0.10+, just to make sure it's more stable.
-if has('nvim-0.10')
-    lua vim.loader.enable()
-endif
+" Enable the experimental Lua loader, which byte-compiles and caches Lua files.
+lua vim.loader.enable()
 
 " Set $MYVIMRC and $MYVIMRUNTIME for easy access, resolving symlinks {{{1
 let $MYVIMRC = resolve($MYVIMRC)
@@ -137,7 +134,7 @@ let g:rustfmt_autosave = 1
 " empty buffer, which fails when 'hidden' is set:
 " https://github.com/neovim/neovim/issues/17841#issuecomment-1504079552.
 function s:FixNetrwBufName() abort
-    let dir_bufnr = bufnr(b:netrw_curdir)
+    let dir_bufnr = bufnr('^' .. b:netrw_curdir .. '$')
     if dir_bufnr == bufnr() | return | endif  " Already has the correct name.
     execute 'bwipeout' dir_bufnr '| file' b:netrw_curdir
 endfunction

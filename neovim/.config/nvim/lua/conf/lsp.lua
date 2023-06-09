@@ -9,25 +9,21 @@ local M = {}
 
 local last_progress_text = ""
 
-local function update_progress()
-  local new_msgs = lsp.util.get_progress_messages()
-  local msg = new_msgs[#new_msgs]
+local function update_progress(opts)
+  local client = lsp.get_client_by_id(opts.data.client_id)
+  if not client then
+    return
+  end
 
   local text = ""
-  if msg and not msg.done then
-    text = msg.name .. ": "
-
-    if msg.progress then
-      text = text .. msg.title
-
-      if msg.message then
-        text = text .. " " .. msg.message
-      end
-      if msg.percentage then
-        text = text .. " " .. math.floor(msg.percentage) .. "%%"
-      end
-    else
-      text = text .. msg.content
+  local msg = opts.data.result.value
+  if msg.kind ~= "end" then
+    text = client.name .. ": " .. msg.title
+    if msg.message then
+      text = text .. " " .. msg.message
+    end
+    if msg.percentage then
+      text = text .. " " .. math.floor(msg.percentage) .. "%%"
     end
   end
 
@@ -35,9 +31,8 @@ local function update_progress()
   vim.cmd.redrawstatus()
 end
 
-api.nvim_create_autocmd("User", {
+api.nvim_create_autocmd("LspProgress", {
   group = api.nvim_create_augroup("conf_lsp_progress", {}),
-  pattern = "LspProgressUpdate",
   callback = update_progress,
 })
 
