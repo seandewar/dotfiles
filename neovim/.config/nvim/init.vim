@@ -1,11 +1,15 @@
 if !has('patch-8.2.2434') && !has('nvim-0.10')
     echohl WarningMsg
-    echo 'init.vim may not work with this version of (Neo)Vim!'
+    echo 'seandewar''s init.vim may not work with this version of (Neo)Vim!'
     echohl None
 end
 
-" Enable the experimental Lua loader, which byte-compiles and caches Lua files.
-lua vim.loader.enable()
+" Enable Nvim's experimental Lua loader, which byte-compiles and caches Lua
+" files. Easiest to keep this near the top, in case some Lua files are ever
+" implicitly loaded from our actions below.
+if has('nvim')
+    lua vim.loader.enable()
+end
 
 " Set $MYVIMRC and $MYVIMRUNTIME for easy access, resolving symlinks {{{1
 let $MYVIMRC = resolve($MYVIMRC)
@@ -13,55 +17,62 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
                   \ : expand(has('win32') ? '~/vimfiles' : '~/.vim'))
 
 " General Settings {{{1
-set autoread
-set backspace=indent,eol,start
-set belloff=all
 set showbreak=>
 set cinoptions+=:0,g0,N-s,j1
 set completeopt=menu,menuone
-set display+=lastline
-set encoding=utf-8
 set foldlevelstart=99 foldmethod=marker
 set formatoptions=croqnlj
-set guioptions=M  " Has to be before :filetype/syntax on, so not in the gvimrc
-set hidden
-set incsearch ignorecase smartcase hlsearch | nohlsearch
-set nojoinspaces
+set guioptions=M  " Has to be before ":filetype/syntax on", so not in the gvimrc
+set ignorecase smartcase
 set list listchars=tab:_\ ,trail:.,nbsp:~,extends:>,precedes:<
-set mouse=a mousemodel=popup nomousehide
-set nrformats-=octal
+set mouse=a
 set path& | let &path ..= '**'  " Use :let..=, as 'path' already ends in a comma
 set pumheight=12
 set scrolloff=1 sidescroll=5
-set sessionoptions-=options viewoptions-=options
-set shortmess+=IF shortmess-=S
+set shortmess+=I
 set spelllang=en_gb spelloptions=camel
 set splitbelow splitright
-set switchbuf+=uselast
-set tabstop=8 softtabstop=4 shiftwidth=4 autoindent expandtab smarttab
-set textwidth=80 wrap
+set softtabstop=4 shiftwidth=4 expandtab
+set textwidth=80
 set notimeout
 set title
-set wildmenu wildmode=list:longest,full
+set wildmode=list:longest,full
 
-" Prefer ripgrep over grep
-if executable('rg')
-    set grepprg=rg\ --vimgrep
-endif
+if has('nvim')
+    " Nvim's terminal doesn't automatically tail to the output.
+    " Make sure the cursor is on the last line so it does.
+    augroup conf_terminal_tailing
+        autocmd!
+        autocmd TermOpen * call cursor('$', 1)
+        " NOTE: Do not use TermLeave! It requires a defer to move the cursor,
+        " and even worse, it fires AFTER TermClose if the job exited... wtf?
+        autocmd ModeChanged t:nt call cursor('$', 1)
+    augroup END
 
-" A Vim bug causes glob expansion to fail with 'wildignorecase' if a parent
-" directory lacks read perms (neovim#6787). This messes up netrw on Termux.
-if !has('termux')
-    set wildignorecase
-end
+    " Nvim conveniently supports highlighting the yanked selection.
+    augroup conf_highlight_yanked
+        autocmd!
+        autocmd TextYankPost * lua vim.highlight.on_yank()
+    augroup END
+else
+    " Nvim already sets these values by default.
+    set autoindent smarttab
+    set autoread
+    set backspace=indent,eol,start
+    set belloff=all
+    set display+=lastline
+    set encoding=utf-8
+    set hidden
+    set incsearch hlsearch | nohlsearch
+    set nojoinspaces
+    set mousemodel=popup_setpos
+    set nrformats-=octal
+    set sessionoptions-=options viewoptions-=options
+    set shortmess+=F shortmess-=S
+    set switchbuf+=uselast
+    set ttimeout ttimeoutlen=50
+    set wildmenu
 
-" 16-bit true colour is available if Win32 virtual console support is active.
-" If we're using Nvim, turn it on anyway as tgc tends to "Just Work" (TM)
-if has('nvim') || has('vcon')
-    set termguicolors
-endif
-
-if !has('nvim')
     " Vim supports using popup windows for completion previews.
     set completeopt+=popup
 
@@ -71,7 +82,7 @@ if !has('nvim')
     set lazyredraw
 
     " Don't crowd working dirs with swap, persistent undo & other files; use the
-    " user runtime directory instead. Nvim already does this by default.
+    " user runtime directory instead. Nvim does this by default.
     silent! call mkdir($MYVIMRUNTIME .. '/swap', 'p')
     silent! call mkdir($MYVIMRUNTIME .. '/undo', 'p')
     silent! call mkdir($MYVIMRUNTIME .. '/backup', 'p')
@@ -85,6 +96,23 @@ if !has('nvim')
     filetype plugin indent on
     syntax enable
 endif
+
+" 16-bit true colour is available if Win32 virtual console support is active.
+" If we're using Nvim, turn it on anyway as 'tgc' tends to "Just Work" (TM).
+if has('nvim') || has('vcon')
+    set termguicolors
+endif
+
+" Prefer ripgrep over grep
+if executable('rg')
+    set grepprg=rg\ --vimgrep
+endif
+
+" A Vim bug causes glob expansion to fail with 'wildignorecase' if a parent
+" directory lacks read perms (neovim#6787). This messes up netrw on Termux.
+if !has('termux')
+    set wildignorecase
+end
 
 function! s:UpdateColorColumn() abort
     let &colorcolumn = &modifiable ? '+1' : ''
@@ -107,18 +135,6 @@ augroup conf_auto_quickfix
     autocmd!
     autocmd VimEnter * ++nested cwindow
 augroup END
-
-" Neovim's terminal doesn't automatically tail to the output.
-" Make sure the cursor is on the last line so it does.
-if has('nvim')
-    augroup conf_terminal_tailing
-        autocmd!
-        autocmd TermOpen * call cursor('$', 1)
-        " NOTE: Do not use TermLeave! It requires a defer to move the cursor,
-        " and even worse, it fires AFTER TermClose if the job exited... wtf?
-        autocmd ModeChanged t:nt call cursor('$', 1)
-    augroup END
-endif
 
 " Distributed Plugin Settings {{{1
 packadd cfilter
@@ -147,7 +163,7 @@ augroup END
 " Status Line Settings {{{1
 function! ConfStlQfTitle() abort
     let title = get(w:, 'quickfix_title', '')
-    return title !=# ':setqflist()' && title!=# ':setloclist()' ? title : ''
+    return title !=# ':setqflist()' && title !=# ':setloclist()' ? title : ''
 endfunction
 
 let g:conf_statusline_components = #{
@@ -228,7 +244,7 @@ nnoremap <silent> gK K
 if has('nvim')
     tnoremap <silent> <C-W> <C-\><C-N><C-W>
 
-    " Nvim 0.6 makes Y more sensible (y$), but I'm used to the default behaviour
+    " Nvim 0.6 makes Y sensible (y$), but I'm used to the default behaviour.
     silent! unmap Y
 
     " Disable suspend mapping for Nvim on Windows as there's no way to resume!

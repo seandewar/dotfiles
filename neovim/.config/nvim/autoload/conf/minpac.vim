@@ -1,8 +1,5 @@
 function! conf#minpac#ensure_init() abort
-    if exists('s:initialized')
-        return
-    endif
-
+    if exists('s:initialized') | return | endif
     packadd minpac
     if !exists('g:loaded_minpac')
         echohl ErrorMsg | echo 'minpac is not installed!' | echohl None
@@ -31,14 +28,13 @@ function! conf#minpac#ensure_init() abort
     call minpac#add('tpope/vim-fugitive')
     call minpac#add('tpope/vim-rhubarb')
 
-    " Filetypes and language support
+    " Extra filetypes and language support
     call minpac#add('rust-lang/rust.vim')
     call minpac#add('ziglang/zig.vim')
 
-    " Neovim plugins
+    " Nvim plugins
     if has('nvim')
         lua require "conf.minpac"
     endif
-
     let s:initialized = 1
 endfunction
