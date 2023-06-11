@@ -113,10 +113,10 @@ augroup END
 if has('nvim')
     augroup conf_terminal_tailing
         autocmd!
-        autocmd TermOpen * normal! G
+        autocmd TermOpen * call cursor('$', 1)
         " NOTE: Do not use TermLeave! It requires a defer to move the cursor,
         " and even worse, it fires AFTER TermClose if the job exited... wtf?
-        autocmd ModeChanged t:nt normal! G
+        autocmd ModeChanged t:nt call cursor('$', 1)
     augroup END
 endif
 
@@ -124,7 +124,7 @@ endif
 packadd cfilter
 
 let g:qf_disable_statusline = 1
-let g:c_no_curly_error = 1  " Don't show [{}] as an error; it's valid C++11
+let g:c_no_curly_error = 1  " Don't show "[{}]" as an error; it's valid C++11
 let g:markdown_folding = 1
 let g:rustfmt_autosave = 1
 
