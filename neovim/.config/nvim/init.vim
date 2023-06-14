@@ -233,33 +233,33 @@ command! -bar RuntimeDir call s:TabEditDir($VIMRUNTIME)
 
 " Mappings {{{1
 " General Mappings {{{2
-nnoremap <silent> <F2> <Cmd>setlocal spell!<CR>
-inoremap <silent> <F2> <Cmd>setlocal spell!<CR>
-nnoremap <silent> <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
-nnoremap <silent> gV `[v`]
+nnoremap <F2> <Cmd>setlocal spell!<CR>
+inoremap <F2> <Cmd>setlocal spell!<CR>
+nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
+nnoremap gV `[v`]
 
 " I override K for LSP Hover, but sometimes 'keywordprg' is useful.
-nnoremap <silent> gK K
+nnoremap gK K
 
 if has('nvim')
-    tnoremap <silent> <C-W> <C-\><C-N><C-W>
+    tnoremap <C-W> <C-\><C-N><C-W>
 
     " Nvim 0.6 makes Y sensible (y$), but I'm used to the default behaviour.
     silent! unmap Y
 
     " Disable suspend mapping for Nvim on Windows as there's no way to resume!
     if has('win32')
-        nnoremap <silent> <C-Z> <NOP>
+        nnoremap <C-Z> <NOP>
     endif
 endif
 
 " Argument list {{{2
-nnoremap <silent> ]a <Cmd>next<Bar>args<CR>
-nnoremap <silent> [a <Cmd>previous<Bar>args<CR>
+nnoremap ]a <Cmd>next<Bar>args<CR>
+nnoremap [a <Cmd>previous<Bar>args<CR>
 
 " Buffers {{{2
-nnoremap <silent> ]b <Cmd>bnext<CR>2<C-G>
-nnoremap <silent> [b <Cmd>bprevious<CR>2<C-G>
+nnoremap ]b <Cmd>bnext<CR>2<C-G>
+nnoremap [b <Cmd>bprevious<CR>2<C-G>
 nnoremap <Leader>fb :buffer<Space>
 
 " Find, Grep, ... {{{2
@@ -269,12 +269,12 @@ nnoremap <Leader>ft :tjump<Space>
 nnoremap <Leader>fo <Cmd>browse oldfiles<CR>
 
 " QuickFix and Location lists {{{2
-nnoremap <silent> ]c <Cmd>cnext<CR>zv
-nnoremap <silent> [c <Cmd>cprevious<CR>zv
-nnoremap <silent> ]C <Cmd>cnewer<CR>
-nnoremap <silent> [C <Cmd>colder<CR>
+nnoremap ]c <Cmd>cnext<CR>zv
+nnoremap [c <Cmd>cprevious<CR>zv
+nnoremap ]C <Cmd>cnewer<CR>
+nnoremap [C <Cmd>colder<CR>
 
-nnoremap <silent> ]l <Cmd>lnext<CR>zv
-nnoremap <silent> [l <Cmd>lprevious<CR>zv
-nnoremap <silent> ]L <Cmd>lnewer<CR>
-nnoremap <silent> [L <Cmd>lolder<CR>
+nnoremap ]l <Cmd>lnext<CR>zv
+nnoremap [l <Cmd>lprevious<CR>zv
+nnoremap ]L <Cmd>lnewer<CR>
+nnoremap [L <Cmd>lolder<CR>
