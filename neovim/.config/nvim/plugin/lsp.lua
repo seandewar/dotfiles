@@ -10,8 +10,10 @@ local echomsg = util.echomsg
 lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
   border = "single",
 })
-lsp.handlers["textDocument/signatureHelp"] =
-  lsp.with(lsp.handlers.signature_help, { border = "single" })
+lsp.handlers["textDocument/signatureHelp"] = lsp.with(
+  lsp.handlers.signature_help,
+  { border = "single" }
+)
 
 local function formatting_handler(err, result, ctx, config)
   if err then
@@ -51,6 +53,14 @@ api.nvim_create_autocmd("LspDetach", {
     require("conf.lsp").detach_buffer(args)
   end,
 })
+
+map("n", "<Space>h", function()
+  -- FIXME: this works around a bug where enabling inlay hints in an unsupported
+  -- buffer shows decoration provider errors.
+  if #lsp.get_active_clients { bufnr = 0 } ~= 0 then
+    lsp.buf.inlay_hint(0)
+  end
+end, { desc = "LSP Toggle Inlay Hints" })
 
 map({ "n", "i" }, "<C-K>", lsp.buf.signature_help, {
   desc = "LSP Signature Help",
