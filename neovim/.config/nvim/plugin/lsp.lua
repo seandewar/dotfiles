@@ -10,10 +10,8 @@ local echomsg = util.echomsg
 lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
   border = "single",
 })
-lsp.handlers["textDocument/signatureHelp"] = lsp.with(
-  lsp.handlers.signature_help,
-  { border = "single" }
-)
+lsp.handlers["textDocument/signatureHelp"] =
+  lsp.with(lsp.handlers.signature_help, { border = "single" })
 
 local function formatting_handler(err, result, ctx, config)
   if err then
@@ -55,12 +53,28 @@ api.nvim_create_autocmd("LspDetach", {
 })
 
 map("n", "<Space>h", function()
-  -- FIXME: this works around a bug where enabling inlay hints in an unsupported
-  -- buffer shows decoration provider errors.
-  if #lsp.get_active_clients { bufnr = 0 } ~= 0 then
-    lsp.buf.inlay_hint(0)
+  -- Handle toggling ourselves, as there's no public API for checking its
+  -- current state to use for echoing (it's not always obvious whether or not
+  -- the hints are on; e.g: if there's no hints reported).
+  if
+    vim.b.conf_inlay_hint_on
+    or vim.iter(lsp.get_active_clients { bufnr = 0 }):any(function(client)
+      return client.supports_method "textDocument/inlayHint"
+    end)
+  then
+    local enable = not vim.b.conf_inlay_hint_on
+    lsp.buf.inlay_hint(0, enable)
+    vim.b.conf_inlay_hint_on = enable
+    echo("Buffer inlay hints " .. (enable and "enabled" or "disabled"))
+  else
+    echo {
+      {
+        "No language servers attached to this buffer support inlay hints",
+        "WarningMsg",
+      },
+    }
   end
-end, { desc = "LSP Toggle Inlay Hints" })
+end, { desc = "LSP Toggle Buffer Inlay Hints" })
 
 map({ "n", "i" }, "<C-K>", lsp.buf.signature_help, {
   desc = "LSP Signature Help",
