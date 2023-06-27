@@ -151,7 +151,8 @@ let g:rustfmt_autosave = 1
 " https://github.com/neovim/neovim/issues/17841#issuecomment-1504079552.
 function s:FixNetrwBufName() abort
     let dir_bufnr = bufnr('^' .. b:netrw_curdir .. '$')
-    if dir_bufnr == bufnr() | return | endif  " Already has the correct name.
+    " Not found for some reason or already has the correct name.
+    if dir_bufnr == -1 || dir_bufnr == bufnr() | return | endif
     execute 'bwipeout' dir_bufnr '| file' b:netrw_curdir
 endfunction
 
@@ -161,13 +162,27 @@ augroup conf_netrw_bufname_fix
 augroup END
 
 " Status Line Settings {{{1
+function! ConfStlBufName(tp_bufnum = '') abort
+    if a:tp_bufnum == ''
+        let name = expand('%:p:~:.')
+    else
+        let name = pathshorten(expand('#' .. a:tp_bufnum .. ':p:~'))
+    endif
+    if !empty(name) | return name | endif
+
+    let buftype = getbufvar(a:tp_bufnum, '&buftype')
+    if buftype ==# 'prompt' | return '[Prompt]' | endif
+    return buftype =~# '^\%(nofile\|acwrite\|terminal\)$' ? '[Scratch]'
+                \                                         : '[No Name]'
+endfunction
+
 function! ConfStlQfTitle() abort
     let title = get(w:, 'quickfix_title', '')
     return title !=# ':setqflist()' && title !=# ':setloclist()' ? title : ''
 endfunction
 
 let g:conf_statusline_components = #{
-            \ main: '%(%w %)%(%q %)%(%{expand(''%:~:.'')} %)' ..
+            \ main: '%(%w %)%(%q %)%(%{ConfStlBufName()} %)' ..
             \       '%(%{ConfStlQfTitle()} %)' ..
             \       '%([%M%R%{&binary ? '',BIN'' : ''''}' ..
             \       '%{!empty(&filetype) ? '','' .. &filetype : ''''}' ..
@@ -198,10 +213,8 @@ function! ConfTabLabel(tabnum) abort
             break
         endif
     endfor
-
     let winnum = tabpagewinnr(a:tabnum)
-    let bufname = pathshorten(expand('#' .. buffers[winnum - 1] .. ':p:~'))
-    return a:tabnum .. (empty(bufname) ? '' : ' ') .. bufname
+    return a:tabnum .. ' ' .. ConfStlBufName(buffers[winnum - 1])
                 \   .. (modified ? ' +' : '')
 endfunction
 
@@ -238,7 +251,7 @@ inoremap <F2> <Cmd>setlocal spell!<CR>
 nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 nnoremap gV `[v`]
 
-" I override K for LSP Hover, but sometimes 'keywordprg' is useful.
+" Just in case K is overridden for LSP Hover; 'keywordprg' is sometimes useful.
 nnoremap gK K
 
 if has('nvim')
