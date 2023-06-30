@@ -63,7 +63,7 @@ map("n", "<Space>h", function()
     end)
   then
     local enable = not vim.b.conf_inlay_hint_on
-    lsp.buf.inlay_hint(0, enable)
+    lsp.inlay_hint(0, enable)
     vim.b.conf_inlay_hint_on = enable
     echo("Buffer inlay hints " .. (enable and "enabled" or "disabled"))
   else
