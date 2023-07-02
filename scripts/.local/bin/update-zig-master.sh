@@ -7,8 +7,8 @@ echo "downloading metadata from $url ..."
 metadata=$(wget -nv $url -O - | jq '.master')
 zig_version=$(echo "$metadata" | jq -r '.version')
 echo "zig master (precompiled) version is $zig_version"
-if type ~/.local/lib/zig/zig >/dev/null 2>&1; then
-    installed_zig_version=$(~/.local/lib/zig/zig version)
+if type ~/.local/share/zig/zig >/dev/null 2>&1; then
+    installed_zig_version=$(~/.local/share/zig/zig version)
     echo "installed version is $installed_zig_version"
     if [ "$installed_zig_version" == "$zig_version" ]; then
         echo 'latest version is already installed; nothing to do'
@@ -41,14 +41,14 @@ echo "extracting archive to $tmpdir/zig-master ..."
 tar -C "$tmpdir" -xvf "$tmpdir/zig-master"
 
 echo "moving old zig to $tmpdir/zig-old ..."
-mv ~/.local/lib/zig "$tmpdir/zig-old" || true
+mv ~/.local/share/zig "$tmpdir/zig-old" || true
 
-echo 'moving new zig to ~/.local/lib/zig ...'
-mkdir -p ~/.local/lib
-mv "$tmpdir/$toplevel_files" ~/.local/lib/zig
+echo 'moving new zig to ~/.local/share/zig ...'
+mkdir -p ~/.local/share
+mv "$tmpdir/$toplevel_files" ~/.local/share/zig
 
 if [[ ! -f ~/.local/bin/zig ]]; then
     echo 'creating symbolic link at ~/.local/bin/zig ...'
     mkdir -p ~/.local/bin
-    ln -s ~/.local/lib/zig/zig ~/.local/bin/zig
+    ln -s ~/.local/share/zig/zig ~/.local/bin/zig
 fi
