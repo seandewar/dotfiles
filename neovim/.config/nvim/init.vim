@@ -144,6 +144,10 @@ let g:c_no_curly_error = 1  " Don't show "[{}]" as an error; it's valid C++11
 let g:markdown_folding = 1
 let g:rustfmt_autosave = 1
 
+if has('nvim')
+    let g:netrw_nogx = 1  " Nvim 0.10 has its own gx which uses vim.ui.open().
+endif
+
 " With 'hidden' set, netrw buffers may have no name. This is because netrw does
 " not modify the empty buffer created by Vim when opening a directory, but
 " instead opens a new listing buffer and tries to set its name to that of the
