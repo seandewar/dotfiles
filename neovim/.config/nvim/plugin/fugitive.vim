@@ -6,8 +6,8 @@ augroup conf_fugitive_redraw_statusline
                 \ call timer_start(0, {-> execute('redrawstatus!', '')})
 augroup END
 
-nnoremap <Leader>gl <Cmd>Git log %<CR>
-nnoremap <Leader>gL <Cmd>Git log<CR>
+nnoremap <Leader>gl <Cmd>Git log -n 512 %<CR>
+nnoremap <Leader>gL <Cmd>Git log -n 512<CR>
 nnoremap <Leader>gs <Cmd>Git show<CR>
 nnoremap <Leader>gd <Cmd>Gdiffsplit<CR>
 nnoremap <Leader>gD <Cmd>G difftool<CR>
