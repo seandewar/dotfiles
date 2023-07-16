@@ -7,7 +7,7 @@ local unmap = vim.keymap.del
 
 local M = {}
 
-local last_progress_text = ""
+local last_progress = nil
 
 local function update_progress(opts)
   local client = lsp.get_client_by_id(opts.data.client_id)
@@ -15,19 +15,21 @@ local function update_progress(opts)
     return
   end
 
-  local text = ""
+  last_progress = nil
+
   local msg = opts.data.result.value
   if msg.kind ~= "end" then
-    text = client.name .. ": " .. msg.title
+    local text = client.name .. ": " .. msg.title
     if msg.message then
       text = text .. " " .. msg.message
     end
     if msg.percentage then
       text = text .. " " .. math.floor(msg.percentage) .. "%%"
     end
+
+    last_progress = { client_id = client.id, text = text }
   end
 
-  last_progress_text = text
   vim.cmd.redrawstatus()
 end
 
@@ -37,8 +39,8 @@ api.nvim_create_autocmd("LspProgress", {
 })
 
 local function statusline(curwin, stlwin)
-  if curwin == stlwin and last_progress_text ~= "" then
-    return "[" .. last_progress_text .. "] "
+  if curwin == stlwin and last_progress then
+    return "[" .. last_progress.text .. "] "
   end
 
   local clients =
@@ -54,24 +56,28 @@ end
 
 fn["conf#statusline#define_component"]("lsp", statusline)
 
+-- Similar to vim.lsp.formatexpr(), but uses vim.lsp.buf.format{async = true},
+-- falling back to built-in formatting when automatically invoked.
+function M.formatexpr()
+  if vim.v.char ~= "" then
+    return 1 -- Use built-in formatting when automatically invoked.
+  end
+  lsp.buf.format {
+    async = true,
+    range = {
+      start = { vim.v.lnum, 0 },
+      ["end"] = { vim.v.lnum + vim.v.count - 1, 0 },
+    },
+  }
+  return 0
+end
+
 function M.lspconfig_attach_curbuf(client)
   if client.name == "clangd" then
     map("n", "<Space>s", "<Cmd>ClangdSwitchSourceHeader<CR>", {
       buffer = true,
     })
   end
-end
-
-local buf_saved_opts = {}
-
-local function bopt(option, value)
-  local buf = api.nvim_get_current_buf()
-  buf_saved_opts[buf] = vim.tbl_extend(
-    "keep",
-    buf_saved_opts[buf] or {},
-    { [option] = vim.bo[option] }
-  )
-  vim.bo[option] = value
 end
 
 function M.attach_buffer(args)
@@ -82,15 +88,17 @@ function M.attach_buffer(args)
     vim.g.zig_fmt_parse_errors = false
   end
 
+  vim.cmd.redrawstatus { bang = true }
+
   -- Continue only for the first client attaching to the buffer.
   if vim.tbl_count(lsp.buf_get_clients(args.buf)) > 1 then
     return
   end
 
   api.nvim_buf_call(args.buf, function()
-    bopt("omnifunc", "v:lua.vim.lsp.omnifunc")
-    bopt("tagfunc", "v:lua.vim.lsp.tagfunc")
-    bopt("formatexpr", "v:lua.vim.lsp.formatexpr()")
+    vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
+    vim.bo.tagfunc = "v:lua.vim.lsp.tagfunc"
+    vim.bo.formatexpr = "v:lua.require'conf.lsp'.formatexpr()" -- Prefer ours.
 
     -- These maps have default functions, so define them here as buffer-local.
     map("n", "K", lsp.buf.hover, { buffer = true, desc = "LSP Hover" })
@@ -110,9 +118,14 @@ function M.attach_buffer(args)
 end
 
 function M.detach_buffer(args)
-  -- Last progress message may not be from any client attached to this buffer,
-  -- but as we can't tell, just clear it so we don't have a lingering message.
-  last_progress_text = ""
+  if last_progress and last_progress.client_id == args.data.client_id then
+    last_progress = nil
+
+    -- Schedule, as the client hasn't finished detaching yet.
+    vim.schedule(function()
+      vim.cmd.redrawstatus { bang = true }
+    end)
+  end
 
   -- Continue only for the last client detaching from the buffer.
   if vim.tbl_count(lsp.buf_get_clients(args.buf)) > 1 then
@@ -124,13 +137,16 @@ function M.detach_buffer(args)
     unmap("n", "gd", { buffer = true })
     unmap("n", "gD", { buffer = true })
 
-    -- lspconfig (may not be defined, hence pcall to ignore errors)
-    pcall(unmap, "n", "<Space>s", { buffer = true })
-
-    for option, old_value in ipairs(buf_saved_opts[args.buf] or {}) do
-      vim.bo[option] = old_value
+    -- Server-specific mappings.
+    if fn.mapcheck("<Space>s", "n") ~= "" then -- clangd
+      unmap("n", "<Space>s", { buffer = true })
     end
-    buf_saved_opts[args.buf] = nil
+
+    -- Restore the original buffer-local option values for the filetype.
+    for _, option in ipairs { "omnifunc", "tagfunc", "formatexpr" } do
+      local info = api.nvim_get_option_info2(option, { buf = 0 })
+      vim.bo[option] = info.default ~= "" and info.default or vim.go[option]
+    end
   end)
 end
 

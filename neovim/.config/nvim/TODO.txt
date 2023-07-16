@@ -3,19 +3,11 @@
 - Don't :TSUpdate after updating nvim-treesitter, as some modules might already
   be loaded. Instead, schedule an update for the next nvim start; we can maybe
   abuse shada global vars for this if we're feeling lazy.
-- Use Nvim 0.9's built-in EditorConfig support over vim-sleuth if Nvim detects
-  an EditorConfig file for a buffer?
 - Use Nvim's exrc support over localvimrc? (Make sure exrc isn't enabled for
   Vim! It does not have vim.secure, and the sandbox is useless)
 - Use nvim-dap? GCC also has built-in DAP support now... (but termdebug is
   pretty good)
 - Make 'tabline' work better when there's not enough &columns.
-- Use neoformat with gq? Maybe also instead remap gq to use LSP's async
-  formatting, as the LSP 'formatexpr' blocks and can time out (plus, Lua cannot
-  be interrupted yet; if interrupt support is added, maybe consider using LSP's
-  'formatexpr' with no timeout?).
-- Maybe change 'spell' and neoformat mappings to use <leader>, not sure I like
-  using F-keys...
 - Maybe change some 'list' stuff (possibly highlights) to look less like text.
   (E.g: I sometimes think trailing spaces are actual "."s, and I don't like
   using Unicode symbols...)

@@ -1,7 +1,8 @@
-if !has('patch-8.2.2434') && !has('nvim-0.10')
-    echohl WarningMsg
-    echo 'seandewar''s init.vim may not work with this version of (Neo)Vim!'
+if !has('nvim-0.10') && !has('patch-8.2.2434') 
+    echohl ErrorMsg
+    echo '[init.vim] Unsupported Vim/Nvim version. Disabling!'
     echohl None
+    finish
 end
 
 " Enable Nvim's experimental Lua loader, which byte-compiles and caches Lua
@@ -250,8 +251,7 @@ command! -bar RuntimeDir call s:TabEditDir($VIMRUNTIME)
 
 " Mappings {{{1
 " General Mappings {{{2
-nnoremap <F2> <Cmd>setlocal spell!<CR>
-inoremap <F2> <Cmd>setlocal spell!<CR>
+nnoremap <Leader>s <Cmd>setlocal spell!<CR>
 nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 nnoremap gV `[v`]
 
