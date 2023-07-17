@@ -18,7 +18,6 @@ function! conf#minpac#ensure_init() abort
     call minpac#add('sbdchd/neoformat')
     call minpac#add('tpope/vim-commentary')
     call minpac#add('tpope/vim-dispatch')
-    call minpac#add('embear/vim-localvimrc')
     call minpac#add('tpope/vim-repeat')
     call minpac#add('tpope/vim-sleuth')
     call minpac#add('tpope/vim-surround')

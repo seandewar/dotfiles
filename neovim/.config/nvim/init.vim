@@ -40,6 +40,9 @@ set title
 set wildmode=list:longest,full
 
 if has('nvim')
+    " Nvim's exrc feature uses a :trust system, so it's safe enough to enable.
+    set exrc
+
     " Nvim's terminal doesn't automatically tail to the output.
     " Make sure the cursor is on the last line so it does.
     augroup conf_terminal_tailing
