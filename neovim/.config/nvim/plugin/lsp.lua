@@ -58,7 +58,7 @@ map("n", "<Space>h", function()
   -- the hints are on; e.g: if there's no hints reported).
   if
     vim.b.conf_inlay_hint_on
-    or vim.iter(lsp.get_active_clients { bufnr = 0 }):any(function(client)
+    or vim.iter(lsp.get_clients { bufnr = 0 }):any(function(client)
       return client.supports_method "textDocument/inlayHint"
     end)
   then
