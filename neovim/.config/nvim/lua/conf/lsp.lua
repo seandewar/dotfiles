@@ -43,8 +43,7 @@ local function statusline(curwin, stlwin)
     return "[" .. last_progress.text .. "] "
   end
 
-  local clients =
-    vim.tbl_values(lsp.buf_get_clients(api.nvim_win_get_buf(stlwin)))
+  local clients = lsp.get_clients { bufnr = api.nvim_win_get_buf(stlwin) }
   if #clients == 0 then
     return ""
   elseif #clients == 1 then
@@ -91,7 +90,7 @@ function M.attach_buffer(args)
   vim.cmd.redrawstatus { bang = true }
 
   -- Continue only for the first client attaching to the buffer.
-  if vim.tbl_count(lsp.buf_get_clients(args.buf)) > 1 then
+  if #lsp.get_clients { bufnr = args.buf } > 1 then
     return
   end
 
@@ -128,7 +127,7 @@ function M.detach_buffer(args)
   end
 
   -- Continue only for the last client detaching from the buffer.
-  if vim.tbl_count(lsp.buf_get_clients(args.buf)) > 1 then
+  if #lsp.get_clients { bufnr = args.buf } > 1 then
     return
   end
 

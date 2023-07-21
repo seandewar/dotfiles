@@ -10,8 +10,10 @@ local echomsg = util.echomsg
 lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
   border = "single",
 })
-lsp.handlers["textDocument/signatureHelp"] =
-  lsp.with(lsp.handlers.signature_help, { border = "single" })
+lsp.handlers["textDocument/signatureHelp"] = lsp.with(
+  lsp.handlers.signature_help,
+  { border = "single" }
+)
 
 local function formatting_handler(err, result, ctx, config)
   if err then
@@ -55,12 +57,10 @@ api.nvim_create_autocmd("LspDetach", {
 map("n", "<Space>h", function()
   -- Handle toggling ourselves, as there's no public API for checking its
   -- current state to use for echoing (it's not always obvious whether or not
-  -- the hints are on; e.g: if there's no hints reported).
+  -- the hints are on; e.g: if there are no hints reported).
   if
     vim.b.conf_inlay_hint_on
-    or vim.iter(lsp.get_clients { bufnr = 0 }):any(function(client)
-      return client.supports_method "textDocument/inlayHint"
-    end)
+    or #lsp.get_clients { bufnr = 0, method = "textDocument/inlayHint" } > 0
   then
     local enable = not vim.b.conf_inlay_hint_on
     lsp.inlay_hint(0, enable)
