@@ -21,14 +21,14 @@ end
 
 ---@note requires recursive statusline evaluation: %{%...%}
 local function statusline(curwin, stlwin)
-  local hi_prefix = curwin == stlwin and "StatusLine" or "StatusLineNC"
+  local hl_prefix = curwin == stlwin and "StatusLine" or "StatusLineNC"
   local buf = api.nvim_win_get_buf(stlwin)
   local parts = {}
 
-  local function add_part(hi_suffix, severity)
+  local function add_part(level, severity)
     local count = #diagnostic.get(buf, { severity = severity })
     if count > 0 then
-      parts[#parts + 1] = ("%%#%s%s#%d%%*"):format(hi_prefix, hi_suffix, count)
+      parts[#parts + 1] = ("%%#%s%s#%d%%*"):format(hl_prefix, level, count)
     end
   end
   add_part("Error", diagnostic.severity.ERROR)
@@ -43,29 +43,23 @@ fn["conf#statusline#define_component"]("diagnostic", statusline)
 
 -- Define highlight groups for the statusline from the current colour scheme
 local function define_stl_hls()
-  local function define_hl(suffix, override)
-    cmd.highlight {
-      "StatusLine" .. suffix,
-      fn["conf#colors#hl_override"](
-        "StatusLine",
-        override,
-        { "ctermfg", "guifg" }
-      ),
-    }
-    cmd.highlight {
-      "StatusLineNC" .. suffix,
-      fn["conf#colors#hl_override"](
-        "StatusLineNC",
-        override,
-        { "ctermfg", "guifg" }
-      ),
-    }
-  end
+  for _, level in ipairs { "Error", "Warn", "Info", "Hint" } do
+    local level_def =
+      api.nvim_get_hl(0, { name = "DiagnosticSign" .. level, link = false })
 
-  define_hl("Error", "DiagnosticSignError")
-  define_hl("Warn", "DiagnosticSignWarn")
-  define_hl("Info", "DiagnosticSignInfo")
-  define_hl("Hint", "DiagnosticSignHint")
+    for _, stl_hl in ipairs { "StatusLine", "StatusLineNC" } do
+      local stl_def = api.nvim_get_hl(0, { name = stl_hl, link = false })
+      api.nvim_set_hl(
+        0,
+        stl_hl .. level,
+        vim.tbl_deep_extend(
+          "force",
+          level_def,
+          { bg = stl_def.bg, ctermbg = stl_def.ctermbg }
+        )
+      )
+    end
+  end
 end
 
 local stl_group = api.nvim_create_augroup("conf_diagnostic_statusline", {})
