@@ -87,7 +87,12 @@ function M.attach_buffer(args)
     vim.g.zig_fmt_parse_errors = false
   end
 
-  vim.cmd.redrawstatus { bang = true }
+  -- Schedule, as the window may not have been drawn yet, which could cause
+  -- a full screen redraw from `:redrawstatus!`; this can introduce a "flicker"
+  -- if another redraw happens later (e.g: setting cursor position).
+  vim.schedule(function()
+    vim.cmd.redrawstatus { bang = true }
+  end)
 
   -- Continue only for the first client attaching to the buffer.
   if #lsp.get_clients { bufnr = args.buf } > 1 then
