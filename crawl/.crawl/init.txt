@@ -1,0 +1,18 @@
+# For Dungeon Crawl: Stone Soup v0.30.
+
+hp_warning = 75
+mp_warning = 50
+autofight_stop = 75
+travel_delay = -1
+
+default_manual_training = true
+
+show_more = false
+force_more_message += A sourceless malevolence
+force_more_message += A sentinel's mark forms upon you
+force_more_message += [Tt]raining target .* reached
+force_more_message += You have finished your manual
+force_more_message += You now have enough gold
+
+tile_realtime_anim = true
+tile_show_threat_levels = tough, nasty

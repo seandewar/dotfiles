@@ -21,5 +21,6 @@
 	b = branch
 	r = rebase
 	cp = cherry-pick
+	a = add
 [include]
 	path = ~/.gitconfig_local
