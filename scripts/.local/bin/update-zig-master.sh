@@ -38,7 +38,7 @@ if [[ "$toplevel_count" -ne 1 ]]; then
 fi
 
 echo "extracting archive to $tmpdir/zig-master ..."
-tar -C "$tmpdir" -xvf "$tmpdir/zig-master"
+tar -C "$tmpdir" -xf "$tmpdir/zig-master"
 
 echo "moving old zig to $tmpdir/zig-old ..."
 mv ~/.local/share/zig "$tmpdir/zig-old" || true
