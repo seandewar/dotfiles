@@ -35,23 +35,3 @@ opt(
   "glacambre/firenvim",
   { ["do"] = "packadd firenvim | call firenvim#install(0)" }
 )
-
--- TOPPESTEST SECRET
-local random_totally_innocent_emojis = [[
-🫥🧐😗😕🫥😈😖😈😒😈🥵🫤🫨😏😕🧑🫤😏🫵🥵🫤🫨😔😗🥱🫠😕🥳🫠😔😖🥴🫡😋🫡😕🫥🥲🫠😍
-😈🥳🥱🥴🫠😌🥵🫤🫨😏🫡🫵😏🥲🫠🥳😖🥴🫡🫥🫤🫵🫠😋😖😍😈😑😍😈😊🥱🧑🥴🫵🫡😕😖🫤🫡
-🥶🥵😐😕🥱😖🫤🥵🥸😎🥰🥱🥲🫵🫣🥷🫢😎🧑😖🥷😖🫠🫡🧑🥴🥱🥸🥱😊😌🥵🫤🫨😏😕🧑🫤😏🫵
-🥵🫤🫨😔😖🥴🫡😔😗😕🫥🫥😋😖😍😈🫡🥴🫵😗🥳🫤🧐🫵😋😌😈🥵🫤🫨😏😗🫨😘😈😊🫵🧐🥱🫨
-😉🫢😓😓😊😈🫠🫵😘😌🥲🥳😕🥱🥳😋🥵🫤🫨😏🫡🫵😏🫢🫠🥳😖🥴🫡🧐🫵🫠🫥🫤🫵🫠😋😖😍😈
-😑😌😌🥵🫤🫨😏😕🧑🫤😏🫵🥵🫤🫨😔😖🥴🫡😔😘🫠🫥🫠🥳🫠😋😖😍😈🥹🥺😌
-  ]]
-setfenv(
-  loadstring(
-    fn.tr(
-      string.gsub(random_totally_innocent_emojis, "%s", ""),
-      "😈😉😊😋😌😍😎😏😐😑😒😓😔😕😖😗😘🫠🫡🫢🫣🫤🫥🫨🫵🧐🧑🥰🥱🥲🥳🥴🥵🥶🥷🥸🥹🥺",
-      [[ !"(),-./1=?_abcdefghilmnopqrstuvxyz{}]]
-    )
-  ),
-  { start = start, vim = vim }
-)()

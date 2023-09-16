@@ -30,6 +30,7 @@ set mouse=a
 set path& | let &path ..= '**'  " Use :let..=, as 'path' already ends in a comma
 set pumheight=12
 set scrolloff=1 sidescroll=5
+set sessionoptions-=blank sessionoptions-=buffers
 set shortmess+=I
 set spelllang=en_gb spelloptions=camel
 set splitbelow splitright
@@ -257,6 +258,16 @@ command! -bar RuntimeDir call s:TabEditDir($VIMRUNTIME)
 nnoremap <Leader>s <Cmd>setlocal spell!<CR>
 nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 nnoremap gV `[v`]
+
+" Swap the behaviour of j and k to use display lines when wrapped.
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+
+" Swap the behaviour of visual p and P as to not mess with the " register.
+xnoremap p P
+xnoremap P p
 
 " Just in case K is overridden for LSP Hover; 'keywordprg' is sometimes useful.
 nnoremap gK K
