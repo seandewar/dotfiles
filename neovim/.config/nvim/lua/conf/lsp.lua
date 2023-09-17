@@ -84,7 +84,21 @@ function M.attach_buffer(args)
   if client.name == "zls" then
     -- zls already runs zig ast-check, so no need to have zig.vim run it too.
     -- Unfortunately, this cannot be set per-buffer.
-    vim.g.zig_fmt_parse_errors = false
+    local group =
+      api.nvim_create_augroup("conf_lsp_use_zls_errors", { clear = false })
+    api.nvim_create_autocmd("BufEnter", {
+      group = group,
+      buffer = args.buf,
+      command = "let g:zig_fmt_parse_errors = 0",
+    })
+    api.nvim_create_autocmd("BufLeave", {
+      group = group,
+      buffer = args.buf,
+      command = "let g:zig_fmt_parse_errors = 1",
+    })
+    if api.nvim_get_current_buf() == args.buf then
+      vim.g.zig_fmt_parse_errors = false
+    end
   end
 
   -- Schedule, as the window may not have been drawn yet, which could cause
@@ -129,6 +143,18 @@ function M.detach_buffer(args)
     vim.schedule(function()
       vim.cmd.redrawstatus { bang = true }
     end)
+  end
+
+  local client = vim.lsp.get_client_by_id(args.data.client_id)
+  if client.name == "zls" then
+    -- Undo zls-specific attach settings.
+    api.nvim_clear_autocmds {
+      group = "conf_lsp_use_zls_errors",
+      buffer = args.buf,
+    }
+    if api.nvim_get_current_buf() == args.buf then
+      vim.g.zig_fmt_parse_errors = true
+    end
   end
 
   -- Continue only for the last client detaching from the buffer.
