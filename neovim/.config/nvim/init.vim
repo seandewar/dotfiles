@@ -259,11 +259,19 @@ nnoremap <Leader>s <Cmd>setlocal spell!<CR>
 nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 nnoremap gV `[v`]
 
-" Swap the behaviour of j and k to use display lines when wrapped.
-nnoremap j gj
+" Swap the behaviour of k, j, <Up>, <Down> to use display lines when wrapped.
 nnoremap k gk
-nnoremap gj j
+nnoremap j gj
 nnoremap gk k
+nnoremap gj j
+
+nnoremap <Up> g<Up>
+nnoremap <Down> g<Down>
+nnoremap g<Up> <Up>
+nnoremap g<Down> <Down>
+
+inoremap <Up> <C-o>g<Up>
+inoremap <Down> <C-o>g<Down>
 
 " Swap the behaviour of visual p and P as to not mess with the " register.
 xnoremap p P
