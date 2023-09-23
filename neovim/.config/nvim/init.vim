@@ -102,6 +102,12 @@ else
     syntax enable
 endif
 
+" 'smoothscroll' is pretty new in Vim (v9.0.0640), so check if it exists rather
+" than bump the minimum patch requirement.
+if exists('+smoothscroll')
+    set smoothscroll
+endif
+
 " 16-bit true colour is available if Win32 virtual console support is active.
 " If we're using Nvim, turn it on anyway as 'tgc' tends to "Just Work" (TM).
 if has('nvim') || has('vcon')
@@ -270,8 +276,8 @@ nnoremap <Down> g<Down>
 nnoremap g<Up> <Up>
 nnoremap g<Down> <Down>
 
-inoremap <Up> <C-o>g<Up>
-inoremap <Down> <C-o>g<Down>
+inoremap <expr> <Up> pumvisible() ? '<Up>' : '<C-o>g<Up>'
+inoremap <expr> <Down> pumvisible() ? '<Down>' : '<C-o>g<Down>'
 
 " Swap the behaviour of visual p and P as to not mess with the " register.
 xnoremap p P
