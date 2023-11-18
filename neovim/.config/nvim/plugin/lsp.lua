@@ -10,10 +10,8 @@ local echomsg = util.echomsg
 lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
   border = "single",
 })
-lsp.handlers["textDocument/signatureHelp"] = lsp.with(
-  lsp.handlers.signature_help,
-  { border = "single" }
-)
+lsp.handlers["textDocument/signatureHelp"] =
+  lsp.with(lsp.handlers.signature_help, { border = "single" })
 
 local function formatting_handler(err, result, ctx, config)
   if err then
@@ -55,25 +53,19 @@ api.nvim_create_autocmd("LspDetach", {
 })
 
 map("n", "<Space>h", function()
-  -- Handle toggling ourselves, as there's no public API for checking its
-  -- current state to use for echoing (it's not always obvious whether or not
-  -- the hints are on; e.g: if there are no hints reported).
-  if
-    vim.b.conf_inlay_hint_on
-    or #lsp.get_clients { bufnr = 0, method = "textDocument/inlayHint" } > 0
-  then
-    local enable = not vim.b.conf_inlay_hint_on
-    lsp.inlay_hint(0, enable)
-    vim.b.conf_inlay_hint_on = enable
-    echo("Buffer inlay hints " .. (enable and "enabled" or "disabled"))
-  else
+  if #lsp.get_clients { bufnr = 0, method = "textDocument/inlayHint" } == 0 then
     echo {
       {
         "No language servers attached to this buffer support inlay hints",
         "WarningMsg",
       },
     }
+    return
   end
+
+  local enable = not lsp.inlay_hint.is_enabled()
+  lsp.inlay_hint.enable(0, enable)
+  echo("Buffer inlay hints " .. (enable and "enabled" or "disabled"))
 end, { desc = "LSP Toggle Buffer Inlay Hints" })
 
 map({ "n", "i" }, "<C-K>", lsp.buf.signature_help, {
