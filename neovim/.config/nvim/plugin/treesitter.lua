@@ -21,7 +21,7 @@ configs.setup {
   highlight = {
     enable = true,
     -- Disabled for now due to inaccurate highlights.
-    disable = { "vim", "vimdoc" },
+    disable = { "vim" },
   },
 
   incremental_selection = {
