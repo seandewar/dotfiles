@@ -5,17 +5,23 @@ local configs = require "nvim-treesitter.configs"
 configs.setup {
   -- Install a minimal set of parsers.
   -- Others can be installed on-demand with :TSInstall
-  --
-  -- C, Lua, Vim and Vimdoc parsers are bundled with Nvim, but are more
-  -- up-to-date via nvim-treesitter. (Also some distros don't package them,
-  -- annoyingly)
   ensure_installed = {
+    -- Following parsers are bundled with Nvim 0.10 itself, and need to be
+    -- updated by nvim-treesitter so that nvim-treesitter's newer queries do not
+    -- throw errors with the older Nvim parsers:
+    "bash",
     "c",
-    -- "comment", -- TODO: is slow.
-    "cpp",
     "lua",
+    "markdown",
+    "markdown_inline",
+    "python",
+    "query",
     "vim",
     "vimdoc",
+
+    -- These are extra parsers not bundled with Nvim:
+    -- "comment", -- TODO: is slow.
+    "cpp",
   },
 
   highlight = {
