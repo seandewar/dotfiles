@@ -108,9 +108,9 @@ if exists('+smoothscroll')
     set smoothscroll
 endif
 
-" 16-bit true colour is available if Win32 virtual console support is active.
-" If we're using Nvim, turn it on anyway as 'tgc' tends to "Just Work" (TM).
-if has('nvim') || has('vcon')
+" 16-bit true colour is available in Vim if Win32 virtual console support is
+" active. Nvim is able to detect support automatically.
+if has('vcon')
     set termguicolors
 endif
 
