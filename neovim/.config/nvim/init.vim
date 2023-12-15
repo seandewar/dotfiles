@@ -276,8 +276,8 @@ nnoremap <Down> g<Down>
 nnoremap g<Up> <Up>
 nnoremap g<Down> <Down>
 
-inoremap <expr> <Up> pumvisible() ? '<Up>' : '<C-o>g<Up>'
-inoremap <expr> <Down> pumvisible() ? '<Down>' : '<C-o>g<Down>'
+inoremap <expr> <Up> pumvisible() ? '<Up>' : '<C-O>g<Up>'
+inoremap <expr> <Down> pumvisible() ? '<Down>' : '<C-O>g<Down>'
 
 " Swap the behaviour of visual p and P as to not mess with the " register.
 xnoremap p P
