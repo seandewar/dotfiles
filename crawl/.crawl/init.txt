@@ -1,9 +1,15 @@
-# For Dungeon Crawl: Stone Soup v0.30.
+# Sean's Dungeon Crawl: Stone Soup configuration file, for v0.31.
 
 hp_warning = 75
 mp_warning = 50
 autofight_stop = 75
+
+explore_delay = -1
+rest_delay = -1
 travel_delay = -1
+rest_wait_ancestor = true
+show_travel_trail = true
+travel_open_doors = avoid
 
 default_manual_training = true
 
@@ -14,5 +20,54 @@ force_more_message += [Tt]raining target .* reached
 force_more_message += You have finished your manual
 force_more_message += You now have enough gold
 
+tile_show_threat_levels = tough, nasty, unusual
 tile_realtime_anim = true
-tile_show_threat_levels = tough, nasty
+
+{
+local display_skills = crawl.hints_type() ~= "tutorial" and you.turns() == 0
+
+local prev_time = you.time()
+local prev_hp = you.hp()
+local prev_mp = you.mp()
+
+local function format_colour(diff, pos, neg)
+  return diff == 0 and "lightgrey" or (diff < 0 and neg or pos)
+end
+
+function ready()
+  -- Open the skills menu if we've just began a game.
+  -- We could do this outside of the ready() function, but then the initial
+  -- "Welcome" messages won't be printed yet.
+  if display_skills then
+    crawl.do_commands {"CMD_DISPLAY_SKILLS"}
+    display_skills = false
+  end
+
+  -- Show HP/MP changes each time we're about to wait for input.
+  local stat_msg_parts = {}
+  local function stat_msg_part(name, new, old, pos_colour, neg_colour)
+    if old == new then
+      return
+    end
+    local colour = new > old and pos_colour or neg_colour
+    stat_msg_parts[#stat_msg_parts + 1] =
+      ("%s<%s>%+d</%s> (%d<%s>->%d</%s>)"):format(
+        name, colour, new - old, colour, old, colour, new, colour)
+  end
+
+  local time = you.time()
+  local hp = you.hp()
+  local mp = you.mp()
+
+  stat_msg_part("HP", hp, prev_hp, "lightgreen", "red")
+  stat_msg_part("MP", mp, prev_mp, "lightblue", "blue")
+  if #stat_msg_parts > 0 then
+    local auts = time - prev_time
+    crawl.formatted_mpr(("%d.%d dAuts elapsed: %s."):format(
+                          auts / 10, auts % 10,
+                          table.concat(stat_msg_parts, ", ")))
+  end
+
+  prev_time, prev_hp, prev_mp = time, hp, mp
+end
+}
