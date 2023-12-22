@@ -26,13 +26,8 @@ tile_realtime_anim = true
 {
 local display_skills = crawl.hints_type() ~= "tutorial" and you.turns() == 0
 
-local prev_time = you.time()
 local prev_hp = you.hp()
 local prev_mp = you.mp()
-
-local function format_colour(diff, pos, neg)
-  return diff == 0 and "lightgrey" or (diff < 0 and neg or pos)
-end
 
 function ready()
   -- Open the skills menu if we've just began a game.
@@ -51,23 +46,19 @@ function ready()
     end
     local colour = new > old and pos_colour or neg_colour
     stat_msg_parts[#stat_msg_parts + 1] =
-      ("%s<%s>%+d</%s> (%d<%s>->%d</%s>)"):format(
+      ("%s <%s>%+d</%s> (%d -> <%s>%d</%s>)"):format(
         name, colour, new - old, colour, old, colour, new, colour)
   end
 
-  local time = you.time()
   local hp = you.hp()
   local mp = you.mp()
 
   stat_msg_part("HP", hp, prev_hp, "lightgreen", "red")
   stat_msg_part("MP", mp, prev_mp, "lightblue", "blue")
   if #stat_msg_parts > 0 then
-    local auts = time - prev_time
-    crawl.formatted_mpr(("%d.%d dAuts elapsed: %s."):format(
-                          auts / 10, auts % 10,
-                          table.concat(stat_msg_parts, ", ")))
+    crawl.formatted_mpr(table.concat(stat_msg_parts, ", ") .. ".")
   end
 
-  prev_time, prev_hp, prev_mp = time, hp, mp
+  prev_hp, prev_mp = hp, mp
 end
 }
