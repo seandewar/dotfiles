@@ -1,44 +1,72 @@
 # Sean's Dungeon Crawl: Stone Soup configuration file, for v0.31.
+#
+# If you're reading this, then here's a secret: if you're on WebTiles (and
+# suffer from performance anxiety :-[), it's possible to disable spectators from
+# watching your games! In the F12 chat, type "/block [anon]" to block anonymous
+# spectators, or "/block [all]" to block everyone. Have fun!
 
 hp_warning = 75
 mp_warning = 50
 autofight_stop = 75
+default_manual_training = true
+warn_hatches = true
 
 explore_delay = -1
 rest_delay = -1
 travel_delay = -1
+rest_wait_both = true
 rest_wait_ancestor = true
+explore_wall_bias = 1
 show_travel_trail = true
-travel_open_doors = avoid
-
-default_manual_training = true
-
-show_more = false
-force_more_message += A sourceless malevolence
-force_more_message += A sentinel's mark forms upon you
-force_more_message += [Tt]raining target .* reached
-force_more_message += You have finished your manual
-force_more_message += You now have enough gold
 
 tile_show_threat_levels = tough, nasty, unusual
 tile_realtime_anim = true
 
+show_more = false
+force_more_message += A malevolent force
+force_more_message += A sentinel's mark forms upon you
+force_more_message += [Tt]raining target.*reached
+force_more_message += You have finished your manual
+force_more_message += You now have enough gold
+force_more_message += You miscast
+force_more_message += You fail to use your ability
+
+# These potions are good, but can be dangerous if quaffed accidentally.
+# Prompt for them, as the game does not do this automatically.
+autoinscribe += potions? of ambrosia:!q
+autoinscribe += potions? of berserk rage:!q
+autoinscribe += potions? of cancellation:!q
+
+# Nets are rare; don't want to accidentally throw or automatically quiver them.
+autoinscribe += throwing net:!f =f
+
+autopickup_exceptions += <curare-tipped dart
+autopickup_exceptions += <throwing net
+autopickup_exceptions += >scrolls? of noise
+
+bindkey = [Tab] CMD_AUTOFIGHT_NOMOVE
+
+macros += M o ===explore_skip_doors
+macros += M 1 Za
+macros += M 2 Zb
+macros += M 3 Zc
+
 {
-local display_skills = crawl.hints_type() ~= "tutorial" and you.turns() == 0
+local reset_travel_open_doors = false
+
+-- Auto-explore while avoiding doors. Doesn't affect other automatic travel.
+function explore_skip_doors()
+  crawl.setopt "travel_open_doors = avoid"
+  crawl.do_commands {"CMD_EXPLORE"}
+  reset_travel_open_doors = true
+end
 
 local prev_hp = you.hp()
 local prev_mp = you.mp()
 
-function ready()
-  -- Open the skills menu if we've just began a game.
-  -- We could do this outside of the ready() function, but then the initial
-  -- "Welcome" messages won't be printed yet.
-  if display_skills then
-    crawl.do_commands {"CMD_DISPLAY_SKILLS"}
-    display_skills = false
-  end
-
-  -- Show HP/MP changes each time we're about to wait for input.
+-- Displays a message every time HP/MP changes, showing the delta, previous and
+-- new values.
+local function update_hp_mp_changes()
   local stat_msg_parts = {}
   local function stat_msg_part(name, new, old, pos_colour, neg_colour)
     if old == new then
@@ -60,5 +88,49 @@ function ready()
   end
 
   prev_hp, prev_mp = hp, mp
+end
+
+local prev_mut_overview = you.mutation_overview()
+
+-- Displays a message and forces a "-- more --" prompt when mutations change.
+--
+-- The alternative of simply adding "force_more_message += mutation:" forces a
+-- "-- more --" prompt for each message, which can be annoying if many mutations
+-- change in a single turn.
+local function update_mut_changes()
+  local mut_overview = you.mutation_overview()
+
+  if mut_overview ~= prev_mut_overview then
+    local msg = "Your mutations changed!"
+    local display_muts_key = crawl.get_command "CMD_DISPLAY_MUTATIONS"
+    if display_muts_key then
+      msg = msg .. " Press " .. display_muts_key .. " to see them."
+    end
+
+    crawl.mpr(msg, "mutation")
+    crawl.more()
+  end
+
+  prev_mut_overview = mut_overview
+end
+
+local display_skills = crawl.hints_type() ~= "tutorial" and you.turns() == 0
+
+function ready()
+  if reset_travel_open_doors then
+    crawl.setopt "travel_open_doors = open"
+    reset_travel_open_doors = false
+  end
+
+  -- Open the skills menu if we've just started a game.
+  -- We could do this outside of ready(), but then the initial "Welcome"
+  -- messages won't be printed yet.
+  if display_skills then
+    crawl.do_commands {"CMD_DISPLAY_SKILLS"}
+    display_skills = false
+  end
+
+  -- update_hp_mp_changes()  -- Disabled as it's noisy and not very useful.
+  update_mut_changes()
 end
 }
