@@ -30,6 +30,8 @@ force_more_message += You have finished your manual
 force_more_message += You now have enough gold
 force_more_message += You miscast
 force_more_message += You fail to use your ability
+force_more_message += seems mollified
+force_more_message += burns out of existence
 
 # These potions are good, but can be dangerous if quaffed accidentally.
 # Prompt for them, as the game does not do this automatically.
@@ -114,6 +116,57 @@ local function update_mut_changes()
   prev_mut_overview = mut_overview
 end
 
+local prev_dangerous_foe_count
+
+-- Update the list of lethal foes in our line of sight, and force a
+-- "-- more --" prompt if a new lethal foe appeared since the last call.
+--
+-- Note that this isn't perfect: if a different foe enters our line of sight
+-- within the same turn another of the same name leaves, we will not be able
+-- to tell them apart. This could be fixed if Crawl exposed mIDs here.
+local function update_dangerous_foes()
+  local just_started = not prev_dangerous_foe_count
+  if just_started then
+    prev_dangerous_foe_count = {}
+  end
+
+  local MTHRT_NASTY = 3  -- This enum value is not exposed anywhere.
+  local los = you.los()
+  local dangerous_foe_count = {}
+  for x = -los,los do
+    for y = -los,los do
+      local mons = monster.get_monster_at(x, y)
+      if mons and not mons:is_safe() and mons:threat() >= MTHRT_NASTY then
+        local name = mons:name()
+        dangerous_foe_count[name] = (dangerous_foe_count[name] or 0) + 1
+      end
+    end
+  end
+
+  local dangerous_foes = {}
+  for name, count in pairs(dangerous_foe_count) do
+    local prev_count = prev_dangerous_foe_count[name] or 0
+    if count > prev_count then
+      local str = name
+      if count > prev_count + 1 then
+        str = tostring(count - prev_count) .. " x " .. str
+      end
+      dangerous_foes[#dangerous_foes + 1] = str
+    end
+  end
+
+  if #dangerous_foes > 0 then
+    crawl.mpr(("Lethal monster%s %s: %s."):format(
+                #dangerous_foes > 1 and "s" or "",
+                just_started and "here" or "entered view",
+                table.concat(dangerous_foes, ", ")),
+              "warning")
+    crawl.more()
+  end
+
+  prev_dangerous_foe_count = dangerous_foe_count
+end
+
 local display_skills = crawl.hints_type() ~= "tutorial" and you.turns() == 0
 
 function ready()
@@ -131,6 +184,7 @@ function ready()
   end
 
   -- update_hp_mp_changes()  -- Disabled as it's noisy and not very useful.
+  update_dangerous_foes()
   update_mut_changes()
 end
 }
