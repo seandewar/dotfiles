@@ -19,6 +19,9 @@ rest_wait_ancestor = true
 explore_wall_bias = 1
 show_travel_trail = true
 
+bindkey = [Tab] CMD_AUTOFIGHT_NOMOVE
+autofight_nomove_fires = false
+
 tile_show_threat_levels = tough, nasty, unusual
 tile_realtime_anim = true
 
@@ -33,11 +36,15 @@ force_more_message += You fail to use your ability
 force_more_message += seems mollified
 force_more_message += burns out of existence
 
-# These potions are good, but can be dangerous if quaffed accidentally.
+# These items are good, but can be dangerous if used accidentally.
 # Prompt for them, as the game does not do this automatically.
 autoinscribe += potions? of ambrosia:!q
 autoinscribe += potions? of berserk rage:!q
 autoinscribe += potions? of cancellation:!q
+
+autoinscribe += scrolls? of poison:!r
+autoinscribe += scrolls? of silence:!r
+autoinscribe += scrolls? of teleportation:!r
 
 # Nets are rare; don't want to accidentally throw or automatically quiver them.
 autoinscribe += throwing net:!f =f
@@ -46,7 +53,11 @@ autopickup_exceptions += <curare-tipped dart
 autopickup_exceptions += <throwing net
 autopickup_exceptions += >scrolls? of noise
 
-bindkey = [Tab] CMD_AUTOFIGHT_NOMOVE
+spell_slot ^= Blink:B
+spell_slot ^= Passage of Golubria:G
+spell_slot ^= Passwall:P
+spell_slot ^= Swiftness:S
+spell_slot ^= Apportation:Z
 
 macros += M o ===explore_skip_doors
 macros += M 1 Za
@@ -185,6 +196,7 @@ function ready()
 
   -- update_hp_mp_changes()  -- Disabled as it's noisy and not very useful.
   update_dangerous_foes()
-  update_mut_changes()
+  -- update_mut_changes()  -- Disabled as it's too spammy when existing
+                           -- mutations are unsuppressed (TODO)
 end
 }

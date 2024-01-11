@@ -284,7 +284,21 @@ xnoremap P p
 nnoremap gK K
 
 if has('nvim')
-    tnoremap <C-W> <C-\><C-N><C-W>
+    " Cancels the pending wincmd if <Esc> is given, and does not leave Terminal
+    " mode if so. This of course doesn't handle wincmds with a length of more
+    " than one key that are cancelled later, but this is good enough.
+    function! s:TermWincmd() abort
+        let keys = "\<C-\>\<C-N>\<C-W>"
+        while 1
+            let c = getcharstr()
+            if c == "\<Esc>" | return '' | endif
+            let keys ..= c
+            if c < '0' || c > '9' | break | endif
+        endwhile
+        return keys
+    endfunction
+
+    tnoremap <expr> <C-W> <SID>TermWincmd()
 
     " Nvim 0.6 makes Y sensible (y$), but I'm used to the default behaviour.
     silent! unmap Y
