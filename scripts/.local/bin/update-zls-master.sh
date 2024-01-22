@@ -1,14 +1,19 @@
 #!/bin/bash
 set -eo pipefail
 
+echo 'querying latest successful zls master branch GitHub Actions run...'
+run_id=$(gh run list --repo zigtools/zls --branch master --workflow CI \
+    --status success --limit 1 --json databaseId --jq '.[0].databaseId')
+
 tmpdir=$(mktemp -d --tmpdir zls.XXXXXXXXXX)
 echo "using $tmpdir as the temporary directory"
 
-echo 'downloading zls master...'
-wget https://zig.pm/zls/downloads/x86_64-linux/bin/zls -O "$tmpdir/zls-master"
+echo "downloading zls master from GHA run ID $run_id ..."
+gh run download "$run_id" --repo zigtools/zls --name zls-x86_64-linux \
+    --dir "$tmpdir"
 
-chmod +x "$tmpdir/zls-master"
-zls_version=$("$tmpdir/zls-master" --version)
+chmod +x "$tmpdir/zls"
+zls_version=$("$tmpdir/zls" --version)
 echo "downloaded zls version is $zls_version"
 if type ~/.local/bin/zls >/dev/null 2>&1; then
     installed_zls_version=$(~/.local/bin/zls --version)
@@ -27,4 +32,4 @@ mv ~/.local/bin/zls "$tmpdir/zls-old" || true
 
 echo 'moving new zls to ~/.local/bin/zls ...'
 mkdir -p ~/.local/bin
-mv "$tmpdir/zls-master" ~/.local/bin/zls
+mv "$tmpdir/zls" ~/.local/bin/zls
