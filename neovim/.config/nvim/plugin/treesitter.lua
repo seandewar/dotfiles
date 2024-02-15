@@ -27,7 +27,9 @@ configs.setup {
   highlight = {
     enable = true,
     -- Disabled for now due to inaccurate highlights.
-    disable = { "vim" },
+    disable = function(lang, buf)
+      return lang == "vim" or vim.api.nvim_buf_line_count(buf) > 2000
+    end,
   },
 
   incremental_selection = {

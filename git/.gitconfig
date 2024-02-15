@@ -4,6 +4,9 @@
 [push]
 	default = simple
 
+[merge]
+	conflictstyle = zdiff3
+
 [commit]
 	gpgsign = true
 
@@ -15,7 +18,9 @@
 
 [user]
 	name = Sean Dewar
-	email = seandewar@users.noreply.github.com
+	email = 6256228+seandewar@users.noreply.github.com
+	; email = sean@dewar.io
+
 	; fingerprint hash of the public key; no need for me to hide this :)
 	signingkey = 04C8CC2938F069D7B194083908CC2C83AD41B581
 
