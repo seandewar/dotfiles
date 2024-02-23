@@ -182,6 +182,7 @@ function! ConfStlBufName(tp_bufnum = '') abort
     endif
     if !empty(name) | return name | endif
 
+    if getbufinfo(bufnr())[0]->get('command') | return '[Command Line]' | endif
     let buftype = getbufvar(a:tp_bufnum, '&buftype')
     if buftype ==# 'prompt' | return '[Prompt]' | endif
     return buftype =~# '^\%(nofile\|acwrite\|terminal\)$' ? '[Scratch]'
