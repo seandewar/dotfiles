@@ -5,13 +5,9 @@
   abuse shada global vars for this if we're feeling lazy.
 - Use nvim-dap? GCC also has built-in DAP support now... (but termdebug is
   pretty good)
-- Make 'tabline' work better when there's not enough &columns.
 - Maybe change some 'list' stuff (possibly highlights) to look less like text.
   (E.g: I sometimes think trailing spaces are actual "."s, and I don't like
   using Unicode symbols...)
 - Yeet netrw (and vim-vinegar)? Netrw's bugs are annoying.
-- Open quickfix automatically on :grep, .etc that automatically jump to the
-  list. Make sure it doesn't trigger for stuff like vim-dispatch. Ensure it
-  plays nicely with all relevant commands.
 - Automatically resize the quickfix list to fit the number of items. Ideally,
   should also work properly when &wrap is set.

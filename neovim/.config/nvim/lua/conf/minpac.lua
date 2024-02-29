@@ -22,10 +22,8 @@ start("nvim-treesitter/nvim-treesitter", {
 })
 start "nvim-treesitter/nvim-treesitter-textobjects"
 
--- Fzf integration (fzf-lua doesn't work on Windows)
-if fn.has "win32" == 0 then
-  start "ibhagwan/fzf-lua"
-end
+-- Fzf integration
+start "ibhagwan/fzf-lua"
 
 -- Language server protocol
 start "neovim/nvim-lspconfig"

@@ -1,7 +1,3 @@
-if vim.fn.has "win32" == 1 then -- Doesn't support Windows
-  return
-end
-
 local keymap = vim.keymap
 
 local fzf = require "fzf-lua"
@@ -13,7 +9,7 @@ fzf.setup {
     .. " --bind=ctrl-n:down,ctrl-p:up"
     .. " --bind=down:next-history,up:previous-history",
   fzf_opts = { ["--cycle"] = "" },
-  nbsp = "\xc2\xa0",
+  nbsp = "\194\160",
 
   winopts = {
     preview = {

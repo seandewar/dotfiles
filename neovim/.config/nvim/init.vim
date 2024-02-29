@@ -43,6 +43,7 @@ set wildmode=list:longest,full
 if has('nvim')
     " Nvim's exrc feature uses a :trust system, so it's safe enough to enable.
     set exrc
+    set jumpoptions+=view
 
     " Nvim's terminal doesn't automatically tail to the output.
     " Make sure the cursor is on the last line so it does.
@@ -219,25 +220,28 @@ let &rulerformat = g:conf_statusline_components.ruler
 " Tab Line Settings {{{1
 function! ConfTabLabel(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
-    let modified = 0
-    for buf in buffers
-        if getbufvar(buf, '&modified')
-            let modified = 1
-            break
-        endif
-    endfor
-    let winnum = tabpagewinnr(a:tabnum)
-    return a:tabnum .. ' ' .. ConfStlBufName(buffers[winnum - 1])
-                \   .. (modified ? ' +' : '')
+    let modified = copy(buffers)
+                \  ->map({_, b -> getbufvar(b, '&modified')})
+                \  ->index(1) != -1
+    let prefix = printf(' %d%s ', a:tabnum, modified ? '+' : '')
+
+    let maxcols = (&columns / tabpagenr('$')) - len(prefix)
+    if tabpagenr() == a:tabnum
+        let maxcols += &columns % tabpagenr('$')
+    endif
+    if maxcols <= 0 | return '' | endif
+
+    let label = ConfStlBufName(buffers[tabpagewinnr(a:tabnum) - 1]) .. ' '
+    return ' ' .. prefix .. label[-maxcols:]
 endfunction
 
 function! ConfTabLine() abort
     let line = ''
     let i = 1
     while i <= tabpagenr('$')
-        let line ..= tabpagenr() == i ? '%#TabLineSel# ' : '%#TabLine# '
+        let line ..= tabpagenr() == i ? '%#TabLineSel#' : '%#TabLine#'
         let line ..= '%' .. i .. 'T'
-        let line ..= '%{ConfTabLabel(' .. i .. ')} '
+        let line ..= '%{ConfTabLabel(' .. i .. ')}'
         let i += 1
     endwhile
 
