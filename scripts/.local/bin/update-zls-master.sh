@@ -1,16 +1,12 @@
 #!/bin/bash
 set -eo pipefail
 
-echo 'querying latest successful zls master branch GitHub Actions run...'
-run_id=$(gh run list --repo zigtools/zls --branch master --workflow CI \
-    --status success --limit 1 --json databaseId --jq '.[0].databaseId')
-
 tmpdir=$(mktemp -d --tmpdir zls.XXXXXXXXXX)
 echo "using $tmpdir as the temporary directory"
 
-echo "downloading zls master from GHA run ID $run_id ..."
-gh run download "$run_id" --repo zigtools/zls --name zls-x86_64-linux \
-    --dir "$tmpdir"
+url=https://zigtools-releases.nyc3.digitaloceanspaces.com/zls/master/x86_64-linux/zls
+echo "downloading zls master..."
+wget $url -O "$tmpdir/zls"
 
 chmod +x "$tmpdir/zls"
 zls_version=$("$tmpdir/zls" --version)
