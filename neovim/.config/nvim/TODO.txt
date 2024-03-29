@@ -9,5 +9,3 @@
   (E.g: I sometimes think trailing spaces are actual "."s, and I don't like
   using Unicode symbols...)
 - Yeet netrw (and vim-vinegar)? Netrw's bugs are annoying.
-- Automatically resize the quickfix list to fit the number of items. Ideally,
-  should also work properly when &wrap is set.
