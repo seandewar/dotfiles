@@ -41,6 +41,7 @@ keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
 keymap.set("n", "<Leader>f/", "<Cmd>FzfLua blines<CR>")
 keymap.set("n", "<Leader>fo", "<Cmd>FzfLua oldfiles<CR>")
 keymap.set("n", "<Leader>fg", "<Cmd>FzfLua live_grep<CR>")
+keymap.set("n", "<Leader>fG", "<Cmd>FzfLua grep_cword<CR>")
 keymap.set("n", "<Leader>ft", "<Cmd>FzfLua tags<CR>")
 
 keymap.set("n", "<Leader>gf", "<Cmd>FzfLua git_files<CR>")

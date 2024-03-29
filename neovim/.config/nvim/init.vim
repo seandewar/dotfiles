@@ -326,6 +326,7 @@ nnoremap <Leader>fb :buffer<Space>
 " Find, Grep, ... {{{2
 nnoremap <Leader>ff :find<Space>
 nnoremap <Leader>fg :grep<Space>
+nnoremap <Leader>fG :grep <C-R>=shellescape('\b'..expand('<cword>')..'\b',1)<CR><CR>
 nnoremap <Leader>ft :tjump<Space>
 nnoremap <Leader>fo <Cmd>browse oldfiles<CR>
 
