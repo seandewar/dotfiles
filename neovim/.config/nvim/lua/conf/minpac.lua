@@ -14,13 +14,14 @@ end
 
 -- Tree-sitter
 start("nvim-treesitter/nvim-treesitter", {
+  rev = "main",
+  pullmethod = "autostash",
   ["do"] = function()
     if vim.g.loaded_nvim_treesitter ~= nil then
       vim.cmd.TSUpdate()
     end
   end,
 })
-start "nvim-treesitter/nvim-treesitter-textobjects"
 
 -- Fzf integration
 start "ibhagwan/fzf-lua"

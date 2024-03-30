@@ -1,11 +1,29 @@
-local fn = vim.fn
+local api = vim.api
+local start = vim.treesitter.start
 
-local configs = require "nvim-treesitter.configs"
+vim.treesitter.start = function(bufnr, ...)
+  -- Treesitter performance is a bit hit-or-miss for larger files, especially
+  -- those with lots of injections.
+  if api.nvim_buf_line_count(bufnr or 0) < 2000 then
+    start(bufnr, ...)
+  end
+end
 
-configs.setup {
+api.nvim_create_autocmd("FileType", {
+  group = api.nvim_create_augroup("conf_treesitter", {}),
+  callback = function(args)
+    -- Treesitter highlighting is enabled by default for some filetypes (plus it
+    -- may already be on).
+    if not vim.b.ts_highlight then
+      pcall(vim.treesitter.start, args.buf)
+    end
+  end,
+})
+
+require("nvim-treesitter").setup {
   -- Install a minimal set of parsers.
   -- Others can be installed on-demand with :TSInstall
-  ensure_installed = {
+  ensure_install = {
     -- Following parsers are bundled with Nvim 0.10 itself, and need to be
     -- updated by nvim-treesitter so that nvim-treesitter's newer queries do not
     -- throw errors with the older Nvim parsers:
@@ -20,60 +38,7 @@ configs.setup {
     "vimdoc",
 
     -- These are extra parsers not bundled with Nvim:
-    -- "comment", -- TODO: is slow.
     "cpp",
-  },
-
-  highlight = {
-    enable = true,
-    -- Disabled for now due to inaccurate highlights.
-    disable = function(lang, buf)
-      return lang == "vim" or vim.api.nvim_buf_line_count(buf) > 2000
-    end,
-  },
-
-  incremental_selection = {
-    enable = true,
-    disable = function()
-      return fn.getcmdwintype() ~= ""
-    end,
-    keymaps = {
-      init_selection = "<CR>",
-      scope_incremental = "<CR>",
-      node_incremental = "<Tab>",
-      node_decremental = "<S-Tab>",
-    },
-  },
-
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-      },
-    },
-    move = {
-      enable = true,
-      goto_next_start = {
-        ["]m"] = "@function.outer",
-        ["]]"] = "@class.outer",
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-        ["]["] = "@class.outer",
-      },
-      goto_previous_start = {
-        ["[m"] = "@function.outer",
-        ["[["] = "@class.outer",
-      },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-        ["[]"] = "@class.outer",
-      },
-    },
+    -- "comment", -- TODO: is slow.
   },
 }
