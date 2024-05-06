@@ -63,8 +63,8 @@ map("n", "<Space>h", function()
     return
   end
 
-  local enable = not lsp.inlay_hint.is_enabled()
-  lsp.inlay_hint.enable(0, enable)
+  local enable = not lsp.inlay_hint.is_enabled { bufnr = 0 }
+  lsp.inlay_hint.enable(enable, { bufnr = 0 })
   echo("Buffer inlay hints " .. (enable and "enabled" or "disabled"))
 end, { desc = "LSP Toggle Buffer Inlay Hints" })
 
