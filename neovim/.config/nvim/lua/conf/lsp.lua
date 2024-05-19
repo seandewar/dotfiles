@@ -17,7 +17,7 @@ local function update_progress(opts)
 
   last_progress = nil
 
-  local msg = opts.data.result.value
+  local msg = opts.data.params.value
   if msg.kind ~= "end" then
     local text = client.name .. ": " .. msg.title
     if msg.message then
