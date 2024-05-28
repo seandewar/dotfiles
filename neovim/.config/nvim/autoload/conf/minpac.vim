@@ -16,7 +16,6 @@ function! conf#minpac#ensure_init() abort
 
     " General plugins
     call minpac#add('sbdchd/neoformat')
-    call minpac#add('tpope/vim-commentary')
     call minpac#add('tpope/vim-dispatch')
     call minpac#add('tpope/vim-repeat')
     call minpac#add('tpope/vim-sleuth')
@@ -30,6 +29,12 @@ function! conf#minpac#ensure_init() abort
     " Extra filetypes and language support
     call minpac#add('rust-lang/rust.vim')
     call minpac#add('ziglang/zig.vim')
+
+    " Vim plugins
+    if !has('nvim')
+        " Nvim has built-in commenting.
+        call minpac#add('tpope/vim-commentary')
+    endif
 
     " Nvim plugins
     if has('nvim')
