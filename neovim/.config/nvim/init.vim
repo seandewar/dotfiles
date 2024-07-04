@@ -20,7 +20,7 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
 " General Settings {{{1
 set showbreak=>
 set cinoptions+=:0,g0,N-s,j1
-set completeopt=menu,menuone,popup
+set completeopt=menu,menuone
 set foldlevelstart=99 foldmethod=marker
 set formatoptions=croqnlj
 set guioptions=M  " Has to be before ":filetype/syntax on", so not in the gvimrc
@@ -78,6 +78,11 @@ else
     set switchbuf+=uselast
     set ttimeout ttimeoutlen=50
     set wildmenu
+
+    " Nvim's support of "popup" is quite rudimentary at the moment and has a few
+    " issues (the width of the preview can be quite small if the pum is wide).
+    " Only enable it in Vim for now.
+    set completeopt+=popup
 
     " Lazy redrawing can leave stale stuff on the screen (e.g: my Nvim terminal
     " <C-W> mapping not clearing "-- TERMINAL --" with 'showmode'). As Nvim aims
