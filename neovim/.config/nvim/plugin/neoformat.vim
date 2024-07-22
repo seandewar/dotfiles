@@ -10,3 +10,5 @@ function! ConfNeoformatExpr() abort
 endfunction
 
 set formatexpr=ConfNeoformatExpr()
+
+nnoremap <Leader>F <Cmd>Neoformat<CR>
