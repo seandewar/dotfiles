@@ -27,12 +27,10 @@ require("nvim-treesitter").setup {
     -- Following parsers are bundled with Nvim 0.10 itself, and need to be
     -- updated by nvim-treesitter so that nvim-treesitter's newer queries do not
     -- throw errors with the older Nvim parsers:
-    "bash",
     "c",
     "lua",
     "markdown",
     "markdown_inline",
-    "python",
     "query",
     "vim",
     "vimdoc",
