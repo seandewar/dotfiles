@@ -1,4 +1,4 @@
-# Sean's Dungeon Crawl: Stone Soup configuration file, for v0.31.
+# Sean's Dungeon Crawl: Stone Soup configuration file, for v0.32.
 #
 # If you're reading this, then here's a secret: if you're on WebTiles (and
 # suffer from performance anxiety :-[), it's possible to disable spectators from
@@ -26,7 +26,6 @@ tile_show_threat_levels = tough, nasty, unusual
 tile_realtime_anim = true
 
 show_more = false
-force_more_message += A malevolent force
 force_more_message += A sentinel's mark forms upon you
 force_more_message += [Tt]raining target.*reached
 force_more_message += You have finished your manual
@@ -74,26 +73,22 @@ function explore_skip_doors()
   reset_travel_open_doors = true
 end
 
-local prev_hp = you.hp()
-local prev_mp = you.mp()
+local prev_hp, prev_mp = you.hp(), you.mp()
 
 -- Displays a message every time HP/MP changes, showing the delta, previous and
 -- new values.
 local function update_hp_mp_changes()
   local stat_msg_parts = {}
   local function stat_msg_part(name, new, old, pos_colour, neg_colour)
-    if old == new then
-      return
-    end
+    if old == new then return end
+
     local colour = new > old and pos_colour or neg_colour
     stat_msg_parts[#stat_msg_parts + 1] =
       ("%s <%s>%+d</%s> (%d -> <%s>%d</%s>)"):format(
         name, colour, new - old, colour, old, colour, new, colour)
   end
 
-  local hp = you.hp()
-  local mp = you.mp()
-
+  local hp, mp = you.hp(), you.mp()
   stat_msg_part("HP", hp, prev_hp, "lightgreen", "red")
   stat_msg_part("MP", mp, prev_mp, "lightblue", "blue")
   if #stat_msg_parts > 0 then
@@ -103,30 +98,6 @@ local function update_hp_mp_changes()
   prev_hp, prev_mp = hp, mp
 end
 
-local prev_mut_overview = you.mutation_overview()
-
--- Displays a message and forces a "-- more --" prompt when mutations change.
---
--- The alternative of simply adding "force_more_message += mutation:" forces a
--- "-- more --" prompt for each message, which can be annoying if many mutations
--- change in a single turn.
-local function update_mut_changes()
-  local mut_overview = you.mutation_overview()
-
-  if mut_overview ~= prev_mut_overview then
-    local msg = "Your mutations changed!"
-    local display_muts_key = crawl.get_command "CMD_DISPLAY_MUTATIONS"
-    if display_muts_key then
-      msg = msg .. " Press " .. display_muts_key .. " to see them."
-    end
-
-    crawl.mpr(msg, "mutation")
-    crawl.more()
-  end
-
-  prev_mut_overview = mut_overview
-end
-
 local prev_dangerous_foe_count
 
 -- Update the list of lethal foes in our line of sight, and force a
@@ -134,7 +105,7 @@ local prev_dangerous_foe_count
 --
 -- Note that this isn't perfect: if a different foe enters our line of sight
 -- within the same turn another of the same name leaves, we will not be able
--- to tell them apart. This could be fixed if Crawl exposed mIDs here.
+-- to tell them apart. This could be fixed if Crawl exposed mIDs/client_ids.
 local function update_dangerous_foes()
   local just_started = not prev_dangerous_foe_count
   if just_started then
@@ -178,6 +149,31 @@ local function update_dangerous_foes()
   prev_dangerous_foe_count = dangerous_foe_count
 end
 
+local new_mutation_msgs = false
+
+-- Force --more-- for new mutation-related messages; they may be important.
+-- force_more_message isn't used for this, as that will cause numerous prompts
+-- if many mutations are changed within one turn.
+local function handle_mutations_changed_msg()
+  if not new_mutation_msgs then return end
+
+  local msg = "Your mutations changed!"
+  local display_muts_key = crawl.get_command "CMD_DISPLAY_MUTATIONS"
+  if display_muts_key then
+    msg = msg .. " Press " .. display_muts_key .. " to see them."
+  end
+
+  crawl.mpr(msg, "mutation")
+  crawl.more()
+  new_mutation_msgs = false
+end
+
+function c_message(msg, chan)
+  if chan == "mutation" then
+    new_mutation_msgs = true
+  end
+end
+
 local display_skills = crawl.hints_type() ~= "tutorial" and you.turns() == 0
 
 function ready()
@@ -196,7 +192,6 @@ function ready()
 
   -- update_hp_mp_changes()  -- Disabled as it's noisy and not very useful.
   update_dangerous_foes()
-  -- update_mut_changes()  -- Disabled as it's too spammy when existing
-                           -- mutations are unsuppressed (TODO)
+  handle_mutations_changed_msg()
 end
 }
