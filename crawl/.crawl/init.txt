@@ -10,13 +10,13 @@ mp_warning = 50
 autofight_stop = 75
 default_manual_training = true
 warn_hatches = true
+always_show_gems = true
 
 explore_delay = -1
 rest_delay = -1
-travel_delay = -1
 rest_wait_both = true
 rest_wait_ancestor = true
-explore_wall_bias = 1
+travel_delay = -1
 show_travel_trail = true
 
 bindkey = [Tab] CMD_AUTOFIGHT_NOMOVE
@@ -138,7 +138,7 @@ local function update_dangerous_foes()
   end
 
   if #dangerous_foes > 0 then
-    crawl.mpr(("Lethal monster%s %s: %s."):format(
+    crawl.mpr(("Lethal monster%s %s: %s!"):format(
                 #dangerous_foes > 1 and "s" or "",
                 just_started and "here" or "entered view",
                 table.concat(dangerous_foes, ", ")),
@@ -157,19 +157,15 @@ local new_mutation_msgs = false
 local function handle_mutations_changed_msg()
   if not new_mutation_msgs then return end
 
-  local msg = "Your mutations changed!"
-  local display_muts_key = crawl.get_command "CMD_DISPLAY_MUTATIONS"
-  if display_muts_key then
-    msg = msg .. " Press " .. display_muts_key .. " to see them."
-  end
-
-  crawl.mpr(msg, "mutation")
+  crawl.mpr("New mutations-related messages received this turn!", "mutation")
   crawl.more()
   new_mutation_msgs = false
 end
 
 function c_message(msg, chan)
-  if chan == "mutation" then
+  -- Messages like "You feel( rather)? odd for a moment." have no effect.
+  local ignore_suffix = "odd for a moment."
+  if chan == "mutation" and msg:sub(-#ignore_suffix) ~= ignore_suffix then
     new_mutation_msgs = true
   end
 end
