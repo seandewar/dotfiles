@@ -22,8 +22,10 @@ show_travel_trail = true
 bindkey = [Tab] CMD_AUTOFIGHT_NOMOVE
 autofight_nomove_fires = false
 
-tile_show_threat_levels = tough, nasty, unusual
+action_panel_show = false
 tile_realtime_anim = true
+tile_show_threat_levels = tough, nasty, unusual
+tile_web_mouse_control = false
 
 show_more = false
 force_more_message += A sentinel's mark forms upon you
@@ -34,13 +36,14 @@ force_more_message += You miscast
 force_more_message += You fail to use your ability
 force_more_message += seems mollified
 force_more_message += burns out of existence
+force_more_message += The sign of ruin forms upon you!$
+force_more_message += Your magic feels.*tainted
 
 # These items are good, but can be dangerous if used accidentally.
 # Prompt for them, as the game does not do this automatically.
 autoinscribe += potions? of ambrosia:!q
 autoinscribe += potions? of berserk rage:!q
 autoinscribe += potions? of cancellation:!q
-
 autoinscribe += scrolls? of poison:!r
 autoinscribe += scrolls? of silence:!r
 autoinscribe += scrolls? of teleportation:!r
@@ -48,6 +51,7 @@ autoinscribe += scrolls? of teleportation:!r
 # Nets are rare; don't want to accidentally throw or automatically quiver them.
 autoinscribe += throwing net:!f =f
 
+autopickup_exceptions += <poisoned dart
 autopickup_exceptions += <curare-tipped dart
 autopickup_exceptions += <throwing net
 autopickup_exceptions += >scrolls? of noise
@@ -59,9 +63,7 @@ spell_slot ^= Swiftness:S
 spell_slot ^= Apportation:Z
 
 macros += M o ===explore_skip_doors
-macros += M 1 Za
-macros += M 2 Zb
-macros += M 3 Zc
+macros += M \{F2} ===toggle_fun_mode
 
 {
 local reset_travel_open_doors = false
@@ -171,11 +173,38 @@ function c_message(msg, chan)
 end
 
 local display_skills = crawl.hints_type() ~= "tutorial" and you.turns() == 0
+local fun_mode = false
+
+-- I'm canonically a shapeshifter!
+local function update_fun_mode_player_tile(force)
+  if not force and math.random(4) ~= 1 then return end
+
+  local choices = {"mons:curse toe", "mons:toenail golem", "mons:curse skull",
+                   "mons:killer klown", "mons:murray", "mons:death cob",
+                   "mons:revenant", "mons:aspiring flesh",
+                   "tile:mons_meatzerker"}
+  crawl.setopt("tile_player_tile = " .. choices[math.random(1, #choices)])
+end
+
+function toggle_fun_mode()
+  fun_mode = not fun_mode
+  if fun_mode then
+    crawl.setopt "fake_lang = grunt,jager,dwarven"
+    update_fun_mode_player_tile(true)
+  else
+    crawl.setopt "fake_lang ="
+    crawl.setopt "tile_player_tile = normal"
+  end
+end
 
 function ready()
   if reset_travel_open_doors then
     crawl.setopt "travel_open_doors = open"
     reset_travel_open_doors = false
+  end
+
+  if fun_mode then
+    update_fun_mode_player_tile()
   end
 
   -- Open the skills menu if we've just started a game.
