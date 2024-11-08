@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eo pipefail
 
-# url=https://ziglang.org/download/index.json
-url=https://raw.githubusercontent.com/ziglang/www.ziglang.org/master/data/releases.json
+url=https://ziglang.org/download/index.json
+# url=https://raw.githubusercontent.com/ziglang/www.ziglang.org/refs/heads/main/assets/download/index.json
 echo "downloading metadata from $url ..."
 metadata=$(wget -nv $url -O - | jq '.master')
 zig_version=$(echo "$metadata" | jq -r '.version')

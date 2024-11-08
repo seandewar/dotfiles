@@ -23,7 +23,6 @@ set cinoptions+=:0,g0,N-s,j1
 set completeopt=menu,menuone
 set foldlevelstart=99 foldmethod=marker
 set formatoptions=croqnlj
-set guioptions=M  " Has to be before ":filetype/syntax on", so not in the gvimrc
 set ignorecase smartcase
 set list listchars=tab:_\ ,trail:.,nbsp:~,extends:>,precedes:<
 set mouse=a
@@ -68,6 +67,7 @@ else
     set belloff=all
     set display+=lastline
     set encoding=utf-8
+    set guioptions=M  " Has to be before ":filetype/syntax on"; not in gvimrc
     set hidden
     set incsearch hlsearch | nohlsearch
     set nojoinspaces

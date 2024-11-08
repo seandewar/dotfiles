@@ -172,30 +172,53 @@ function c_message(msg, chan)
   end
 end
 
-local display_skills = crawl.hints_type() ~= "tutorial" and you.turns() == 0
 local fun_mode = false
+local fun_mode_tile_choice_i
+
+local function xomify_message(msg)
+  local colours = {"blue", "green", "cyan", "red", "magenta", "lightblue",
+                   "lightgreen", "lightcyan", "lightred", "lightmagenta",
+                   "yellow"}
+  local parts = {}
+  for i = 1, #msg do
+    local colour_i = 1 + crawl.random2(#colours)
+    parts[#parts + 1] = ("<%s>"):format(colours[colour_i])
+    parts[#parts + 1] = msg:sub(i, i)
+    parts[#parts + 1] = ("</%s>"):format(colours[colour_i])
+  end
+  return table.concat(parts)
+end
 
 -- I'm canonically a shapeshifter!
 local function update_fun_mode_player_tile(force)
-  if not force and math.random(4) ~= 1 then return end
+  if not force and not crawl.x_chance_in_y(1, 4) then return end
 
-  local choices = {"mons:curse toe", "mons:toenail golem", "mons:curse skull",
-                   "mons:killer klown", "mons:murray", "mons:death cob",
-                   "mons:revenant", "mons:aspiring flesh",
-                   "tile:mons_meatzerker"}
-  crawl.setopt("tile_player_tile = " .. choices[math.random(1, #choices)])
+  local choices = {"mons:curse toe", "mons:curse skull", "mons:killer klown",
+                   "mons:murray", "mons:death cob", "mons:revenant",
+                   "mons:aspiring flesh", "tile:mons_meatzerker"}
+  local choice_i = 1 + crawl.random2(#choices)
+  if choice_i == fun_mode_tile_choice_i then return end
+
+  crawl.setopt("tile_player_tile = " .. choices[choice_i])
+  fun_mode_tile_choice_i = choice_i
+  crawl.mpr(xomify_message("Xom touches you!") ..
+            " Your visage twists and deforms.")
 end
 
 function toggle_fun_mode()
   fun_mode = not fun_mode
   if fun_mode then
-    crawl.setopt "fake_lang = grunt,jager,dwarven"
+    crawl.setopt "fake_lang = grunt, jager, dwarven"
     update_fun_mode_player_tile(true)
   else
     crawl.setopt "fake_lang ="
     crawl.setopt "tile_player_tile = normal"
+    fun_mode_tile_choice_i = nil
+    crawl.mpr "Xom loses interest in you. Your form returns to normal."
   end
 end
+
+local display_skills = crawl.hints_type() ~= "tutorial" and you.turns() == 0
 
 function ready()
   if reset_travel_open_doors then

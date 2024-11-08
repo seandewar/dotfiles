@@ -173,6 +173,8 @@ function M.detach_buffer(args)
     end
 
     -- Restore the original buffer-local option values for the filetype.
+    -- TODO: ml_get error if this is called after the buffer's backing file is
+    -- deleted? wut? maybe due to the dummy buffer used for default optvals?
     for _, option in ipairs { "omnifunc", "tagfunc", "formatexpr" } do
       local info = api.nvim_get_option_info2(option, { buf = 0 })
       vim.bo[option] = info.default ~= "" and info.default or vim.go[option]
