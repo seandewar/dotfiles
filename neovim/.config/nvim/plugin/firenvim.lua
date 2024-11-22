@@ -12,7 +12,6 @@ cmd.runtime "ginit.vim"
 vim.g.firenvim_config = {
   localSettings = {
     [".*"] = {
-      cmdline = "neovim",
       -- Only trigger firenvim when <C-E> is pressed in the browser (or whatever
       -- the key is set to in the extension's settings).
       takeover = "never",
