@@ -1,4 +1,4 @@
-# Sean's Dungeon Crawl: Stone Soup configuration file, for v0.32.
+# Sean's Dungeon Crawl: Stone Soup configuration file, for v0.33.
 #
 # If you're reading this, then here's a secret: if you're on WebTiles (and
 # suffer from performance anxiety :-[), it's possible to disable spectators from
@@ -23,6 +23,7 @@ bindkey = [Tab] CMD_AUTOFIGHT_NOMOVE
 autofight_nomove_fires = false
 
 action_panel_show = false
+fake_lang = grunt
 tile_realtime_anim = true
 tile_show_threat_levels = tough, nasty, unusual
 tile_web_mouse_control = false
@@ -38,6 +39,13 @@ force_more_message += seems mollified
 force_more_message += burns out of existence
 force_more_message += The sign of ruin forms upon you!$
 force_more_message += Your magic feels.*tainted
+force_more_message += Ouch! That really hurt!
+force_more_message += You feel you are being watched by something
+
+# Wielded and dancing chaos weapons (distortion is already handled by default)
+force_more_message += is wielding.*chaos
+force_more_message += there is a.*chaos
+force_more_message += of chaos comes into view
 
 # These items are good, but can be dangerous if used accidentally.
 # Prompt for them, as the game does not do this automatically.
@@ -69,54 +77,156 @@ local reset_travel_open_doors = false
 
 -- Auto-explore while avoiding doors. Doesn't affect other automatic travel.
 function explore_skip_doors()
-  crawl.setopt "travel_open_doors = avoid"
+  crawl.setopt "travel_open_doors = approach"
   crawl.do_commands {"CMD_EXPLORE"}
   reset_travel_open_doors = true
 end
 
-local dangerous_foes, dangerous_foes_place
+local notable_foes, notable_foes_place
 
--- Update the list of dangerous foes in our line of sight, and force a
--- "-- more --" prompt if new such foes appeared since the last call.
-local function update_dangerous_foes()
-  local place = you.where()
-  local new_place = place ~= dangerous_foes_place
-  if new_place then
-    dangerous_foes = {}
-    dangerous_foes_place = place
+local minor_threat, low_threat, high_threat, lethal_threat = 0, 1, 2, 3
+-- Colours used in the monster list may be changed via monster_list_colour, but
+-- I only use the defaults.
+local threat_colours = {"darkgrey", "lightgrey", "yellow", "lightred"}
+
+local function if_hex_chance_gt(chance)
+  return function(spell_info)
+    return spell_info.hex_chance > chance
+  end
+end
+
+local function if_tormentable()
+  return not you.torment_immune()
+end
+
+-- Mostly focuses on hexes and not currently intended to be exhaustive. A foe
+-- may have nasty spells not listed here, but may already be considered notable
+-- via other means (e.g: if it's a unique); though some such hexes may still be
+-- specified here so their success chances can be noted quickly.
+local dangerous_spells = {
+  -- Hexes (immunity checked automatically)
+  ["Avatar Song"] = if_hex_chance_gt(7),
+  ["Banishment"] = if_hex_chance_gt(3),
+  ["Blink Other"] = true,       -- Willpower ignored, but immunity may apply.
+  ["Blink Other Close"] = true, -- Willpower ignored, but immunity may apply.
+  ["Charm"] = if_hex_chance_gt(7),
+  ["Confuse"] = if_hex_chance_gt(7),
+  ["Confusion Gaze"] = if_hex_chance_gt(4),
+  ["Ensorcelled Hibernation"] = if_hex_chance_gt(7),
+  ["Doom Howl"] = if_hex_chance_gt(5),
+  ["Mass Confusion"] = if_hex_chance_gt(7),
+  ["Mesmerise"] = if_hex_chance_gt(7),
+  ["Paralyse"] = if_hex_chance_gt(7),
+  ["Paralysis Gaze"] = if_hex_chance_gt(3),
+  ["Petrify"] = if_hex_chance_gt(7),
+  ["Polymorph"] = if_hex_chance_gt(7),
+  ["Porkalator"] = if_hex_chance_gt(7),
+  ["Sentinel's Mark"] = if_hex_chance_gt(9),
+  ["Siren Song"] = if_hex_chance_gt(7),
+  ["Sleep"] = if_hex_chance_gt(7),
+
+  -- Torment
+  ["Agony"] = function(spell_info)
+    return if_tormentable() and if_hex_chance_gt(4)(spell_info)
+  end,
+  ["Symbol of Torment"] = if_tormentable,
+
+  -- Misc.
+  ["Draining Gaze"] = function()
+    local _, max_mp = you.mp()
+    return max_mp > 0
+  end,
+
+  -- Always dangerous/annoying (or hard to check effectiveness) non-hexes
+  ["Blink Allies Encircling"] = true,
+  ["Call Down Damnation"] = true,
+  ["Dream Dust"] = true, -- Technically depends on the number of sheep.
+  ["Hurl Damnation"] = true,
+  ["Malmutate"] = true,  -- Annoying even with rMut or if undead (stat drain).
+  ["Phantom Blitz"] = true,
+  ["Silence"] = true,
+  ["Word of Recall"] = true,
+} -- dangerous_spells
+
+-- Retrieves a list of monster spells from parsing its full "xv" description.
+-- Unlike when using the clua monster library, this gives extra information like
+-- hex success chances.
+local function parse_monster_spells(mons)
+  local desc = mons:desc(true):gsub("<.->", "")  -- Remove colour tags.
+  local info_set = {}
+
+  for spells in desc:gmatch " the following .-:\n(.-)\n\n" do
+    local i = 1
+    while true do
+      local _, before_label_i, letter = spells:find("(.) %- ", i)
+      if not letter then break end
+      local entry = { letter = letter ~= " " and letter or nil }
+
+      local next_i = spells:find(". %- ", before_label_i + 1) or #spells + 1
+      local label = spells:sub(before_label_i + 1, next_i - 1)
+      label = label:match "^%s*(.-)%s*$"  -- Trim whitespace.
+      local name, aux = label:match "^([^%d]-)%((.+)%)$"
+      name = name or label:match "^([^%d]+)"
+      -- Trim Dithmenos Marionette markers and trailing whitespace.
+      name = name:match "^[!*]?(.-)%s*$"
+
+      if aux then
+        entry.hex_chance = tonumber(aux:match "(%d+)%%") or
+                           (aux:match "immune" and 0)
+      end
+
+      info_set[name] = entry
+      i = next_i
+    end
   end
 
-  local los, willpower, xl = you.los(), you.willpower(), you.xl()
-  local high_threat, lethal_threat = 2, 3  -- MTHRT_TOUGH and MTHRT_NASTY
-  local danger_threat = xl < 5 and high_threat or lethal_threat
+  return info_set
+end
+
+-- Update the list of notable foes in our line of sight, and force a "--more--"
+-- prompt if new such foes appeared since the last call.
+local function update_notable_foes()
+  local place = you.where()
+  if place ~= notable_foes_place then
+    notable_foes = {}
+    notable_foes_place = place
+  end
+
+  local danger_threat = you.xl() < 10 and high_threat or lethal_threat
+  local los = you.los()
   local foes = {}
   for x = -los,los do
     for y = -los,los do
       local mons = monster.get_monster_at(x, y)
       if mons and not mons:is_safe() then
-        local banishment = false
-        -- The Abyss is very scary in most circumstances...
-        if not you.immune_to_hex "Banishment" and willpower < 4 and xl < 23 then
-          for _, spell in ipairs(mons:spells()) do
-            if spell == "Banishment" then
-              banishment = true
-              break
-            end
+        local spell_info_set = parse_monster_spells(mons)
+        for spell, spell_info in pairs(spell_info_set) do
+          local dangerous = dangerous_spells[spell]
+          if not dangerous or spell_info.hex_chance == 0 or
+             (dangerous ~= true and not dangerous(spell_info)) then
+            spell_info_set[spell] = nil
           end
         end
 
         local threat = mons:threat()
-        if threat >= danger_threat or banishment then
+        -- Includes non-uniques like pandemonium lords, player ghosts, .etc.
+        local special = mons:is_unique() or mons:is "name_the"
+        if threat >= danger_threat or (special and threat > low_threat) or
+           next(spell_info_set) ~= nil then
           local name = mons:name()
           local entry = foes[name]
           if not entry then
-            entry = { count = 0, max_threat = 0 }
+            entry = { max_threat = 0, spell_hex_chance_set = {} }
             foes[name] = entry
           end
 
-          entry.count = entry.count + 1
           entry.max_threat = math.max(entry.max_threat, threat)
-          entry.banishment = entry.banishment or banishment
+          entry.special = entry.special or special
+          for spell, spell_info in pairs(spell_info_set) do
+            local best_chance = entry.spell_hex_chance_set[spell] or 0
+            entry.spell_hex_chance_set[spell] =
+              math.max(best_chance, spell_info.hex_chance or math.huge)
+          end
         end
       end
     end
@@ -125,35 +235,53 @@ local function update_dangerous_foes()
   local turns = you.turns()
   local msg_parts = {}
   for name, info in pairs(foes) do
-    local entry = dangerous_foes[name]
+    local newly_seen = false
+    local entry = notable_foes[name]
     if not entry or turns >= entry.invalidate_on_turn then
-      entry = { max_count = 0 }
-      dangerous_foes[name] = entry
+      newly_seen = true
+      entry = { spell_seen_set = {} }
+      notable_foes[name] = entry
     end
 
-    if info.count > entry.max_count then
-      local threat_colour = info.max_threat == lethal_threat and "lightred" or
-                            info.max_threat == high_threat and "yellow" or
-                            "white"
-      local diff = info.count - entry.max_count
-      msg_parts[#msg_parts + 1] = ("<%s>%s%s</%s>%s"):format(
+    local new_spell_parts = {}
+    for spell, hex_chance in pairs(info.spell_hex_chance_set) do
+      if not entry.spell_seen_set[spell] then
+        local part = spell:lower()
+        if hex_chance <= 100 then
+          part = ("%s: %d%%"):format(part, hex_chance)
+        end
+
+        new_spell_parts[#new_spell_parts + 1] = part
+        entry.spell_seen_set[spell] = true
+      end
+    end
+
+    if newly_seen or #new_spell_parts > 0 then
+      local aux_parts = {}
+      if #new_spell_parts > 0 then
+        aux_parts[#aux_parts + 1] = table.concat(new_spell_parts, ", ")
+      end
+
+      local auxes = ""
+      if #aux_parts > 0 then
+        auxes = (" <lightmagenta>(%s)</lightmagenta>"):format(
+                  table.concat(aux_parts, ", "))
+      end
+
+      local threat_colour = threat_colours[info.max_threat + 1]
+      msg_parts[#msg_parts + 1] = ("<%s>%s</%s>%s"):format(
         threat_colour,
         name,
-        diff > 1 and (" x %d"):format(diff) or "",
         threat_colour,
-        info.banishment and " <magenta>(casts banishment)</magenta>" or "")
-
-      entry.max_count = info.count
+        auxes)
     end
 
-    -- Apply a grace period; avoids spam from messages and "-- more --" prompts.
+    -- Apply a grace period; avoids spam from messages and "--more--" prompts.
     entry.invalidate_on_turn = turns + 8
   end
 
   if #msg_parts > 0 then
-    crawl.mpr(("Dangerous monster%s %s: %s!"):format(
-                #msg_parts > 1 and "s" or "",
-                new_place and "here" or "entered view",
+    crawl.mpr(("Notable monsters here: %s!"):format(
                 table.concat(msg_parts, ", ")),
               "warning")
     crawl.more()
@@ -175,61 +303,62 @@ end
 
 function c_message(msg, chan)
   -- Messages like "You feel( rather)? odd for a moment." have no effect.
-  local ignore_suffix = "odd for a moment."
-  if chan == "mutation" and msg:sub(-#ignore_suffix) ~= ignore_suffix then
+  if chan == "mutation" and not msg:match "^You feel .*odd for a moment.$" then
     new_mutation_msgs = true
   end
 end
 
-local fun_mode = false
-local fun_mode_tile_choice_i
+local fun_mode, fun_mode_tile_choice_i = false
+
+local fun_mode_tile_choices = {"mons:curse toe", "mons:curse skull",
+  "mons:killer klown", "mons:murray", "mons:death cob", "mons:revenant",
+  "mons:aspiring flesh", "tile:mons_meatzerker"}
+
+local xomify_colours = {"blue", "green", "cyan", "red", "magenta", "lightblue",
+                        "lightgreen", "lightcyan", "lightred", "lightmagenta",
+                        "yellow"}
 
 local function xomify_message(msg)
-  local colours = {"blue", "green", "cyan", "red", "magenta", "lightblue",
-                   "lightgreen", "lightcyan", "lightred", "lightmagenta",
-                   "yellow"}
   local parts = {}
   for i = 1, #msg do
-    local colour_i = 1 + crawl.random2(#colours)
-    parts[#parts + 1] = ("<%s>"):format(colours[colour_i])
+    local colour = xomify_colours[1 + crawl.random2(#xomify_colours)]
+    parts[#parts + 1] = ("<%s>"):format(colour)
     parts[#parts + 1] = msg:sub(i, i)
-    parts[#parts + 1] = ("</%s>"):format(colours[colour_i])
+    parts[#parts + 1] = ("</%s>"):format(colour)
   end
   return table.concat(parts)
 end
 
 -- I'm canonically a shapeshifter!
 local function update_fun_mode_player_tile(force)
-  if not force and not crawl.x_chance_in_y(1, 4) then return end
-
-  local choices = {"mons:curse toe", "mons:curse skull", "mons:killer klown",
-                   "mons:murray", "mons:death cob", "mons:revenant",
-                   "mons:aspiring flesh", "tile:mons_meatzerker"}
-  local choice_i = 1 + crawl.random2(#choices)
+  if not force and not crawl.x_chance_in_y(1, 8) then return end
+  local choice_i = 1 + crawl.random2(#fun_mode_tile_choices)
   if choice_i == fun_mode_tile_choice_i then return end
 
-  crawl.setopt("tile_player_tile = " .. choices[choice_i])
+  crawl.setopt("tile_player_tile = " .. fun_mode_tile_choices[choice_i])
   fun_mode_tile_choice_i = choice_i
-  crawl.mpr(xomify_message("Xom touches you!") ..
-            " Your visage twists and deforms.")
+  crawl.mpr(xomify_message "Xom touches you!" .. " You twist and deform.")
 end
 
 function toggle_fun_mode()
   fun_mode = not fun_mode
+
   if fun_mode then
-    crawl.setopt "fake_lang = grunt, jager, dwarven"
     update_fun_mode_player_tile(true)
   else
-    crawl.setopt "fake_lang ="
     crawl.setopt "tile_player_tile = normal"
     fun_mode_tile_choice_i = nil
     crawl.mpr "Xom loses interest in you. Your form returns to normal."
   end
 end
 
-local display_skills = crawl.hints_type() ~= "tutorial" and you.turns() == 0
+local display_skills = you.turns() == 0 and crawl.hints_type() ~= "tutorial"
+local last_turn
 
 function ready()
+  local turn = you.turns()
+  if turn == last_turn then return end
+
   if reset_travel_open_doors then
     crawl.setopt "travel_open_doors = open"
     reset_travel_open_doors = false
@@ -239,15 +368,16 @@ function ready()
     update_fun_mode_player_tile()
   end
 
-  -- Open the skills menu if we've just started a game.
-  -- We could do this outside of ready(), but then the initial "Welcome"
-  -- messages won't be printed yet.
+  -- Open the skills menu if we've just started a game. We could do this outside
+  -- of ready(), but then the initial "Welcome" messages won't be printed yet.
   if display_skills then
     crawl.do_commands {"CMD_DISPLAY_SKILLS"}
     display_skills = false
   end
 
-  update_dangerous_foes()
+  update_notable_foes()
   handle_mutations_changed_msg()
+
+  last_turn = turn
 end
 }
