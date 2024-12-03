@@ -96,12 +96,12 @@ api.nvim_create_autocmd("CursorMoved", {
 })
 
 map("n", "]<Space>", function()
-  diagnostic.goto_next { float = false }
+  diagnostic.jump { count = 1 }
 end, {
   desc = "Next Diagnostic",
 })
 map("n", "[<Space>", function()
-  diagnostic.goto_prev { float = false }
+  diagnostic.jump { count = -1 }
 end, {
   desc = "Previous Diagnostic",
 })

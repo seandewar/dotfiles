@@ -1,4 +1,4 @@
-if !has('nvim-0.10') && !has('patch-8.2.2434')
+if !has('nvim-0.11') && !has('patch-8.2.2434')
     echohl ErrorMsg
     echo '[init.vim] Unsupported Vim/Nvim version. Disabling!'
     echohl None
@@ -57,7 +57,7 @@ if has('nvim')
     " Nvim conveniently supports highlighting the yanked selection.
     augroup conf_highlight_yanked
         autocmd!
-        autocmd TextYankPost * lua vim.highlight.on_yank()
+        autocmd TextYankPost * lua vim.hl.on_yank()
     augroup END
 else
     " Nvim already sets these values by default.

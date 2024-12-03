@@ -119,7 +119,9 @@ function M.attach_buffer(args)
     vim.bo.formatexpr = "v:lua.require'conf.lsp'.formatexpr()" -- Prefer ours.
 
     -- These maps have default functions, so define them here as buffer-local.
-    map("n", "K", lsp.buf.hover, { buffer = true, desc = "LSP Hover" })
+    map("n", "K", function()
+      lsp.buf.hover { border = "single" }
+    end, { buffer = true, desc = "LSP Hover" })
     map(
       "n",
       "gd",

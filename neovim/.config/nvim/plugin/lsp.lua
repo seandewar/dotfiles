@@ -4,39 +4,6 @@ local map = vim.keymap.set
 
 local util = require "conf.util"
 local echo = util.echo
-local echomsg = util.echomsg
-
--- NOTE: handlers is a metatable, so we can't tbl_extend directly.
-lsp.handlers["textDocument/hover"] = lsp.with(lsp.handlers.hover, {
-  border = "single",
-})
-lsp.handlers["textDocument/signatureHelp"] =
-  lsp.with(lsp.handlers.signature_help, { border = "single" })
-
-local function formatting_handler(err, result, ctx, config)
-  if err then
-    echomsg {
-      { config.name .. " format failed:", "WarningMsg" },
-      { " " .. err.message },
-    }
-    return
-  end
-  if not result then
-    echo(config.name .. " format complete; no changes")
-    return
-  end
-
-  local client = lsp.get_client_by_id(ctx.client_id)
-  lsp.util.apply_text_edits(result, ctx.bufnr, client.offset_encoding)
-  echo(config.name .. " format complete")
-end
-
-lsp.handlers["textDocument/formatting"] = lsp.with(formatting_handler, {
-  name = "Buffer",
-})
-lsp.handlers["textDocument/rangeFormatting"] = lsp.with(formatting_handler, {
-  name = "Range",
-})
 
 local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
 api.nvim_create_autocmd("LspAttach", {
@@ -68,7 +35,9 @@ map("n", "<Space>h", function()
   echo("Buffer inlay hints " .. (enable and "enabled" or "disabled"))
 end, { desc = "LSP Toggle Buffer Inlay Hints" })
 
-map({ "n", "i" }, "<C-K>", lsp.buf.signature_help, {
+map({ "n", "i" }, "<C-K>", function()
+  lsp.buf.signature_help { border = "single" }
+end, {
   desc = "LSP Signature Help",
 })
 
