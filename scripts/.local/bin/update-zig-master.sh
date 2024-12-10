@@ -21,7 +21,7 @@ fi
 
 tmpdir=$(mktemp -d --tmpdir zig.XXXXXXXXXX)
 echo "using $tmpdir as the temporary directory"
-echo "downloading zig..."
+echo 'downloading zig...'
 echo "$metadata" | jq -r '."x86_64-linux".tarball' \
     | wget -i - -O "$tmpdir/zig-master"
 
@@ -37,7 +37,7 @@ if [[ "$toplevel_count" -ne 1 ]]; then
     exit 1
 fi
 
-echo "extracting archive to $tmpdir/zig-master ..."
+echo 'extracting archive...'
 tar -C "$tmpdir" -xf "$tmpdir/zig-master"
 
 echo "moving old zig to $tmpdir/zig-old ..."
