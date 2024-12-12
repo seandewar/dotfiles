@@ -16,7 +16,7 @@ if type ~/.local/share/zig/zig >/dev/null 2>&1; then
         exit 0
     fi
 else
-    echo "zig is not currently installed"
+    echo 'zig is not currently installed'
 fi
 
 tmpdir=$(mktemp -d --tmpdir zig.XXXXXXXXXX)
