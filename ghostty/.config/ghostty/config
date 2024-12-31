@@ -1,0 +1,8 @@
+font-family = Iosevka Term
+font-feature = -calt
+font-feature = -dlig
+font-feature = -liga
+
+shell-integration-features = no-cursor
+
+theme = iTerm2 Default
