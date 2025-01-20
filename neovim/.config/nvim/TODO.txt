@@ -1,5 +1,6 @@
  vi:set tw=80 fo+=t:
 
+- Disable unneeded plugins/stuff when opened as a pager
 - Enable vim.snippet support, if at least for expanding snippet completions from
   lsps
 - Reconsider lua_ls.

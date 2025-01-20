@@ -210,6 +210,8 @@ let g:conf_statusline_components = #{
             \       '%(%{ConfStlQfTitle()} %)' ..
             \       '%([%M%R%{&binary ? '',BIN'' : ''''}' ..
             \       '%{!empty(&filetype) ? '','' .. &filetype : ''''}' ..
+            \ (has('nvim') ? '%{get(b:, ''ts_highlight'') ? '',TS'' : ''''}' :
+            \                '') ..
             \       '%{&spell ? '','' .. &spelllang : ''''}] %)',
             \ ruler: '%=%(%l,%c%V | %P%)',
             \ }

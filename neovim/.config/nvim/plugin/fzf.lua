@@ -9,7 +9,6 @@ fzf.setup {
     .. " --bind=ctrl-n:down,ctrl-p:up"
     .. " --bind=down:next-history,up:previous-history",
   fzf_opts = { ["--cycle"] = "" },
-  nbsp = "\194\160",
 
   winopts = {
     preview = {
