@@ -35,7 +35,6 @@ fzf.setup {
 }
 fzf.register_ui_select()
 
-keymap.set("n", "<Leader>f<Space>", "<Cmd>FzfLua<CR>")
 keymap.set("n", "<Leader>ff", "<Cmd>FzfLua files<CR>")
 keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
 keymap.set("n", "<Leader>f/", "<Cmd>FzfLua blines<CR>")

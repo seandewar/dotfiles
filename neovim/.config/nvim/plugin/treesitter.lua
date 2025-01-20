@@ -1,13 +1,4 @@
 local api = vim.api
-local start = vim.treesitter.start
-
-vim.treesitter.start = function(bufnr, ...)
-  -- Treesitter performance is a bit hit-or-miss for larger files, especially
-  -- those with lots of injections.
-  if api.nvim_buf_line_count(bufnr or 0) < 2000 then
-    start(bufnr, ...)
-  end
-end
 
 api.nvim_create_autocmd("FileType", {
   group = api.nvim_create_augroup("conf_treesitter", {}),
@@ -37,6 +28,6 @@ require("nvim-treesitter").setup {
 
     -- These are extra parsers not bundled with Nvim:
     "cpp",
-    -- "comment", -- TODO: is slow.
+    "comment",
   },
 }

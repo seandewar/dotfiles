@@ -100,6 +100,16 @@ else
     set backupdir=.,$MYVIMRUNTIME/backup
     set viminfofile=$MYVIMRUNTIME/viminfo
 
+    " Prefer ripgrep; ignore binary files by default, but do not exclude
+    " gitignored or hidden files, if possible. Nvim does this by default.
+    if executable('rg')
+        set grepprg=rg\ --vimgrep\ -uu grepformat=%f:%l:%c:%m
+    elseif has('win32')
+        set grepprg=findstr\ /n\ $*\ nul
+    else
+        set grepprg=grep\ -HIn\ $*\ /dev/null
+    endif
+
     " Nvim enables filetype detection and syntax highlighting by default.
     filetype plugin indent on
     syntax enable
@@ -115,11 +125,6 @@ endif
 " active. Nvim is able to detect support automatically.
 if has('vcon')
     set termguicolors
-endif
-
-" Prefer ripgrep over grep
-if executable('rg')
-    set grepprg=rg\ --vimgrep
 endif
 
 " A Vim bug causes glob expansion to fail with 'wildignorecase' if a parent

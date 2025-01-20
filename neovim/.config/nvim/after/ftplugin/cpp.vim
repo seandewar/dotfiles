@@ -1,2 +1,4 @@
 setlocal commentstring=//%s
-call conf#ft#undo_ftplugin('setlocal commentstring<')
+
+let b:undo_ftplugin = get(b:, 'undo_ftplugin', '') ..
+            \ "\nsetlocal commentstring<"

@@ -1,2 +1,3 @@
 setlocal textwidth=0  " disable as zig-fmt doesn't care about wrapping
-call conf#ft#undo_ftplugin('setlocal textwidth<')
+
+let b:undo_ftplugin = get(b:, 'undo_ftplugin', '') .. "\nsetlocal textwidth<"

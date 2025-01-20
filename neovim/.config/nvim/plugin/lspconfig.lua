@@ -49,12 +49,6 @@ lspconfig.util.default_config =
     end,
   })
 
--- Disable file watching to workaround current performance issues.
--- TODO: re-enable when it performs better.
-local capabilities = lsp.protocol.make_client_capabilities()
-capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
-lspconfig.util.default_config.capabilities = capabilities
-
 local function setup(config_name, config)
   config = config or {}
   -- It is recommended that the default `on_new_config` is also called when

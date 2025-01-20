@@ -11,4 +11,4 @@ endfunction
 
 set formatexpr=ConfNeoformatExpr()
 
-nnoremap <Leader>F <Cmd>Neoformat<CR>
+nnoremap <Leader>F <Cmd>Neoformat<Bar>Sleuth<CR>

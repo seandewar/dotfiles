@@ -27,7 +27,6 @@ function! conf#minpac#ensure_init() abort
     call minpac#add('tpope/vim-rhubarb')
 
     " Extra filetypes and language support
-    call minpac#add('rust-lang/rust.vim')
     call minpac#add('ziglang/zig.vim')
 
     " Vim plugins
