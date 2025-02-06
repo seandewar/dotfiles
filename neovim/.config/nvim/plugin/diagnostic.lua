@@ -1,23 +1,7 @@
 local api = vim.api
-local cmd = vim.cmd
 local fn = vim.fn
 local map = vim.keymap.set
 local diagnostic = vim.diagnostic
-
-local vtext_ns = api.nvim_create_namespace "conf_diagnostic_virt_text"
-
--- Display virtual text for the current line only
-local function update_virtual_text(info)
-  diagnostic.hide(vtext_ns) -- Clear stale virtual text
-  local buf = info.buf
-  local row = api.nvim_win_get_cursor(0)[1]
-  diagnostic.show(
-    vtext_ns,
-    buf,
-    diagnostic.get(buf, { lnum = row - 1 }),
-    { virtual_text = true, underline = false, signs = false }
-  )
-end
 
 ---@note requires recursive statusline evaluation: %{%...%}
 local function statusline(curwin, stlwin)
@@ -76,24 +60,10 @@ define_stl_hls()
 
 diagnostic.config {
   severity_sort = true,
-  virtual_text = false,
+  virtual_text = { current_line = true },
   signs = false,
   float = { border = "single" },
 }
-
-local vtext_group = api.nvim_create_augroup("conf_diagnostic_virtual_text", {})
-api.nvim_create_autocmd("DiagnosticChanged", {
-  group = vtext_group,
-  callback = function(info)
-    if info.buf == api.nvim_get_current_buf() then
-      update_virtual_text(info)
-    end
-  end,
-})
-api.nvim_create_autocmd("CursorMoved", {
-  group = vtext_group,
-  callback = update_virtual_text,
-})
 
 map("n", "]<Space>", function()
   diagnostic.jump { count = 1 }
