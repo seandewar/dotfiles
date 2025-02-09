@@ -12,7 +12,16 @@ fzf.setup {
 
   winopts = {
     preview = {
-      default = "cat",
+      wrap = true,
+      winopts = { number = false },
+    },
+  },
+
+  previewers = {
+    builtin = {
+      -- Regex highlighting is faster for the initial parse, which makes it
+      -- better suited than tree-sitter for the previewer, though less accurate.
+      treesitter = { enabled = false },
     },
   },
 
