@@ -12,9 +12,16 @@ fzf.setup {
 
   winopts = {
     preview = {
+      default = "cat",
       wrap = true,
       winopts = { number = false },
     },
+  },
+
+  defaults = { file_icons = false },
+
+  lsp = {
+    symbols = { symbol_style = 3 },
   },
 
   previewers = {
@@ -23,6 +30,7 @@ fzf.setup {
       -- better suited than tree-sitter for the previewer, though less accurate.
       treesitter = { enabled = false },
     },
+    cat = { args = "" }, -- Disable the default-enabled line numbers.
   },
 
   fzf_colors = {

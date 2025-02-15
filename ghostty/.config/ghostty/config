@@ -1,9 +1,8 @@
 font-family = Iosevka Term
-font-size = 11
 font-feature = -calt
 font-feature = -dlig
 font-feature = -liga
 
+cursor-invert-fg-bg = true
 shell-integration-features = no-cursor
-
 theme = iTerm2 Default
