@@ -324,6 +324,9 @@ if has('nvim')
     if has('win32')
         nnoremap <C-Z> <NOP>
     endif
+
+    " vim-scriptease-inspired mapping for :Inspect
+    nnoremap zS <Cmd>Inspect<CR>
 endif
 
 " Argument list {{{2
