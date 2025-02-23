@@ -12,7 +12,8 @@ function! conf#minpac#ensure_init() abort
     call minpac#add('k-takata/minpac', #{type: 'opt'})
 
     " Colour scheme
-    call minpac#add('seandewar/paragon.vim')
+    call minpac#add('seandewar/paragon.vim',
+                \   #{rev: 'next', pullmethod: 'autostash'})
 
     " General plugins
     call minpac#add('sbdchd/neoformat')

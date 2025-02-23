@@ -11,6 +11,7 @@ fzf.setup {
   fzf_opts = { ["--cycle"] = "" },
 
   winopts = {
+    backdrop = 100,
     preview = {
       default = "cat",
       wrap = true,
