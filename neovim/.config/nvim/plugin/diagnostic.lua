@@ -60,9 +60,19 @@ define_stl_hls()
 
 diagnostic.config {
   severity_sort = true,
-  virtual_text = { current_line = true },
+  virtual_text = {
+    current_line = true,
+    spacing = 2,
+    prefix = function(diag, i, n)
+      local name = diagnostic.severity[diag.severity]
+      return name and name:sub(1, 1):upper() or "D"
+    end,
+  },
   signs = false,
-  float = { border = "single" },
+  float = {
+    border = "single",
+    source = true,
+  },
 }
 
 keymap.set("n", "]<Space>", function()

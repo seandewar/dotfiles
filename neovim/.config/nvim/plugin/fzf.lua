@@ -19,8 +19,13 @@ fzf.setup {
     },
   },
 
-  defaults = { file_icons = false },
+  defaults = {
+    file_icons = false,
+  },
 
+  diagnostics = {
+    diag_source = true,
+  },
   lsp = {
     symbols = { symbol_style = 3 },
   },
