@@ -70,24 +70,12 @@ diagnostic.config {
   },
   signs = false,
   float = {
-    border = "single",
     source = true,
   },
 }
 
-keymap.set("n", "]<Space>", function()
-  diagnostic.jump { count = 1 }
-end, {
-  desc = "Next Diagnostic",
-})
-keymap.set("n", "[<Space>", function()
-  diagnostic.jump { count = -1 }
-end, {
-  desc = "Previous Diagnostic",
-})
-
-keymap.set("n", "<Space>k", function()
-  -- Attempt to show either cursor or line diagnostics, in that order.
+-- Attempt to show either cursor or line diagnostics, in that order.
+keymap.set("n", "<C-W>d", function()
   if
     diagnostic.open_float { scope = "c", header = "Cursor Diagnostics:" }
     or diagnostic.open_float { scope = "l", header = "Line Diagnostics:" }

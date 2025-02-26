@@ -326,12 +326,20 @@ if has('nvim')
 endif
 
 " Argument list {{{2
-nnoremap ]a <Cmd>next<Bar>args<CR>
-nnoremap [a <Cmd>previous<Bar>args<CR>
+nnoremap <expr> [a '<Cmd>' .. v:count1 .. 'previous<Bar>args<CR>'
+nnoremap <expr> ]a '<Cmd>' .. v:count1 .. 'next<Bar>args<CR>'
+nnoremap <expr> [A '<Cmd>' .. (v:count != 0 ? v:count .. 'argument' : 'first')
+            \ .. '<Bar>args<CR>'
+nnoremap <expr> ]A '<Cmd>' .. (v:count != 0 ? v:count .. 'argument' : 'last')
+            \ .. '<Bar>args<CR>'
 
 " Buffers {{{2
-nnoremap ]b <Cmd>bnext<CR>2<C-G>
-nnoremap [b <Cmd>bprevious<CR>2<C-G>
+nnoremap <expr> [b '<Cmd>' .. v:count1 .. 'bprevious<CR>2<C-G>'
+nnoremap <expr> ]b '<Cmd>' .. v:count1 .. 'bnext<CR>2<C-G>'
+nnoremap <expr> [B '<Cmd>' .. (v:count != 0 ? v:count .. 'buffer' : 'bfirst')
+            \ .. '<CR>2<C-G>'
+nnoremap <expr> ]B '<Cmd>' .. (v:count != 0 ? v:count .. 'buffer' : 'blast')
+            \ .. '<CR>2<C-G>'
 nnoremap <Leader>fb :buffer<Space>
 
 " Find, Grep, ... {{{2
@@ -342,12 +350,18 @@ nnoremap <Leader>ft :tjump<Space>
 nnoremap <Leader>fo <Cmd>browse oldfiles<CR>
 
 " QuickFix and Location lists {{{2
-nnoremap ]c <Cmd>cnext<CR>zv
-nnoremap [c <Cmd>cprevious<CR>zv
-nnoremap ]C <Cmd>cnewer<CR>
-nnoremap [C <Cmd>colder<CR>
+if !has('nvim')  " Nvim defines exact equivalents by default.
+    nnoremap <expr> [q '<Cmd>' .. v:count1 .. 'cprevious<CR>'
+    nnoremap <expr> ]q '<Cmd>' .. v:count1 .. 'cnext<CR>'
+    nnoremap <expr> [Q '<Cmd>' .. (v:count != 0 ? v:count : '') .. 'cfirst<CR>'
+    nnoremap <expr> ]Q '<Cmd>' .. (v:count != 0 ? v:count : '') .. 'clast<CR>'
+    nnoremap <expr> [<C-Q> '<Cmd>' .. v:count1 .. 'cpfile<CR>'
+    nnoremap <expr> ]<C-Q> '<Cmd>' .. v:count1 .. 'cnfile<CR>'
 
-nnoremap ]l <Cmd>lnext<CR>zv
-nnoremap [l <Cmd>lprevious<CR>zv
-nnoremap ]L <Cmd>lnewer<CR>
-nnoremap [L <Cmd>lolder<CR>
+    nnoremap <expr> [l '<Cmd>' .. v:count1 .. 'lprevious<CR>'
+    nnoremap <expr> ]l '<Cmd>' .. v:count1 .. 'lnext<CR>'
+    nnoremap <expr> [L '<Cmd>' .. (v:count != 0 ? v:count : '') .. 'lfirst<CR>'
+    nnoremap <expr> ]L '<Cmd>' .. (v:count != 0 ? v:count : '') .. 'llast<CR>'
+    nnoremap <expr> [<C-L> '<Cmd>' .. v:count1 .. 'lpfile<CR>'
+    nnoremap <expr> ]<C-L> '<Cmd>' .. v:count1 .. 'lnfile<CR>'
+endif

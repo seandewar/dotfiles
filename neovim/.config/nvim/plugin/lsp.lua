@@ -18,7 +18,46 @@ api.nvim_create_autocmd("LspDetach", {
   end,
 })
 
-keymap.set("n", "<Space>h", function()
+-- These mappings, like the Nvim defaults, mostly extend the "gr" namespace for
+-- LSP stuff.
+keymap.set(
+  "n",
+  "grt",
+  lsp.buf.type_definition,
+  { desc = "LSP Type Definition" }
+)
+
+keymap.set({ "n", "x" }, "grf", function()
+  lsp.buf.format { async = true }
+end, {
+  desc = "LSP Format",
+})
+
+keymap.set("n", "grr", function()
+  if vim.g.loaded_fzf_lua ~= nil then
+    require("fzf-lua").lsp_references()
+  else
+    lsp.buf.references()
+  end
+end, { desc = "LSP References" })
+
+keymap.set("n", "grw", function()
+  if vim.g.loaded_fzf_lua ~= nil then
+    require("fzf-lua").lsp_live_workspace_symbols()
+  else
+    lsp.buf.workspace_symbol()
+  end
+end, { desc = "LSP Workspace Symbols" })
+
+keymap.set("n", "gO", function()
+  if vim.g.loaded_fzf_lua ~= nil then
+    require("fzf-lua").lsp_document_symbols()
+  else
+    lsp.buf.document_symbol()
+  end
+end, { desc = "LSP Document Symbols" })
+
+keymap.set("n", "grh", function()
   if #lsp.get_clients { bufnr = 0, method = "textDocument/inlayHint" } == 0 then
     util.echo {
       {
@@ -34,55 +73,6 @@ keymap.set("n", "<Space>h", function()
   util.echo("Buffer inlay hints " .. (enable and "enabled" or "disabled"))
 end, { desc = "LSP Toggle Buffer Inlay Hints" })
 
-keymap.set({ "n", "i" }, "<C-K>", function()
-  lsp.buf.signature_help { border = "single" }
-end, {
+keymap.set("n", "<C-S>", lsp.buf.signature_help, {
   desc = "LSP Signature Help",
 })
-
-keymap.set(
-  "n",
-  "<Space>t",
-  lsp.buf.type_definition,
-  { desc = "LSP Type Definition" }
-)
-keymap.set(
-  "n",
-  "<Space>i",
-  lsp.buf.implementation,
-  { desc = "LSP Implementations" }
-)
-keymap.set("n", "<Space>R", lsp.buf.rename, { desc = "LSP Rename" })
-keymap.set(
-  { "n", "x" },
-  "<Space>a",
-  lsp.buf.code_action,
-  { desc = "LSP Code Action" }
-)
-keymap.set({ "n", "x" }, "<Space>f", function()
-  lsp.buf.format { async = true }
-end, {
-  desc = "LSP Format",
-})
-
-keymap.set("n", "<Space>r", function()
-  if vim.g.loaded_fzf_lua ~= nil then
-    require("fzf-lua").lsp_references()
-  else
-    lsp.buf.references()
-  end
-end, { desc = "LSP References" })
-keymap.set("n", "<Space>d", function()
-  if vim.g.loaded_fzf_lua ~= nil then
-    require("fzf-lua").lsp_document_symbols()
-  else
-    lsp.buf.document_symbol()
-  end
-end, { desc = "LSP Document Symbols" })
-keymap.set("n", "<Space>w", function()
-  if vim.g.loaded_fzf_lua ~= nil then
-    require("fzf-lua").lsp_live_workspace_symbols()
-  else
-    lsp.buf.workspace_symbol()
-  end
-end, { desc = "LSP Workspace Symbols" })
