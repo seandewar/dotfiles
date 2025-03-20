@@ -43,10 +43,6 @@ lspconfig.util.default_config =
   vim.tbl_extend("force", lspconfig.util.default_config, {
     autostart = false, -- Handle this ourselves.
     flags = { debounce_text_changes = 150 },
-
-    on_attach = function(client)
-      require("conf.lsp").lspconfig_attach_curbuf(client)
-    end,
   })
 
 local function setup(config_name, config)
@@ -80,40 +76,3 @@ setup("rust_analyzer", {
     end
   end,
 })
-
--- TODO: Sure, I have quite a few runtime files and maybe I should be more
--- choosy with which ones I index, but lua_ls is still too slow (and kicks my
--- CPU's butt) when indexing, so disable for now.
--- setup("lua_ls", {
---   settings = {
---     Lua = {
---       workspace = {
---         library = vim.api.nvim_get_runtime_file("", true),
---       },
---       runtime = {
---         version = "LuaJIT",
---         path = vim.list_extend(
---           vim.split(package.path, ";"),
---           { "lua/?.lua", "lua/?/init.lua" }
---         ),
---       },
---       diagnostics = {
---         globals = {
---           -- (Neo)vim
---           "vim",
---           -- Busted
---           "after_each",
---           "before_each",
---           "context",
---           "describe",
---           "it",
---           "pending",
---           "setup",
---           "teardown",
---         },
---         disable = { "lowercase-global" },
---       },
---       telemetry = { enable = false },
---     },
---   },
--- })

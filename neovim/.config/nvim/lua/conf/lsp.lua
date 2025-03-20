@@ -1,9 +1,7 @@
 local api = vim.api
 local fn = vim.fn
+local keymap = vim.keymap
 local lsp = vim.lsp
-
-local map = vim.keymap.set
-local unmap = vim.keymap.del
 
 local M = {}
 
@@ -71,14 +69,11 @@ function M.formatexpr()
   return 0
 end
 
-function M.lspconfig_attach_curbuf(client)
-  if client.name == "clangd" then
-    map("n", "<Space>s", "<Cmd>ClangdSwitchSourceHeader<CR>", {
-      buffer = true,
-    })
-  end
-end
+local saved_win_opts = {}
 
+-- TODO: check capabilities before registering mappings and such, and also do
+-- that check in the client/(un)registerCapabilities handler (to support dynamic
+-- registrations!)
 function M.attach_buffer(args)
   local client = vim.lsp.get_client_by_id(args.data.client_id)
   if client.name == "zls" then
@@ -119,22 +114,27 @@ function M.attach_buffer(args)
     vim.bo.formatexpr = "v:lua.require'conf.lsp'.formatexpr()" -- Prefer ours.
 
     -- These maps have default functions, so define them here as buffer-local.
-    map("n", "K", function()
+    keymap.set("n", "K", function()
       lsp.buf.hover { border = "single" }
     end, { buffer = true, desc = "LSP Hover" })
-    map(
+    keymap.set(
       "n",
       "gd",
       lsp.buf.definition,
       { buffer = true, desc = "LSP Definition" }
     )
-    map(
+    keymap.set(
       "n",
       "gD",
       lsp.buf.declaration,
       { buffer = true, desc = "LSP Declaration" }
     )
   end)
+
+  if client:supports_method "textDocument/foldingRange" then
+    local folding = require "conf.folding"
+    folding.set(args.buf, folding.type.LSP)
+  end
 end
 
 function M.detach_buffer(args)
@@ -165,23 +165,19 @@ function M.detach_buffer(args)
   end
 
   api.nvim_buf_call(args.buf, function()
-    unmap("n", "K", { buffer = true })
-    unmap("n", "gd", { buffer = true })
-    unmap("n", "gD", { buffer = true })
+    keymap.del("n", "K", { buffer = true })
+    keymap.del("n", "gd", { buffer = true })
+    keymap.del("n", "gD", { buffer = true })
 
-    -- Server-specific mappings.
-    if fn.mapcheck("<Space>s", "n") ~= "" then -- clangd
-      unmap("n", "<Space>s", { buffer = true })
-    end
-
-    -- Restore the original buffer-local option values for the filetype.
-    -- TODO: ml_get error if this is called after the buffer's backing file is
-    -- deleted? wut? maybe due to the dummy buffer used for default optvals?
+    -- Restore original buffer-local option values for the filetype.
     for _, option in ipairs { "omnifunc", "tagfunc", "formatexpr" } do
-      local info = api.nvim_get_option_info2(option, { buf = 0 })
-      vim.bo[option] = info.default ~= "" and info.default or vim.go[option]
+      vim.bo[option] =
+        api.nvim_get_option_value(option, { filetype = vim.bo.filetype })
     end
   end)
+
+  local folding = require "conf.folding"
+  folding.unset(args.buf, folding.type.LSP)
 end
 
 return M

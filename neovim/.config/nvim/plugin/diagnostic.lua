@@ -1,7 +1,7 @@
 local api = vim.api
-local fn = vim.fn
-local map = vim.keymap.set
 local diagnostic = vim.diagnostic
+local fn = vim.fn
+local keymap = vim.keymap
 
 ---@note requires recursive statusline evaluation: %{%...%}
 local function statusline(curwin, stlwin)
@@ -65,18 +65,18 @@ diagnostic.config {
   float = { border = "single" },
 }
 
-map("n", "]<Space>", function()
+keymap.set("n", "]<Space>", function()
   diagnostic.jump { count = 1 }
 end, {
   desc = "Next Diagnostic",
 })
-map("n", "[<Space>", function()
+keymap.set("n", "[<Space>", function()
   diagnostic.jump { count = -1 }
 end, {
   desc = "Previous Diagnostic",
 })
 
-map("n", "<Space>k", function()
+keymap.set("n", "<Space>k", function()
   -- Attempt to show either cursor or line diagnostics, in that order.
   if
     diagnostic.open_float { scope = "c", header = "Cursor Diagnostics:" }
@@ -89,7 +89,7 @@ end, {
   desc = "Floating Diagnostics",
 })
 
-map("n", "<Space><Space>", function()
+keymap.set("n", "<Space><Space>", function()
   if vim.g.loaded_fzf_lua ~= nil then
     require("fzf-lua").diagnostics_document()
   else
@@ -98,7 +98,7 @@ map("n", "<Space><Space>", function()
 end, {
   desc = "Buffer Diagnostics",
 })
-map("n", "<Space><C-Space>", function()
+keymap.set("n", "<Space><C-Space>", function()
   if vim.g.loaded_fzf_lua ~= nil then
     require("fzf-lua").diagnostics_workspace()
   else

@@ -4,7 +4,7 @@ end
 
 local cmd = vim.cmd
 local fn = vim.fn
-local map = vim.keymap.set
+local keymap = vim.keymap
 
 vim.filetype.add {
   pattern = {
@@ -29,5 +29,5 @@ vim.g.firenvim_config = {
 
 vim.o.cmdheight = 0
 
-map("n", "<Esc><Esc>", fn["firenvim#focus_page"])
-map("n", "<C-Z>", fn["firenvim#hide_frame"])
+keymap.set("n", "<Esc><Esc>", fn["firenvim#focus_page"])
+keymap.set("n", "<C-Z>", fn["firenvim#hide_frame"])

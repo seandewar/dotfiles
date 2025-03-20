@@ -20,8 +20,8 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
 " General Settings {{{1
 set showbreak=>
 set cinoptions+=:0,g0,N-s,j1
-set completeopt=menu,menuone
-set foldlevelstart=99 foldmethod=marker
+set completeopt+=menuone
+set foldlevelstart=99 foldmethod=indent
 set formatoptions=croqnlj
 set ignorecase smartcase
 set list listchars=tab:_\ ,trail:.,nbsp:~,extends:>,precedes:<
@@ -40,9 +40,9 @@ set title
 set wildmode=list:longest,full
 
 if has('nvim')
-    " Nvim's exrc feature uses a :trust system, so it's safe enough to enable.
-    set exrc
+    set exrc  " Nvim's exrc uses a :trust system, so it's safe enough to enable.
     set jumpoptions+=view
+    set winborder=single
 
     " Nvim's terminal doesn't automatically tail to the output.
     " Make sure the cursor is on the last line so it does.
@@ -65,6 +65,7 @@ else
     set autoread
     set backspace=indent,eol,start
     set belloff=all
+    set completeopt+=popup
     set display+=lastline
     set encoding=utf-8
     set guioptions=M  " Has to be before ":filetype/syntax on"; not in gvimrc
@@ -78,11 +79,6 @@ else
     set switchbuf+=uselast
     set ttimeout ttimeoutlen=50
     set wildmenu
-
-    " Nvim's support of "popup" is quite rudimentary at the moment and has a few
-    " issues (the width of the preview can be quite small if the pum is wide).
-    " Only enable it in Vim for now.
-    set completeopt+=popup
 
     " Lazy redrawing can leave stale stuff on the screen (e.g: my Nvim terminal
     " <C-W> mapping not clearing "-- TERMINAL --" with 'showmode'). As Nvim aims
