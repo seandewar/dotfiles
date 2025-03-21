@@ -16,9 +16,9 @@ api.nvim_create_autocmd("FileType", {
 
     if treesitter.query.get(treesitter.language.get_lang(ft), "folds") then
       local folding = require "conf.folding"
-      folding.set(args.buf, folding.type.TREESITTER)
+      folding.enable(args.buf, folding.type.TREESITTER, true)
       vim.b[args.buf].undo_ftplugin = (
-        [[execute 'lua local f = require "conf.folding" f.unset(0, f.type.TREESITTER)']]
+        [[execute 'lua local f = require "conf.folding" f.enable(0, f.type.TREESITTER, false)']]
         .. "\n"
         .. (vim.b[args.buf].undo_ftplugin or "")
       )

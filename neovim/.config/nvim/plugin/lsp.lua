@@ -18,8 +18,19 @@ api.nvim_create_autocmd("LspDetach", {
   end,
 })
 
--- These mappings, like the Nvim defaults, mostly extend the "gr" namespace for
--- LSP stuff.
+local new_capability_change_handler = function(orig_handler)
+  return function(err, params, ctx)
+    local ret = orig_handler(err, params, ctx)
+    require("conf.lsp").setup_attached_buffers(ctx.client_id)
+    return ret
+  end
+end
+lsp.handlers["client/registerCapability"] =
+  new_capability_change_handler(lsp.handlers["client/registerCapability"])
+lsp.handlers["client/unregisterCapability"] =
+  new_capability_change_handler(lsp.handlers["client/unregisterCapability"])
+
+-- These mappings, like the Nvim defaults, mostly override "gr" for LSP stuff.
 keymap.set(
   "n",
   "grt",

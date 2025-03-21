@@ -157,7 +157,6 @@ packadd cfilter
 let g:qf_disable_statusline = 1
 let g:c_no_curly_error = 1  " Don't show "[{}]" as an error; it's valid C++11
 let g:markdown_folding = 1
-let g:rustfmt_autosave = 1
 
 if has('nvim')
     let g:netrw_nogx = 1  " Nvim 0.10 has its own gx which uses vim.ui.open().

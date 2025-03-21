@@ -73,26 +73,26 @@ end
 
 local buf_types = {}
 
-function M.set(buf, type)
+function M.enable(buf, type, enable)
   buf = buf ~= 0 and buf or api.nvim_get_current_buf()
-  buf_types[buf] = buf_types[buf] or 0
 
-  if type > top_type(buf_types[buf]) then
-    set_opts(buf, type)
-  end
-  buf_types[buf] = bit.bor(buf_types[buf], type)
-end
+  if enable then
+    buf_types[buf] = buf_types[buf] or 0
 
-function M.unset(buf, type)
-  buf = buf ~= 0 and buf or api.nvim_get_current_buf()
-  if bit.band(buf_types[buf] or 0, type) == 0 then
-    return
-  end
+    if type > top_type(buf_types[buf]) then
+      set_opts(buf, type)
+    end
+    buf_types[buf] = bit.bor(buf_types[buf], type)
+  else
+    if bit.band(buf_types[buf] or 0, type) == 0 then
+      return
+    end
 
-  buf_types[buf] = bit.band(buf_types[buf], bit.bnot(type))
-  local top = top_type(buf_types[buf])
-  if type > top then
-    set_opts(buf, top)
+    buf_types[buf] = bit.band(buf_types[buf], bit.bnot(type))
+    local top = top_type(buf_types[buf])
+    if type > top then
+      set_opts(buf, top)
+    end
   end
 end
 

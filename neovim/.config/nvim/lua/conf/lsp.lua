@@ -69,32 +69,76 @@ function M.formatexpr()
   return 0
 end
 
-local saved_win_opts = {}
+function M.setup_attached_buffers(client_id, detaching)
+  for _, buf in ipairs(lsp.get_buffers_by_client_id(client_id)) do
+    local buf_clients = vim.tbl_filter(function(c)
+      return not detaching or c.id ~= client_id
+    end, lsp.get_clients { buffer = buf })
 
--- TODO: check capabilities before registering mappings and such, and also do
--- that check in the client/(un)registerCapabilities handler (to support dynamic
--- registrations!)
-function M.attach_buffer(args)
-  local client = vim.lsp.get_client_by_id(args.data.client_id)
-  if client.name == "zls" then
-    -- zls already runs zig ast-check, so no need to have zig.vim run it too.
-    -- Unfortunately, this cannot be set per-buffer.
-    local group =
-      api.nvim_create_augroup("conf_lsp_use_zls_errors", { clear = false })
-    api.nvim_create_autocmd("BufEnter", {
-      group = group,
-      buffer = args.buf,
-      command = "let g:zig_fmt_parse_errors = 0",
-    })
-    api.nvim_create_autocmd("BufLeave", {
-      group = group,
-      buffer = args.buf,
-      command = "let g:zig_fmt_parse_errors = 1",
-    })
-    if api.nvim_get_current_buf() == args.buf then
-      vim.g.zig_fmt_parse_errors = false
+    local function buf_supports_method(method)
+      return vim.iter(buf_clients):any(function(c)
+        return c:supports_method(method)
+      end)
     end
+    local function buf_reset_option(option)
+      vim.bo[buf][option] =
+        api.nvim_get_option_value(option, { filetype = vim.bo[buf].filetype })
+    end
+
+    if buf_supports_method "textDocument/hover" then
+      keymap.set("n", "K", lsp.buf.hover, { buffer = buf, desc = "LSP Hover" })
+    else
+      pcall(keymap.del, "n", "K", { buffer = buf })
+    end
+
+    if buf_supports_method "textDocument/definition" then
+      vim.bo[buf].tagfunc = "v:lua.vim.lsp.tagfunc"
+      keymap.set(
+        "n",
+        "gd",
+        lsp.buf.definition,
+        { buffer = buf, desc = "LSP Definition" }
+      )
+    else
+      buf_reset_option "tagfunc"
+      pcall(keymap.del, "n", "gd", { buffer = buf })
+    end
+
+    if buf_supports_method "textDocument/declaration" then
+      keymap.set(
+        "n",
+        "gD",
+        lsp.buf.declaration,
+        { buffer = buf, desc = "LSP Declaration" }
+      )
+    else
+      pcall(keymap.del, "n", "gD", { buffer = buf })
+    end
+
+    if buf_supports_method "textDocument/completion" then
+      vim.bo[buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+    else
+      buf_reset_option "omnifunc"
+    end
+
+    if buf_supports_method "textDocument/rangeFormatting" then
+      -- Prefer ours.
+      vim.bo[buf].formatexpr = "v:lua.require'conf.lsp'.formatexpr()"
+    else
+      buf_reset_option "formatexpr"
+    end
+
+    local folding = require "conf.folding"
+    folding.enable(
+      buf,
+      folding.type.LSP,
+      buf_supports_method "textDocument/foldingRange"
+    )
   end
+end
+
+function M.attach_buffer(args)
+  M.setup_attached_buffers(args.data.client_id)
 
   -- Schedule, as the window may not have been drawn yet, which could cause
   -- a full screen redraw from `:redrawstatus!`; this can introduce a "flicker"
@@ -102,41 +146,12 @@ function M.attach_buffer(args)
   vim.schedule(function()
     vim.cmd.redrawstatus { bang = true }
   end)
-
-  -- Continue only for the first client attaching to the buffer.
-  if #lsp.get_clients { bufnr = args.buf } > 1 then
-    return
-  end
-
-  api.nvim_buf_call(args.buf, function()
-    vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
-    vim.bo.tagfunc = "v:lua.vim.lsp.tagfunc"
-    vim.bo.formatexpr = "v:lua.require'conf.lsp'.formatexpr()" -- Prefer ours.
-
-    -- These maps have default functions, so define them here as buffer-local.
-    keymap.set("n", "K", lsp.buf.hover, { buffer = true, desc = "LSP Hover" })
-    keymap.set(
-      "n",
-      "gd",
-      lsp.buf.definition,
-      { buffer = true, desc = "LSP Definition" }
-    )
-    keymap.set(
-      "n",
-      "gD",
-      lsp.buf.declaration,
-      { buffer = true, desc = "LSP Declaration" }
-    )
-  end)
-
-  if client:supports_method "textDocument/foldingRange" then
-    local folding = require "conf.folding"
-    folding.set(args.buf, folding.type.LSP)
-  end
 end
 
 function M.detach_buffer(args)
-  if last_progress and last_progress.client_id == args.data.client_id then
+  local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+  if last_progress and last_progress.client_id == client.id then
     last_progress = nil
 
     -- Schedule, as the client hasn't finished detaching yet.
@@ -145,37 +160,7 @@ function M.detach_buffer(args)
     end)
   end
 
-  local client = vim.lsp.get_client_by_id(args.data.client_id)
-  if client.name == "zls" then
-    -- Undo zls-specific attach settings.
-    api.nvim_clear_autocmds {
-      group = "conf_lsp_use_zls_errors",
-      buffer = args.buf,
-    }
-    if api.nvim_get_current_buf() == args.buf then
-      vim.g.zig_fmt_parse_errors = true
-    end
-  end
-
-  -- Continue only for the last client detaching from the buffer.
-  if #lsp.get_clients { bufnr = args.buf } > 1 then
-    return
-  end
-
-  api.nvim_buf_call(args.buf, function()
-    keymap.del("n", "K", { buffer = true })
-    keymap.del("n", "gd", { buffer = true })
-    keymap.del("n", "gD", { buffer = true })
-
-    -- Restore original buffer-local option values for the filetype.
-    for _, option in ipairs { "omnifunc", "tagfunc", "formatexpr" } do
-      vim.bo[option] =
-        api.nvim_get_option_value(option, { filetype = vim.bo.filetype })
-    end
-  end)
-
-  local folding = require "conf.folding"
-  folding.unset(args.buf, folding.type.LSP)
+  M.setup_attached_buffers(client.id, true)
 end
 
 return M
