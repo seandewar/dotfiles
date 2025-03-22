@@ -40,7 +40,7 @@ local function define_stl_hls()
           "force",
           level_def,
           { bg = stl_def.bg, ctermbg = stl_def.ctermbg }
-        )
+        ) --[[@as vim.api.keyset.highlight]]
       )
     end
   end
@@ -63,7 +63,7 @@ diagnostic.config {
   virtual_text = {
     current_line = true,
     spacing = 2,
-    prefix = function(diag, i, n)
+    prefix = function(diag, _, _)
       local name = diagnostic.severity[diag.severity]
       return name and name:sub(1, 1):upper() or "D"
     end,
@@ -87,7 +87,7 @@ end, {
   desc = "Floating Diagnostics",
 })
 
-keymap.set("n", "<Space><Space>", function()
+keymap.set("n", "<Leader>d", function()
   if vim.g.loaded_fzf_lua ~= nil then
     require("fzf-lua").diagnostics_document()
   else
@@ -96,7 +96,7 @@ keymap.set("n", "<Space><Space>", function()
 end, {
   desc = "Buffer Diagnostics",
 })
-keymap.set("n", "<Space><C-Space>", function()
+keymap.set("n", "<Leader>D", function()
   if vim.g.loaded_fzf_lua ~= nil then
     require("fzf-lua").diagnostics_workspace()
   else

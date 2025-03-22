@@ -3,9 +3,6 @@
 - Disable unneeded plugins/stuff when opened as a pager
 - Enable vim.snippet support, if at least for expanding snippet completions from
   lsps
-- Reconsider lua_ls.
-- Fix LSP on_detach bugs (occasional mapping undefined/ml_get errors; check
-  detach order)
 - Maybe consider replacing neoformat with a lsp implementation of some sort
 - Don't :TSUpdate after updating nvim-treesitter, as some modules might already
   be loaded. Instead, schedule an update for the next nvim start; we can maybe

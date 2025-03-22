@@ -75,6 +75,7 @@ local buf_types = {}
 
 function M.enable(buf, type, enable)
   buf = buf ~= 0 and buf or api.nvim_get_current_buf()
+  enable = enable == nil or enable
 
   if enable then
     buf_types[buf] = buf_types[buf] or 0

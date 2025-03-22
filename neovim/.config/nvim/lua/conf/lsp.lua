@@ -149,7 +149,7 @@ function M.attach_buffer(args)
 end
 
 function M.detach_buffer(args)
-  local client = vim.lsp.get_client_by_id(args.data.client_id)
+  local client = vim.lsp.get_client_by_id(args.data.client_id) ---@cast client -nil
 
   if last_progress and last_progress.client_id == client.id then
     last_progress = nil

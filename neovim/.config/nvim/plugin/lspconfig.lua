@@ -1,6 +1,5 @@
 local api = vim.api
 local fn = vim.fn
-local lsp = vim.lsp
 
 local lspconfig = require "lspconfig"
 
@@ -69,10 +68,43 @@ setup "zls"
 setup("rust_analyzer", {
   -- Using `on_new_config` to avoid doing this logic at Nvim's startup.
   on_new_config = function(config, _)
-    fn.system { "cargo", "clippy", "--version" }
-    if vim.v.shell_error == 0 then
+    if vim.system({ "cargo", "clippy", "--version" }):wait().code == 0 then
       config.settings =
         { ["rust-analyzer"] = { check = { command = "clippy" } } }
     end
+  end,
+})
+
+setup("lua_ls", {
+  on_init = function(client)
+    local rt_paths_set = vim
+      .iter(api.nvim_list_runtime_paths())
+      :fold({}, function(acc, p)
+        acc[fn.resolve(p)] = true
+        return acc
+      end)
+    -- Don't configure the environment for Nvim if the workspace isn't in the
+    -- runtimepath.
+    if
+      not vim.iter(client.workspace_folders or {}):any(function(wf)
+        return rt_paths_set[fn.resolve(wf.name)]
+      end)
+    then
+      return
+    end
+
+    client.settings = vim.tbl_deep_extend("force", client.settings, {
+      Lua = {
+        runtime = {
+          version = "LuaJIT",
+        },
+        workspace = {
+          checkThirdParty = false,
+          library = {
+            vim.env.VIMRUNTIME,
+          },
+        },
+      },
+    })
   end,
 })

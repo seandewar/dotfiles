@@ -1,5 +1,4 @@
 local api = vim.api
-local fn = vim.fn
 local treesitter = vim.treesitter
 
 -- Enable TS features for supported filetypes.
@@ -14,9 +13,10 @@ api.nvim_create_autocmd("FileType", {
       return
     end
 
-    if treesitter.query.get(treesitter.language.get_lang(ft), "folds") then
+    local lang = treesitter.language.get_lang(ft)
+    if lang and treesitter.query.get(lang, "folds") then
       local folding = require "conf.folding"
-      folding.enable(args.buf, folding.type.TREESITTER, true)
+      folding.enable(args.buf, folding.type.TREESITTER)
       vim.b[args.buf].undo_ftplugin = (
         [[execute 'lua local f = require "conf.folding" f.enable(0, f.type.TREESITTER, false)']]
         .. "\n"
