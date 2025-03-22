@@ -4,7 +4,6 @@ let $MYGVIMRC = resolve(empty($MYGVIMRC) ? expand('<sfile>:p') : $MYGVIMRC)
 if exists('g:GuiLoaded')  " nvim-qt
     GuiTabline 0
     GuiPopupmenu 0
-    silent! GuiRenderLigatures 1  " Not supported by older versions of nvim-qt
     GuiFont! Iosevka\ Term:h11
 else
     silent! set guioptions+=c  " Not supported by Nvim

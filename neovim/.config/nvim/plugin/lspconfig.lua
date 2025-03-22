@@ -1,5 +1,6 @@
 local api = vim.api
 local fn = vim.fn
+local fs = vim.fs
 
 local lspconfig = require "lspconfig"
 
@@ -77,17 +78,17 @@ setup("rust_analyzer", {
 
 setup("lua_ls", {
   on_init = function(client)
-    local rt_paths_set = vim
-      .iter(api.nvim_list_runtime_paths())
-      :fold({}, function(acc, p)
-        acc[fn.resolve(p)] = true
-        return acc
-      end)
-    -- Don't configure the environment for Nvim if the workspace isn't in the
-    -- runtimepath.
+    local rt_paths = vim.tbl_map(function(p)
+      return fn.resolve(p)
+    end, api.nvim_list_runtime_paths())
+    -- Don't configure the environment for Nvim if the workspace doesn't contain
+    -- any directories within the runtimepath.
     if
       not vim.iter(client.workspace_folders or {}):any(function(wf)
-        return rt_paths_set[fn.resolve(wf.name)]
+        local wfp = fn.resolve(wf.name)
+        return vim.iter(rt_paths):any(function(rtp)
+          return fs.relpath(rtp, wfp) ~= nil
+        end)
       end)
     then
       return
