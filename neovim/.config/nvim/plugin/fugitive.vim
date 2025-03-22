@@ -1,4 +1,4 @@
-let g:conf_statusline_components.git = '%([%{FugitiveHead(7)}] %)'
+let g:conf_statusline_components.git = '%(%{FugitiveStatusline()} %)'
 
 augroup conf_fugitive_redraw_statusline
     autocmd!

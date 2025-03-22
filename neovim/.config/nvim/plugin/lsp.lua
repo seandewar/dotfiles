@@ -2,8 +2,6 @@ local api = vim.api
 local keymap = vim.keymap
 local lsp = vim.lsp
 
-local util = require "conf.util"
-
 local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
 api.nvim_create_autocmd("LspAttach", {
   group = attach_group,
@@ -69,6 +67,7 @@ keymap.set("n", "gO", function()
 end, { desc = "LSP Document Symbols" })
 
 keymap.set("n", "grh", function()
+  local util = require "conf.util"
   if #lsp.get_clients { bufnr = 0, method = "textDocument/inlayHint" } == 0 then
     util.echo {
       {

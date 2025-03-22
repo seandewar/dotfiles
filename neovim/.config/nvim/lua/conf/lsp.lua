@@ -22,7 +22,7 @@ local function update_progress(opts)
       text = text .. " " .. msg.message
     end
     if msg.percentage then
-      text = text .. " " .. math.floor(msg.percentage) .. "%%"
+      text = text .. " " .. math.floor(msg.percentage) .. "%"
     end
 
     last_progress = { client_id = client.id, text = text }
@@ -37,17 +37,21 @@ api.nvim_create_autocmd("LspProgress", {
 })
 
 local function statusline(curwin, stlwin)
+  local function escape(text)
+    return text:gsub("%%", "%%%%")
+  end
+
   if curwin == stlwin and last_progress then
-    return "[" .. last_progress.text .. "] "
+    return "[LSP(" .. escape(last_progress.text) .. ")] "
   end
 
   local clients = lsp.get_clients { bufnr = api.nvim_win_get_buf(stlwin) }
   if #clients == 0 then
     return ""
   elseif #clients == 1 then
-    return "[" .. clients[1].name .. "] "
+    return "[LSP(" .. escape(clients[1].name) .. ")] "
   else
-    return "[" .. #clients .. " clients] "
+    return "[LSP(" .. #clients .. " clients)] "
   end
 end
 
