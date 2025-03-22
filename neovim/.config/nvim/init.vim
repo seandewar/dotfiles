@@ -204,7 +204,7 @@ let g:conf_statusline_components = #{
             \ (has('nvim') ? '%{get(b:, ''ts_highlight'') ? '',TS'' : ''''}' :
             \                '') ..
             \       '%{&spell ? '','' .. &spelllang : ''''}] %)',
-            \ ruler: '%=%(%l,%c%V | %P%)',
+            \ ruler: '%=%(%l,%c%V %P%)',
             \ }
 let g:conf_statusline_order =
             \ ['main', 'git', 'diagnostic', 'lsp', 'ruler']

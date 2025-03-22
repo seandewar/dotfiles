@@ -139,6 +139,7 @@ end
 
 function M.attach_buffer(args)
   M.setup_attached_buffers(args.data.client_id)
+  lsp.completion.enable(true, args.data.client_id, args.bufnr)
 
   -- Schedule, as the window may not have been drawn yet, which could cause
   -- a full screen redraw from `:redrawstatus!`; this can introduce a "flicker"
@@ -149,9 +150,10 @@ function M.attach_buffer(args)
 end
 
 function M.detach_buffer(args)
-  local client = vim.lsp.get_client_by_id(args.data.client_id) ---@cast client -nil
+  M.setup_attached_buffers(args.data.client_id, true)
+  lsp.completion.enable(false, args.data.client_id, args.bufnr)
 
-  if last_progress and last_progress.client_id == client.id then
+  if last_progress and last_progress.client_id == args.data.client_id then
     last_progress = nil
 
     -- Schedule, as the client hasn't finished detaching yet.
@@ -159,8 +161,6 @@ function M.detach_buffer(args)
       vim.cmd.redrawstatus { bang = true }
     end)
   end
-
-  M.setup_attached_buffers(client.id, true)
 end
 
 return M
