@@ -9,7 +9,4 @@
   abuse shada global vars for this if we're feeling lazy.
 - Use nvim-dap? GCC also has built-in DAP support now... (but termdebug is
   pretty good)
-- Maybe change some 'list' stuff (possibly highlights) to look less like text.
-  (E.g: I sometimes think trailing spaces are actual "."s, and I don't like
-  using Unicode symbols...)
 - Yeet netrw (and vim-vinegar)? Netrw's bugs are annoying.

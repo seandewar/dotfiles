@@ -63,10 +63,6 @@ diagnostic.config {
   virtual_text = {
     current_line = true,
     spacing = 2,
-    prefix = function(diag, _, _)
-      local name = diagnostic.severity[diag.severity]
-      return name and name:sub(1, 1):upper() or "D"
-    end,
   },
   signs = false,
   float = {

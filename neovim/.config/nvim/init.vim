@@ -18,19 +18,19 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
                   \ : expand(has('win32') ? '~/vimfiles' : '~/.vim'))
 
 " General Settings {{{1
-set showbreak=>
 set cinoptions+=:0,g0,N-s,j1
 set completeopt+=menuone
 set foldlevelstart=99 foldmethod=indent
 set formatoptions=croqnlj
 set ignorecase smartcase
-set list listchars=tab:_\ ,trail:.,nbsp:~,extends:>,precedes:<
+set list listchars=tab:▸\ ,trail:•,nbsp:␣,extends:⟩,precedes:⟨
 set mouse=a
 set path& | let &path ..= '**'  " Use :let..=, as 'path' already ends in a comma
 set pumheight=12
 set scrolloff=1 sidescroll=5
 set sessionoptions-=blank sessionoptions-=buffers
 set shortmess+=I
+set showbreak=↳
 set spelllang=en_gb spelloptions=camel
 set splitbelow splitright
 set softtabstop=4 shiftwidth=4 expandtab
@@ -158,10 +158,6 @@ let g:qf_disable_statusline = 1
 let g:c_no_curly_error = 1  " Don't show "[{}]" as an error; it's valid C++11
 let g:markdown_folding = 1
 
-if has('nvim')
-    let g:netrw_nogx = 1  " Nvim 0.10 has its own gx which uses vim.ui.open().
-endif
-
 " With 'hidden' set, netrw buffers may have no name. This is because netrw does
 " not modify the empty buffer created by Vim when opening a directory, but
 " instead opens a new listing buffer and tries to set its name to that of the
@@ -271,8 +267,11 @@ command! -bar RuntimeDir call s:TabEditDir($VIMRUNTIME)
 " Mappings {{{1
 " General Mappings {{{2
 nnoremap <Leader>s <Cmd>setlocal spell!<CR>
-nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<CR><C-L>
 nnoremap gV `[v`]
+
+if !has('nvim')  " Nvim defines this exactly by default.
+    nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<Bar>normal!<C-L><CR>
+endif
 
 " Swap the behaviour of k, j, <Up>, <Down> to use display lines when wrapped.
 nnoremap k gk
@@ -292,7 +291,7 @@ inoremap <expr> <Down> pumvisible() ? '<Down>' : '<C-O>g<Down>'
 xnoremap p P
 xnoremap P p
 
-" Just in case K is overridden for LSP Hover; 'keywordprg' is sometimes useful.
+" Just in case K is overridden; 'keywordprg' is sometimes useful.
 nnoremap gK K
 
 if has('nvim')
@@ -349,7 +348,7 @@ nnoremap <Leader>ft :tjump<Space>
 nnoremap <Leader>fo <Cmd>browse oldfiles<CR>
 
 " QuickFix and Location lists {{{2
-if !has('nvim')  " Nvim defines exact equivalents by default.
+if !has('nvim')  " Nvim defines this exactly by default.
     nnoremap <expr> [q '<Cmd>' .. v:count1 .. 'cprevious<CR>'
     nnoremap <expr> ]q '<Cmd>' .. v:count1 .. 'cnext<CR>'
     nnoremap <expr> [Q '<Cmd>' .. (v:count != 0 ? v:count : '') .. 'cfirst<CR>'
