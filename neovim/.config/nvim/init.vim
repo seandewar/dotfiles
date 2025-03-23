@@ -212,7 +212,7 @@ let g:conf_statusline_components = #{
             \ ruler: '%=%(%l,%c%V %P%)',
             \ }
 let g:conf_statusline_order =
-            \ ['main', 'git', 'diagnostic', 'lsp', 'ruler']
+            \ ['main', 'git', 'lsp', 'diagnostic', 'ruler']
 
 function! ConfStatusLine() abort
     let parts = copy(g:conf_statusline_order)

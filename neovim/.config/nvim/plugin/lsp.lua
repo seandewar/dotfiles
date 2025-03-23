@@ -58,13 +58,16 @@ keymap.set("n", "grw", function()
   end
 end, { desc = "LSP Workspace Symbols" })
 
-keymap.set("n", "gO", function()
+local function document_symbols()
   if vim.g.loaded_fzf_lua ~= nil then
     require("fzf-lua").lsp_document_symbols()
   else
     lsp.buf.document_symbol()
   end
-end, { desc = "LSP Document Symbols" })
+end
+-- gO is the Nvim default, but an ftplugin may have overriden it; map grd too.
+keymap.set("n", "grd", document_symbols, { desc = "LSP Document Symbols" })
+keymap.set("n", "gO", document_symbols, { desc = "LSP Document Symbols" })
 
 keymap.set("n", "grh", function()
   local util = require "conf.util"
