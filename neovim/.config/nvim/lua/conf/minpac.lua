@@ -22,6 +22,10 @@ start("nvim-treesitter/nvim-treesitter", {
     end
   end,
 })
+start("nvim-treesitter/nvim-treesitter-textobjects", {
+  rev = "main",
+  pullmethod = "autostash",
+})
 
 -- Fzf integration
 start "ibhagwan/fzf-lua"

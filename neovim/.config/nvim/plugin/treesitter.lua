@@ -1,4 +1,5 @@
 local api = vim.api
+local keymap = vim.keymap
 local treesitter = vim.treesitter
 
 -- Enable TS features for supported filetypes.
@@ -14,25 +15,86 @@ api.nvim_create_autocmd("FileType", {
     end
 
     local lang = treesitter.language.get_lang(ft)
-    if lang and treesitter.query.get(lang, "folds") then
-      local folding = require "conf.folding"
-      folding.enable(args.buf, folding.type.TREESITTER)
-      vim.b[args.buf].undo_ftplugin = (
-        [[execute 'lua local f = require "conf.folding" f.enable(0, f.type.TREESITTER, false)']]
-        .. "\n"
-        .. (vim.b[args.buf].undo_ftplugin or "")
-      )
+    if lang then
+      if treesitter.query.get(lang, "folds") then
+        local folding = require "conf.folding"
+        folding.enable(args.buf, folding.type.TREESITTER)
+        vim.b[args.buf].undo_ftplugin = (
+          "execute 'lua local f = require ''conf.folding'' "
+          .. "f.enable(0, f.type.TREESITTER, false)'\n"
+          .. (vim.b[args.buf].undo_ftplugin or "")
+        )
+      end
+
+      local textobjects_query = treesitter.query.get(lang, "textobjects")
+      if textobjects_query then
+        local captures_set = vim
+          .iter(textobjects_query.captures)
+          :fold({}, function(acc, c)
+            acc[c] = true
+            return acc
+          end)
+
+        local function define_move_map(lhs, capture_name, goto_fn_name)
+          if not captures_set[capture_name] then
+            return
+          end
+
+          keymap.set({ "n", "x", "o" }, lhs, function()
+            require("nvim-treesitter-textobjects.move")[goto_fn_name](
+              "@" .. capture_name,
+              "textobjects"
+            )
+          end, {
+            buffer = args.buf,
+            desc = "Treesitter " .. goto_fn_name .. " of @" .. capture_name,
+          })
+          vim.b[args.buf].undo_ftplugin = ("unmap <buffer> %s\n"):format(lhs)
+            .. (vim.b[args.buf].undo_ftplugin or "")
+        end
+
+        local function define_select_map(lhs, capture_name)
+          if not captures_set[capture_name] then
+            return
+          end
+
+          keymap.set({ "x", "o" }, lhs, function()
+            require("nvim-treesitter-textobjects.select").select_textobject(
+              "@" .. capture_name,
+              "textobjects"
+            )
+          end, {
+            buffer = args.buf,
+            desc = "Treesitter select_textobject of @" .. capture_name,
+          })
+          vim.b[args.buf].undo_ftplugin = ("unmap <buffer> %s\n"):format(lhs)
+            .. (vim.b[args.buf].undo_ftplugin or "")
+        end
+
+        define_move_map("]m", "function.outer", "goto_next_start")
+        define_move_map("[m", "function.outer", "goto_previous_start")
+        define_move_map("]M", "function.outer", "goto_next_end")
+        define_move_map("[M", "function.outer", "goto_previous_end")
+
+        define_move_map("][", "class.outer", "goto_next_start")
+        define_move_map("[[", "class.outer", "goto_previous_start")
+        define_move_map("]]", "class.outer", "goto_next_end")
+        define_move_map("[]", "class.outer", "goto_previous_end")
+
+        define_select_map("af", "function.outer")
+        define_select_map("if", "function.inner")
+        define_select_map("ac", "class.outer")
+        define_select_map("ic", "class.inner")
+      end
     end
 
     -- TS highlighting already on by default for some filetypes.
-    if vim.b[args.buf].ts_highlight then
-      return
-    end
-
-    local ok, _ = pcall(treesitter.start, args.buf)
-    if ok then
-      vim.b[args.buf].undo_ftplugin = "call v:lua.vim.treesitter.stop()\n"
-        .. (vim.b[args.buf].undo_ftplugin or "")
+    if not vim.b[args.buf].ts_highlight then
+      local ok, _ = pcall(treesitter.start, args.buf)
+      if ok then
+        vim.b[args.buf].undo_ftplugin = "call v:lua.vim.treesitter.stop()\n"
+          .. (vim.b[args.buf].undo_ftplugin or "")
+      end
     end
   end,
 })
@@ -54,5 +116,17 @@ require("nvim-treesitter").setup {
     -- Extra parsers not bundled with Nvim:
     "cpp",
     "comment",
+  },
+}
+
+require("nvim-treesitter-textobjects").setup {
+  select = {
+    lookahead = true,
+  },
+}
+
+require("nvim-treesitter-textobjects").setup {
+  move = {
+    set_jumps = true,
   },
 }
