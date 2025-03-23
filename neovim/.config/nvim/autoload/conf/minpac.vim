@@ -31,8 +31,7 @@ function! conf#minpac#ensure_init() abort
     call minpac#add('ziglang/zig.vim')
 
     " Vim plugins
-    if !has('nvim')
-        " Nvim has built-in commenting.
+    if !has('nvim') && !has('patch-9.1.0375')  " Built-in on newer versions.
         call minpac#add('tpope/vim-commentary')
     endif
 

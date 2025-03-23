@@ -19,7 +19,7 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
 
 " General Settings {{{1
 set cinoptions+=:0,g0,N-s,j1
-set completeopt+=menuone
+set completeopt+=menuone,noinsert
 set foldlevelstart=99 foldmethod=indent
 set formatoptions=croqnlj
 set ignorecase smartcase
@@ -40,6 +40,7 @@ set title
 set wildmode=list:longest,full
 
 if has('nvim')
+    set completeopt-=popup  " Doesn't size very well, can't customize yet.
     set exrc  " Nvim's exrc uses a :trust system, so it's safe enough to enable.
     set jumpoptions+=view
     set winborder=single
@@ -54,7 +55,6 @@ if has('nvim')
         autocmd ModeChanged t:nt call cursor('$', 1)
     augroup END
 
-    " Nvim conveniently supports highlighting the yanked selection.
     augroup conf_highlight_yanked
         autocmd!
         autocmd TextYankPost * lua vim.hl.on_yank()
@@ -80,11 +80,6 @@ else
     set ttimeout ttimeoutlen=50
     set wildmenu
 
-    " Lazy redrawing can leave stale stuff on the screen (e.g: my Nvim terminal
-    " <C-W> mapping not clearing "-- TERMINAL --" with 'showmode'). As Nvim aims
-    " to make it a no-op after optimizing redraws, don't enable it for Nvim.
-    set lazyredraw
-
     " Don't crowd working dirs with swap, persistent undo & other files; use the
     " user runtime directory instead. Nvim does this by default.
     silent! call mkdir($MYVIMRUNTIME .. '/swap', 'p')
@@ -109,6 +104,16 @@ else
     " Nvim enables filetype detection and syntax highlighting by default.
     filetype plugin indent on
     syntax enable
+
+    " Bundled since v9.0.1228 and v9.1.0375 respectively.
+    let g:hlyank_duration = 150  " Matches the Nvim default.
+    packadd hlyank
+    packadd comment
+endif
+
+" Support for fuzzy-matching completion candidates is rather new.
+if has('patch-9.1.0463') || has('nvim')
+    set completeopt+=fuzzy
 endif
 
 " 'smoothscroll' is pretty new in Vim (v9.0.0640), so check if it exists rather
@@ -286,6 +291,9 @@ nnoremap g<Down> <Down>
 
 inoremap <expr> <Up> pumvisible() ? '<Up>' : '<C-O>g<Up>'
 inoremap <expr> <Down> pumvisible() ? '<Down>' : '<C-O>g<Down>'
+" Useful for mobile.
+inoremap <expr> <ScrollWheelUp> pumvisible() ? '<C-P>' : '<ScrollWheelUp>'
+inoremap <expr> <ScrollWheelDown> pumvisible() ? '<C-N>' : '<ScrollWheelDown>'
 
 " Swap the behaviour of visual p and P as to not mess with the " register.
 xnoremap p P
