@@ -16,7 +16,8 @@ api.nvim_create_autocmd("FileType", {
 
     local lang = treesitter.language.get_lang(ft)
     if lang then
-      if treesitter.query.get(lang, "folds") then
+      local ok, result = pcall(treesitter.query.get, lang, "folds")
+      if ok and result then
         local folding = require "conf.folding"
         folding.enable(args.buf, folding.type.TREESITTER)
         vim.b[args.buf].undo_ftplugin = (
@@ -26,14 +27,12 @@ api.nvim_create_autocmd("FileType", {
         )
       end
 
-      local textobjects_query = treesitter.query.get(lang, "textobjects")
-      if textobjects_query then
-        local captures_set = vim
-          .iter(textobjects_query.captures)
-          :fold({}, function(acc, c)
-            acc[c] = true
-            return acc
-          end)
+      ok, result = pcall(treesitter.query.get, lang, "textobjects")
+      if ok and result then
+        local captures_set = vim.iter(result.captures):fold({}, function(acc, c)
+          acc[c] = true
+          return acc
+        end)
 
         local function define_move_map(lhs, capture_name, goto_fn_name)
           if not captures_set[capture_name] then
