@@ -19,7 +19,7 @@ let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
 
 " General Settings {{{1
 set cinoptions+=:0,g0,N-s,j1
-set completeopt+=menuone,noinsert
+set completeopt+=menuone
 set foldlevelstart=99 foldmethod=indent
 set formatoptions=croqnlj
 set ignorecase smartcase

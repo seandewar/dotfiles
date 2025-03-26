@@ -1,6 +1,7 @@
 local api = vim.api
 local keymap = vim.keymap
 local lsp = vim.lsp
+local uv = vim.uv
 
 local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
 api.nvim_create_autocmd("LspAttach", {
@@ -13,6 +14,19 @@ api.nvim_create_autocmd("LspDetach", {
   group = attach_group,
   callback = function(args)
     require("conf.lsp").detach_buffer(args)
+  end,
+})
+
+local hl_references_timer = uv.new_timer()
+api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+  group = api.nvim_create_augroup("conf_hl_references", {}),
+  callback = function()
+    lsp.buf.clear_references()
+    hl_references_timer:start(
+      1000,
+      0,
+      vim.schedule_wrap(lsp.buf.document_highlight)
+    )
   end,
 })
 
