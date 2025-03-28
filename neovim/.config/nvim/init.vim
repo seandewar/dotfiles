@@ -5,25 +5,26 @@ if !has('nvim-0.11') && !has('patch-8.2.2434')
     finish
 end
 
-" Enable Nvim's experimental Lua loader, which byte-compiles and caches Lua
-" files. Easiest to keep this near the top, in case some Lua files are ever
-" implicitly loaded from our actions below.
+" Enable Nvim's experimental Lua loader {{{1
+" It byte-compiles and caches Lua files. Best to keep this near the top.
 if has('nvim')
     lua vim.loader.enable()
 end
 
-" Set $MYVIMRC and $MYVIMRUNTIME for easy access, resolving symlinks {{{1
+" Set $MYVIMRC and $MYVIMDIR for easy access, resolving symlinks {{{1
 let $MYVIMRC = resolve($MYVIMRC)
-let $MYVIMRUNTIME = resolve(exists('*stdpath') ? stdpath('config')
-                  \ : expand(has('win32') ? '~/vimfiles' : '~/.vim'))
+let $MYVIMDIR = resolve(exists('*stdpath') ? stdpath('config')
+              \ : expand(has('win32') ? '~/vimfiles' : '~/.vim'))
 
-" General Settings {{{1
+" General settings {{{1
 set cinoptions+=:0,g0,N-s,j1
 set completeopt+=menuone
+set diffopt+=algorithm:histogram
+set fillchars+=foldopen:┌
 set foldlevelstart=99 foldmethod=indent
 set formatoptions=croqnlj
 set ignorecase smartcase
-set list listchars=tab:▸\ ,trail:•,nbsp:␣,extends:⟩,precedes:⟨
+set list listchars=tab:▸\ ,trail:·,nbsp:␣,extends:⟩,precedes:⟨
 set mouse=a
 set path& | let &path ..= '**'  " Use :let..=, as 'path' already ends in a comma
 set pumheight=12
@@ -42,6 +43,7 @@ set wildmode=list:longest,full
 if has('nvim')
     set completeopt-=popup  " Doesn't size very well, can't customize yet.
     set exrc  " Nvim's exrc uses a :trust system, so it's safe enough to enable.
+    set foldtext=  " Nvim supports "transparent" foldtext that shows highlights.
     set jumpoptions+=view
     set winborder=single
 
@@ -82,17 +84,17 @@ else
 
     " Don't crowd working dirs with swap, persistent undo & other files; use the
     " user runtime directory instead. Nvim does this by default.
-    silent! call mkdir($MYVIMRUNTIME .. '/swap', 'p')
-    silent! call mkdir($MYVIMRUNTIME .. '/undo', 'p')
-    silent! call mkdir($MYVIMRUNTIME .. '/backup', 'p')
+    silent! call mkdir($MYVIMDIR .. '/swap', 'p')
+    silent! call mkdir($MYVIMDIR .. '/undo', 'p')
+    silent! call mkdir($MYVIMDIR .. '/backup', 'p')
 
-    set directory& directory^=$MYVIMRUNTIME/swap//
-    set undodir& undodir^=$MYVIMRUNTIME/undo
-    set backupdir=.,$MYVIMRUNTIME/backup
-    set viminfofile=$MYVIMRUNTIME/viminfo
+    set directory& directory^=$MYVIMDIR/swap//
+    set undodir& undodir^=$MYVIMDIR/undo
+    set backupdir=.,$MYVIMDIR/backup
+    set viminfofile=$MYVIMDIR/viminfo
 
     " Prefer ripgrep; ignore binary files by default, but do not exclude
-    " gitignored or hidden files, if possible. Nvim does this by default.
+    " gitignored or hidden files if possible. Nvim does this by default.
     if executable('rg')
         set grepprg=rg\ --vimgrep\ -uu grepformat=%f:%l:%c:%m
     elseif has('win32')
@@ -109,6 +111,11 @@ else
     let g:hlyank_duration = 150  " Matches the Nvim default.
     packadd hlyank
     packadd comment
+endif
+
+" Granular diff highlights for changed characters on a line. Support is new.
+if has('patch-9.1.1243') || has('nvim-0.12')
+    set diffopt+=inline:char
 endif
 
 " Support for fuzzy-matching completion candidates is rather new.
@@ -156,7 +163,7 @@ augroup conf_auto_quickfix
     autocmd VimEnter * ++nested cwindow
 augroup END
 
-" Distributed Plugin Settings {{{1
+" Distributed plugin settings {{{1
 packadd cfilter
 
 let g:qf_disable_statusline = 1
@@ -184,7 +191,7 @@ augroup conf_netrw_bufname_fix
     autocmd FileType netrw call s:FixNetrwBufName()
 augroup END
 
-" Status Line Settings {{{1
+" Status line settings {{{1
 function! ConfStlBufName(tp_bufnum = '') abort
     if a:tp_bufnum == ''
         let name = expand('%:p:~:.')
@@ -229,7 +236,7 @@ endfunction
 set statusline=%!ConfStatusLine() laststatus=2 ruler
 let &rulerformat = g:conf_statusline_components.ruler
 
-" Tab Line Settings {{{1
+" Tab line settings {{{1
 function! ConfTabLabel(tabnum) abort
     let buffers = tabpagebuflist(a:tabnum)
     let modified = copy(buffers)
@@ -268,9 +275,9 @@ function! s:TabEditDir(dir) abort
     execute 'Texplore' a:dir '| tcd' a:dir
 endfunction
 
-command! -bar ConfigDir call s:TabEditDir($MYVIMRUNTIME)
+command! -bar ConfigDir call s:TabEditDir($MYVIMDIR)
 command! -bar DataDir call s:TabEditDir(
-            \ exists('*stdpath') ? stdpath('data') : $MYVIMRUNTIME)
+            \ exists('*stdpath') ? stdpath('data') : $MYVIMDIR)
 command! -bar RuntimeDir call s:TabEditDir($VIMRUNTIME)
 
 " Mappings {{{1
@@ -375,3 +382,7 @@ if !has('nvim')  " Nvim defines this exactly by default.
     nnoremap <expr> [<C-L> '<Cmd>' .. v:count1 .. 'lpfile<CR>'
     nnoremap <expr> ]<C-L> '<Cmd>' .. v:count1 .. 'lnfile<CR>'
 endif
+
+" }}}1
+
+" vim: fdm=marker fdl=0

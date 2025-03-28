@@ -23,6 +23,12 @@ fzf.setup {
     file_icons = false,
   },
 
+  buffers = {
+    previewer = "builtin",
+  },
+  blines = {
+    previewer = "builtin",
+  },
   diagnostics = {
     diag_source = true,
   },

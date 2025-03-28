@@ -13,6 +13,9 @@
 [tag]
 	gpgsign = true
 
+[diff]
+	algorithm = histogram
+
 [core]
 	excludesfile = ~/.gitignore_global
 

@@ -19,7 +19,9 @@ local function set_opts(buf, type)
   elseif type == M.type.LSP then
     foldmethod = "expr"
     foldexpr = "v:lua.vim.lsp.foldexpr()"
-    foldtext = "v:lua.vim.lsp.foldtext()"
+    -- LSP supports &foldtext showing the "collapsedText" from the server, but I
+    -- prefer using my &foldtext's global value instead.
+    -- foldtext = "v:lua.vim.lsp.foldtext()"
   end
 
   local function set_onebuf_opts(win)
