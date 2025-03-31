@@ -20,7 +20,6 @@ let $MYVIMDIR = resolve(exists('*stdpath') ? stdpath('config')
 set cinoptions+=:0,g0,N-s,j1
 set completeopt+=menuone
 set diffopt+=algorithm:histogram
-set fillchars+=foldopen:┌
 set foldlevelstart=99 foldmethod=indent
 set formatoptions=croqnlj
 set ignorecase smartcase
