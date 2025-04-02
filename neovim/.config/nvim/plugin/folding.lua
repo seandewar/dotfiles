@@ -13,7 +13,9 @@ local extmark_info ---@type ExtmarkInfo?
 
 local function clear_extmarks()
   if extmark_info then
-    api.nvim_buf_clear_namespace(extmark_info.buf, ns, 0, -1)
+    if api.nvim_buf_is_valid(extmark_info.buf) then
+      api.nvim_buf_clear_namespace(extmark_info.buf, ns, 0, -1)
+    end
     extmark_info = nil
   end
 end
