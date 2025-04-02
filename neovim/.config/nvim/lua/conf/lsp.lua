@@ -2,10 +2,13 @@ local api = vim.api
 local fn = vim.fn
 local keymap = vim.keymap
 local lsp = vim.lsp
+local uv = vim.uv
 
 local M = {}
 
 local last_progress = nil
+local progress_redraw_pending = false
+local progress_redraw_debounce_timer = uv.new_timer()
 
 local function update_progress(opts)
   local client = lsp.get_client_by_id(opts.data.client_id)
@@ -14,7 +17,6 @@ local function update_progress(opts)
   end
 
   last_progress = nil
-
   local msg = opts.data.params.value
   if msg.kind ~= "end" then
     local text = client.name .. ": " .. msg.title
@@ -28,7 +30,20 @@ local function update_progress(opts)
     last_progress = { client_id = client.id, text = text }
   end
 
-  vim.cmd.redrawstatus()
+  progress_redraw_pending = true
+
+  local function redraw()
+    if progress_redraw_pending then
+      vim.cmd.redrawstatus()
+      progress_redraw_pending = false
+    end
+  end
+
+  -- Don't spam redraws.
+  if progress_redraw_debounce_timer:get_due_in() == 0 then
+    redraw()
+    progress_redraw_debounce_timer:start(250, 0, vim.schedule_wrap(redraw))
+  end
 end
 
 api.nvim_create_autocmd("LspProgress", {
