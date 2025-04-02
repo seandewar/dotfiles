@@ -116,26 +116,31 @@ local function update_extmarks()
   -- foldlevel() to find the range doesn't work if it's adjacent to a different
   -- fold of the same level. Evaluating &foldexpr doesn't work if &foldmethod is
   -- not "expr" (and should be done in the script context in which it was set).
-  -- Temporarily jumping to the start/end with [z/]z jumps outside the fold if
-  -- we're on the first/last line.
+  -- Temporarily closing the fold to find its range via foldclosed*() works, but
+  -- only for folds not smaller than &foldminlines (and setting it temporarily
+  -- still has the side effect of invalidating all folds, which is expensive and
+  -- can result in them changing).
   --
-  -- Instead, temporarily close the fold and use foldclosed*() to find the
-  -- range, while avoiding side-effects.
-  local start_lnum, end_lnum
-  vim._with({ noautocmd = true }, function()
-    local view = fn.winsaveview()
-    -- Non-zero &foldminlines may stop us from folding.
-    local save_foldminlines = vim.wo[0][0].foldminlines
-    vim.wo[0][0].foldminlines = 0
+  -- Instead, temporarily jump to the start/end of the fold with [z/]z to find
+  -- the range. Take care to detect whether we're on the first/last line of the
+  -- fold, as this may jump us outside!
+  local view = fn.winsaveview()
 
-    vim.cmd "normal! zc"
-    start_lnum = fn.foldclosed "."
-    end_lnum = fn.foldclosedend "."
-    vim.cmd "normal! zo"
+  vim.cmd "keepjumps normal! [z"
+  local start_lnum = cursor_lnum
+  if fn.foldlevel "." == cursor_level then
+    start_lnum = fn.line "."
+  else
+    fn.cursor(cursor_lnum, 1)
+  end
 
-    vim.wo[0][0].foldminlines = save_foldminlines
-    fn.winrestview(view)
-  end)
+  vim.cmd "keepjumps normal! ]z"
+  local end_lnum = cursor_lnum
+  if fn.foldlevel "." == cursor_level then
+    end_lnum = fn.line "."
+  end
+
+  fn.winrestview(view)
 
   local cursor_extmark_id
   for lnum = start_lnum, end_lnum do
