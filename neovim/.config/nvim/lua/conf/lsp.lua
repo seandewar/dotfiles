@@ -92,7 +92,7 @@ function M.setup_attached_buffers(client_id, detaching)
   for _, buf in ipairs(lsp.get_buffers_by_client_id(client_id)) do
     local buf_clients = vim.tbl_filter(function(c)
       return not detaching or c.id ~= client_id
-    end, lsp.get_clients { buffer = buf })
+    end, lsp.get_clients { bufnr = buf })
 
     local function buf_supports_method(method)
       return vim.iter(buf_clients):any(function(c)

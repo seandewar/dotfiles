@@ -3,9 +3,10 @@ local bit = require "bit"
 
 local M = {
   -- Fold configuration type bits; larger bit == higher priority.
+  -- Values should be powers of 2.
   type = {
-    TREESITTER = 0x1,
-    LSP = 0x2,
+    TREESITTER = 1,
+    LSP = 2,
   },
 }
 
