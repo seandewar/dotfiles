@@ -28,7 +28,7 @@ set mouse=a
 set path& | let &path ..= '**'  " Use :let..=, as 'path' already ends in a comma
 set pumheight=12
 set scrolloff=1 sidescroll=5
-set sessionoptions-=blank sessionoptions-=buffers
+set sessionoptions-=blank sessionoptions-=buffers sessionoptions-=folds
 set shortmess+=I
 set showbreak=↳
 set spelllang=en_gb spelloptions=camel
