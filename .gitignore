@@ -1,12 +1,2 @@
-# Neovim
 /neovim/.config/nvim/plugin/local.vim
 /neovim/.config/nvim/ginit_local.vim
-/neovim/.local/share/
-
-# Vim
-/neovim-vim-compat/.vim/pack/
-/neovim-vim-compat/.vim/viminfo
-
-# tmux
-/tmux/.tmux/plugins/
-/tmux/.tmux/resurrect/
