@@ -17,15 +17,16 @@ submod_dir="$stow_dir/.submodules"
 target_dir=$(readlink -f "$stow_dir/..")
 
 link_submodule () {
-    submod="$1"
-    dst="$2"
+    local submod_name="$1"
+    local relative_dst="$2"
 
-    target="$target_dir/$dst"
-    echo "MKDIR: $dst"
-    mkdir -p "$(dirname "$target")"
+    local dst="$target_dir/$relative_dst"
+    echo "MKDIR: $relative_dst"
+    mkdir -p "$(dirname "$dst")"
 
-    echo "LINK: $dst => SUBMODULE $submod"
-    ln -sni "$stow_dir/.submodules/$submod" "$target"
+    submod="$stow_dir/.submodules/$submod_name"
+    echo "LINK: $relative_dst => SUBMODULE $submod_name"
+    ln -sni "$submod" "$dst"
 }
 
 git submodule update --init -- "$submod_dir"
@@ -43,6 +44,10 @@ for pkg in "$@"; do
 
         'tmux')
             link_submodule tpm .tmux/plugins/tpm
+
+            # Need to be on a branch for updating to work.
+            echo 'CHECKOUT master: SUBMODULE tpm'
+            git -C "$submod" checkout -q master
             ;;
     esac
 done
