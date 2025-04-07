@@ -21,6 +21,7 @@ fzf.setup {
 
   defaults = {
     file_icons = false,
+    follow = true,
   },
 
   buffers = {
