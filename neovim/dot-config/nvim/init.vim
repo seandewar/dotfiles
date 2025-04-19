@@ -28,7 +28,7 @@ set mouse=a
 set path& | let &path ..= '**'  " Use :let..=, as 'path' already ends in a comma
 set pumheight=12
 set scrolloff=1 sidescroll=5
-set sessionoptions-=blank sessionoptions-=buffers sessionoptions-=folds
+set sessionoptions-=blank sessionoptions-=buffers
 set shortmess+=I
 set showbreak=↳
 set spelllang=en_gb spelloptions=camel
@@ -110,6 +110,11 @@ else
     let g:hlyank_duration = 150  " Matches the Nvim default.
     packadd hlyank
     packadd comment
+endif
+
+" Restoring a session with fold information could spam E490 in older versions.
+if !has('patch-9.1.1317') && !has('nvim-0.12')
+    set sessionoptions-=folds
 endif
 
 " Granular diff highlights for changed characters on a line. Support is new.
@@ -241,7 +246,8 @@ function! ConfTabLabel(tabnum) abort
     let modified = copy(buffers)
                 \  ->map({_, b -> getbufvar(b, '&modified')})
                 \  ->index(1) != -1
-    let prefix = printf(' %d%s ', a:tabnum, modified ? '+' : '')
+    let prefix = printf(' %d%s%s ', a:tabnum,
+                \ tabpagenr('#') == a:tabnum ? '#' : '', modified ? '+' : '')
 
     let maxcols = (&columns / tabpagenr('$')) - len(prefix)
     if tabpagenr() == a:tabnum

@@ -7,7 +7,7 @@ let g:neovim_stow_package_dir =
             \ expand('<sfile>')->resolve()->fnamemodify(':p:h:h:h')
             \ .. '/neovim'
 
-let s:config_dir = g:neovim_stow_package_dir .. '/.config/nvim'
+let s:config_dir = g:neovim_stow_package_dir .. '/dot-config/nvim'
 let s:rtp = split(&runtimepath, ',')
 
 call insert(s:rtp, s:config_dir, 1)

@@ -2,6 +2,39 @@ local api = vim.api
 local keymap = vim.keymap
 local lsp = vim.lsp
 
+do
+  local enabled_configs = {
+    "clangd",
+    "lua_ls",
+    "rust_analyzer",
+    "zls",
+  }
+
+  --- @param enable boolean
+  --- @param silent boolean?
+  local function set_autostart(enable, silent)
+    for _, name in ipairs(enabled_configs) do
+      lsp.enable(name, enable)
+    end
+    if not silent then
+      require("conf.util").echo(
+        "LSP autostart " .. (enable and "enabled" or "disabled")
+      )
+    end
+  end
+
+  -- Usually don't want LSP when using firenvim (as we'll usually edit single
+  -- files, not projects, and not all servers support single files very well)
+  set_autostart(vim.g.started_by_firenvim == nil, true)
+
+  api.nvim_create_user_command("LspOn", function(_)
+    set_autostart(true)
+  end, { bar = true, desc = "Enable LSP autostart" })
+  api.nvim_create_user_command("LspOff", function(_)
+    set_autostart(false)
+  end, { bar = true, desc = "Disable LSP autostart" })
+end
+
 local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
 api.nvim_create_autocmd("LspAttach", {
   group = attach_group,
