@@ -6,7 +6,9 @@ if exists('g:GuiLoaded')  " nvim-qt
     GuiPopupmenu 0
     GuiFont! Iosevka\ Term:h11
 else
-    silent! set guioptions+=c  " Not supported by Nvim
+    if !has('nvim')  " Not supported by Nvim
+        silent! set guioptions+=c
+    endif
     silent! set guifont=Iosevka\ Term:h11
 endif
 

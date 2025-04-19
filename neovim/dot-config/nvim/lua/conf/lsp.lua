@@ -2,13 +2,14 @@ local api = vim.api
 local fn = vim.fn
 local keymap = vim.keymap
 local lsp = vim.lsp
+local log = vim.log
 local uv = vim.uv
 
 local M = {}
 
 local last_progress = nil
 local progress_redraw_pending = false
-local progress_redraw_debounce_timer = uv.new_timer()
+local progress_redraw_debounce_timer = assert(uv.new_timer())
 
 local function update_progress(opts)
   local client = lsp.get_client_by_id(opts.data.client_id)
@@ -179,6 +180,91 @@ function M.detach_buffer(args)
     vim.schedule(function()
       vim.cmd.redrawstatus { bang = true }
     end)
+  end
+end
+
+--- @param args vim.api.keyset.create_user_command.command_args
+--- @param enabled_configs table<string>
+function M.start_command(args, enabled_configs)
+  local configs = {}
+  if #args.fargs == 0 then
+    -- Find configs to use for the filetype(s) from our usual enable list.
+    local buf_filetypes = vim.split(vim.bo.filetype, ".", { plain = true })
+    configs = vim
+      .iter(enabled_configs)
+      :map(function(name)
+        return vim.lsp.config[name]
+      end)
+      :filter(function(config)
+        return not config.filetypes
+          or vim.tbl_contains(
+            config.filetypes,
+            --- @param ft string
+            function(ft)
+              return vim.tbl_contains(buf_filetypes, ft)
+            end,
+            { predicate = true }
+          )
+      end)
+      :totable()
+
+    if #configs == 0 then
+      vim.notify("No matching LSP configurations for buffer", log.levels.WARN)
+      return
+    end
+  else
+    -- Get the configs from the supplied names.
+    for _, name in ipairs(args.fargs) do
+      local config = vim.lsp.config[name]
+      if not config then
+        vim.notify(
+          ('No such LSP configuration: "%s"'):format(name),
+          log.levels.ERROR
+        )
+        return
+      end
+      configs[#configs + 1] = config
+    end
+  end
+
+  for _, config in ipairs(configs) do
+    config = vim.deepcopy(config)
+    local buf = api.nvim_get_current_buf()
+    local function start_config()
+      lsp.start(config, {
+        bufnr = buf,
+        reuse_client = config.reuse_client,
+        _root_markers = config.root_markers,
+      })
+    end
+
+    if type(config.root_dir) == "function" then
+      --- @param root_dir string
+      config.root_dir(buf, function(root_dir)
+        config.root_dir = root_dir
+        vim.schedule(start_config)
+      end)
+    else
+      start_config()
+    end
+  end
+end
+
+--- @param args vim.api.keyset.create_user_command.command_args
+function M.stop_command(args)
+  --- @param clients table<vim.lsp.Client>
+  local function stop_clients(clients)
+    for _, client in ipairs(clients) do
+      client:stop(args.bang)
+    end
+  end
+
+  if #args.fargs == 0 then
+    stop_clients(lsp.get_clients { bufnr = 0 })
+  else
+    for _, name in ipairs(args.fargs) do
+      stop_clients(lsp.get_clients { bufnr = 0, name = name })
+    end
   end
 end
 

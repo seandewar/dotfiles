@@ -30,9 +30,6 @@ start("nvim-treesitter/nvim-treesitter-textobjects", {
 -- Fzf integration
 start "ibhagwan/fzf-lua"
 
--- Language server protocol configurations
-start "neovim/nvim-lspconfig"
-
 -- Firenvim (web browser integration)
 opt(
   "glacambre/firenvim",

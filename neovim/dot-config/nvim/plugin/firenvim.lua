@@ -13,7 +13,7 @@ vim.filetype.add {
   },
 }
 
-cmd.packadd "firenvim"
+cmd.packadd { "firenvim", bang = true }
 cmd.runtime "ginit.vim"
 
 vim.g.firenvim_config = {

@@ -108,8 +108,8 @@ else
 
     " Bundled since v9.0.1228 and v9.1.0375 respectively.
     let g:hlyank_duration = 150  " Matches the Nvim default.
-    packadd hlyank
-    packadd comment
+    packadd! hlyank
+    packadd! comment
 endif
 
 " Restoring a session with fold information could spam E490 in older versions.
@@ -168,7 +168,7 @@ augroup conf_auto_quickfix
 augroup END
 
 " Distributed plugin settings {{{1
-packadd cfilter
+packadd! cfilter
 
 let g:qf_disable_statusline = 1
 let g:c_no_curly_error = 1  " Don't show "[{}]" as an error; it's valid C++11

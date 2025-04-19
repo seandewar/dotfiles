@@ -7,9 +7,4 @@ function M.echo(msg)
   api.nvim_echo(msg, false, {})
 end
 
-function M.echomsg(msg)
-  msg = type(msg) == "string" and { { msg } } or msg
-  api.nvim_echo(msg, true, {})
-end
-
 return M

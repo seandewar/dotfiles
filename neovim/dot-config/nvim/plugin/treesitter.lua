@@ -2,6 +2,19 @@ local api = vim.api
 local keymap = vim.keymap
 local treesitter = vim.treesitter
 
+api.nvim_create_user_command("TSStart", function(_)
+  treesitter.start()
+end, {
+  bar = true,
+  desc = "Start tree-sitter highlighting in the current buffer",
+})
+api.nvim_create_user_command("TSStop", function(_)
+  treesitter.stop()
+end, {
+  bar = true,
+  desc = "Stop tree-sitter highlighting in the current buffer",
+})
+
 -- Enable TS features for supported filetypes.
 -- We prepend to b:undo_ftplugins to guard against ftplugins that set values
 -- ending with commands that consume bars or other lines (like :autocmd, which
@@ -46,7 +59,7 @@ api.nvim_create_autocmd("FileType", {
             )
           end, {
             buffer = args.buf,
-            desc = "Treesitter " .. goto_fn_name .. " of @" .. capture_name,
+            desc = "Tree-sitter " .. goto_fn_name .. " of @" .. capture_name,
           })
           vim.b[args.buf].undo_ftplugin = ("unmap <buffer> %s\n"):format(lhs)
             .. (vim.b[args.buf].undo_ftplugin or "")
@@ -64,7 +77,7 @@ api.nvim_create_autocmd("FileType", {
             )
           end, {
             buffer = args.buf,
-            desc = "Treesitter select_textobject of @" .. capture_name,
+            desc = "Tree-sitter select_textobject of @" .. capture_name,
           })
           vim.b[args.buf].undo_ftplugin = ("unmap <buffer> %s\n"):format(lhs)
             .. (vim.b[args.buf].undo_ftplugin or "")
@@ -122,9 +135,6 @@ require("nvim-treesitter-textobjects").setup {
   select = {
     lookahead = true,
   },
-}
-
-require("nvim-treesitter-textobjects").setup {
   move = {
     set_jumps = true,
   },

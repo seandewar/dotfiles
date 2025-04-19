@@ -2,38 +2,72 @@ local api = vim.api
 local keymap = vim.keymap
 local lsp = vim.lsp
 
-do
-  local enabled_configs = {
-    "clangd",
-    "lua_ls",
-    "rust_analyzer",
-    "zls",
-  }
+local enabled_configs = {
+  "clangd",
+  "lua_ls",
+  "rust_analyzer",
+  "zls",
+}
 
-  --- @param enable boolean
-  --- @param silent boolean?
-  local function set_autostart(enable, silent)
-    for _, name in ipairs(enabled_configs) do
-      lsp.enable(name, enable)
-    end
-    if not silent then
-      require("conf.util").echo(
-        "LSP autostart " .. (enable and "enabled" or "disabled")
-      )
-    end
-  end
+lsp.config("*", {
+  root_markers = { ".git" },
+})
 
-  -- Usually don't want LSP when using firenvim (as we'll usually edit single
-  -- files, not projects, and not all servers support single files very well)
-  set_autostart(vim.g.started_by_firenvim == nil, true)
-
-  api.nvim_create_user_command("LspOn", function(_)
-    set_autostart(true)
-  end, { bar = true, desc = "Enable LSP autostart" })
-  api.nvim_create_user_command("LspOff", function(_)
-    set_autostart(false)
-  end, { bar = true, desc = "Disable LSP autostart" })
+-- Usually don't want LSP when using firenvim.
+if not vim.g.started_by_firenvim then
+  lsp.enable(enabled_configs)
 end
+
+api.nvim_create_user_command("LspOn", function(_)
+  lsp.enable(enabled_configs, true)
+end, { bar = true, desc = "Enable LSP autostart" })
+api.nvim_create_user_command("LspOff", function(_)
+  lsp.enable(enabled_configs, false)
+end, { bar = true, desc = "Disable LSP autostart" })
+
+api.nvim_create_user_command("LspStart", function(args)
+  require("conf.lsp").start_command(args, enabled_configs)
+end, {
+  nargs = "*",
+  bar = true,
+  --- @param arg string
+  complete = function(arg)
+    -- No way to get the list of all vim.lsp.config'd things (_enabled_configs
+    -- only has the vim.lsp.enabled ones); just use the usual enable list.
+    return vim.tbl_filter(function(name)
+      return arg == name:sub(1, #arg)
+    end, enabled_configs)
+  end,
+  desc = "Attach language servers to current buffer",
+})
+
+api.nvim_create_user_command("LspStop", function(args)
+  require("conf.lsp").stop_command(args)
+end, {
+  nargs = "*",
+  bang = true,
+  bar = true,
+  --- @param arg string
+  complete = function(arg)
+    return vim
+      .iter(lsp.get_clients { bufnr = 0 })
+      :map(function(client)
+        return client.name
+      end)
+      :filter(function(name)
+        return arg == name:sub(1, #arg)
+      end)
+      :totable()
+  end,
+  desc = "Detach language servers from current buffer",
+})
+
+-- Preferring a Vim script command so split modifiers are respected.
+api.nvim_create_user_command(
+  "LspLog",
+  "<mods> split `=v:lua.vim.lsp.get_log_path()`",
+  { bar = true, desc = "Open LSP log file" }
+)
 
 local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
 api.nvim_create_autocmd("LspAttach", {

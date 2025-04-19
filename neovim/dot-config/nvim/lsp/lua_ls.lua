@@ -2,7 +2,16 @@ local fs = vim.fs
 local uv = vim.uv
 
 return {
-  --- @param client vim.lsp.Client
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  root_markers = {
+    ".luarc.json",
+    ".luarc.jsonc",
+    ".luacheckrc",
+    ".stylua.toml",
+    "stylua.toml",
+  },
+
   on_init = function(client, _)
     -- Configure for Nvim if there's no top-level luarc file in the workspace.
     if
@@ -33,4 +42,4 @@ return {
       table.insert(client.settings.Lua.workspace.library, "${3rd}/luv/library")
     end
   end,
-}
+} --[[@as vim.lsp.Config]]
