@@ -1,3 +1,4 @@
+" Version check {{{1
 if !has('nvim-0.11') && !has('patch-8.2.2434')
     echohl ErrorMsg
     echo '[init.vim] Unsupported Vim/Nvim version. Disabling!'

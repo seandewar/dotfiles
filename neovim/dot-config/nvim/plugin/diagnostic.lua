@@ -2,6 +2,7 @@ local api = vim.api
 local diagnostic = vim.diagnostic
 local fn = vim.fn
 local keymap = vim.keymap
+local log = vim.log
 
 ---@note requires recursive statusline evaluation: %{%...%}
 local function statusline(curwin, stlwin)
@@ -73,12 +74,11 @@ diagnostic.config {
 -- Attempt to show either cursor or line diagnostics, in that order.
 keymap.set("n", "<C-W>d", function()
   if
-    diagnostic.open_float { scope = "c", header = "Cursor Diagnostics:" }
-    or diagnostic.open_float { scope = "l", header = "Line Diagnostics:" }
+    not diagnostic.open_float { scope = "c", header = "Cursor Diagnostics:" }
+    and not diagnostic.open_float { scope = "l", header = "Line Diagnostics:" }
   then
-    return
+    vim.notify("No diagnostics found", log.levels.WARN)
   end
-  require("conf.util").echo { { "No diagnostics found", "WarningMsg" } }
 end, {
   desc = "Floating Diagnostics",
 })

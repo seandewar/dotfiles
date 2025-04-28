@@ -1,5 +1,7 @@
 local api = vim.api
+local fn = vim.fn
 local keymap = vim.keymap
+local log = vim.log
 local lsp = vim.lsp
 
 local enabled_configs = {
@@ -136,23 +138,43 @@ end
 keymap.set("n", "grd", document_symbols, { desc = "LSP Document Symbols" })
 keymap.set("n", "gO", document_symbols, { desc = "LSP Document Symbols" })
 
-keymap.set("n", "grh", function()
-  local util = require "conf.util"
-  if #lsp.get_clients { bufnr = 0, method = "textDocument/inlayHint" } == 0 then
-    util.echo {
-      {
-        "No language servers attached to this buffer support inlay hints",
-        "WarningMsg",
-      },
-    }
-    return
-  end
-
-  local enable = not lsp.inlay_hint.is_enabled { bufnr = 0 }
-  lsp.inlay_hint.enable(enable, { bufnr = 0 })
-  util.echo("Buffer inlay hints " .. (enable and "enabled" or "disabled"))
-end, { desc = "LSP Toggle Buffer Inlay Hints" })
-
 keymap.set("n", "<C-S>", lsp.buf.signature_help, {
   desc = "LSP Signature Help",
 })
+
+keymap.set("n", "grh", function()
+  local hints_supported = #lsp.get_clients {
+    bufnr = 0,
+    method = "textDocument/inlayHint",
+  } > 0
+  local hints_enabled = lsp.inlay_hint.is_enabled { bufnr = 0 }
+
+  local want_colours = fn.has "nvim-0.12" == 1
+    and (vim.o.termguicolors or fn.has "gui_running" == 1)
+  local colours_supported = want_colours
+    and #lsp.get_clients { bufnr = 0, method = "textDocument/documentColor" }
+      > 0
+  local colours_enabled = fn.has "nvim-0.12" == 1
+    and lsp.document_color.is_enabled(0)
+
+  -- If clients support a method but it's disabled, enable them. Otherwise,
+  -- disable both if applicable.
+  local enable = (hints_supported and not hints_enabled)
+    or (colours_supported and not colours_enabled)
+  if not hints_enabled and not colours_enabled and not enable then
+    vim.notify(
+      "No clients attached to this buffer support inlay hints"
+        .. (want_colours and " or document colours" or ""),
+      log.levels.WARN
+    )
+    return
+  end
+
+  if enable ~= hints_enabled and (hints_supported or not enable) then
+    lsp.inlay_hint.enable(enable, { bufnr = 0 })
+  end
+  if enable ~= colours_enabled and (colours_supported or not enable) then
+    lsp.document_color.enable(enable, 0, { style = "virtual" })
+  end
+  vim.cmd.redrawstatus { bang = true }
+end, { desc = "LSP Toggle Buffer Inlay Hints and Document Colours" })

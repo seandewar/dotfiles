@@ -57,18 +57,45 @@ local function statusline(curwin, stlwin)
     return text:gsub("%%", "%%%%")
   end
 
+  local buf = api.nvim_win_get_buf(stlwin)
+  local chunks = {}
   if curwin == stlwin and last_progress then
-    return "[LSP(" .. escape(last_progress.text) .. ")] "
+    chunks[#chunks + 1] = escape(last_progress.text)
+  else
+    local clients = lsp.get_clients { bufnr = buf }
+    if #clients == 1 then
+      chunks[#chunks + 1] = escape(clients[1].name)
+    elseif #clients > 1 then
+      chunks[#chunks + 1] = #clients .. " clients"
+    end
   end
 
-  local clients = lsp.get_clients { bufnr = api.nvim_win_get_buf(stlwin) }
-  if #clients == 0 then
-    return ""
-  elseif #clients == 1 then
-    return "[LSP(" .. escape(clients[1].name) .. ")] "
-  else
-    return "[LSP(" .. #clients .. " clients)] "
+  if lsp.inlay_hint.is_enabled { bufnr = buf } then
+    chunks[#chunks + 1] = "IH"
   end
+  if fn.has "nvim-0.12" == 1 and lsp.document_color.is_enabled(buf) then
+    chunks[#chunks + 1] = "DC"
+  end
+  return #chunks > 0 and "[LSP(" .. table.concat(chunks, ",") .. ")] " or ""
+end
+
+if fn.has "nvim-0.12" == 1 then
+  api.nvim_create_autocmd({ "OptionSet", "UILeave" }, {
+    callback = function(args)
+      if args.event == "OptionSet" and args.match ~= "termguicolors" then
+        return
+      end
+      if vim.o.termguicolors or fn.has "gui_running" == 1 then
+        return
+      end
+      -- Document colours are useless without "true" colour support.
+      for _, buf in ipairs(api.nvim_list_bufs()) do
+        if lsp.document_color.is_enabled(buf) then
+          lsp.document_color.enable(false, buf)
+        end
+      end
+    end,
+  })
 end
 
 fn["conf#statusline#define_component"]("lsp", statusline)
