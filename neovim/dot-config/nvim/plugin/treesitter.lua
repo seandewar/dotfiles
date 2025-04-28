@@ -111,24 +111,22 @@ api.nvim_create_autocmd("FileType", {
   end,
 })
 
-require("nvim-treesitter").setup {
+require("nvim-treesitter").install {
   -- Install a minimal set of parsers. Others can be installed via :TSInstall.
-  ensure_install = {
-    -- Following parsers are bundled with Nvim 0.10 itself, and need to be
-    -- updated by nvim-treesitter so that nvim-treesitter's newer queries do not
-    -- throw errors with the older Nvim parsers:
-    "c",
-    "lua",
-    "markdown",
-    "markdown_inline",
-    "query",
-    "vim",
-    "vimdoc",
+  -- Following parsers are bundled with Nvim 0.10 itself, and need to be updated
+  -- by nvim-treesitter so that its newer queries do not throw errors with the
+  -- older Nvim parsers:
+  "c",
+  "lua",
+  "markdown",
+  "markdown_inline",
+  "query",
+  "vim",
+  "vimdoc",
 
-    -- Extra parsers not bundled with Nvim:
-    "cpp",
-    "comment",
-  },
+  -- Extra parsers not bundled with Nvim:
+  "cpp",
+  "comment",
 }
 
 require("nvim-treesitter-textobjects").setup {
