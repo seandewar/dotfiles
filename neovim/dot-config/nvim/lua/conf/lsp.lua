@@ -20,7 +20,7 @@ local function update_progress(opts)
   last_progress = nil
   local msg = opts.data.params.value
   if msg.kind ~= "end" then
-    local text = client.name .. ": " .. msg.title
+    local text = msg.title
     if msg.message then
       text = text .. " " .. msg.message
     end
@@ -34,10 +34,29 @@ local function update_progress(opts)
   progress_redraw_pending = true
 
   local function redraw()
-    if progress_redraw_pending then
-      vim.cmd.redrawstatus()
-      progress_redraw_pending = false
+    local cmdheight = vim.o.cmdheight
+    if progress_redraw_pending and cmdheight > 0 then
+      local str = ""
+      if last_progress then
+        str = ("LSP[%s] %s")
+          :format(
+            lsp.get_client_by_id(last_progress.client_id).name,
+            last_progress.text
+          )
+          :gsub("%s", " ") -- Particularly deal with possible NLs and tabs.
+
+        local max_screen_len = vim.o.columns * (cmdheight - 1) + vim.v.echospace
+        if fn.strdisplaywidth(str) > max_screen_len then
+          -- Not accurate as sub uses byte indices, but low-effort.
+          str = str:sub(1, max_screen_len - 1) .. "…"
+        end
+      end
+
+      vim.cmd.redraw() -- Avoid hit-ENTER from any prior echoes.
+      api.nvim_echo({ { str } }, false, {})
     end
+
+    progress_redraw_pending = false
   end
 
   -- Don't spam redraws.
@@ -52,22 +71,18 @@ api.nvim_create_autocmd("LspProgress", {
   callback = update_progress,
 })
 
-local function statusline(curwin, stlwin)
+local function statusline(_, stlwin)
   local function escape(text)
     return text:gsub("%%", "%%%%")
   end
 
-  local buf = api.nvim_win_get_buf(stlwin)
   local chunks = {}
-  if curwin == stlwin and last_progress then
-    chunks[#chunks + 1] = escape(last_progress.text)
-  else
-    local clients = lsp.get_clients { bufnr = buf }
-    if #clients == 1 then
-      chunks[#chunks + 1] = escape(clients[1].name)
-    elseif #clients > 1 then
-      chunks[#chunks + 1] = #clients .. " clients"
-    end
+  local buf = api.nvim_win_get_buf(stlwin)
+  local clients = lsp.get_clients { bufnr = buf }
+  if #clients == 1 then
+    chunks[#chunks + 1] = escape(clients[1].name)
+  elseif #clients > 1 then
+    chunks[#chunks + 1] = #clients .. " clients"
   end
 
   if lsp.inlay_hint.is_enabled { bufnr = buf } then
