@@ -35,7 +35,11 @@ local function update_progress(opts)
 
   local function redraw()
     local cmdheight = vim.o.cmdheight
-    if progress_redraw_pending and cmdheight > 0 then
+    if
+      progress_redraw_pending
+      and api.nvim_get_mode().mode == "n"
+      and cmdheight > 0
+    then
       local str = ""
       if last_progress then
         str = ("LSP[%s] %s")
