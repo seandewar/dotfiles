@@ -10,8 +10,9 @@ local function statusline(curwin, stlwin)
   local buf = api.nvim_win_get_buf(stlwin)
   local parts = {}
 
+  local diag_counts = diagnostic.count(buf)
   local function add_part(level, severity)
-    local count = #diagnostic.get(buf, { severity = severity })
+    local count = diag_counts[severity] or 0
     if count > 0 then
       parts[#parts + 1] = ("%%#%s%s#%d%%*"):format(hl_prefix, level, count)
     end
