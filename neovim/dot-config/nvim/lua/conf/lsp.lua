@@ -221,12 +221,13 @@ function M.detach_buffer(args)
 
   if last_progress and last_progress.client_id == args.data.client_id then
     last_progress = nil
-
-    -- Schedule, as the client hasn't finished detaching yet.
-    vim.schedule(function()
-      vim.cmd.redrawstatus { bang = true }
-    end)
+    api.nvim_echo({}, false, {}) -- Clear old progress message.
   end
+
+  -- Schedule, as the client hasn't finished detaching yet.
+  vim.schedule(function()
+    vim.cmd.redrawstatus { bang = true }
+  end)
 end
 
 --- @param args vim.api.keyset.create_user_command.command_args
