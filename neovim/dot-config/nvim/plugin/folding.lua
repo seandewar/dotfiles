@@ -1,183 +1,51 @@
 local api = vim.api
-local fn = vim.fn
+local keymap = vim.keymap
 
-local ns = api.nvim_create_namespace "conf_folding_virtual_text"
+local augroup = api.nvim_create_augroup("conf_auto_foldcolumn", {})
 
----@class ExtmarkInfo
----@field buf integer
----@field start_lnum integer
----@field end_lnum integer
----@field level integer
----@field cursor_extmark_id integer
-local extmark_info ---@type ExtmarkInfo?
-
-local function clear_extmarks()
-  if extmark_info then
-    if api.nvim_buf_is_valid(extmark_info.buf) then
-      api.nvim_buf_clear_namespace(extmark_info.buf, ns, 0, -1)
-    end
-    extmark_info = nil
-  end
-end
-
-local function update_extmarks()
-  if not vim.wo[0][0].foldenable or vim.wo[0][0].foldcolumn ~= "0" then
-    clear_extmarks()
-    return -- Folding disabled or there's already a fold column.
-  end
-  if api.nvim_get_mode().mode ~= "n" then
-    clear_extmarks()
-    return -- Fold commands mostly only relevant in Normal mode.
-  end
-
-  local cursor_level = fn.foldlevel "."
-  if cursor_level == 0 or fn.foldclosed "." ~= -1 then
-    clear_extmarks()
-    return -- No fold or closed fold.
-  end
-
-  ---@param lnum integer
-  ---@param cursor_lnum integer
-  ---@param start_lnum integer
-  ---@param end_lnum integer
-  ---@param id integer?
-  local function set_extmark(lnum, cursor_lnum, start_lnum, end_lnum, id)
-    local text = "│"
-    if lnum == cursor_lnum then
-      text = tostring(cursor_level)
-    elseif lnum == start_lnum then
-      text = "┐"
-    elseif lnum == end_lnum then
-      text = "┘"
-    end
-
-    return api.nvim_buf_set_extmark(0, ns, lnum - 1, 0, {
-      id = id,
-      virt_text = { { text, "FoldColumn" } },
-      virt_text_pos = "eol_right_align",
-      undo_restore = false,
-      invalidate = true,
-      priority = 65535, -- Always right-most
-    })
-  end
-
-  local curbuf = api.nvim_get_current_buf()
-  local cursor_lnum = api.nvim_win_get_cursor(0)[1]
-  if
-    extmark_info
-    and curbuf == extmark_info.buf
-    and cursor_lnum >= extmark_info.start_lnum
-    and cursor_lnum <= extmark_info.end_lnum
-    and cursor_level == extmark_info.level
-  then
-    -- Still within the same fold and it's valid. Just adjust two extmarks.
-    local old_cursor_row = api.nvim_buf_get_extmark_by_id(
-      curbuf,
-      ns,
-      extmark_info.cursor_extmark_id,
-      {}
-    )[1]
-    local cursor_extmark_id = vim.tbl_get(
-      api.nvim_buf_get_extmarks(
-        curbuf,
-        ns,
-        { cursor_lnum - 1, 0 },
-        { cursor_lnum - 1, 0 },
-        { limit = 1 }
-      ),
-      1,
-      1
-    )
-
-    -- TextChanged (which invalides the extmarks) should happen before
-    -- SafeState, so the extmarks should be where we expect them, but if not,
-    -- skip this and revalidate them.
-    if old_cursor_row and cursor_extmark_id then
-      set_extmark(
-        old_cursor_row + 1,
-        cursor_lnum,
-        extmark_info.start_lnum,
-        extmark_info.end_lnum,
-        cursor_extmark_id
-      )
-      set_extmark(
-        cursor_lnum,
-        cursor_lnum,
-        extmark_info.start_lnum,
-        extmark_info.end_lnum,
-        extmark_info.cursor_extmark_id
-      )
-      return
-    end
-  end
-
-  clear_extmarks()
-
-  -- Find the start and end of the open fold. Unlike for closed folds, Vim
-  -- doesn't provide an interface for this, and the naive approach of using
-  -- foldlevel() to find the range doesn't work if it's adjacent to a different
-  -- fold of the same level. Evaluating &foldexpr doesn't work if &foldmethod is
-  -- not "expr" (and should be done in the script context in which it was set).
-  -- Temporarily closing the fold to find its range via foldclosed*() works, but
-  -- only for folds not smaller than &foldminlines (and setting it temporarily
-  -- still has the side effect of invalidating all folds, which is expensive and
-  -- can result in them changing).
-  --
-  -- Instead, temporarily jump to the start/end of the fold with [z/]z to find
-  -- the range. Take care to detect whether we're on the first/last line of the
-  -- fold, as this may jump us outside!
-  local view = fn.winsaveview()
-
-  vim.cmd "keepjumps normal! [z"
-  local start_lnum = cursor_lnum
-  if fn.foldlevel "." == cursor_level then
-    start_lnum = fn.line "."
-  else
-    fn.cursor(cursor_lnum, 1)
-  end
-
-  vim.cmd "keepjumps normal! ]z"
-  local end_lnum = cursor_lnum
-  if fn.foldlevel "." == cursor_level then
-    end_lnum = fn.line "."
-  end
-
-  fn.winrestview(view)
-
-  local cursor_extmark_id
-  for lnum = start_lnum, end_lnum do
-    local extmark_id = set_extmark(lnum, cursor_lnum, start_lnum, end_lnum)
-    if lnum == cursor_lnum then
-      cursor_extmark_id = extmark_id
-    end
-  end
-
-  extmark_info = {
-    buf = curbuf,
-    start_lnum = start_lnum,
-    end_lnum = end_lnum,
-    level = cursor_level,
-    cursor_extmark_id = cursor_extmark_id,
-  }
-end
-
-local augroup = api.nvim_create_augroup("conf_folding_virtual_text", {})
-
-api.nvim_create_autocmd("TextChanged", {
-  group = augroup,
-  callback = clear_extmarks,
-})
-api.nvim_create_autocmd("ModeChanged", {
-  group = augroup,
-  pattern = "n:*",
-  callback = clear_extmarks,
-})
-api.nvim_create_autocmd("OptionSet", {
-  group = augroup,
-  pattern = "fold*",
-  callback = clear_extmarks,
-})
+-- Want priority on the <nowait> mapping, so it has to be defined after other
+-- possibly conflicting mappings. Just remap it on each SafeState.
 api.nvim_create_autocmd("SafeState", {
   group = augroup,
-  callback = update_extmarks,
+  callback = function()
+    if api.nvim_get_mode().mode ~= "n" then
+      return
+    end
+
+    keymap.set("n", "z", function()
+      local win = api.nvim_get_current_win()
+      local buf = api.nvim_get_current_buf()
+      local save_foldcolumn = vim.wo[win][0].foldcolumn
+
+      vim.wo[win][0].foldcolumn = "auto:9"
+      api.nvim__redraw { win = win, valid = true, cursor = true }
+      api.nvim_create_autocmd("SafeState", {
+        group = augroup,
+        once = true,
+        callback = function()
+          if
+            not api.nvim_win_is_valid(win)
+            or not api.nvim_buf_is_valid(buf)
+            -- Currently vim.wo[win][0] only works for curbuf; can use a similar
+            -- autocmd trick like conf.folding in other cases, but not worth it.
+            or api.nvim_win_get_buf(win) ~= buf
+          then
+            return
+          end
+
+          vim.wo[win][0].foldcolumn = save_foldcolumn
+        end,
+      })
+
+      -- "remap" is set so other mappings can be used, but we don't want to
+      -- trigger ourself recursively, so unmap ourself. We'll be re-registered
+      -- on the next Normal mode SafeState.
+      keymap.del("n", "z")
+      -- Can't use <expr>; want recursiveness.
+      api.nvim_feedkeys("z", "mt", false)
+    end, {
+      nowait = true,
+      remap = true,
+    })
+  end,
 })
