@@ -41,7 +41,6 @@ set title
 set wildmode=list:longest,full
 
 if has('nvim')
-    set completeopt-=popup  " Doesn't size very well, can't customize yet.
     set exrc  " Nvim's exrc uses a :trust system, so it's safe enough to enable.
     set foldtext=  " Nvim supports "transparent" foldtext that shows highlights.
     set jumpoptions+=view
@@ -126,6 +125,25 @@ endif
 " Support for fuzzy-matching completion candidates is rather new.
 if has('patch-9.1.0463') || has('nvim')
     set completeopt+=fuzzy
+endif
+" ...and for fuzzy finding the candidates.
+if has('patch-9.1.1178') || has('nvim')
+    set completefuzzycollect+=keyword,files,whole_line
+endif
+
+if has('patch-9.1.1250') || has('nvim')
+    function! s:SetPumMaxWidth() abort
+        let &pummaxwidth = max([float2nr(&columns * 0.4), &pumwidth])
+    endfunction
+
+    augroup conf_highlight_yanked
+        autocmd!
+        autocmd VimResized * call s:SetPumMaxWidth()
+    augroup END
+    call s:SetPumMaxWidth()
+endif
+if has('patch-9.1.1296') || has('nvim')
+    set fillchars+=trunc:…,truncrl:…
 endif
 
 " 'smoothscroll' is pretty new in Vim (v9.0.0640), so check if it exists rather
