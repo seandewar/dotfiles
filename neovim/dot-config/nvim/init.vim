@@ -306,6 +306,13 @@ command! -bar RuntimeDir call s:TabEditDir($VIMRUNTIME)
 
 " Mappings {{{1
 " General Mappings {{{2
+function! s:FormatBuffer() abort
+    let view = winsaveview()
+    keepjumps normal! gggqG
+    call winrestview(view)
+endfunction
+
+nnoremap <Leader>F <Cmd>call <SID>FormatBuffer()<CR>
 nnoremap <Leader>s <Cmd>setlocal spell!<CR>
 nnoremap gV `[v`]
 

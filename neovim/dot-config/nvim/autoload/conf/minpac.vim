@@ -16,7 +16,6 @@ function! conf#minpac#ensure_init() abort
                 \   #{rev: 'next', pullmethod: 'autostash'})
 
     " General plugins
-    call minpac#add('sbdchd/neoformat')
     call minpac#add('tpope/vim-dispatch')
     call minpac#add('tpope/vim-repeat')
     call minpac#add('tpope/vim-sleuth')

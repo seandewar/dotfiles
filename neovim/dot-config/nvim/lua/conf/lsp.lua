@@ -136,16 +136,27 @@ function M.formatexpr()
 end
 
 function M.setup_attached_buffers(client_id, detaching)
+  local has_stylua = fn.executable "stylua" == 1
+
   for _, buf in ipairs(lsp.get_buffers_by_client_id(client_id)) do
     local buf_clients = vim.tbl_filter(function(c)
       return not detaching or c.id ~= client_id
     end, lsp.get_clients { bufnr = buf })
 
-    local function buf_supports_method(method)
-      return vim.iter(buf_clients):any(function(c)
+    --- @param method string
+    --- @param filter (fun(vim.lsp.Client): boolean)?
+    --- @return boolean
+    --- @nodiscard
+    local function buf_supports_method(method, filter)
+      filter = filter or function(_)
+        return true
+      end
+
+      return vim.iter(buf_clients):filter(filter):any(function(c)
         return c:supports_method(method)
       end)
     end
+    --- @param option string
     local function buf_reset_option(option)
       vim.bo[buf][option] =
         api.nvim_get_option_value(option, { filetype = vim.bo[buf].filetype })
@@ -187,7 +198,13 @@ function M.setup_attached_buffers(client_id, detaching)
       buf_reset_option "omnifunc"
     end
 
-    if buf_supports_method "textDocument/rangeFormatting" then
+    if
+      buf_supports_method("textDocument/rangeFormatting", function(client)
+        -- Prefer stylua formatter set by my Lua ftplugin over lua_ls' use of
+        -- EmmyLuaCodeStyle.
+        return not has_stylua or client.name ~= "lua_ls"
+      end)
+    then
       -- Prefer ours.
       vim.bo[buf].formatexpr = "v:lua.require'conf.lsp'.formatexpr()"
     else
