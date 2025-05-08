@@ -127,11 +127,11 @@ if has('patch-9.1.0463') || has('nvim')
     set completeopt+=fuzzy
 endif
 " ...and for fuzzy finding the candidates.
-if has('patch-9.1.1178') || has('nvim')
+if has('patch-9.1.1178') || has('nvim-0.12')
     set completefuzzycollect+=keyword,files,whole_line
 endif
 
-if has('patch-9.1.1250') || has('nvim')
+if has('patch-9.1.1250') || has('nvim-0.12')
     function! s:SetPumMaxWidth() abort
         let &pummaxwidth = max([float2nr(&columns * 0.4), &pumwidth])
     endfunction
@@ -142,7 +142,7 @@ if has('patch-9.1.1250') || has('nvim')
     augroup END
     call s:SetPumMaxWidth()
 endif
-if has('patch-9.1.1296') || has('nvim')
+if has('patch-9.1.1296') || has('nvim-0.12')
     set fillchars+=trunc:…,truncrl:…
 endif
 
