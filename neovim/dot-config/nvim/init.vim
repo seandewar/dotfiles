@@ -136,7 +136,7 @@ if has('patch-9.1.1250') || has('nvim-0.12')
         let &pummaxwidth = max([float2nr(&columns * 0.4), &pumwidth])
     endfunction
 
-    augroup conf_highlight_yanked
+    augroup conf_auto_pummaxwidth
         autocmd!
         autocmd VimResized * call s:SetPumMaxWidth()
     augroup END
