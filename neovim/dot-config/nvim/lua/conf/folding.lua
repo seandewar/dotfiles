@@ -32,35 +32,37 @@ local function set_opts(buf, type)
   end
 
   for _, win in ipairs(api.nvim_list_wins()) do
-    -- vim.wo currently only supports setting the "onebuf" value for the current
-    -- buffer in a window. For windows where the buffer isn't current, create an
-    -- autocommand to set the options if it becomes current; this is less prone
-    -- to side-effects compared to temporarily switching buffers ourselves.
-    --
-    -- TODO: replace with vim.wo[win][buf] when it supports bufs other than 0.
+    if not vim.wo[win][0].diff then -- Don't mess with diff windows.
+      -- vim.wo currently only supports setting the "onebuf" value for the
+      -- current buffer in a window. For windows where the buffer isn't current,
+      -- create an autocommand to set the options when becomes current; this is
+      -- less prone to side-effects compared to temporarily switching buffers.
+      --
+      -- TODO: replace with vim.wo[win][buf] when it supports bufs other than 0.
 
-    if api.nvim_win_get_buf(win) == buf then
-      set_onebuf_opts(win)
-    else
-      local augroup = api.nvim_create_augroup("conf_folding_win_" .. win, {})
+      if api.nvim_win_get_buf(win) == buf then
+        set_onebuf_opts(win)
+      else
+        local augroup = api.nvim_create_augroup("conf_folding_win_" .. win, {})
 
-      api.nvim_create_autocmd("BufEnter", {
-        group = augroup,
-        buffer = buf,
-        callback = function()
-          if api.nvim_get_current_win() == win then
-            set_onebuf_opts(0)
+        api.nvim_create_autocmd("BufEnter", {
+          group = augroup,
+          buffer = buf,
+          callback = function()
+            if api.nvim_get_current_win() == win then
+              set_onebuf_opts(0)
+              api.nvim_del_augroup_by_id(augroup)
+            end
+          end,
+        })
+        api.nvim_create_autocmd("WinClosed", {
+          group = augroup,
+          pattern = tostring(win),
+          callback = function()
             api.nvim_del_augroup_by_id(augroup)
-          end
-        end,
-      })
-      api.nvim_create_autocmd("WinClosed", {
-        group = augroup,
-        pattern = tostring(win),
-        callback = function()
-          api.nvim_del_augroup_by_id(augroup)
-        end,
-      })
+          end,
+        })
+      end
     end
   end
 end
