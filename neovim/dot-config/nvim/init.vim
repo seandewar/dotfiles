@@ -20,7 +20,6 @@ set jumpoptions+=view
 set list listchars=tab:▸\ ,trail:·,nbsp:␣,extends:⟩,precedes:⟨
 set mouse=a
 set notimeout
-set path&
 set pumheight=12
 set ruler rulerformat=%!v:lua.require'conf.statusline'.rulerformat()
 set scrolloff=1 sidescroll=5
@@ -35,7 +34,7 @@ set statusline=%!v:lua.require'conf.statusline'.statusline() laststatus=2
 set tabline=%!v:lua.require'conf.statusline'.tabline() showtabline=1
 set textwidth=80
 set title
-set wildmode+=list:longest
+set wildmode=list:longest,full
 set winborder=single
 
 if has('nvim-0.12')
@@ -129,6 +128,7 @@ endfunction
 
 command! -bar ConfigDir call s:TabEditDir(stdpath('config'))
 command! -bar DataDir call s:TabEditDir(stdpath('data'))
+command! -bar StateDir call s:TabEditDir(stdpath('state'))
 command! -bar RuntimeDir call s:TabEditDir($VIMRUNTIME)
 
 " Mappings {{{1

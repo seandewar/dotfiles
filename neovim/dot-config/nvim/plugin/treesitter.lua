@@ -101,7 +101,8 @@ api.nvim_create_autocmd("FileType", {
     end
 
     -- TS highlighting already on by default for some filetypes.
-    if not vim.b[args.buf].ts_highlight then
+    -- Don't do it for Vim script, as it's hit-or-miss.
+    if not vim.b[args.buf].ts_highlight and lang ~= "vim" then
       local ok, _ = pcall(treesitter.start, args.buf)
       if ok then
         vim.b[args.buf].undo_ftplugin = "call v:lua.vim.treesitter.stop()\n"

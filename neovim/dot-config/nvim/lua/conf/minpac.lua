@@ -31,7 +31,6 @@ start("seandewar/paragon.vim", { rev = "next", pullmethod = "autostash" })
 
 start "tpope/vim-dispatch"
 start "tpope/vim-repeat"
-start "tpope/vim-sleuth"
 start "tpope/vim-surround"
 start "tpope/vim-vinegar"
 
