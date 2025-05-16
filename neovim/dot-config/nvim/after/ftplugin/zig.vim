@@ -4,7 +4,7 @@ setlocal textwidth=0  " disable as zig-fmt doesn't care about wrapping
 " be treated as part of :autocmd (regardless of our use of newlines).
 let b:undo_ftplugin = "setlocal textwidth<\n" .. get(b:, 'undo_ftplugin', '')
 
-if has('nvim') && executable('zig')
+if executable('zig')
     let &l:formatexpr = "v:lua.require'conf.formatting'.cmd_formatexpr(
             \ ['zig', 'fmt', '--stdin'])"
 

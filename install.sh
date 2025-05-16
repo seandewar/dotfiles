@@ -26,7 +26,7 @@ link_submodule () {
 
     submod="$stow_dir/.submodules/$submod_name"
     echo "LINK: $relative_dst => SUBMODULE $submod_name"
-    ln -fsni "$submod" "$dst"
+    ln -fsn "$submod" "$dst"
 }
 
 git submodule update --init -- "$submod_dir"

@@ -1,4 +1,4 @@
-let g:conf_statusline_components.git = '%(%{FugitiveStatusline()} %)'
+lua require("conf.statusline").components.git = "%(%{FugitiveStatusline()} %)"
 
 augroup conf_fugitive_redraw_statusline
     autocmd!

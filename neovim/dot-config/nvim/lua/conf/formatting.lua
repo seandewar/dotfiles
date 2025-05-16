@@ -44,7 +44,7 @@ function M.cmd_formatexpr(cmd, start_lnum, end_lnum, timeout_ms)
 
     local new_lines = vim.split(out.stdout, "\n", { plain = true })
     if new_lines[#new_lines] == "" then
-      -- Strip trailing NL. Let Vim handle that. (e.g: &endofline)
+      -- Strip trailing NL. Let Nvim handle that. (e.g: &endofline)
       new_lines[#new_lines] = nil
     end
 

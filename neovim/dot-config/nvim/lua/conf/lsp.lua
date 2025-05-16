@@ -75,13 +75,13 @@ api.nvim_create_autocmd("LspProgress", {
   callback = update_progress,
 })
 
-local function statusline(_, stlwin)
+require("conf.statusline").components.lsp = function(_, stl_win)
   local function escape(text)
     return text:gsub("%%", "%%%%")
   end
 
   local chunks = {}
-  local buf = api.nvim_win_get_buf(stlwin)
+  local buf = api.nvim_win_get_buf(stl_win)
   local clients = lsp.get_clients { bufnr = buf }
   if #clients == 1 then
     chunks[#chunks + 1] = escape(clients[1].name)
@@ -116,8 +116,6 @@ if fn.has "nvim-0.12" == 1 then
     end,
   })
 end
-
-fn["conf#statusline#define_component"]("lsp", statusline)
 
 -- Similar to vim.lsp.formatexpr(), but uses vim.lsp.buf.format{async = true},
 -- falling back to built-in formatting when automatically invoked.

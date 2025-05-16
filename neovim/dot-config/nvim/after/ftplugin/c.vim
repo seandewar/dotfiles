@@ -1,4 +1,4 @@
-if has('nvim') && executable('clang-format')
+if executable('clang-format')
     " Send whole buffer, but specify the range so the formatter has context.
     let &l:formatexpr = "v:lua.require'conf.formatting'.cmd_formatexpr(
             \ ['clang-format',

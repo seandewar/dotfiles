@@ -1,13 +1,11 @@
 local api = vim.api
 local diagnostic = vim.diagnostic
-local fn = vim.fn
 local keymap = vim.keymap
 local log = vim.log
 
----@note requires recursive statusline evaluation: %{%...%}
-local function statusline(curwin, stlwin)
-  local hl_prefix = curwin == stlwin and "StatusLine" or "StatusLineNC"
-  local buf = api.nvim_win_get_buf(stlwin)
+require("conf.statusline").components.diagnostic = function(win, stl_win)
+  local hl_prefix = win == stl_win and "StatusLine" or "StatusLineNC"
+  local buf = api.nvim_win_get_buf(stl_win)
   local parts = {}
 
   local diag_counts = diagnostic.count(buf)
@@ -24,8 +22,6 @@ local function statusline(curwin, stlwin)
 
   return #parts > 0 and ("[" .. table.concat(parts, " ") .. "] ") or ""
 end
-
-fn["conf#statusline#define_component"]("diagnostic", statusline)
 
 -- Define highlight groups for the statusline from the current colour scheme
 local function define_stl_hls()
