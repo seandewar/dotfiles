@@ -154,14 +154,27 @@ function M.setup_attached_buffers(client_id, detaching)
         return c:supports_method(method)
       end)
     end
+
     --- @param option string
     local buf_reset_option = vim.schedule_wrap(function(option)
       -- Scheduled, as we can't use nvim_get_option_value with "filetype" set
       -- in FileType autocmds, which LspAttach/Detach may be triggered from.
       -- HACK: This is a bit fragile; will be properly fixed by
       -- neovim/neovim#33919.
-      vim.bo[buf][option] =
-        api.nvim_get_option_value(option, { filetype = vim.bo[buf].filetype })
+      if api.nvim_buf_is_valid(buf) then
+        vim.bo[buf][option] =
+          api.nvim_get_option_value(option, { filetype = vim.bo[buf].filetype })
+      end
+    end)
+
+    --- @param option string
+    --- @param value any
+    local buf_set_option = vim.schedule_wrap(function(option, value)
+      -- HACK: Scheduled for the same reason as above, as we want this to happen
+      -- after possibly resetting the option.
+      if api.nvim_buf_is_valid(buf) then
+        vim.bo[buf][option] = value
+      end
     end)
 
     if buf_supports_method "textDocument/hover" then
@@ -171,7 +184,7 @@ function M.setup_attached_buffers(client_id, detaching)
     end
 
     if buf_supports_method "textDocument/definition" then
-      vim.bo[buf].tagfunc = "v:lua.vim.lsp.tagfunc"
+      buf_set_option("tagfunc", "v:lua.vim.lsp.tagfunc")
       keymap.set(
         "n",
         "gd",
@@ -195,7 +208,7 @@ function M.setup_attached_buffers(client_id, detaching)
     end
 
     if buf_supports_method "textDocument/completion" then
-      vim.bo[buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+      buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
     else
       buf_reset_option "omnifunc"
     end
@@ -208,7 +221,7 @@ function M.setup_attached_buffers(client_id, detaching)
       end)
     then
       -- Prefer ours.
-      vim.bo[buf].formatexpr = "v:lua.require'conf.lsp'.formatexpr()"
+      buf_set_option("formatexpr", "v:lua.require'conf.lsp'.formatexpr()")
     else
       buf_reset_option "formatexpr"
     end
