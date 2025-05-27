@@ -47,12 +47,20 @@ api.nvim_create_autocmd("FileType", {
           return acc
         end)
 
+        -- Seems nvim-treesitter-textobjects implicitly assumes that the buffer
+        -- is already parsed (and the tree is up-to-date). That may not be true
+        -- if, for example, tree-sitter highlighting is disabled.
+        local function parse_curbuf()
+          assert(treesitter.get_parser(0, lang)):parse()
+        end
+
         local function define_move_map(lhs, capture_name, goto_fn_name)
           if not captures_set[capture_name] then
             return
           end
 
           keymap.set({ "n", "x", "o" }, lhs, function()
+            parse_curbuf()
             require("nvim-treesitter-textobjects.move")[goto_fn_name](
               "@" .. capture_name,
               "textobjects"
@@ -71,6 +79,7 @@ api.nvim_create_autocmd("FileType", {
           end
 
           keymap.set({ "x", "o" }, lhs, function()
+            parse_curbuf()
             require("nvim-treesitter-textobjects.select").select_textobject(
               "@" .. capture_name,
               "textobjects"
@@ -111,24 +120,6 @@ api.nvim_create_autocmd("FileType", {
     end
   end,
 })
-
-require("nvim-treesitter").install {
-  -- Install a minimal set of parsers. Others can be installed via :TSInstall.
-  -- Following parsers are bundled with Nvim 0.10 itself, and need to be updated
-  -- by nvim-treesitter so that its newer queries do not throw errors with the
-  -- older Nvim parsers:
-  "c",
-  "lua",
-  "markdown",
-  "markdown_inline",
-  "query",
-  "vim",
-  "vimdoc",
-
-  -- Extra parsers not bundled with Nvim:
-  "cpp",
-  "comment",
-}
 
 require("nvim-treesitter-textobjects").setup {
   select = {

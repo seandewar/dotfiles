@@ -60,11 +60,7 @@ function M.cmd_formatexpr(cmd, start_lnum, end_lnum, timeout_ms)
       return true
     end
 
-    local msg = ("%s formatted %d line%s"):format(
-      name,
-      #lines,
-      #lines > 1 and "s" or ""
-    )
+    local msg = ("%s finished formatting"):format(name)
     if lines_unchanged() then -- Avoids unnecessary undo blocks, etc.
       msg = ("%s (no changes)"):format(msg)
     else

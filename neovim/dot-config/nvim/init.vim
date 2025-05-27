@@ -1,7 +1,8 @@
 " Version check {{{1
 if !has('nvim-0.11')
-    echohl ErrorMsg | echo '[init.vim] Unsupported Nvim version!' | echohl None
-    finish
+    echohl WarningMsg
+    echomsg '[init.vim] Unsupported Nvim version, expect issues!'
+    echohl None
 end
 
 " Enable Nvim's experimental Lua loader {{{1
@@ -100,9 +101,9 @@ augroup END
 packadd! cfilter
 
 let g:clipboard = 'osc52'
-let g:qf_disable_statusline = 1
-let g:c_no_curly_error = 1  " Don't show "[{}]" as an error; it's valid C++11
+let g:c_no_curly_error = 1  " {}s inside []s are not always invalid.
 let g:markdown_folding = 1
+let g:qf_disable_statusline = 1
 
 " With 'hidden' set, netrw buffers may have no name. This is because netrw does
 " not modify the empty buffer created by Vim when opening a directory, but
@@ -168,10 +169,9 @@ xnoremap P p
 nnoremap gK K
 
 " Cancels the pending wincmd if <Esc> is given, and does not leave Terminal
-" mode if so. This of course doesn't handle wincmds with a length of more
-" than one key that are cancelled later, but this is good enough.
-" Not an <expr> mapping to avoid expr_map_lock restrictions for events during
-" getcharstr.
+" mode if so. Of course doesn't handle wincmds with a length of more than one
+" key that are cancelled later, but this is good enough. Not an <expr> mapping
+" to avoid expr_map_lock restrictions for events during getcharstr.
 function! s:TermWincmd() abort
     let keys = "\<C-\>\<C-N>\<C-W>"
     while 1
@@ -211,15 +211,6 @@ nnoremap <expr> [B $'<Cmd>{v:count != 0 ? v:count .. 'buffer' : 'bfirst'}'
             \ .. '<CR>2<C-G>'
 nnoremap <expr> ]B $'<Cmd>{v:count != 0 ? v:count .. 'buffer' : 'blast'}'
             \ .. '<CR>2<C-G>'
-nnoremap <Leader>fb :buffer<Space>
-
-" Find, Grep, ... {{{2
-nnoremap <Leader>ff :find<Space>
-nnoremap <Leader>fg :grep<Space>
-nnoremap <Leader>fG :grep <C-R>=shellescape($'\b{expand('<cword>')}\b',1)<CR><CR>
-nnoremap <Leader>ft :tjump<Space>
-nnoremap <Leader>fo <Cmd>browse oldfiles<CR>
-
 " }}}1
 
 " vim: fdm=marker fdl=0

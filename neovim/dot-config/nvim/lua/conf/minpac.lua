@@ -47,11 +47,33 @@ start "ziglang/zig.vim"
 -- Tree-sitter
 start("nvim-treesitter/nvim-treesitter", {
   rev = "main",
-  pullmethod = "autostash",
   ["do"] = function()
-    if vim.g.loaded_nvim_treesitter ~= nil then
-      vim.cmd.TSUpdate()
+    if not vim.g.loaded_nvim_treesitter then
+      return
     end
+    local nts = require "nvim-treesitter"
+
+    -- Ensure a minimal set of parsers are installed.
+    -- Others may be installed on-demand via ":TSInstall".
+    nts.install {
+      -- These parsers are bundled with Nvim itself, and need to be updated by
+      -- nvim-treesitter so its newer queries don't throw errors when using the
+      -- older bundled parsers:
+      "c",
+      "lua",
+      "markdown",
+      "markdown_inline",
+      "query",
+      "vim",
+      "vimdoc",
+
+      -- Extra parsers not bundled with Nvim:
+      "cpp",
+      "comment",
+    }
+
+    -- Update all installed parsers, including those manually ":TSInstall"ed.
+    nts.update()
   end,
 })
 start("nvim-treesitter/nvim-treesitter-textobjects", {

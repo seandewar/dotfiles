@@ -1,10 +1,5 @@
-- Use git submodules for packages
-- Disable unneeded plugins/stuff when opened as a pager
-- Don't :TSUpdate after updating nvim-treesitter, as some modules might already
-  be loaded. Instead, schedule an update for the next nvim start; we can maybe
-  abuse shada global vars for this if we're feeling lazy.
-- Use nvim-dap? GCC also has built-in DAP support now... (but termdebug is
-  pretty good)
+- Replace minpac with vim.pack when it's finished.
+- Disable unneeded plugins/stuff when opened as a pager.
 - Yeet netrw (and vim-vinegar)? Netrw's bugs are annoying.
 
  vi:set tw=80 fo+=t:
