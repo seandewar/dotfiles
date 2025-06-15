@@ -25,6 +25,7 @@ local function set_opts(buf, type)
     -- foldtext = "v:lua.vim.lsp.foldtext()"
   end
 
+  --- @param win integer
   local function set_onebuf_opts(win)
     vim.wo[win][0].foldmethod = foldmethod
     vim.wo[win][0].foldexpr = foldexpr
@@ -32,7 +33,13 @@ local function set_opts(buf, type)
   end
 
   for _, win in ipairs(api.nvim_list_wins()) do
-    if not vim.wo[win][0].diff then -- Don't mess with diff windows.
+    -- Don't mess with diff windows or windows where the &foldmethod was set by
+    -- a modeline.
+    if
+      not vim.wo[win][0].diff
+      and api.nvim_get_option_info2("foldmethod", { win = win }).last_set_sid
+        ~= -1 -- SID_MODELINE
+    then
       -- vim.wo currently only supports setting the "onebuf" value for the
       -- current buffer in a window. For windows where the buffer isn't current,
       -- create an autocommand to set the options when becomes current; this is
