@@ -1,5 +1,5 @@
 " Version check {{{1
-if !has('nvim-0.11')
+if !has('nvim-0.12')
     echohl WarningMsg
     echomsg '[init.vim] Unsupported Nvim version, expect issues!'
     echohl None
@@ -11,9 +11,10 @@ lua vim.loader.enable()
 
 " General settings {{{1
 set cinoptions+=:0,g0,N-s,j1
-set completeopt+=menuone,fuzzy
-set diffopt+=algorithm:histogram
+set completeopt+=menuone,fuzzy completefuzzycollect+=keyword,files,whole_line
+set diffopt+=algorithm:histogram,inline:char
 set exrc  " Nvim's exrc uses a :trust system, so it's safe enough to enable.
+set fillchars+=trunc:…,truncrl:…
 set foldlevelstart=99 foldmethod=indent foldtext=
 set formatoptions=croqnlj
 set ignorecase smartcase
@@ -38,27 +39,15 @@ set title
 set wildmode=list:longest,full
 set winborder=single
 
-if has('nvim-0.12')
-    " Fuzzy find completion candidates.
-    set completefuzzycollect+=keyword,files,whole_line
-    " Granular diff highlights for changed characters on a line. Support is new.
-    set diffopt+=inline:char
+function! s:SetPumMaxWidth() abort
+    let &pummaxwidth = max([float2nr(&columns * 0.4), &pumwidth])
+endfunction
 
-    set fillchars+=trunc:…,truncrl:…
-
-    function! s:SetPumMaxWidth() abort
-        let &pummaxwidth = max([float2nr(&columns * 0.4), &pumwidth])
-    endfunction
-
-    augroup conf_auto_pummaxwidth
-        autocmd!
-        autocmd VimResized * call s:SetPumMaxWidth()
-    augroup END
-    call s:SetPumMaxWidth()
-else
-    " Restoring a session with fold info could spam E490 in older versions.
-    set sessionoptions-=folds
-endif
+augroup conf_auto_pummaxwidth
+    autocmd!
+    autocmd VimResized * call s:SetPumMaxWidth()
+augroup END
+call s:SetPumMaxWidth()
 
 " A Vim bug causes glob expansion to fail with 'wildignorecase' if a parent
 " directory lacks read perms (neovim#6787). This messes up netrw on Termux.

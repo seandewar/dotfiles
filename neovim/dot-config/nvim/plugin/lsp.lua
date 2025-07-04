@@ -149,13 +149,11 @@ keymap.set("n", "grh", function()
   } > 0
   local hints_enabled = lsp.inlay_hint.is_enabled { bufnr = 0 }
 
-  local want_colours = fn.has "nvim-0.12" == 1
-    and (vim.o.termguicolors or fn.has "gui_running" == 1)
+  local want_colours = vim.o.termguicolors or fn.has "gui_running" == 1
   local colours_supported = want_colours
     and #lsp.get_clients { bufnr = 0, method = "textDocument/documentColor" }
       > 0
-  local colours_enabled = fn.has "nvim-0.12" == 1
-    and lsp.document_color.is_enabled(0)
+  local colours_enabled = lsp.document_color.is_enabled(0)
 
   -- If clients support a method but it's disabled, enable them. Otherwise,
   -- disable both if applicable.

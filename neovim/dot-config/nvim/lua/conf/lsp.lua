@@ -92,30 +92,28 @@ require("conf.statusline").components.lsp = function(_, stl_win)
   if lsp.inlay_hint.is_enabled { bufnr = buf } then
     chunks[#chunks + 1] = "IH"
   end
-  if fn.has "nvim-0.12" == 1 and lsp.document_color.is_enabled(buf) then
+  if lsp.document_color.is_enabled(buf) then
     chunks[#chunks + 1] = "DC"
   end
   return #chunks > 0 and "[LSP(" .. table.concat(chunks, ",") .. ")] " or ""
 end
 
-if fn.has "nvim-0.12" == 1 then
-  api.nvim_create_autocmd({ "OptionSet", "UILeave" }, {
-    callback = function(args)
-      if args.event == "OptionSet" and args.match ~= "termguicolors" then
-        return
+api.nvim_create_autocmd({ "OptionSet", "UILeave" }, {
+  callback = function(args)
+    if args.event == "OptionSet" and args.match ~= "termguicolors" then
+      return
+    end
+    if vim.o.termguicolors or fn.has "gui_running" == 1 then
+      return
+    end
+    -- Document colours are useless without "true" colour support.
+    for _, buf in ipairs(api.nvim_list_bufs()) do
+      if lsp.document_color.is_enabled(buf) then
+        lsp.document_color.enable(false, buf)
       end
-      if vim.o.termguicolors or fn.has "gui_running" == 1 then
-        return
-      end
-      -- Document colours are useless without "true" colour support.
-      for _, buf in ipairs(api.nvim_list_bufs()) do
-        if lsp.document_color.is_enabled(buf) then
-          lsp.document_color.enable(false, buf)
-        end
-      end
-    end,
-  })
-end
+    end
+  end,
+})
 
 -- Similar to vim.lsp.formatexpr(), but uses vim.lsp.buf.format{async = true},
 -- falling back to built-in formatting when automatically invoked.

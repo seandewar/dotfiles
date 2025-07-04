@@ -36,10 +36,5 @@ return {
         },
       },
     })
-    -- vim.uv (luv) meta files are vendored since Nvim 0.12.
-    if vim.fn.has "nvim-0.12" == 0 then
-      --- @diagnostic disable-next-line: undefined-field
-      table.insert(client.settings.Lua.workspace.library, "${3rd}/luv/library")
-    end
   end,
 } --[[@as vim.lsp.Config]]
