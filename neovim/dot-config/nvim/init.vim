@@ -200,6 +200,18 @@ nnoremap <expr> [B $'<Cmd>{v:count != 0 ? v:count .. 'buffer' : 'bfirst'}'
             \ .. '<CR>2<C-G>'
 nnoremap <expr> ]B $'<Cmd>{v:count != 0 ? v:count .. 'buffer' : 'blast'}'
             \ .. '<CR>2<C-G>'
+
+" Load 3rd-party packages {{{1
+" Sourced here to ensure it's loaded before the scripts in the plugin directory.
+" (.vim plugin files have priority over .lua; this side-steps that)
+let s:pack_script = expand('<script>:h') .. '/pack.lua'
+
+" May not exist if init.vim is used standalone. (Useful when I want to quickly
+" use the settings here without pulling in the rest of my config)
+if filereadable(s:pack_script)
+    execute 'source' s:pack_script
+endif
+unlet s:pack_script
 " }}}1
 
 " vim: fdm=marker fdl=0

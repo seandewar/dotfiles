@@ -34,14 +34,6 @@ stow -v --no-folding --dotfiles -d "$stow_dir" -t "$target_dir" -R "$@"
 
 for pkg in "$@"; do
     case "$pkg" in
-        'neovim')
-            link_submodule minpac .local/share/nvim/site/pack/minpac/opt/minpac
-            ;;
-
-        'neovim-vim-compat')
-            link_submodule minpac .vim/pack/minpac/opt/minpac
-            ;;
-
         'tmux')
             link_submodule tpm .tmux/plugins/tpm
 

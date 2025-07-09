@@ -1,6 +1,3 @@
 [submodule "tmux/.tmux/plugins/tpm"]
 	path = .submodules/tpm
 	url = https://github.com/tmux-plugins/tpm.git
-[submodule "neovim/.local/share/nvim/site/pack/minpac/opt/minpac"]
-	path = .submodules/minpac
-	url = https://github.com/k-takata/minpac.git
