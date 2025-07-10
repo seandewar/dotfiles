@@ -2,7 +2,6 @@ if not vim.g.started_by_firenvim then
   return
 end
 
-local cmd = vim.cmd
 local fn = vim.fn
 local keymap = vim.keymap
 
@@ -13,8 +12,7 @@ vim.filetype.add {
   },
 }
 
-cmd.packadd { "firenvim", bang = true }
-cmd.runtime "ginit.vim"
+vim.cmd.packadd { "firenvim", bang = true }
 
 vim.g.firenvim_config = {
   localSettings = {

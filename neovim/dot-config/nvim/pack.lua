@@ -19,6 +19,7 @@ end, {
   end,
   bang = true,
   bar = true,
+  desc = "Update plugins managed by vim.pack",
 })
 
 local function post_update_nts()

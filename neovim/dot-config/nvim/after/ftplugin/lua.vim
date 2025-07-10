@@ -1,9 +1,8 @@
 setlocal shiftwidth=2
-let b:undo_ftplugin = get(b:, 'undo_ftplugin', '') .. "\nsetlocal shiftwidth<"
+setlocal keywordprg=:help  " Nvim has built-in Lua reference manuals.
 
-" Nvim has a built-in Lua reference manual and other stuff.
-setlocal keywordprg=:help
-let b:undo_ftplugin = get(b:, 'undo_ftplugin', '') .. "\nsetlocal keywordprg<"
+let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
+            \ .. "\nsetlocal shiftwidth< keywordprg<"
 
 if executable('stylua')
     " Send whole buffer, but specify the range so the formatter has context.

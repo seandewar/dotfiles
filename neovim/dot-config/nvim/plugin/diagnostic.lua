@@ -81,20 +81,12 @@ end, {
 })
 
 keymap.set("n", "<Leader>d", function()
-  if vim.g.loaded_fzf_lua ~= nil then
-    require("fzf-lua").diagnostics_document()
-  else
-    diagnostic.setloclist { title = "Buffer Diagnostics" }
-  end
+  require("fzf-lua").diagnostics_document()
 end, {
   desc = "Buffer Diagnostics",
 })
 keymap.set("n", "<Leader>D", function()
-  if vim.g.loaded_fzf_lua ~= nil then
-    require("fzf-lua").diagnostics_workspace()
-  else
-    diagnostic.setqflist { title = "All Diagnostics" }
-  end
+  require("fzf-lua").diagnostics_workspace()
 end, {
   desc = "All Diagnostics",
 })

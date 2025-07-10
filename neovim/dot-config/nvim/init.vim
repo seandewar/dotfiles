@@ -5,9 +5,10 @@ if !has('nvim-0.12')
     echohl None
 end
 
-" Enable Nvim's experimental Lua loader {{{1
-" It byte-compiles and caches Lua files. Best to keep this near the top.
-lua vim.loader.enable()
+" Enable Nvim's experimental Lua loader and UI {{{1
+" The loader byte-compiles and caches Lua files; best to keep it near the top.
+lua vim.loader.enable() require("vim._extui").enable({})
+set cmdheight=0  " Hiding the command-line area works nicely with extui.
 
 " General settings {{{1
 set cinoptions+=:0,g0,N-s,j1
@@ -184,22 +185,6 @@ endif
 
 " vim-scriptease-inspired mapping for :Inspect
 nnoremap zS <Cmd>Inspect<CR>
-
-" Argument list {{{2
-nnoremap <expr> [a $'<Cmd>{v:count1}previous<Bar>args<CR>'
-nnoremap <expr> ]a $'<Cmd>{v:count1}next<Bar>args<CR>'
-nnoremap <expr> [A $'<Cmd>{v:count != 0 ? v:count .. 'argument' : 'first'}'
-            \ .. '<Bar>args<CR>'
-nnoremap <expr> ]A $'<Cmd>{v:count != 0 ? v:count .. 'argument' : 'last'}'
-            \ .. '<Bar>args<CR>'
-
-" Buffers {{{2
-nnoremap <expr> [b '<Cmd>' .. v:count1 .. 'bprevious<CR>2<C-G>'
-nnoremap <expr> ]b '<Cmd>' .. v:count1 .. 'bnext<CR>2<C-G>'
-nnoremap <expr> [B $'<Cmd>{v:count != 0 ? v:count .. 'buffer' : 'bfirst'}'
-            \ .. '<CR>2<C-G>'
-nnoremap <expr> ]B $'<Cmd>{v:count != 0 ? v:count .. 'buffer' : 'blast'}'
-            \ .. '<CR>2<C-G>'
 
 " Load 3rd-party packages {{{1
 " Sourced here to ensure it's loaded before the scripts in the plugin directory.

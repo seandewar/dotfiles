@@ -11,6 +11,10 @@ local last_progress = nil
 local progress_redraw_pending = false
 local progress_redraw_debounce_timer = assert(uv.new_timer())
 
+local function is_extui_on()
+  return require("vim._extui.shared").cfg.enable
+end
+
 local function update_progress(opts)
   local client = lsp.get_client_by_id(opts.data.client_id)
   if not client then
@@ -18,27 +22,32 @@ local function update_progress(opts)
   end
 
   last_progress = nil
+  progress_redraw_pending = true
+  local force_redraw = false
+
   local msg = opts.data.params.value
-  if msg.kind ~= "end" then
+  if msg.kind ~= "end" or (is_extui_on() and vim.o.cmdheight == 0) then
     local text = msg.title
     if msg.message then
       text = text .. " " .. msg.message
     end
-    if msg.percentage then
+    if msg.kind == "end" then
+      text = text .. " Done"
+      force_redraw = true
+    elseif msg.percentage then
       text = text .. " " .. math.floor(msg.percentage) .. "%"
     end
 
     last_progress = { client_id = client.id, text = text }
   end
 
-  progress_redraw_pending = true
-
   local function redraw()
     local cmdheight = vim.o.cmdheight
+    local extui_on = is_extui_on()
     if
       progress_redraw_pending
       and api.nvim_get_mode().mode == "n"
-      and cmdheight > 0
+      and (cmdheight > 0 or extui_on)
     then
       local str = ""
       if last_progress then
@@ -49,24 +58,36 @@ local function update_progress(opts)
           )
           :gsub("%s", " ") -- Particularly deal with possible NLs and tabs.
 
-        local max_screen_len = vim.o.columns * (cmdheight - 1) + vim.v.echospace
+        local max_screen_len = vim.o.columns * math.max(0, cmdheight - 1)
+          + vim.v.echospace
         if fn.strdisplaywidth(str) > max_screen_len then
           -- Not accurate as sub uses byte indices, but low-effort.
           str = str:sub(1, max_screen_len - 1) .. "…"
         end
       end
 
-      vim.cmd.redraw() -- Avoid hit-ENTER from any prior echoes.
+      if not extui_on then
+        vim.cmd.redraw() -- Avoid hit-ENTER from any prior echoes.
+      end
       api.nvim_echo({ { str } }, false, {})
+
+      if cmdheight > 0 or extui_on then
+        progress_redraw_debounce_timer:start(
+          -- Use a longer delay for extui messages without a command-line to
+          -- avoid spamming popups.
+          cmdheight > 0 and 250 or 1500,
+          0,
+          vim.schedule_wrap(redraw)
+        )
+      end
     end
 
     progress_redraw_pending = false
   end
 
   -- Don't spam redraws.
-  if progress_redraw_debounce_timer:get_due_in() == 0 then
+  if force_redraw or progress_redraw_debounce_timer:get_due_in() == 0 then
     redraw()
-    progress_redraw_debounce_timer:start(250, 0, vim.schedule_wrap(redraw))
   end
 end
 
