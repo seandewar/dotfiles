@@ -8,7 +8,6 @@ end
 " Enable Nvim's experimental Lua loader and UI {{{1
 " The loader byte-compiles and caches Lua files; best to keep it near the top.
 lua vim.loader.enable() require("vim._extui").enable({})
-set cmdheight=0  " Hiding the command-line area works nicely with extui.
 
 " General settings {{{1
 set cinoptions+=:0,g0,N-s,j1
@@ -72,14 +71,18 @@ augroup conf_highlight_yanked
 augroup END
 
 function! s:UpdateColorColumn() abort
-    let &colorcolumn = &modifiable ? '+1' : ''
+    let &l:colorcolumn = &modifiable ? '+1' : ''
 endfunction
 
-augroup conf_active_cursorcolumn
+augroup conf_active_colorcolumn
     autocmd!
-    autocmd OptionSet modifiable call s:UpdateColorColumn()
-    autocmd VimEnter,WinEnter,BufWinEnter * call s:UpdateColorColumn()
-    autocmd WinLeave * set colorcolumn=
+    autocmd OptionSet modifiable if win_getid() == get(s:, 'cc_win')
+                              \| call s:UpdateColorColumn()
+                              \| endif
+    autocmd WinEnter,BufEnter * call s:UpdateColorColumn()
+                             \| let s:cc_win = win_getid()
+    autocmd WinLeave,BufLeave * setlocal colorcolumn=
+                             \| unlet! s:cc_win
 augroup END
 
 augroup conf_auto_quickfix
