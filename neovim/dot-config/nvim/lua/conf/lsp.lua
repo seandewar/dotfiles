@@ -113,28 +113,8 @@ require("conf.statusline").components.lsp = function(_, stl_win)
   if lsp.inlay_hint.is_enabled { bufnr = buf } then
     chunks[#chunks + 1] = "IH"
   end
-  if lsp.document_color.is_enabled(buf) then
-    chunks[#chunks + 1] = "DC"
-  end
   return #chunks > 0 and "[LSP(" .. table.concat(chunks, ",") .. ")] " or ""
 end
-
-api.nvim_create_autocmd({ "OptionSet", "UILeave" }, {
-  callback = function(args)
-    if args.event == "OptionSet" and args.match ~= "termguicolors" then
-      return
-    end
-    if vim.o.termguicolors or fn.has "gui_running" == 1 then
-      return
-    end
-    -- Document colours are useless without "true" colour support.
-    for _, buf in ipairs(api.nvim_list_bufs()) do
-      if lsp.document_color.is_enabled(buf) then
-        lsp.document_color.enable(false, buf)
-      end
-    end
-  end,
-})
 
 -- Similar to vim.lsp.formatexpr(), but uses vim.lsp.buf.format{async = true},
 -- falling back to built-in formatting when automatically invoked.
@@ -255,13 +235,6 @@ function M.setup_attached_buffers(client_id, detaching)
 end
 
 function M.attach_buffer(args)
-  -- Nvim enables document colors by default; I don't like that. We don't want
-  -- to disable it if it was enabled manually, so do it if this is the first
-  -- client attaching to this buffer.
-  if #lsp.get_clients { bufnr = args.bufnr } <= 1 then
-    lsp.document_color.enable(false, args.bufnr)
-  end
-
   M.setup_attached_buffers(args.data.client_id)
   lsp.completion.enable(true, args.data.client_id, args.bufnr)
 
