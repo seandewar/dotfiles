@@ -255,6 +255,13 @@ function M.setup_attached_buffers(client_id, detaching)
 end
 
 function M.attach_buffer(args)
+  -- Nvim enables document colors by default; I don't like that. We don't want
+  -- to disable it if it was enabled manually, so do it if this is the first
+  -- client attaching to this buffer.
+  if #lsp.get_clients { bufnr = args.bufnr } <= 1 then
+    lsp.document_color.enable(false, args.bufnr)
+  end
+
   M.setup_attached_buffers(args.data.client_id)
   lsp.completion.enable(true, args.data.client_id, args.bufnr)
 
