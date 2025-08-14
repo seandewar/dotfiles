@@ -77,9 +77,7 @@ api.nvim_create_autocmd("PackChanged", {
   end,
 })
 
--- TODO: Consider disabling the confirmation messages when support is added.
--- See neovim/neovim#34770.
-pack.add {
+pack.add({
   -- Colour scheme.
   { src = "https://github.com/seandewar/paragon.vim", version = "next" },
 
@@ -107,15 +105,16 @@ pack.add {
     src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
     version = "main",
   },
-}
+}, {
+  confirm = false,
+})
 
 pack.add({
   -- Web browser integration.
   "https://github.com/glacambre/firenvim",
 }, {
-  -- TODO: Using a separate vim.pack.add() call stops this from being installed
-  -- in parallel with the others. See neovim/neovim#34770.
   load = false, -- Only load when needed.
+  confirm = false,
 })
 
 -- Run post-update callbacks now after vim.pack.add() has called :packadd.
