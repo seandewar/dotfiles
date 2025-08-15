@@ -37,18 +37,23 @@ if [[ "$toplevel_count" -ne 1 ]]; then
     exit 1
 fi
 
-echo 'extracting archive...'
-tar -C "$tmpdir" -xf "$tmpdir/zig-master"
+# /tmp is commonly mounted to a different filesystem, which can make copying
+# operations between it and the root fs slow. Zig has lots of files, so avoid
+# copying too many things between filesystems. It's OK to extract the archive
+# from /tmp though.
+echo 'moving old zig to zig-old ...'
+rm -rf ~/.local/share/zig-old || true
+mv ~/.local/share/zig ~/.local/share/zig-old || true
 
-echo "moving old zig to $tmpdir/zig-old ..."
-mv ~/.local/share/zig "$tmpdir/zig-old" || true
-
-echo 'moving new zig to ~/.local/share/zig ...'
-mkdir -p ~/.local/share
-mv "$tmpdir/$toplevel_files" ~/.local/share/zig
+echo 'extracting archive to ~/.local/share/zig ...'
+mkdir -p ~/.local/share/zig
+tar -C ~/.local/share/zig --strip-components=1 -xf "$tmpdir/zig-master"
 
 if [[ ! -f ~/.local/bin/zig ]]; then
     echo 'creating symbolic link at ~/.local/bin/zig ...'
     mkdir -p ~/.local/bin
     ln -s ~/.local/share/zig/zig ~/.local/bin/zig
 fi
+
+echo 'removing old zig ...'
+rm -rf ~/.local/share/zig-old || true
