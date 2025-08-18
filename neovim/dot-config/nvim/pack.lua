@@ -26,7 +26,7 @@ local function post_update_nts()
   local nts = require "nvim-treesitter"
 
   -- Install a minimal set of parsers. Install others via ":TSInstall".
-  nts.install {
+  nts.install({
     -- Parsers are bundled with Nvim itself. Update them so nvim-treesitter's
     -- newer queries don't throw errors when using the older bundled parsers:
     "c",
@@ -40,10 +40,10 @@ local function post_update_nts()
     -- Extra parsers not bundled with Nvim:
     "cpp",
     "comment",
-  }
+  }, { summary = true })
 
   -- Update all installed parsers, including those manually ":TSInstall"ed.
-  nts.update()
+  nts.update(nil, { summary = true })
 end
 
 local function post_update_firenvim()
