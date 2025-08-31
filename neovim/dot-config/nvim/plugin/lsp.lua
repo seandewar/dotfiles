@@ -14,6 +14,9 @@ end
 
 lsp.config("*", {
   workspace_required = true,
+  on_exit = function(...)
+    return require("conf.lsp").client_on_exit(...)
+  end,
 })
 
 -- Preferring a Vim script command so split modifiers are respected.
