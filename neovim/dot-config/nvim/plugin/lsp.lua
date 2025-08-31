@@ -12,6 +12,9 @@ local enabled_configs = {
 
 lsp.config("*", {
   root_markers = { ".git" },
+  on_exit = function(...)
+    return require("conf.lsp").client_on_exit(...)
+  end,
 })
 
 -- Usually don't want LSP when using firenvim.

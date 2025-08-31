@@ -3,97 +3,64 @@ local fn = vim.fn
 local keymap = vim.keymap
 local lsp = vim.lsp
 local log = vim.log
-local uv = vim.uv
 
 local M = {}
 
-local last_progress = nil
-local progress_redraw_pending = false
-local progress_redraw_debounce_timer = assert(uv.new_timer())
+local progress_echo_id
+local scheduled_progress, last_echoed_progress
 
-local function is_extui_on()
-  return require("vim._extui.shared").cfg.enable
-end
-
-local function update_progress(opts)
-  local client = lsp.get_client_by_id(opts.data.client_id)
-  if not client then
-    return
+local function echo_progress(progress, cancel)
+  local msg = progress.msg
+  local chunks = {}
+  if msg.title then
+    chunks[#chunks + 1] = msg.title
+  end
+  if msg.message then
+    chunks[#chunks + 1] = msg.message
+  end
+  if cancel then
+    chunks[#chunks] = chunks[#chunks] .. "...cancelled"
+  elseif msg.kind == "end" then
+    chunks[#chunks] = chunks[#chunks] .. "...done"
   end
 
-  last_progress = nil
-  progress_redraw_pending = true
-  local force_redraw = false
-
-  local msg = opts.data.params.value
-  if msg.kind ~= "end" or (is_extui_on() and vim.o.cmdheight == 0) then
-    local text = msg.title
-    if msg.message then
-      text = text .. " " .. msg.message
-    end
-    if msg.kind == "end" then
-      text = text .. " Done"
-      force_redraw = true
-    elseif msg.percentage then
-      text = text .. " " .. math.floor(msg.percentage) .. "%"
-    end
-
-    last_progress = { client_id = client.id, text = text }
-  end
-
-  local function redraw()
-    local cmdheight = vim.o.cmdheight
-    local extui_on = is_extui_on()
-    if
-      progress_redraw_pending
-      and api.nvim_get_mode().mode == "n"
-      and (cmdheight > 0 or extui_on)
-    then
-      local str = ""
-      if last_progress then
-        str = ("LSP[%s] %s")
-          :format(
-            lsp.get_client_by_id(last_progress.client_id).name,
-            last_progress.text
-          )
-          :gsub("%s", " ") -- Particularly deal with possible NLs and tabs.
-
-        local max_screen_len = vim.o.columns * math.max(0, cmdheight - 1)
-          + vim.v.echospace
-        if fn.strdisplaywidth(str) > max_screen_len then
-          -- Not accurate as sub uses byte indices, but low-effort.
-          str = str:sub(1, max_screen_len - 1) .. "…"
-        end
-      end
-
-      if not extui_on then
-        vim.cmd.redraw() -- Avoid hit-ENTER from any prior echoes.
-      end
-      api.nvim_echo({ { str } }, false, {})
-
-      if cmdheight > 0 or extui_on then
-        progress_redraw_debounce_timer:start(
-          -- Use a longer delay for extui messages without a command-line to
-          -- avoid spamming popups.
-          cmdheight > 0 and 250 or 1500,
-          0,
-          vim.schedule_wrap(redraw)
-        )
-      end
-    end
-
-    progress_redraw_pending = false
-  end
-
-  -- Don't spam redraws.
-  if force_redraw or progress_redraw_debounce_timer:get_due_in() == 0 then
-    redraw()
-  end
+  local id = api.nvim_echo({ { table.concat(chunks, " ") } }, false, {
+    id = progress_echo_id,
+    kind = "progress",
+    title = ("LSP[%s]"):format(progress.client_name),
+    percent = not cancel and msg.percentage or nil,
+    status = cancel and "cancel"
+      or msg.kind == "begin" and "running"
+      or "success",
+  })
+  progress_echo_id = id ~= -1 and id or progress_echo_id
 end
 
 api.nvim_create_autocmd("LspProgress", {
   group = api.nvim_create_augroup("conf_lsp_progress", {}),
-  callback = update_progress,
+  callback = function(args)
+    local client_id = args.data.client_id
+    local client = lsp.get_client_by_id(client_id)
+    if not client then
+      return
+    end
+    local need_schedule = not scheduled_progress
+    scheduled_progress = {
+      msg = args.data.params.value,
+      client_name = client.name,
+      client_id = client_id,
+    }
+
+    if need_schedule then
+      vim.schedule(function()
+        echo_progress(scheduled_progress)
+        last_echoed_progress = scheduled_progress.msg.kind ~= "begin"
+            and scheduled_progress
+          or nil
+        scheduled_progress = nil
+      end)
+    end
+  end,
 })
 
 require("conf.statusline").components.lsp = function(_, stl_win)
@@ -247,18 +214,28 @@ function M.attach_buffer(args)
 end
 
 function M.detach_buffer(args)
-  M.setup_attached_buffers(args.data.client_id, true)
-  lsp.completion.enable(false, args.data.client_id, args.bufnr)
-
-  if last_progress and last_progress.client_id == args.data.client_id then
-    last_progress = nil
-    api.nvim_echo({}, false, {}) -- Clear old progress message.
-  end
+  local client_id = args.data.client_id
+  M.setup_attached_buffers(client_id, true)
+  lsp.completion.enable(false, client_id, args.bufnr)
 
   -- Schedule, as the client hasn't finished detaching yet.
   vim.schedule(function()
     vim.cmd.redrawstatus { bang = true }
   end)
+end
+
+function M.client_on_exit(_, _, client_id)
+  if last_echoed_progress and last_echoed_progress.client_id == client_id then
+    local progress = last_echoed_progress
+    vim.schedule(function()
+      echo_progress(progress, true)
+    end)
+
+    if scheduled_progress and scheduled_progress.client_id == client_id then
+      scheduled_progress = nil
+    end
+    last_echoed_progress = nil
+  end
 end
 
 --- @param args vim.api.keyset.create_user_command.command_args
