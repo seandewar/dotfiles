@@ -6,35 +6,11 @@ local log = vim.log
 
 local M = {}
 
-local progress_echo_id
-local scheduled_progress, last_echoed_progress
+--- @class ProgressMsg (exact)
+--- @field id integer|string
+--- @field running boolean
 
-local function echo_progress(progress, cancel)
-  local msg = progress.msg
-  local chunks = {}
-  if msg.title then
-    chunks[#chunks + 1] = msg.title
-  end
-  if msg.message then
-    chunks[#chunks + 1] = msg.message
-  end
-  if cancel then
-    chunks[#chunks] = chunks[#chunks] .. "...cancelled"
-  elseif msg.kind == "end" then
-    chunks[#chunks] = chunks[#chunks] .. "...done"
-  end
-
-  local id = api.nvim_echo({ { table.concat(chunks, " ") } }, false, {
-    id = progress_echo_id,
-    kind = "progress",
-    title = ("LSP[%s]"):format(progress.client_name),
-    percent = not cancel and msg.percentage or nil,
-    status = cancel and "cancel"
-      or msg.kind == "begin" and "running"
-      or "success",
-  })
-  progress_echo_id = id ~= -1 and id or progress_echo_id
-end
+local client_id_to_progress = {} --- @type table<integer, ProgressMsg>
 
 api.nvim_create_autocmd("LspProgress", {
   group = api.nvim_create_augroup("conf_lsp_progress", {}),
@@ -44,22 +20,33 @@ api.nvim_create_autocmd("LspProgress", {
     if not client then
       return
     end
-    local need_schedule = not scheduled_progress
-    scheduled_progress = {
-      msg = args.data.params.value,
-      client_name = client.name,
-      client_id = client_id,
-    }
 
-    if need_schedule then
-      vim.schedule(function()
-        echo_progress(scheduled_progress)
-        last_echoed_progress = scheduled_progress.msg.kind ~= "begin"
-            and scheduled_progress
-          or nil
-        scheduled_progress = nil
-      end)
+    local params = args.data.params.value
+    local chunks = {}
+    if params.title then
+      chunks[#chunks + 1] = params.title
     end
+    if params.message then
+      chunks[#chunks + 1] = params.message
+    end
+    if params.kind == "end" then
+      chunks[#chunks + 1] = "(done)"
+    end
+
+    local progress = client_id_to_progress[client_id]
+    local id = api.nvim_echo({ { table.concat(chunks, " ") } }, false, {
+      id = progress and progress.id or nil,
+      kind = "progress",
+      title = ("LSP[%s]"):format(client.name),
+      percent = params.percentage,
+      status = params.kind ~= "end" and "running" or "success",
+    })
+    assert(id ~= -1 and (not progress or id == progress.id))
+    if not progress then
+      progress = { id = id, running = false }
+      client_id_to_progress[client_id] = progress
+    end
+    progress.running = params.kind ~= "end"
   end,
 })
 
@@ -115,7 +102,6 @@ function M.setup_attached_buffers(client_id, detaching)
       filter = filter or function(_)
         return true
       end
-
       return vim.iter(buf_clients):filter(filter):any(function(c)
         return c:supports_method(method)
       end)
@@ -226,17 +212,20 @@ function M.detach_buffer(args)
 end
 
 function M.client_on_exit(_, _, client_id)
-  if last_echoed_progress and last_echoed_progress.client_id == client_id then
-    local progress = last_echoed_progress
+  local progress = client_id_to_progress[client_id]
+  if progress and progress.running then
+    local client = assert(lsp.get_client_by_id(client_id))
     vim.schedule(function()
-      echo_progress(progress, true)
+      local id = api.nvim_echo({ { "client exited during work" } }, false, {
+        id = progress.id,
+        kind = "progress",
+        title = ("LSP[%s]"):format(client.name),
+        status = "cancel",
+      })
+      assert(id == progress.id)
     end)
-
-    if scheduled_progress and scheduled_progress.client_id == client_id then
-      scheduled_progress = nil
-    end
-    last_echoed_progress = nil
   end
+  client_id_to_progress[client_id] = nil
 end
 
 return M
