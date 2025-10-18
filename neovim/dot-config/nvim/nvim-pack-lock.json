@@ -1,0 +1,25 @@
+{
+  "plugins": {
+    "firenvim": [],
+    "fzf-lua": {
+      "rev": "db45bab"
+    },
+    "nvim-treesitter": {
+      "rev": "63fac0a5",
+      "version": "'main'"
+    },
+    "nvim-treesitter-textobjects": {
+      "version": "'main'"
+    },
+    "paragon.vim": {
+      "version": "'next'"
+    },
+    "vim-dispatch": [],
+    "vim-fugitive": [],
+    "vim-repeat": [],
+    "vim-rhubarb": [],
+    "vim-surround": [],
+    "vim-vinegar": [],
+    "zig.vim": []
+  }
+}
