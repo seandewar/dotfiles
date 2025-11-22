@@ -11,7 +11,7 @@ lua vim.loader.enable() require("vim._extui").enable({})
 
 " General settings {{{1
 set cinoptions+=:0,g0,N-s,j1,l1
-set completeopt+=menuone,fuzzy completefuzzycollect+=keyword,files,whole_line
+set completeopt+=menuone
 set diffopt+=algorithm:histogram,inline:char
 set exrc  " Nvim's exrc uses a :trust system, so it's safe enough to enable.
 set fillchars+=trunc:…,truncrl:…

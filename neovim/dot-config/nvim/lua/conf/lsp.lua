@@ -135,7 +135,7 @@ end
 function M.setup_attached_buffers(client_id, detaching)
   local has_stylua = fn.executable "stylua" == 1
 
-  for _, buf in ipairs(lsp.get_buffers_by_client_id(client_id)) do
+  for buf, _ in pairs(lsp.get_client_by_id(client_id).attached_buffers) do
     local buf_clients = vim.tbl_filter(function(c)
       return not detaching or c.id ~= client_id
     end, lsp.get_clients { bufnr = buf })
