@@ -1,4 +1,0 @@
-- Disable unneeded plugins/stuff when opened as a pager.
-- Yeet netrw (and vim-vinegar)? Netrw's bugs are annoying.
-
- vi:set tw=80 fo+=t:

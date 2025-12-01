@@ -14,7 +14,7 @@ set cinoptions+=:0,g0,N-s,j1,l1
 set completeopt+=menuone
 set diffopt+=algorithm:histogram,inline:char
 set exrc  " Nvim's exrc uses a :trust system, so it's safe enough to enable.
-set fillchars+=trunc:…,truncrl:…
+set fillchars+=trunc:…,truncrl:…,foldinner:│
 set foldlevelstart=99 foldmethod=indent foldtext=
 set formatoptions=croqnlj
 set ignorecase smartcase

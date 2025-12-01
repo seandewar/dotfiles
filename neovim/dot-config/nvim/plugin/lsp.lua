@@ -97,13 +97,7 @@ lsp.handlers["client/unregisterCapability"] =
   new_capability_change_handler(lsp.handlers["client/unregisterCapability"])
 
 -- These mappings, like the Nvim defaults, mostly override "gr" for LSP stuff.
-keymap.set(
-  "n",
-  "grt",
-  lsp.buf.type_definition,
-  { desc = "LSP Type Definition" }
-)
-
+-- (Many are set to use fzf-lua handlers instead)
 keymap.set({ "n", "x" }, "grf", function()
   lsp.buf.format { async = true }
 end, {
@@ -121,9 +115,8 @@ end, { desc = "LSP Workspace Symbols" })
 local function document_symbols()
   require("fzf-lua").lsp_document_symbols()
 end
--- gO is the Nvim default, but an ftplugin may have overriden it; map grd too.
-keymap.set("n", "grd", document_symbols, { desc = "LSP Document Symbols" })
 keymap.set("n", "gO", document_symbols, { desc = "LSP Document Symbols" })
+keymap.set("n", "grd", document_symbols, { desc = "LSP Document Symbols" })
 
 keymap.set("n", "<C-S>", lsp.buf.signature_help, {
   desc = "LSP Signature Help",

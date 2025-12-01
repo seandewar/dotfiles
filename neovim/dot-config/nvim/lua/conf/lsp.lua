@@ -162,7 +162,7 @@ function M.setup_attached_buffers(client_id, detaching)
       -- neovim/neovim#33919.
       if api.nvim_buf_is_valid(buf) then
         vim.bo[buf][option] =
-          api.nvim_get_option_value(option, { filetype = vim.bo[buf].filetype })
+          vim.filetype.get_option(vim.bo[buf].filetype, option)
       end
     end)
 

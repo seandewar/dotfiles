@@ -17,7 +17,7 @@ api.nvim_create_autocmd("SafeState", {
       local buf = api.nvim_get_current_buf()
       local save_foldcolumn = vim.wo[win][0].foldcolumn
 
-      vim.wo[win][0].foldcolumn = "auto:9"
+      vim.wo[win][0].foldcolumn = "auto"
       api.nvim__redraw { win = win, valid = true, cursor = true }
       api.nvim_create_autocmd("SafeState", {
         group = augroup,
@@ -38,8 +38,8 @@ api.nvim_create_autocmd("SafeState", {
       })
 
       -- "remap" is set so other mappings can be used, but we don't want to
-      -- trigger ourself recursively, so unmap ourself. We'll be re-registered
-      -- on the next Normal mode SafeState.
+      -- trigger this recursively, so unmap. We'll be re-registered on the next
+      -- Normal mode SafeState.
       keymap.del("n", "z")
       -- Can't use <expr>; want recursiveness.
       api.nvim_feedkeys("z", "mt", false)
