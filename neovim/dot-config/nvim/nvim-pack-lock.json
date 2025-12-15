@@ -5,23 +5,18 @@
       "src": "https://github.com/glacambre/firenvim"
     },
     "fzf-lua": {
-      "rev": "cae96b04f6cad98a3ad24349731df5e56b384c3c",
+      "rev": "1d103911c268bea2c6bbe0933a9c67a4bfb46e76",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "nvim-treesitter": {
-      "rev": "00c906abb9550e72bc0c640545b5499b9525bb40",
+      "rev": "d3218d988f72ed34414959c9ccd802d393432d6e",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "dfbf9596f8aa8b4bed5301647485594ff7252955",
+      "rev": "0d7c800fadcfe2d33089f5726cb8907fc846eece",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
       "version": "'main'"
-    },
-    "paragon.vim": {
-      "rev": "40266b2376d826a2b51c69c6197ed84364cf6ab6",
-      "src": "https://github.com/seandewar/paragon.vim",
-      "version": "'next'"
     },
     "vim-dispatch": {
       "rev": "a2ff28abdb2d89725192db5b8562977d392a4d3f",

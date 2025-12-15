@@ -78,9 +78,6 @@ api.nvim_create_autocmd("PackChanged", {
 })
 
 pack.add({
-  -- Colour scheme.
-  { src = "https://github.com/seandewar/paragon.vim", version = "next" },
-
   "https://github.com/tpope/vim-dispatch",
   "https://github.com/tpope/vim-repeat",
   "https://github.com/tpope/vim-surround",

@@ -1,1 +1,1 @@
-colorscheme paragon
+colorscheme zensmitten
