@@ -19,50 +19,6 @@ if not vim.g.started_by_firenvim then
   lsp.enable(enabled_configs)
 end
 
-api.nvim_create_user_command("LspOn", function(_)
-  lsp.enable(enabled_configs, true)
-end, { bar = true, desc = "Enable LSP autostart" })
-api.nvim_create_user_command("LspOff", function(_)
-  lsp.enable(enabled_configs, false)
-end, { bar = true, desc = "Disable LSP autostart" })
-
-api.nvim_create_user_command("LspStart", function(args)
-  require("conf.lsp").start_command(args, enabled_configs)
-end, {
-  nargs = "*",
-  bar = true,
-  --- @param arg string
-  complete = function(arg)
-    -- No way to get the list of all vim.lsp.config'd things (_enabled_configs
-    -- only has the vim.lsp.enabled ones); just use the usual enable list.
-    return vim.tbl_filter(function(name)
-      return arg == name:sub(1, #arg)
-    end, enabled_configs)
-  end,
-  desc = "Attach language servers to current buffer",
-})
-
-api.nvim_create_user_command("LspStop", function(args)
-  require("conf.lsp").stop_command(args)
-end, {
-  nargs = "*",
-  bang = true,
-  bar = true,
-  --- @param arg string
-  complete = function(arg)
-    return vim
-      .iter(lsp.get_clients { bufnr = 0 })
-      :map(function(client)
-        return client.name
-      end)
-      :filter(function(name)
-        return arg == name:sub(1, #arg)
-      end)
-      :totable()
-  end,
-  desc = "Detach language servers from current buffer",
-})
-
 -- Preferring a Vim script command so split modifiers are respected.
 api.nvim_create_user_command(
   "LspLog",
