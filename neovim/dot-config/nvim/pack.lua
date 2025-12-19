@@ -94,10 +94,7 @@ pack.add({
   "https://github.com/ziglang/zig.vim",
 
   -- Tree-sitter.
-  {
-    src = "https://github.com/nvim-treesitter/nvim-treesitter",
-    version = "main",
-  },
+  "https://github.com/nvim-treesitter/nvim-treesitter",
   {
     src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
     version = "main",

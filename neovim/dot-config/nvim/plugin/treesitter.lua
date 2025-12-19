@@ -118,7 +118,7 @@ api.nvim_create_autocmd("FileType", {
       and lang ~= "vim"
       and treesitter.query.get(lang, "highlights")
     then
-      vim.treesitter.start(args.buf, lang)
+      treesitter.start(args.buf, lang)
 
       vim.b[args.buf].undo_ftplugin = "call v:lua.vim.treesitter.stop()\n"
         .. (vim.b[args.buf].undo_ftplugin or "")

@@ -13,7 +13,6 @@ fzf.setup {
   winopts = {
     backdrop = 100,
     preview = {
-      default = "cat",
       wrap = true,
       winopts = { number = false },
     },

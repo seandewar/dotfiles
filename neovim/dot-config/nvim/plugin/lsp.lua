@@ -10,10 +10,6 @@ local enabled_configs = {
   "zls",
 }
 
-lsp.config("*", {
-  root_markers = { ".git" },
-})
-
 -- Usually don't want LSP when using firenvim.
 if not vim.g.started_by_firenvim then
   lsp.enable(enabled_configs)
