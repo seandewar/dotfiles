@@ -34,16 +34,18 @@ if vim.o.background == "dark" then
     bg = 0x191919,
     fg = 0xbbbbbb,
     comment = 0x686868,
+    number = 0xb77e64,
     delimiter = 0x7c7c7c,
+    string = 0x819b69,
     type = 0x969696,
 
     fg_error = 0xde6e7c,
-    fg_warning = 0xb77e64,
+    fg_warning = 0xb7a864,
     fg_info = 0x6099c0,
     fg_hint = 0xb279a7,
-    fg_ok = 0x819b69,
+    fg_ok = 0x699b6a,
     bg_error = 0x272020,
-    bg_warning = 0x242120,
+    bg_warning = 0x242320,
     bg_info = 0x202223,
     bg_hint = 0x252024,
     bg_ok = 0x212220,
@@ -74,16 +76,18 @@ else -- vim.o.background == "light"
     bg = 0xeeeeee,
     fg = 0x353535,
     comment = 0x8b8b8b,
+    number = 0x944927,
     delimiter = 0x848484,
+    string = 0x4f6c31,
     type = 0x5a5a5a,
 
     fg_error = 0xa8334c,
-    fg_warning = 0x944927,
+    fg_warning = 0x948027,
     fg_info = 0x286486,
     fg_hint = 0x88507d,
-    fg_ok = 0x4f6c31,
+    fg_ok = 0x326c31,
     bg_error = 0xefdfe0,
-    bg_warning = 0xefdfdc,
+    bg_warning = 0xefe9dc,
     bg_info = 0xd9e4ef,
     bg_hint = 0xefdeeb,
     bg_ok = 0xc9eeab,
@@ -110,6 +114,17 @@ else -- vim.o.background == "light"
     bg_pmenu_thumb = 0xf6f6f6,
   }
 end
+
+-- Accessing a non-existent palette is almost certainly a bug.
+setmetatable(p, {
+  __index = function(t, k)
+    local v = rawget(t, k)
+    if v == nil then
+      error("Invalid palette key: " .. k)
+    end
+    return v
+  end,
+})
 
 -- }}}1
 
@@ -211,9 +226,9 @@ hl("WinBarNC", "TabLine")
 
 hl("Comment", { fg = p.comment })
 hl("Constant", "Identifier")
-hl("String", { fg = p.fg_warning })
+hl("String", { fg = p.string })
 hl("Character", "String")
-hl("Number", { fg = p.fg })
+hl("Number", { fg = p.number })
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg })
@@ -235,7 +250,7 @@ hl("StorageClass", "Keyword")
 hl("Structure", "Keyword")
 hl("Typedef", "Type")
 hl("Special", { fg = p.fg })
-hl("SpecialChar", { fg = p.fg_warn, bold = true })
+hl("SpecialChar", { fg = p.string, bold = true })
 hl("Tag", "Special")
 hl("Delimiter", { fg = p.delimiter })
 hl("SpecialComment", { fg = p.comment, bold = true })
