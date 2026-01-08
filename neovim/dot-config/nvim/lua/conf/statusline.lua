@@ -48,7 +48,6 @@ function M.buf_name(tp_buf)
   then
     return "[Scratch]"
   end
-
   return "[No Name]"
 end
 

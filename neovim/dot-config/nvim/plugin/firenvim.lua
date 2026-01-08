@@ -5,14 +5,14 @@ end
 local fn = vim.fn
 local keymap = vim.keymap
 
+vim.o.cmdheight = 0
+
 vim.filetype.add {
   pattern = {
     -- Assume C++, as that's what I usually use on Leetcode.
     [".*/leetcode%.com_[^/]*"] = "cpp",
   },
 }
-
-vim.cmd.packadd { "firenvim", bang = true }
 
 vim.g.firenvim_config = {
   localSettings = {
@@ -24,8 +24,6 @@ vim.g.firenvim_config = {
     },
   },
 }
-
-vim.o.cmdheight = 0
 
 keymap.set("n", "<Esc><Esc>", fn["firenvim#focus_page"])
 keymap.set("n", "<C-Z>", fn["firenvim#hide_frame"])

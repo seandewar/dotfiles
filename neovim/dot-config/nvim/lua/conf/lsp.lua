@@ -234,9 +234,10 @@ function M.setup_attached_buffers(client_id, detaching)
   end
 end
 
+--- @param args vim.api.keyset.create_autocmd.callback_args
 function M.attach_buffer(args)
   M.setup_attached_buffers(args.data.client_id)
-  lsp.completion.enable(true, args.data.client_id, args.bufnr)
+  lsp.completion.enable(true, args.data.client_id, args.buf)
 
   -- Schedule, as the window may not have been drawn yet, which could cause
   -- a full screen redraw from `:redrawstatus!`; this can introduce a "flicker"
@@ -246,9 +247,10 @@ function M.attach_buffer(args)
   end)
 end
 
+--- @param args vim.api.keyset.create_autocmd.callback_args
 function M.detach_buffer(args)
   M.setup_attached_buffers(args.data.client_id, true)
-  lsp.completion.enable(false, args.data.client_id, args.bufnr)
+  lsp.completion.enable(false, args.data.client_id, args.buf)
 
   if last_progress and last_progress.client_id == args.data.client_id then
     last_progress = nil
@@ -259,91 +261,6 @@ function M.detach_buffer(args)
   vim.schedule(function()
     vim.cmd.redrawstatus { bang = true }
   end)
-end
-
---- @param args vim.api.keyset.create_user_command.command_args
---- @param enabled_configs table<string>
-function M.start_command(args, enabled_configs)
-  local configs = {}
-  if #args.fargs == 0 then
-    -- Find configs to use for the filetype(s) from our usual enable list.
-    local buf_filetypes = vim.split(vim.bo.filetype, ".", { plain = true })
-    configs = vim
-      .iter(enabled_configs)
-      :map(function(name)
-        return vim.lsp.config[name]
-      end)
-      :filter(function(config)
-        return not config.filetypes
-          or vim.tbl_contains(
-            config.filetypes,
-            --- @param ft string
-            function(ft)
-              return vim.tbl_contains(buf_filetypes, ft)
-            end,
-            { predicate = true }
-          )
-      end)
-      :totable()
-
-    if #configs == 0 then
-      vim.notify("No matching LSP configurations for buffer", log.levels.WARN)
-      return
-    end
-  else
-    -- Get the configs from the supplied names.
-    for _, name in ipairs(args.fargs) do
-      local config = vim.lsp.config[name]
-      if not config then
-        vim.notify(
-          ('No such LSP configuration: "%s"'):format(name),
-          log.levels.ERROR
-        )
-        return
-      end
-      configs[#configs + 1] = config
-    end
-  end
-
-  for _, config in ipairs(configs) do
-    config = vim.deepcopy(config)
-    local buf = api.nvim_get_current_buf()
-    local function start_config()
-      lsp.start(config, {
-        bufnr = buf,
-        reuse_client = config.reuse_client,
-        _root_markers = config.root_markers,
-      })
-    end
-
-    if type(config.root_dir) == "function" then
-      --- @param root_dir string
-      config.root_dir(buf, function(root_dir)
-        config.root_dir = root_dir
-        vim.schedule(start_config)
-      end)
-    else
-      start_config()
-    end
-  end
-end
-
---- @param args vim.api.keyset.create_user_command.command_args
-function M.stop_command(args)
-  --- @param clients table<vim.lsp.Client>
-  local function stop_clients(clients)
-    for _, client in ipairs(clients) do
-      client:stop(args.bang)
-    end
-  end
-
-  if #args.fargs == 0 then
-    stop_clients(lsp.get_clients { bufnr = 0 })
-  else
-    for _, name in ipairs(args.fargs) do
-      stop_clients(lsp.get_clients { bufnr = 0, name = name })
-    end
-  end
 end
 
 return M

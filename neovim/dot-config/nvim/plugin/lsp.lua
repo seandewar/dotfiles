@@ -3,18 +3,6 @@ local keymap = vim.keymap
 local log = vim.log
 local lsp = vim.lsp
 
-local enabled_configs = {
-  "clangd",
-  "lua_ls",
-  "rust_analyzer",
-  "zls",
-}
-
--- Usually don't want LSP when using firenvim.
-if not vim.g.started_by_firenvim then
-  lsp.enable(enabled_configs)
-end
-
 -- Preferring a Vim script command so split modifiers are respected.
 api.nvim_create_user_command(
   "LspLog",
@@ -75,12 +63,7 @@ keymap.set("n", "<C-S>", lsp.buf.signature_help, {
 })
 
 keymap.set("n", "grh", function()
-  if
-    #lsp.get_clients {
-      bufnr = 0,
-      method = "textDocument/inlayHint",
-    } == 0
-  then
+  if #lsp.get_clients { bufnr = 0, method = "textDocument/inlayHint" } == 0 then
     vim.notify(
       "No clients attached to this buffer support inlay hints",
       log.levels.WARN

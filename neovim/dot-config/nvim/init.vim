@@ -1,3 +1,6 @@
+" This file can be used stand-alone without bringing in the rest of my
+" configuration; useful when wanting to use a close-to-stock but familiar Nvim.
+
 " Version check {{{1
 if !has('nvim-0.12')
     echohl WarningMsg
@@ -23,7 +26,6 @@ set list listchars=tab:▸\ ,trail:·,nbsp:␣,extends:⟩,precedes:⟨
 set mouse=a
 set notimeout
 set pumheight=12
-set ruler rulerformat=%!v:lua.require'conf.statusline'.rulerformat()
 set scrolloff=1 sidescroll=5
 set sessionoptions-=blank sessionoptions-=buffers
 set shortmess+=I
@@ -32,8 +34,6 @@ set smoothscroll
 set softtabstop=4 shiftwidth=4 expandtab
 set spelllang=en_gb spelloptions=camel
 set splitbelow splitright
-set statusline=%!v:lua.require'conf.statusline'.statusline() laststatus=2
-set tabline=%!v:lua.require'conf.statusline'.tabline() showtabline=1
 set textwidth=80
 set title
 set wildmode=list:longest,full
@@ -60,8 +60,7 @@ end
 augroup conf_terminal_tailing
     autocmd!
     autocmd TermOpen * call cursor('$', 1)
-    " NOTE: Do not use TermLeave! It requires a defer to move the cursor,
-    " and even worse, it fires AFTER TermClose if the job exited... wtf?
+    " NOTE: Not TermLeave; it may fire before TermClose if the job exits!
     autocmd ModeChanged t:nt call cursor('$', 1)
 augroup END
 
@@ -85,11 +84,6 @@ augroup conf_active_colorcolumn
                              \| unlet! s:cc_win
 augroup END
 
-augroup conf_auto_quickfix
-    autocmd!
-    autocmd VimEnter * ++nested cwindow
-augroup END
-
 " Distributed plugin settings {{{1
 packadd! cfilter
 
@@ -97,6 +91,7 @@ let g:clipboard = 'osc52'
 let g:c_no_curly_error = 1  " {}s inside []s are not always invalid.
 let g:markdown_folding = 1
 let g:qf_disable_statusline = 1
+let g:vimsyn_comment_strings = 0
 
 " With 'hidden' set, netrw buffers may have no name. This is because netrw does
 " not modify the empty buffer created by Vim when opening a directory, but
@@ -142,7 +137,6 @@ nnoremap k gk
 nnoremap j gj
 nnoremap gk k
 nnoremap gj j
-
 nnoremap <Up> g<Up>
 nnoremap <Down> g<Down>
 nnoremap g<Up> <Up>
@@ -161,6 +155,12 @@ xnoremap P p
 " Just in case K is overridden; 'keywordprg' is sometimes useful.
 nnoremap gK K
 
+" vim-scriptease-inspired mapping for :Inspect
+nnoremap zS <Cmd>Inspect<CR>
+
+" Nvim 0.6 makes Y sensible (y$), but I'm used to the default behaviour.
+silent! unmap Y
+
 " Cancels the pending wincmd if <Esc> is given, and does not leave Terminal
 " mode if so. Of course doesn't handle wincmds with a length of more than one
 " key that are cancelled later, but this is good enough. Not an <expr> mapping
@@ -175,31 +175,12 @@ function! s:TermWincmd() abort
     endwhile
     call feedkeys(keys, 'tn')
 endfunction
-
 tnoremap <C-W> <Cmd>call <SID>TermWincmd()<CR>
-
-" Nvim 0.6 makes Y sensible (y$), but I'm used to the default behaviour.
-silent! unmap Y
 
 " Disable suspend mapping for Nvim on Windows as there's no way to resume!
 if has('win32')
     nnoremap <C-Z> <NOP>
 endif
-
-" vim-scriptease-inspired mapping for :Inspect
-nnoremap zS <Cmd>Inspect<CR>
-
-" Load 3rd-party packages {{{1
-" Sourced here to ensure it's loaded before the scripts in the plugin directory.
-" (.vim plugin files have priority over .lua; this side-steps that)
-let s:pack_script = expand('<script>:h') .. '/pack.lua'
-
-" May not exist if init.vim is used standalone. (Useful when I want to quickly
-" use the settings here without pulling in the rest of my config)
-if filereadable(s:pack_script)
-    execute 'source' s:pack_script
-endif
-unlet s:pack_script
 " }}}1
 
-" vim: fdm=marker fdl=0
+" vim: fdm=marker
