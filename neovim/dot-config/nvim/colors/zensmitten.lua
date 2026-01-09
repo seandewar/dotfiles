@@ -4,6 +4,7 @@
 local api = vim.api
 
 vim.cmd.highlight "clear"
+vim.o.background = "dark" -- Light mode not supported.
 vim.g.colors_name = "zensmitten"
 
 local function hl(name, val)
@@ -27,93 +28,47 @@ local function hl(name, val)
 end
 
 -- Palette {{{1
-local p
+local p = {
+  bg = 0x191919,
+  fg = 0xbbbbbb,
+  comment = 0x686868,
+  string = 0x8bb4a9,
+  number = 0xb48a95,
+  delimiter = 0x7c7c7c,
+  type = 0x9fa8ad,
 
-if vim.o.background == "dark" then
-  p = {
-    bg = 0x191919,
-    fg = 0xbbbbbb,
-    comment = 0x686868,
-    number = 0xb77e64,
-    delimiter = 0x7c7c7c,
-    string = 0x819b69,
-    type = 0x969696,
+  fg_error = 0xde6e7c,
+  fg_warning = 0xb7a864,
+  fg_info = 0x6099c0,
+  fg_hint = 0xb279a7,
+  fg_ok = 0x819b69,
+  bg_error = 0x272020,
+  bg_warning = 0x242320,
+  bg_info = 0x202223,
+  bg_hint = 0x252024,
+  bg_ok = 0x212220,
+  fg_diff_added = 0xb3f6c0,
+  fg_diff_changed = 0x8cf8f7,
+  fg_diff_removed = 0xffc0b9,
+  bg_diff_added = 0x232d1a,
+  bg_diff_changed = 0x1d2c36,
+  bg_diff_removed = 0x3e2225,
+  non_text = 0x555555,
 
-    fg_error = 0xde6e7c,
-    fg_warning = 0xb7a864,
-    fg_info = 0x6099c0,
-    fg_hint = 0xb279a7,
-    fg_ok = 0x699b6a,
-    bg_error = 0x272020,
-    bg_warning = 0x242320,
-    bg_info = 0x202223,
-    bg_hint = 0x252024,
-    bg_ok = 0x212220,
-    fg_diff_added = 0xb3f6c0,
-    fg_diff_changed = 0x8cf8f7,
-    fg_diff_removed = 0xffc0b9,
-    bg_diff_added = 0x232d1a,
-    bg_diff_changed = 0x1d2c36,
-    bg_diff_removed = 0x3e2225,
-    non_text = 0x555555,
-
-    gutter = 0x616161,
-    bg_statusline = 0x303030,
-    bg_statusline_nc = 0x242424,
-    bg_cursorline = 0x222222,
-    bg_search = 0x65435e,
-    bg_search_sel = 0xbf8fb5,
-    bg_visual = 0x404040,
-    bg_float = 0x0a0a0a,
-    bg_shadow = 0x000000,
-    bg_pmenu = 0x2c2c2c,
-    bg_pmenu_sel = 0x444444,
-    bg_pmenu_sbar = 0x595959,
-    bg_pmenu_thumb = 0x848484,
-  }
-else -- vim.o.background == "light"
-  p = {
-    bg = 0xeeeeee,
-    fg = 0x353535,
-    comment = 0x8b8b8b,
-    number = 0x944927,
-    delimiter = 0x848484,
-    string = 0x4f6c31,
-    type = 0x5a5a5a,
-
-    fg_error = 0xa8334c,
-    fg_warning = 0x948027,
-    fg_info = 0x286486,
-    fg_hint = 0x88507d,
-    fg_ok = 0x326c31,
-    bg_error = 0xefdfe0,
-    bg_warning = 0xefe9dc,
-    bg_info = 0xd9e4ef,
-    bg_hint = 0xefdeeb,
-    bg_ok = 0xc9eeab,
-    fg_diff_added = 0x005523,
-    fg_diff_changed = 0x007373,
-    fg_diff_removed = 0x590008,
-    bg_diff_added = 0xcbe5b8,
-    bg_diff_changed = 0xd4dee7,
-    bg_diff_removed = 0xebd8da,
-    non_text = 0xaeaeae,
-
-    gutter = 0x989898,
-    bg_statusline = 0xcfcfcf,
-    bg_statusline_nc = 0xdddddd,
-    bg_cursorline = 0xe5e5e5,
-    bg_search = 0xdeb9d6,
-    bg_search_sel = 0xc074b2,
-    bg_visual = 0xd7d7d7,
-    bg_float = 0xeef1f8,
-    bg_shadow = 0x000000,
-    bg_pmenu = 0xd4d4d4,
-    bg_pmenu_sel = 0xb9b9b9,
-    bg_pmenu_sbar = 0xa6a6a6,
-    bg_pmenu_thumb = 0xf6f6f6,
-  }
-end
+  gutter = 0x616161,
+  bg_statusline = 0x303030,
+  bg_statusline_nc = 0x242424,
+  bg_cursorline = 0x222222,
+  bg_search = 0x65435e,
+  bg_search_sel = 0xbf8fb5,
+  bg_visual = 0x404040,
+  bg_float = 0x0a0a0a,
+  bg_shadow = 0x000000,
+  bg_pmenu = 0x2c2c2c,
+  bg_pmenu_sel = 0x444444,
+  bg_pmenu_sbar = 0x595959,
+  bg_pmenu_thumb = 0x848484,
+}
 
 -- Accessing a non-existent palette is almost certainly a bug.
 setmetatable(p, {
