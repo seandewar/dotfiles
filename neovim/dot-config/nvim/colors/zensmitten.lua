@@ -29,45 +29,41 @@ end
 
 -- Palette {{{1
 local p = {
-  bg = 0x191919,
-  fg = 0xbbbbbb,
-  comment = 0x686868,
-  string = 0x8bb4a9,
-  number = 0xb48a95,
-  delimiter = 0x7c7c7c,
-  type = 0x9fa8ad,
+  bg = 0x000000,
+  fg = 0xb0b0b0,
+  comment = 0x4d4d4d,
+  number = 0x909090,
+  string = 0x8a7c7c,
+  -- string = 0x738073, -- This colour is also nice; use for something else?
+  delimiter = 0x686868,
+  type = 0xa0a0a0,
 
-  fg_error = 0xde6e7c,
-  fg_warning = 0xb7a864,
+  fg_error = 0xe67e80,
+  fg_warning = 0xd3b987,
   fg_info = 0x6099c0,
   fg_hint = 0xb279a7,
-  fg_ok = 0x819b69,
-  bg_error = 0x272020,
-  bg_warning = 0x242320,
-  bg_info = 0x202223,
-  bg_hint = 0x252024,
-  bg_ok = 0x212220,
-  fg_diff_added = 0xb3f6c0,
-  fg_diff_changed = 0x8cf8f7,
-  fg_diff_removed = 0xffc0b9,
+  fg_ok = 0xa2bc8c,
+  fg_diff_added = 0x8fbc8f,
+  fg_diff_changed = 0x8cb6be,
+  fg_diff_removed = 0xcc9393,
   bg_diff_added = 0x232d1a,
   bg_diff_changed = 0x1d2c36,
   bg_diff_removed = 0x3e2225,
-  non_text = 0x555555,
 
-  gutter = 0x616161,
-  bg_statusline = 0x303030,
-  bg_statusline_nc = 0x242424,
-  bg_cursorline = 0x222222,
+  fg_non_text = 0x5a636e,
+  bg_non_text = 0x0f1113,
+  bg_statusline = 0x282828,
+  bg_statusline_nc = 0x1a1a1a,
+  bg_cursorline = 0x141414,
   bg_search = 0x65435e,
   bg_search_sel = 0xbf8fb5,
   bg_visual = 0x404040,
-  bg_float = 0x0a0a0a,
-  bg_shadow = 0x000000,
+  bg_float = 0x0f0f0f,
+  bg_shadow = 0x101010,
   bg_pmenu = 0x2c2c2c,
-  bg_pmenu_sel = 0x444444,
-  bg_pmenu_sbar = 0x595959,
-  bg_pmenu_thumb = 0x848484,
+  bg_pmenu_sel = 0x404040,
+  bg_pmenu_sbar = 0x505050,
+  bg_pmenu_thumb = 0x8a8a8a,
 }
 
 -- Accessing a non-existent palette is almost certainly a bug.
@@ -99,7 +95,7 @@ hl("DiffChange", { bg = p.bg_diff_changed })
 hl("DiffDelete", { bg = p.bg_diff_removed })
 hl("DiffText", { fg = p.bg, bg = p.fg_diff_changed })
 hl("DiffTextAdd", "DiffText")
-hl("EndOfBuffer", "NonText")
+hl("EndOfBuffer", { fg = p.fg_non_text })
 hl("TermCursor", "Cursor")
 hl("OkMsg", { fg = p.fg_ok })
 hl("WarningMsg", { fg = p.fg_warning })
@@ -107,23 +103,23 @@ hl("ErrorMsg", { fg = p.fg_error })
 hl("StderrMsg", "ErrorMsg")
 hl("StdoutMsg", "Normal")
 hl("WinSeparator", { fg = p.bg_statusline })
-hl("Folded", { fg = p.gutter, bg = p.bg_statusline_nc })
-hl("FoldColumn", { fg = p.gutter })
-hl("SignColumn", { fg = p.gutter })
+hl("Folded", "LineNr")
+hl("FoldColumn", "LineNr")
+hl("SignColumn", "LineNr")
 hl("IncSearch", { fg = p.bg, bg = p.bg_search_sel })
 hl("Substitute", "Search")
-hl("LineNr", { fg = p.gutter })
+hl("LineNr", { fg = p.comment, bg = p.bg_statusline_nc })
 hl("LineNrAbove", "LineNr")
 hl("LineNrBelow", "LineNrAbove")
-hl("CursorLineNr", { fg = p.fg, bold = true })
+hl("CursorLineNr", { fg = p.fg, bg = p.bg_cursorline, bold = true })
 hl("CursorLineFold", "FoldColumn")
 hl("CursorLineSign", "SignColumn")
 hl("MatchParen", "Search")
-hl("ModeMsg", "Normal")
+hl("ModeMsg", { fg = p.fg_info })
 hl("MsgArea", "Normal")
 hl("MsgSeparator", "StatusLine")
-hl("MoreMsg", { fg = p.fg_info })
-hl("NonText", { fg = p.non_text })
+hl("MoreMsg", "ModeMsg")
+hl("NonText", { fg = p.fg_non_text, bg = p.bg_non_text })
 hl("Normal", { fg = p.fg, bg = p.bg })
 hl("NormalFloat", { bg = p.bg_float })
 hl("FloatBorder", "NormalFloat")
@@ -149,12 +145,12 @@ hl("ComplMatchIns", {})
 hl("PreInsert", "Added")
 hl("ComplHint", "NonText")
 hl("ComplHintMore", "MoreMsg")
-hl("Question", { fg = p.fg_ok })
+hl("Question", { fg = p.fg_hint })
 hl("QuickFixLine", { bg = p.bg_statusline_nc })
 hl("Search", { fg = p.fg, bg = p.bg_search })
 hl("SnippetTabstop", "Visual")
 hl("SnippetTabstopActive", "SnippetTabstop")
-hl("SpecialKey", { fg = p.comment })
+hl("SpecialKey", "SpecialChar")
 hl("SpellBad", { sp = p.fg_error, undercurl = true })
 hl("SpellCap", { sp = p.fg_warning, undercurl = true })
 hl("SpellLocal", { sp = p.fg_info, undercurl = true })
@@ -225,11 +221,11 @@ hl("DiagnosticWarn", { fg = p.fg_warning })
 hl("DiagnosticInfo", { fg = p.fg_info })
 hl("DiagnosticHint", { fg = p.fg_hint })
 hl("DiagnosticOk", { fg = p.fg_ok })
-hl("DiagnosticVirtualTextError", { fg = p.fg_error, bg = p.bg_error })
-hl("DiagnosticVirtualTextWarn", { fg = p.fg_warning, bg = p.bg_warning })
-hl("DiagnosticVirtualTextInfo", { fg = p.fg_info, bg = p.bg_info })
-hl("DiagnosticVirtualTextHint", { fg = p.fg_hint, bg = p.bg_hint })
-hl("DiagnosticVirtualTextOk", { fg = p.fg_ok, bg = p.bg_ok })
+hl("DiagnosticVirtualTextError", { fg = p.fg_error })
+hl("DiagnosticVirtualTextWarn", { fg = p.fg_warning })
+hl("DiagnosticVirtualTextInfo", { fg = p.fg_info })
+hl("DiagnosticVirtualTextHint", { fg = p.fg_hint })
+hl("DiagnosticVirtualTextOk", { fg = p.fg_ok })
 hl("DiagnosticVirtualLinesError", "DiagnosticVirtualTextError")
 hl("DiagnosticVirtualLinesWarn", "DiagnosticVirtualTextWarn")
 hl("DiagnosticVirtualLinesInfo", "DiagnosticVirtualTextInfo")
@@ -376,6 +372,7 @@ hl("@tag.delimiter", "@tag")
 
 -- Comment parser overrides
 hl("@constant.comment", "Comment")
+hl("@number.comment", "Comment")
 hl("@punctuation.bracket.comment", "Comment")
 hl("@punctuation.delimiter.comment", "Comment")
 
