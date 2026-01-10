@@ -32,11 +32,11 @@ local p = {
   bg = 0x000000,
   fg = 0xb0b0b0,
   comment = 0x4d4d4d,
-  number = 0x909090,
-  string = 0x8a7c7c,
-  -- string = 0x738073, -- This colour is also nice; use for something else?
+  number = 0x8a7c7c,
+  string = 0x738073,
   delimiter = 0x686868,
   type = 0xa0a0a0,
+  ws = 0x2c2c2c,
 
   fg_error = 0xe67e80,
   fg_warning = 0xd3b987,
@@ -50,20 +50,21 @@ local p = {
   bg_diff_changed = 0x1d2c36,
   bg_diff_removed = 0x3e2225,
 
+  fg_gutter = 0x444444,
   fg_non_text = 0x5a636e,
   bg_non_text = 0x0f1113,
-  bg_statusline = 0x282828,
-  bg_statusline_nc = 0x1a1a1a,
-  bg_cursorline = 0x141414,
-  bg_search = 0x65435e,
-  bg_search_sel = 0xbf8fb5,
-  bg_visual = 0x404040,
+  bg_statusline = 0x20252b,
+  bg_statusline_nc = 0x161616,
+  bg_cursorline = 0x121212,
+  bg_search = 0x263d52,
+  bg_search_sel = 0x466685,
+  bg_visual = 0x262626,
   bg_float = 0x0f0f0f,
-  bg_shadow = 0x101010,
-  bg_pmenu = 0x2c2c2c,
-  bg_pmenu_sel = 0x404040,
-  bg_pmenu_sbar = 0x505050,
-  bg_pmenu_thumb = 0x8a8a8a,
+  bg_shadow = 0x050505,
+  bg_pmenu = 0x161a1f,
+  bg_pmenu_sel = 0x384552,
+  bg_pmenu_sbar = 0x242a30,
+  bg_pmenu_thumb = 0x606d7a,
 }
 
 -- Accessing a non-existent palette is almost certainly a bug.
@@ -89,7 +90,7 @@ hl("lCursor", "Cursor")
 hl("CursorIM", "Cursor")
 hl("CursorColumn", "CursorLine")
 hl("CursorLine", { bg = p.bg_cursorline })
-hl("Directory", { fg = p.fg, bold = true })
+hl("Directory", "String")
 hl("DiffAdd", { bg = p.bg_diff_added })
 hl("DiffChange", { bg = p.bg_diff_changed })
 hl("DiffDelete", { bg = p.bg_diff_removed })
@@ -103,19 +104,19 @@ hl("ErrorMsg", { fg = p.fg_error })
 hl("StderrMsg", "ErrorMsg")
 hl("StdoutMsg", "Normal")
 hl("WinSeparator", { fg = p.bg_statusline })
-hl("Folded", "LineNr")
+hl("Folded", "NonText")
 hl("FoldColumn", "LineNr")
 hl("SignColumn", "LineNr")
 hl("IncSearch", { fg = p.bg, bg = p.bg_search_sel })
 hl("Substitute", "Search")
-hl("LineNr", { fg = p.comment, bg = p.bg_statusline_nc })
+hl("LineNr", { fg = p.fg_gutter })
 hl("LineNrAbove", "LineNr")
 hl("LineNrBelow", "LineNrAbove")
 hl("CursorLineNr", { fg = p.fg, bg = p.bg_cursorline, bold = true })
 hl("CursorLineFold", "FoldColumn")
 hl("CursorLineSign", "SignColumn")
 hl("MatchParen", "Search")
-hl("ModeMsg", { fg = p.fg_info })
+hl("ModeMsg", { fg = p.fg, bold = true })
 hl("MsgArea", "Normal")
 hl("MsgSeparator", "StatusLine")
 hl("MoreMsg", "ModeMsg")
@@ -145,7 +146,7 @@ hl("ComplMatchIns", {})
 hl("PreInsert", "Added")
 hl("ComplHint", "NonText")
 hl("ComplHintMore", "MoreMsg")
-hl("Question", { fg = p.fg_hint })
+hl("Question", "Title")
 hl("QuickFixLine", { bg = p.bg_statusline_nc })
 hl("Search", { fg = p.fg, bg = p.bg_search })
 hl("SnippetTabstop", "Visual")
@@ -165,7 +166,7 @@ hl("TabLineSel", "StatusLine")
 hl("Title", { fg = p.fg, bold = true })
 hl("Visual", { bg = p.bg_visual })
 hl("VisualNOS", "Visual")
-hl("Whitespace", "NonText")
+hl("Whitespace", { fg = p.ws })
 hl("WildMenu", "Visual")
 hl("WinBar", "TabLineSel")
 hl("WinBarNC", "TabLine")
