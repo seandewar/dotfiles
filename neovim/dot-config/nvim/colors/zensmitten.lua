@@ -29,14 +29,14 @@ end
 
 -- Palette {{{1
 local p = {
-  bg = 0x000000,
-  fg = 0xb0b0b0,
-  comment = 0x4d4d4d,
-  number = 0x8a7c7c,
-  string = 0x738073,
-  delimiter = 0x686868,
-  type = 0xa0a0a0,
-  ws = 0x2c2c2c,
+  bg = 0x0c0b0a,
+  fg = 0xb0a8a0,
+  comment = 0x524944,
+  delimiter = 0x7a7267,
+  number = 0x908870,
+  string = 0xa68a67,
+  type = 0xada095,
+  ws = 0x242220,
 
   fg_error = 0xe67e80,
   fg_warning = 0xd3b987,
@@ -50,21 +50,20 @@ local p = {
   bg_diff_changed = 0x1d2c36,
   bg_diff_removed = 0x3e2225,
 
-  fg_gutter = 0x444444,
-  fg_non_text = 0x5a636e,
-  bg_non_text = 0x0f1113,
-  bg_statusline = 0x20252b,
-  bg_statusline_nc = 0x161616,
-  bg_cursorline = 0x121212,
-  bg_search = 0x263d52,
-  bg_search_sel = 0x466685,
-  bg_visual = 0x262626,
-  bg_float = 0x0f0f0f,
-  bg_shadow = 0x050505,
-  bg_pmenu = 0x161a1f,
-  bg_pmenu_sel = 0x384552,
-  bg_pmenu_sbar = 0x242a30,
-  bg_pmenu_thumb = 0x606d7a,
+  fg_non_text = 0x6e635a,
+  bg_non_text = 0x141210,
+  bg_statusline = 0x2b2520,
+  bg_statusline_nc = 0x1a1816,
+  bg_cursorline = 0x161412,
+  bg_search = 0x524126,
+  bg_search_sel = 0xbf9b8f,
+  bg_visual = 0x2b2826,
+  bg_float = 0x12100e,
+  bg_shadow = 0x000000,
+  bg_pmenu = 0x1f1a16,
+  bg_pmenu_sel = 0x524538,
+  bg_pmenu_sbar = 0x302a24,
+  bg_pmenu_thumb = 0x7a6d60,
 }
 
 -- Accessing a non-existent palette is almost certainly a bug.
@@ -109,7 +108,7 @@ hl("FoldColumn", "LineNr")
 hl("SignColumn", "LineNr")
 hl("IncSearch", { fg = p.bg, bg = p.bg_search_sel })
 hl("Substitute", "Search")
-hl("LineNr", { fg = p.fg_gutter })
+hl("LineNr", { fg = p.comment })
 hl("LineNrAbove", "LineNr")
 hl("LineNrBelow", "LineNrAbove")
 hl("CursorLineNr", { fg = p.fg, bg = p.bg_cursorline, bold = true })
@@ -176,7 +175,7 @@ hl("WinBarNC", "TabLine")
 
 -- Syntax groups (:h group-name) {{{1
 
-hl("Comment", { fg = p.comment })
+hl("Comment", { fg = p.comment, italic = true })
 hl("Constant", "Identifier")
 hl("String", { fg = p.string })
 hl("Character", "String")
@@ -205,7 +204,7 @@ hl("Special", { fg = p.fg })
 hl("SpecialChar", { fg = p.string, bold = true })
 hl("Tag", "Special")
 hl("Delimiter", { fg = p.delimiter })
-hl("SpecialComment", { fg = p.comment, bold = true })
+hl("SpecialComment", { fg = p.comment, italic = true, bold = true })
 hl("Debug", "Identifier")
 hl("Underlined", { underline = true })
 hl("Ignore", { fg = p.comment })
@@ -330,8 +329,8 @@ hl("@punctuation.special", "@punctuation")
 hl("@comment", "Comment")
 hl("@comment.documentation", "@comment")
 
-hl("@comment.error", { fg = p.fg_error, bold = true })
-hl("@comment.warning", { fg = p.fg_warning, bold = true })
+hl("@comment.error", { fg = p.fg_error, italic = true, bold = true })
+hl("@comment.warning", { fg = p.fg_warning, italic = true, bold = true })
 hl("@comment.todo", "SpecialComment")
 hl("@comment.note", "SpecialComment")
 
