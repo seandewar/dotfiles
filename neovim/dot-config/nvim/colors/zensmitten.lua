@@ -22,48 +22,58 @@ local function hl(name, val)
       val.bg = t[1]
       val.ctermbg = t[2]
     end
+    if type(val.sp) == "table" then
+      val.sp = val.sp[1]
+    end
   end
 
   return api.nvim_set_hl(0, name, val)
 end
 
--- Palette {{{1
 local p = {
-  bg = 0x0c0b0a,
-  fg = 0xb0a8a0,
-  comment = 0x524944,
-  delimiter = 0x7a7267,
-  number = 0x908870,
-  string = 0xa68a67,
-  type = 0xada095,
-  ws = 0x242220,
+  -- Core
+  bg = { 0x0a0c0b, 232 },
+  fg = { 0xcecfc0, 252 },
+  comment = { 0x4a524d, 239 },
+  delimiter = { 0x606e66, 242 },
+  number = { 0x9fb0a0, 109 },
+  string = { 0xa89b74, 144 },
+  ws = { 0x1e2421, 235 },
 
-  fg_error = 0xe67e80,
-  fg_warning = 0xd3b987,
-  fg_info = 0x6099c0,
-  fg_hint = 0xb279a7,
-  fg_ok = 0xa2bc8c,
-  fg_diff_added = 0x8fbc8f,
-  fg_diff_changed = 0x8cb6be,
-  fg_diff_removed = 0xcc9393,
-  bg_diff_added = 0x232d1a,
-  bg_diff_changed = 0x1d2c36,
-  bg_diff_removed = 0x3e2225,
+  -- Diagnostics
+  fg_error = { 0xe67e80, 210 },
+  fg_warning = { 0xe0af68, 179 },
+  fg_info = { 0x7aa2f7, 111 },
+  fg_hint = { 0x9a86a3, 103 },
+  fg_ok = { 0xadd691, 150 },
 
-  fg_non_text = 0x6e635a,
-  bg_non_text = 0x141210,
-  bg_statusline = 0x2b2520,
-  bg_statusline_nc = 0x1a1816,
-  bg_cursorline = 0x161412,
-  bg_search = 0x524126,
-  bg_search_sel = 0xbf9b8f,
-  bg_visual = 0x2b2826,
-  bg_float = 0x12100e,
-  bg_shadow = 0x000000,
-  bg_pmenu = 0x1f1a16,
-  bg_pmenu_sel = 0x524538,
-  bg_pmenu_sbar = 0x302a24,
-  bg_pmenu_thumb = 0x7a6d60,
+  -- Diffs
+  fg_diff_added = { 0x93b381, 108 },
+  fg_diff_changed = { 0x81a1b3, 109 },
+  fg_diff_removed = { 0xb38181, 138 },
+  bg_diff_added = { 0x16241a, 234 },
+  bg_diff_changed = { 0x121a24, 234 },
+  bg_diff_removed = { 0x241616, 235 },
+  bg_diff_text = { 0x2b3b4d, 237 },
+  bg_diff_text_add = { 0x2d4228, 236 },
+
+  -- UI
+  fg_non_text = { 0x424d47, 238 },
+  bg_non_text = { 0x0f1211, 233 },
+  bg_statusline = { 0x181c1a, 234 },
+  bg_statusline_nc = { 0x0d0f0e, 232 },
+  bg_cursorline = { 0x141816, 234 },
+  bg_search = { 0x3d4724, 58 },
+  bg_search_sel = { 0x6e4e6e, 96 },
+  bg_visual = { 0x242d29, 236 },
+  bg_float = { 0x111413, 233 },
+  bg_shadow = { 0x000000, 16 },
+
+  -- Pop-up Menu
+  bg_pmenu = { 0x1a201e, 234 },
+  bg_pmenu_sel = { 0x2d3b36, 237 },
+  bg_pmenu_sbar = { 0x0e1110, 233 },
+  bg_pmenu_thumb = { 0x4a524d, 239 },
 }
 
 -- Accessing a non-existent palette is almost certainly a bug.
@@ -93,8 +103,8 @@ hl("Directory", "String")
 hl("DiffAdd", { bg = p.bg_diff_added })
 hl("DiffChange", { bg = p.bg_diff_changed })
 hl("DiffDelete", { bg = p.bg_diff_removed })
-hl("DiffText", { fg = p.bg, bg = p.fg_diff_changed })
-hl("DiffTextAdd", "DiffText")
+hl("DiffText", { bg = p.bg_diff_text })
+hl("DiffTextAdd", { bg = p.bg_diff_text_add })
 hl("EndOfBuffer", { fg = p.fg_non_text })
 hl("TermCursor", "Cursor")
 hl("OkMsg", { fg = p.fg_ok })
@@ -106,7 +116,7 @@ hl("WinSeparator", { fg = p.bg_statusline })
 hl("Folded", "NonText")
 hl("FoldColumn", "LineNr")
 hl("SignColumn", "LineNr")
-hl("IncSearch", { fg = p.bg, bg = p.bg_search_sel })
+hl("IncSearch", { fg = p.fg, bg = p.bg_search_sel })
 hl("Substitute", "Search")
 hl("LineNr", { fg = p.comment })
 hl("LineNrAbove", "LineNr")
@@ -175,7 +185,7 @@ hl("WinBarNC", "TabLine")
 
 -- Syntax groups (:h group-name) {{{1
 
-hl("Comment", { fg = p.comment, italic = true })
+hl("Comment", { fg = p.comment })
 hl("Constant", "Identifier")
 hl("String", { fg = p.string })
 hl("Character", "String")
@@ -196,7 +206,7 @@ hl("Include", "PreProc")
 hl("Define", "PreProc")
 hl("Macro", "PreProc")
 hl("PreCondit", "PreProc")
-hl("Type", { fg = p.type })
+hl("Type", "Identifier")
 hl("StorageClass", "Keyword")
 hl("Structure", "Keyword")
 hl("Typedef", "Type")
@@ -204,7 +214,7 @@ hl("Special", { fg = p.fg })
 hl("SpecialChar", { fg = p.string, bold = true })
 hl("Tag", "Special")
 hl("Delimiter", { fg = p.delimiter })
-hl("SpecialComment", { fg = p.comment, italic = true, bold = true })
+hl("SpecialComment", { fg = p.comment, bold = true })
 hl("Debug", "Identifier")
 hl("Underlined", { underline = true })
 hl("Ignore", { fg = p.comment })
@@ -329,8 +339,8 @@ hl("@punctuation.special", "@punctuation")
 hl("@comment", "Comment")
 hl("@comment.documentation", "@comment")
 
-hl("@comment.error", { fg = p.fg_error, italic = true, bold = true })
-hl("@comment.warning", { fg = p.fg_warning, italic = true, bold = true })
+hl("@comment.error", { fg = p.fg_error, bold = true })
+hl("@comment.warning", { fg = p.fg_warning, bold = true })
 hl("@comment.todo", "SpecialComment")
 hl("@comment.note", "SpecialComment")
 
