@@ -32,8 +32,8 @@ end
 
 local p = {
   -- Core
-  bg = { 0x0a0c0b, 232 },
-  fg = { 0xcecfc0, 252 },
+  bg = { 0x161817, 234 },
+  fg = { 0xbdc0b2, 250 },
   comment = { 0x4a524d, 239 },
   delimiter = { 0x606e66, 242 },
   number = { 0x9fb0a0, 109 },
@@ -50,30 +50,30 @@ local p = {
   -- Diffs
   fg_diff_added = { 0x93b381, 108 },
   fg_diff_changed = { 0x81a1b3, 109 },
-  fg_diff_removed = { 0xb38181, 138 },
-  bg_diff_added = { 0x16241a, 234 },
-  bg_diff_changed = { 0x121a24, 234 },
-  bg_diff_removed = { 0x241616, 235 },
+  fg_diff_removed = { 0xb38181, 131 },
+  bg_diff_added = { 0x1e2e22, 65 },
+  bg_diff_changed = { 0x1a242f, 66 },
+  bg_diff_removed = { 0x2f1e1e, 95 },
   bg_diff_text = { 0x2b3b4d, 237 },
-  bg_diff_text_add = { 0x2d4228, 236 },
+  bg_diff_text_add = { 0x2d4228, 238 },
 
   -- UI
-  fg_non_text = { 0x424d47, 238 },
-  bg_non_text = { 0x0f1211, 233 },
-  bg_statusline = { 0x181c1a, 234 },
-  bg_statusline_nc = { 0x0d0f0e, 232 },
-  bg_cursorline = { 0x141816, 234 },
+  fg_non_text = { 0x505c55, 241 },
+  bg_non_text = { 0x1c1f1e, 235 },
+  bg_statusline = { 0x222825, 236 },
+  bg_statusline_nc = { 0x1c211f, 235 },
+  bg_cursorline = { 0x1e2321, 235 },
   bg_search = { 0x3d4724, 58 },
   bg_search_sel = { 0x6e4e6e, 96 },
-  bg_visual = { 0x242d29, 236 },
-  bg_float = { 0x111413, 233 },
+  bg_visual = { 0x2a332f, 237 },
+  bg_float = { 0x1c211f, 235 },
   bg_shadow = { 0x000000, 16 },
 
   -- Pop-up Menu
-  bg_pmenu = { 0x1a201e, 234 },
-  bg_pmenu_sel = { 0x2d3b36, 237 },
-  bg_pmenu_sbar = { 0x0e1110, 233 },
-  bg_pmenu_thumb = { 0x4a524d, 239 },
+  bg_pmenu = { 0x1f2623, 235 },
+  bg_pmenu_sel = { 0x34403b, 237 },
+  bg_pmenu_sbar = { 0x282e2b, 236 },
+  bg_pmenu_thumb = { 0x5c6a64, 242 },
 }
 
 -- Accessing a non-existent palette is almost certainly a bug.
