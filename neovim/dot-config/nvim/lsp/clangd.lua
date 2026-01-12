@@ -35,7 +35,6 @@ return {
     ".clang-format",
     "compile_commands.json",
     "compile_flags.txt",
-    "configure.ac", -- GNU Autotools.
   },
   capabilities = {
     -- Off-spec, but clangd and vim.lsp support UTF-8, which is more efficient.

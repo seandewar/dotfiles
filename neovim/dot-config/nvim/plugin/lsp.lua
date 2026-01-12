@@ -3,6 +3,15 @@ local keymap = vim.keymap
 local log = vim.log
 local lsp = vim.lsp
 
+if not vim.g.started_by_firenvim then
+  lsp.enable {
+    "clangd",
+    "lua_ls",
+    "rust_analyzer",
+    "zls",
+  }
+end
+
 -- Preferring a Vim script command so split modifiers are respected.
 api.nvim_create_user_command(
   "LspLog",
