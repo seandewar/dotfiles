@@ -12,6 +12,10 @@ if not vim.g.started_by_firenvim then
   }
 end
 
+lsp.config("*", {
+  workspace_required = true,
+})
+
 -- Preferring a Vim script command so split modifiers are respected.
 api.nvim_create_user_command(
   "LspLog",
