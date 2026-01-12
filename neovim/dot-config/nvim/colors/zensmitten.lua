@@ -64,7 +64,7 @@ local p = {
   bg_statusline_nc = { 0x1c211f, 235 },
   bg_cursorline = { 0x1e2321, 235 },
   bg_search = { 0x3d4724, 58 },
-  bg_search_sel = { 0x6e4e6e, 96 },
+  bg_search_sel = { 0x968a64, 137 },
   bg_visual = { 0x2a332f, 237 },
   bg_float = { 0x1c211f, 235 },
   bg_shadow = { 0x000000, 16 },
@@ -116,7 +116,7 @@ hl("WinSeparator", { fg = p.bg_statusline })
 hl("Folded", "NonText")
 hl("FoldColumn", "LineNr")
 hl("SignColumn", "LineNr")
-hl("IncSearch", { fg = p.fg, bg = p.bg_search_sel })
+hl("IncSearch", { fg = p.bg, bg = p.bg_search_sel })
 hl("Substitute", "Search")
 hl("LineNr", { fg = p.comment })
 hl("LineNrAbove", "LineNr")
@@ -418,6 +418,13 @@ hl("vimCommentTitle", "SpecialComment")
 
 hl("luaFunction", "Keyword")
 hl("luaTable", "Delimiter")
+
+-- fzf-lua {{{1
+
+vim.g.fzf_colors = {
+  ["hl"] = { "fg", "String" },
+  ["hl+"] = { "fg", "String" },
+}
 
 -- }}}1
 
