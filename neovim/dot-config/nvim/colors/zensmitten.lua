@@ -34,11 +34,11 @@ local p = {
   -- Core
   bg = { 0x161817, 234 },
   fg = { 0xbdc0b2, 250 },
-  comment = { 0x4a524d, 239 },
-  delimiter = { 0x606e66, 242 },
+  comment = { 0x727d76, 243 },
+  delimiter = { 0x8a998e, 246 },
   number = { 0x9fb0a0, 109 },
   string = { 0xa89b74, 144 },
-  ws = { 0x1e2421, 235 },
+  ws = { 0x47524b, 239 },
 
   -- Diagnostics
   fg_error = { 0xe67e80, 210 },
@@ -58,8 +58,8 @@ local p = {
   bg_diff_text_add = { 0x2d4228, 238 },
 
   -- UI
-  fg_non_text = { 0x505c55, 241 },
-  bg_non_text = { 0x1c1f1e, 235 },
+  fg_non_text = { 0x6e756b, 242 },
+  bg_non_text = { 0x1a1d1c, 234 },
   bg_statusline = { 0x222825, 236 },
   bg_statusline_nc = { 0x1c211f, 235 },
   bg_cursorline = { 0x1e2321, 235 },

@@ -99,6 +99,7 @@ let g:vimsyn_comment_strings = 0
 " empty buffer, which fails when 'hidden' is set:
 " https://github.com/neovim/neovim/issues/17841#issuecomment-1504079552.
 function s:FixNetrwBufName() abort
+    if !exists('b:netrw_curdir') | return | endif
     let dir_bufnr = bufnr($'^{b:netrw_curdir}$')
     " Not found for some reason or already has the correct name.
     if dir_bufnr == -1 || dir_bufnr == bufnr() | return | endif
