@@ -36,9 +36,10 @@ local p = {
   fg = { 0xbdc0b2, 250 },
   comment = { 0x727d76, 243 },
   fn = { 0x8fa2b0, 146 },
-  kw = { 0x9fb0a0, 109 },
+  kw = { 0xa0a8a1, 248 },
   number = { 0xa497b0, 139 },
   string = { 0xa89b74, 144 },
+  type = { 0xa3c2bb, 116 },
   ws = { 0x47524b, 239 },
 
   -- Diagnostics
@@ -207,7 +208,7 @@ hl("Include", "PreProc")
 hl("Define", "PreProc")
 hl("Macro", "PreProc")
 hl("PreCondit", "PreProc")
-hl("Type", "Identifier")
+hl("Type", { fg = p.type })
 hl("StorageClass", "Keyword")
 hl("Structure", "Keyword")
 hl("Typedef", "Type")
