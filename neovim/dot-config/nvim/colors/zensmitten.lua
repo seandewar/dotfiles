@@ -35,8 +35,9 @@ local p = {
   bg = { 0x161817, 234 },
   fg = { 0xbdc0b2, 250 },
   comment = { 0x727d76, 243 },
-  delimiter = { 0x8a998e, 246 },
-  number = { 0x9fb0a0, 109 },
+  fn = { 0x8fa2b0, 146 },
+  kw = { 0x9fb0a0, 109 },
+  number = { 0xa497b0, 139 },
   string = { 0xa89b74, 144 },
   ws = { 0x47524b, 239 },
 
@@ -44,12 +45,12 @@ local p = {
   fg_error = { 0xe67e80, 210 },
   fg_warning = { 0xe0af68, 179 },
   fg_info = { 0x7aa2f7, 111 },
-  fg_hint = { 0x9a86a3, 103 },
+  fg_hint = { 0xd699b6, 175 },
   fg_ok = { 0xadd691, 150 },
 
   -- Diffs
   fg_diff_added = { 0x93b381, 108 },
-  fg_diff_changed = { 0x81a1b3, 109 },
+  fg_diff_changed = { 0x81a1b3, 110 },
   fg_diff_removed = { 0xb38181, 131 },
   bg_diff_added = { 0x1e2e22, 65 },
   bg_diff_changed = { 0x1a242f, 66 },
@@ -193,13 +194,13 @@ hl("Number", { fg = p.number })
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg })
-hl("Function", "Identifier")
+hl("Function", { fg = p.fn })
 hl("Statement", "Keyword")
 hl("Conditional", "Keyword")
 hl("Repeat", "Keyword")
 hl("Label", "Keyword")
 hl("Operator", { fg = p.fg })
-hl("Keyword", { fg = p.fg, bold = true })
+hl("Keyword", { fg = p.kw })
 hl("Exception", "Keyword")
 hl("PreProc", "Keyword")
 hl("Include", "PreProc")
@@ -213,7 +214,7 @@ hl("Typedef", "Type")
 hl("Special", { fg = p.fg })
 hl("SpecialChar", { fg = p.string, bold = true })
 hl("Tag", "Special")
-hl("Delimiter", { fg = p.delimiter })
+hl("Delimiter", { fg = p.fg })
 hl("SpecialComment", { fg = p.comment, bold = true })
 hl("Debug", "Identifier")
 hl("Underlined", { underline = true })
@@ -418,6 +419,10 @@ hl("vimCommentTitle", "SpecialComment")
 
 hl("luaFunction", "Keyword")
 hl("luaTable", "Delimiter")
+
+-- copilot.vim {{{1
+
+hl("CopilotSuggestion", "NonText")
 
 -- fzf-lua {{{1
 
