@@ -36,8 +36,7 @@ local p = {
   fg = { 0xbdc0b2, 250 },
   comment = { 0x727d76, 243 },
   fn = { 0x8fa2b0, 146 },
-  kw = { 0xa0a8a1, 248 },
-  number = { 0xa497b0, 139 },
+  number = { 0xaaa4bd, 146 },
   string = { 0xa89b74, 144 },
   type = { 0xa3c2bb, 116 },
   ws = { 0x47524b, 239 },
@@ -201,7 +200,7 @@ hl("Conditional", "Keyword")
 hl("Repeat", "Keyword")
 hl("Label", "Keyword")
 hl("Operator", { fg = p.fg })
-hl("Keyword", { fg = p.kw })
+hl("Keyword", { fg = p.fg })
 hl("Exception", "Keyword")
 hl("PreProc", "Keyword")
 hl("Include", "PreProc")
