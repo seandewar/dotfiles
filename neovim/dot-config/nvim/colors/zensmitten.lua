@@ -35,16 +35,16 @@ local p = {
   bg = { 0x161817, 234 },
   fg = { 0xbdc0b2, 250 },
   comment = { 0x727d76, 243 },
-  fn = { 0x8fa2b0, 146 },
-  number = { 0xaaa4bd, 146 },
+  fn = { 0x8fa2b0, 109 },
+  number = { 0xaaa4bd, 103 },
   string = { 0xa89b74, 144 },
-  type = { 0xa3c2bb, 116 },
+  type = { 0x98afa6, 247 },
   ws = { 0x47524b, 239 },
 
   -- Diagnostics
   fg_error = { 0xe67e80, 210 },
   fg_warning = { 0xe0af68, 179 },
-  fg_info = { 0x7aa2f7, 111 },
+  fg_info = { 0x7aa2f7, 67 },
   fg_hint = { 0xd699b6, 175 },
   fg_ok = { 0xadd691, 150 },
 
@@ -52,9 +52,9 @@ local p = {
   fg_diff_added = { 0x93b381, 108 },
   fg_diff_changed = { 0x81a1b3, 110 },
   fg_diff_removed = { 0xb38181, 131 },
-  bg_diff_added = { 0x1e2e22, 65 },
-  bg_diff_changed = { 0x1a242f, 66 },
-  bg_diff_removed = { 0x2f1e1e, 95 },
+  bg_diff_added = { 0x1e2e22, 22 },
+  bg_diff_changed = { 0x1a242f, 17 },
+  bg_diff_removed = { 0x2f1e1e, 52 },
   bg_diff_text = { 0x2b3b4d, 237 },
   bg_diff_text_add = { 0x2d4228, 238 },
 
