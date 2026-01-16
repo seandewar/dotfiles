@@ -34,8 +34,8 @@ local p = {
   -- Core
   bg = { 0x161817, 234 },
   fg = { 0xbdc0b2, 250 },
-  comment = { 0x727d76, 243 },
-  fn = { 0x8fa2b0, 109 },
+  comment = { 0x8ea47a, 108 },
+  fn = { 0x8a99a6, 109 },
   number = { 0xaaa4bd, 103 },
   string = { 0xa89b74, 144 },
   type = { 0x98afa6, 247 },
@@ -49,7 +49,7 @@ local p = {
   fg_ok = { 0xadd691, 150 },
 
   -- Diffs
-  fg_diff_added = { 0x93b381, 108 },
+  fg_diff_added = { 0x93b381, 114 },
   fg_diff_changed = { 0x81a1b3, 110 },
   fg_diff_removed = { 0xb38181, 131 },
   bg_diff_added = { 0x1e2e22, 22 },
@@ -59,6 +59,7 @@ local p = {
   bg_diff_text_add = { 0x2d4228, 238 },
 
   -- UI
+  fg_dim = { 0x727d76, 243 },
   fg_non_text = { 0x6e756b, 242 },
   bg_non_text = { 0x1a1d1c, 234 },
   bg_statusline = { 0x222825, 236 },
@@ -119,7 +120,7 @@ hl("FoldColumn", "LineNr")
 hl("SignColumn", "LineNr")
 hl("IncSearch", { fg = p.bg, bg = p.bg_search_sel })
 hl("Substitute", "Search")
-hl("LineNr", { fg = p.comment })
+hl("LineNr", { fg = p.fg_dim })
 hl("LineNrAbove", "LineNr")
 hl("LineNrBelow", "LineNrAbove")
 hl("CursorLineNr", { fg = p.fg, bg = p.bg_cursorline, bold = true })
@@ -167,7 +168,7 @@ hl("SpellCap", { sp = p.fg_warning, undercurl = true })
 hl("SpellLocal", { sp = p.fg_info, undercurl = true })
 hl("SpellRare", { sp = p.fg_hint, undercurl = true })
 hl("StatusLine", { fg = p.fg, bg = p.bg_statusline })
-hl("StatusLineNC", { fg = p.comment, bg = p.bg_statusline_nc })
+hl("StatusLineNC", { fg = p.fg_dim, bg = p.bg_statusline_nc })
 hl("StatusLineTerm", "StatusLine")
 hl("StatusLineTermNC", "StatusLineNC")
 hl("TabLine", "StatusLineNC")
@@ -218,7 +219,7 @@ hl("Delimiter", { fg = p.fg })
 hl("SpecialComment", { fg = p.comment, bold = true })
 hl("Debug", "Identifier")
 hl("Underlined", { underline = true })
-hl("Ignore", { fg = p.comment })
+hl("Ignore", { fg = p.fg_dim })
 hl("Error", { fg = p.fg_error })
 hl("Todo", "SpecialComment")
 hl("Added", { fg = p.fg_diff_added })
@@ -257,8 +258,8 @@ hl("DiagnosticSignWarn", "DiagnosticWarn")
 hl("DiagnosticSignInfo", "DiagnosticInfo")
 hl("DiagnosticSignHint", "DiagnosticHint")
 hl("DiagnosticSignOk", "DiagnosticOk")
-hl("DiagnosticDeprecated", { sp = p.comment, strikethrough = true })
-hl("DiagnosticUnnecessary", { fg = p.comment })
+hl("DiagnosticDeprecated", { sp = p.fg_dim, strikethrough = true })
+hl("DiagnosticUnnecessary", { fg = p.fg_dim })
 
 -- Tree-sitter groups (:h treesitter-highlight-groups) {{{1
 --
