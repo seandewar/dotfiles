@@ -1,10 +1,11 @@
---- Slim, somewhat minimalist colour scheme based on Gruvbox Material:
---- https://github.com/sainnhe/gruvbox-material
+--- Slim, low-distraction colour scheme based on OKSolar (Solarized variant),
+--- with adjustments.
 
 local api = vim.api
 
 vim.cmd.highlight "clear"
-vim.g.colors_name = "bruvbox"
+vim.o.background = "dark"
+vim.g.colors_name = "seanarized"
 
 -- Helpers {{{1
 local function hl(name, val)
@@ -46,104 +47,69 @@ local p_mt = { -- To catch bugs.
   end,
 }
 
--- Palettes {{{1
-local dark_p = setmetatable({ -- Uses hard contrast.
-  bg_dim = { 0x141617, 232 },
-  bg0 = { 0x1d2021, 234 },
-  bg1 = { 0x282828, 235 },
-  bg2 = { 0x282828, 235 },
-  bg3 = { 0x3c3836, 237 },
-  bg4 = { 0x3c3836, 237 },
-  bg5 = { 0x504945, 239 },
-  bg_statusline0 = { 0x282828, 235 },
-  bg_statusline1 = { 0x32302f, 235 },
-  bg_diff_red = { 0x3c1f1e, 52 },
-  bg_diff_green = { 0x32361a, 22 },
-  bg_diff_blue = { 0x0d3138, 17 },
-  bg_current_word = { 0x32302f, 236 },
+-- Palette {{{1
+local p = setmetatable({
+  bg0_float = { 0x001217, 16 },
+  bg0 = { 0x071c22, 233 },
+  bg1 = { 0x09222a, 23 },
+  bg2 = { 0x122b35, 23 },
+  bg3 = { 0x1c353f, 24 },
+  bg4 = { 0x26404b, 31 },
+  bg5 = { 0x314b56, 66 },
+  bg_statusline0 = { 0x07262e, 24 },
+  bg_statusline1 = { 0x0a2d36, 237 },
 
-  fg0 = { 0xd4be98, 223 },
-  fg1 = { 0xddc7a1, 223 },
-  red = { 0xea6962, 167 },
-  orange = { 0xe78a4e, 208 },
-  yellow = { 0xd8a657, 214 },
-  green = { 0xa9b665, 142 },
-  aqua = { 0x89b482, 108 },
-  blue = { 0x7daea3, 109 },
-  purple = { 0xd3869b, 175 },
+  fg0 = { 0x8da0a0, 247 },
+  fg1 = { 0x586e75, 243 },
 
-  gray0 = { 0x7c6f64, 243 },
-  gray1 = { 0x928374, 245 },
-  gray2 = { 0xa89984, 246 },
+  yellow = { 0x8f8032, 136 },
+  orange = { 0xc15f27, 166 },
+  red = { 0xd0464d, 167 },
+  magenta = { 0xbd588f, 162 },
+  violet = { 0x867ec4, 104 },
+  blue = { 0x4a84b2, 67 },
+  cyan = { 0x26928a, 30 },
+  green = { 0x708a3e, 107 },
+
+  bg_diff_red = { 0x2f0f11, 52 },
+  bg_diff_green = { 0x1a1e00, 22 },
+  bg_diff_blue = { 0x001c2e, 17 },
+
+  pure_black = { 0x000000, 16 },
 }, p_mt)
-
-local light_p = setmetatable({ -- Uses soft contrast.
-  bg_dim = { 0xebdbb2, 223 },
-  bg0 = { 0xf2e5bc, 228 },
-  bg1 = { 0xeddeb5, 223 },
-  bg2 = { 0xebdbb2, 228 },
-  bg3 = { 0xe6d5ae, 223 },
-  bg4 = { 0xdac9a5, 250 },
-  bg5 = { 0xd5c4a1, 250 },
-  bg_statusline0 = { 0xebdbb2, 223 },
-  bg_statusline1 = { 0xebdbb2, 223 },
-  bg_diff_red = { 0xf7d9b9, 217 },
-  bg_diff_green = { 0xdfe1b4, 194 },
-  bg_diff_blue = { 0xdbddbf, 117 },
-  bg_current_word = { 0xebdbb2, 227 },
-
-  fg0 = { 0x654735, 237 },
-  fg1 = { 0x4f3829, 237 },
-  red = { 0xc14a4a, 88 },
-  orange = { 0xc35e0a, 130 },
-  yellow = { 0xb47109, 136 },
-  green = { 0x6c782e, 100 },
-  aqua = { 0x4c7a5d, 165 },
-  blue = { 0x45707a, 24 },
-  purple = { 0x945e80, 96 },
-
-  gray0 = { 0xa89984, 246 },
-  gray1 = { 0x928374, 245 },
-  gray2 = { 0x7c6f64, 243 },
-}, p_mt)
-
-local is_dark = vim.o.background == "dark"
-local p = is_dark and dark_p or light_p
-p.pure_black = { 0x000000, 16 }
 
 local syn_p = setmetatable({
-  comment = p.gray1,
-  fn = p.aqua,
-  kw = p.red,
-  number = p.purple,
+  comment = p.fg1,
+  fn = p.blue,
+  constant = p.violet,
   string = p.green,
-  type = p.yellow,
+  type = p.cyan,
 }, p_mt)
 
 -- Terminal buffers (:h terminal-config) {{{1
 -- Same colour is used for most of the "bright" (8-15) colours.
 hl_term {
-  is_dark and p.bg0 or p.fg0,
+  p.bg0,
   p.red,
   p.green,
   p.yellow,
   p.blue,
-  p.purple,
-  p.aqua,
-  is_dark and p.gray2 or p.gray0,
-  is_dark and p.gray0 or p.gray2,
+  p.violet,
+  p.cyan,
+  p.bg5,
+  p.fg1,
   p.red,
   p.green,
   p.yellow,
   p.blue,
-  p.purple,
-  p.aqua,
-  is_dark and p.fg0 or p.bg0,
+  p.violet,
+  p.cyan,
+  p.fg0,
 }
 
 -- Editor groups (:h highlight-groups) {{{1
 hl("ColorColumn", { bg = p.bg2 })
-hl("Conceal", { fg = p.bg5 })
+hl("Conceal", "Comment")
 hl("CurSearch", "IncSearch")
 hl("Cursor", { fg = "bg", bg = "fg" })
 hl("lCursor", "Cursor")
@@ -156,7 +122,7 @@ hl("DiffChange", { bg = p.bg_diff_blue })
 hl("DiffDelete", { bg = p.bg_diff_red })
 hl("DiffText", { fg = p.bg0, bg = p.blue })
 hl("DiffTextAdd", "DiffText")
-hl("EndOfBuffer", { fg = p.bg5 })
+hl("EndOfBuffer", { fg = p.bg4 })
 hl("TermCursor", "Cursor")
 hl("OkMsg", { fg = p.green })
 hl("WarningMsg", { fg = p.yellow })
@@ -164,60 +130,60 @@ hl("ErrorMsg", { fg = p.red })
 hl("StderrMsg", "ErrorMsg")
 hl("StdoutMsg", "Normal")
 hl("WinSeparator", { fg = p.bg5 })
-hl("Folded", { fg = p.gray1, bg = p.bg2 })
+hl("Folded", { fg = p.fg1, bg = p.bg2 })
 hl("FoldColumn", { fg = p.bg5 })
 hl("SignColumn", { fg = p.fg0 })
-hl("IncSearch", { fg = p.bg0, bg = p.red })
+hl("IncSearch", { fg = p.bg0, bg = p.magenta })
 hl("Substitute", "Search")
 hl("LineNr", { fg = p.bg5 })
 hl("LineNrAbove", "LineNr")
 hl("LineNrBelow", "LineNrAbove")
-hl("CursorLineNr", { fg = p.gray1, bg = p.bg1 })
+hl("CursorLineNr", { fg = p.cyan, bg = p.bg1 })
 hl("CursorLineFold", "FoldColumn")
 hl("CursorLineSign", "SignColumn")
-hl("MatchParen", { bg = p.bg4 })
+hl("MatchParen", { fg = p.magenta, bold = true })
 hl("ModeMsg", { fg = p.fg0, bold = true })
 hl("MsgArea", "Normal")
 hl("MsgSeparator", "StatusLine")
 hl("MoreMsg", "ModeMsg")
 hl("NonText", { fg = p.bg5 })
 hl("Normal", { fg = p.fg0, bg = p.bg0 })
-hl("NormalFloat", { bg = p.bg_dim })
+hl("NormalFloat", { bg = p.bg0_float })
 hl("FloatBorder", "NormalFloat")
 hl("FloatShadow", { bg = p.pure_black, blend = 80 })
 hl("FloatShadowThrough", "FloatShadow")
 hl("FloatTitle", "FloatBorder")
 hl("FloatFooter", "FloatTitle")
 hl("NormalNC", "Normal")
-hl("Pmenu", { fg = p.fg1, bg = p.bg3 })
-hl("PmenuSel", { fg = p.bg3, bg = p.gray2 })
-hl("PmenuKind", { fg = p.green, bg = p.bg3 })
+hl("Pmenu", { fg = p.fg0, bg = p.bg3 })
+hl("PmenuSel", { fg = p.bg3, bg = p.fg1 })
+hl("PmenuKind", { fg = p.fg1 })
 hl("PmenuKindSel", "PmenuSel")
-hl("PmenuExtra", { fg = p.gray2, bg = p.bg3 })
+hl("PmenuExtra", { fg = p.green })
 hl("PmenuExtraSel", "PmenuSel")
-hl("PmenuSbar", { bg = p.bg3 })
-hl("PmenuThumb", { bg = p.gray0 })
+hl("PmenuSbar", { bg = p.bg2 })
+hl("PmenuThumb", { bg = p.fg0 })
 hl("PmenuMatch", { bold = true })
 hl("PmenuMatchSel", { bold = true })
-hl("PmenuBorder", "FloatBorder")
+hl("PmenuBordeblue", "FloatBorder")
 hl("PmenuShadow", "FloatShadow")
 hl("PmenuShadowThrough", "PmenuShadow")
 hl("ComplMatchIns", {})
 hl("PreInsert", "Added")
-hl("ComplHint", { fg = p.gray1 })
-hl("ComplHintMore", { fg = p.gray1, bold = true })
+hl("ComplHint", { fg = p.fg1 })
+hl("ComplHintMore", { fg = p.fg1, bold = true })
 hl("Question", "Title")
-hl("QuickFixLine", { fg = p.purple, bold = true })
+hl("QuickFixLine", { bg = p.bg2 })
 hl("Search", { fg = p.bg0, bg = p.green })
 hl("SnippetTabstop", "Visual")
 hl("SnippetTabstopActive", "SnippetTabstop")
 hl("SpecialKey", "SpecialChar")
 hl("SpellBad", { sp = p.red, undercurl = true })
 hl("SpellCap", { sp = p.blue, undercurl = true })
-hl("SpellLocal", { sp = p.aqua, undercurl = true })
-hl("SpellRare", { sp = p.purple, undercurl = true })
-hl("StatusLine", { fg = p.fg1, bg = p.bg_statusline1 })
-hl("StatusLineNC", { fg = p.gray1, bg = p.bg_statusline0 })
+hl("SpellLocal", { sp = p.cyan, undercurl = true })
+hl("SpellRare", { sp = p.violet, undercurl = true })
+hl("StatusLine", { fg = p.fg0, bg = p.bg_statusline1 })
+hl("StatusLineNC", { fg = p.fg1, bg = p.bg_statusline0 })
 hl("StatusLineTerm", "StatusLine")
 hl("StatusLineTermNC", "StatusLineNC")
 hl("TabLine", "StatusLineNC")
@@ -226,7 +192,7 @@ hl("TabLineSel", "StatusLine")
 hl("Title", { fg = p.fg0, bold = true })
 hl("Visual", { bg = p.bg3 })
 hl("VisualNOS", "Visual")
-hl("Whitespace", { fg = p.bg5 })
+hl("Whitespace", { fg = p.bg4 })
 hl("WildMenu", "Visual")
 hl("WinBar", "TabLineSel")
 hl("WinBarNC", "TabLine")
@@ -239,7 +205,7 @@ hl("Comment", { fg = syn_p.comment })
 hl("Constant", "Identifier")
 hl("String", { fg = syn_p.string })
 hl("Character", "String")
-hl("Number", { fg = syn_p.number })
+hl("Number", { fg = syn_p.constant })
 hl("Boolean", "Number")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })
@@ -249,7 +215,7 @@ hl("Conditional", "Keyword")
 hl("Repeat", "Keyword")
 hl("Label", "Keyword")
 hl("Operator", { fg = p.fg0 })
-hl("Keyword", { fg = syn_p.kw })
+hl("Keyword", { fg = p.fg0, bold = true })
 hl("Exception", "Keyword")
 hl("PreProc", "Keyword")
 hl("Include", "PreProc")
@@ -278,7 +244,7 @@ hl("Removed", { fg = p.red })
 hl("DiagnosticError", { fg = p.red })
 hl("DiagnosticWarn", { fg = p.yellow })
 hl("DiagnosticInfo", { fg = p.blue })
-hl("DiagnosticHint", { fg = p.purple })
+hl("DiagnosticHint", { fg = p.violet })
 hl("DiagnosticOk", { fg = p.green })
 hl("DiagnosticVirtualTextError", "DiagnosticError")
 hl("DiagnosticVirtualTextWarn", "DiagnosticWarn")
@@ -293,7 +259,7 @@ hl("DiagnosticVirtualLinesOk", "DiagnosticVirtualTextOk")
 hl("DiagnosticUnderlineError", { sp = p.red, undercurl = true })
 hl("DiagnosticUnderlineWarn", { sp = p.yellow, undercurl = true })
 hl("DiagnosticUnderlineInfo", { sp = p.blue, undercurl = true })
-hl("DiagnosticUnderlineHint", { sp = p.purple, undercurl = true })
+hl("DiagnosticUnderlineHint", { sp = p.violet, undercurl = true })
 hl("DiagnosticUnderlineOk", { sp = p.green, undercurl = true })
 hl("DiagnosticFloatingError", "DiagnosticError")
 hl("DiagnosticFloatingWarn", "DiagnosticWarn")
@@ -338,8 +304,8 @@ hl("@character", "Character")
 hl("@character.special", "@operator")
 
 hl("@boolean", "Boolean")
-hl("@number", "Number")
-hl("@number.float", "Float")
+hl("@constant", "Number")
+hl("@constant.float", "Float")
 
 hl("@type", "Type")
 hl("@type.builtin", "@type")
@@ -429,7 +395,7 @@ hl("@tag.delimiter", "@tag")
 
 -- Comment parser overrides
 hl("@constant.comment", "Comment")
-hl("@number.comment", "Comment")
+hl("@constant.comment", "Comment")
 hl("@punctuation.bracket.comment", "Comment")
 hl("@punctuation.delimiter.comment", "Comment")
 
@@ -441,16 +407,21 @@ hl("@keyword.import.cpp", "Include")
 hl("@constructor.lua", {})
 
 -- LSP semantic groups (:h lsp-semantic-highlight) {{{1
+-- Can refer to calls, but links @function by default, which is for definitions.
 hl("@lsp.type.function", "Function")
+-- Typically it's more useful to guess a more specific group based on where the
+-- macro is being used. May still be useful for combined highlights, though.
 hl("@lsp.type.macro", {})
+-- Ensures the signs of numbers still use @constant.
+hl("@lsp.type.operator", {})
 
 -- LSP other groups (:h lsp-highlight) {{{1
-hl("LspReferenceText", { bg = p.bg_current_word })
+hl("LspReferenceText", { bg = p.bg2 })
 hl("LspReferenceRead", "LspReferenceText")
 hl("LspReferenceWrite", "LspReferenceText")
 hl("LspReferenceTarget", "LspReferenceText")
 hl("LspInlayHint", "NonText")
-hl("LspCodeLens", { fg = p.gray1 })
+hl("LspCodeLens", { fg = p.fg1 })
 hl("LspCodeLensSeparator", "LspCodeLens")
 hl("LspSignatureActiveParameter", "LspReferenceText")
 
