@@ -1,5 +1,5 @@
---- Slim, low-distraction colour scheme based on OKSolar (Solarized variant),
---- with adjustments. https://meat.io/oksolar
+--- Slim, low-distraction colour scheme based on Selenized (Solarized variant),
+--- with adjustments. https://github.com/jan-warchol/selenized
 
 local api = vim.api
 
@@ -49,62 +49,74 @@ local p_mt = { -- To catch bugs.
 
 -- Palette {{{1
 local p = setmetatable({
-  bg0_float = { 0x00212b, 16 }, -- Deeper shift of Base03
-  bg0 = { 0x002d38, 233 }, -- Base03
-  bg1 = { 0x093946, 234 }, -- Base02
-  bg2 = { 0x0c4251, 235 }, -- Mid-step
-  bg3 = { 0x1a4d5c, 236 }, -- Mid-step
-  bg4 = { 0x2a5969, 237 }, -- Mid-step
-  bg5 = { 0x3b6676, 238 }, -- Base01 variant
-  bg_statusline0 = { 0x003542, 234 },
-  bg_statusline1 = { 0x073c4a, 235 },
+  -- Backgrounds
+  bg0_float = { 0x0c323c, 16 },
+  bg0 = { 0x103c48, 237 }, -- bg_0
+  bg1 = { 0x14424f, 238 }, -- Mid-step
+  bg2 = { 0x184956, 239 }, -- bg_1
+  bg3 = { 0x22525f, 240 }, -- Mid-step
+  bg4 = { 0x2d5b69, 241 }, -- bg_2
+  bg5 = { 0x3e6774, 242 }, -- Mid-step toward dim_0
+  bg_statusline0 = { 0x12404d, 237 },
+  bg_statusline1 = { 0x244f5e, 241 },
 
-  fg0 = { 0x98a8a8, 248 }, -- Base0
-  fg0_alt = { 0x8faaab, 247 }, -- Base1
-  fg1 = { 0x5b7279, 243 }, -- Base01
+  -- Foregrounds
+  fg0 = { 0xadbcbc, 250 }, -- fg_0
+  fg1 = { 0x72898f, 245 }, -- dim_0
 
-  yellow = { 0xac8300, 136 },
-  orange = { 0xd56500, 166 },
-  red = { 0xf23749, 160 },
-  magenta = { 0xdd459d, 162 },
-  violet = { 0x7d80d1, 104 },
-  blue = { 0x2b90d8, 33 },
-  cyan = { 0x259d94, 37 },
-  green = { 0x819500, 106 },
+  -- Accents
+  yellow = { 0xdbb32d, 178 },
+  orange = { 0xed8649, 208 },
+  red = { 0xfa5750, 203 },
+  magenta = { 0xf275be, 211 },
+  violet = { 0xaf88eb, 141 },
+  blue = { 0x4695f7, 33 },
+  cyan = { 0x41c7b9, 37 },
+  green = { 0x75b938, 107 },
 
-  bg_diff_red = { 0x481a1d, 52 },
-  bg_diff_green = { 0x263a13, 22 },
-  bg_diff_blue = { 0x0e3a50, 24 },
+  -- Bright Accents
+  br_yellow = { 0xebc13d, 220 },
+  br_orange = { 0xfd9456, 209 },
+  br_red = { 0xff665c, 203 },
+  br_magenta = { 0xff84cd, 212 },
+  br_violet = { 0xbd96fa, 147 },
+  br_blue = { 0x58a3ff, 39 },
+  br_cyan = { 0x53d6c7, 79 },
+  br_green = { 0x84c747, 113 },
+
+  -- Diff
+  bg_diff_red = { 0x3a2023, 52 },
+  bg_diff_green = { 0x20321a, 22 },
+  bg_diff_blue = { 0x1a3040, 24 },
 
   pure_black = { 0x000000, 16 },
 }, p_mt)
 
 local syn_p = setmetatable({
   comment = p.fg1,
-  fn = p.violet,
-  constant = p.fg0_alt,
+  fn = p.br_blue,
+  constant = p.fg0,
   string = p.green,
-  type = p.cyan,
+  type = p.br_violet,
 }, p_mt)
 
 -- Terminal buffers (:h terminal-config) {{{1
--- Same colour is used for most of the "bright" (8-15) colours.
 hl_term {
-  p.bg0,
+  p.bg2,
   p.red,
   p.green,
   p.yellow,
   p.blue,
-  p.violet,
+  p.magenta,
   p.cyan,
-  p.bg4,
   p.fg1,
-  p.red,
-  p.green,
-  p.yellow,
-  p.blue,
-  p.violet,
-  p.cyan,
+  p.bg4,
+  p.br_red,
+  p.br_green,
+  p.br_yellow,
+  p.br_blue,
+  p.br_magenta,
+  p.br_cyan,
   p.fg0,
 }
 
@@ -397,6 +409,7 @@ hl("@tag.delimiter", "@tag")
 -- Comment parser overrides
 hl("@constant.comment", "Comment")
 hl("@constant.comment", "Comment")
+hl("@number.comment", "Comment")
 hl("@punctuation.bracket.comment", "Comment")
 hl("@punctuation.delimiter.comment", "Comment")
 
