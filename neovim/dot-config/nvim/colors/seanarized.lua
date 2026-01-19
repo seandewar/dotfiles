@@ -1,5 +1,5 @@
 --- Slim, low-distraction colour scheme based on OKSolar (Solarized variant),
---- with adjustments.
+--- with adjustments. https://meat.io/oksolar
 
 local api = vim.api
 
@@ -60,7 +60,8 @@ local p = setmetatable({
   bg_statusline1 = { 0x073c4a, 235 },
 
   fg0 = { 0x98a8a8, 248 }, -- Base0
-  fg1 = { 0x657377, 243 }, -- Base00
+  fg0_alt = { 0x8faaab, 247 }, -- Base1
+  fg1 = { 0x5b7279, 243 }, -- Base01
 
   yellow = { 0xac8300, 136 },
   orange = { 0xd56500, 166 },
@@ -80,8 +81,8 @@ local p = setmetatable({
 
 local syn_p = setmetatable({
   comment = p.fg1,
-  fn = p.blue,
-  constant = p.violet,
+  fn = p.violet,
+  constant = p.fg0_alt,
   string = p.green,
   type = p.cyan,
 }, p_mt)
