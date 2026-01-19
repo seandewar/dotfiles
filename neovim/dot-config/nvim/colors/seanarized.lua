@@ -49,31 +49,31 @@ local p_mt = { -- To catch bugs.
 
 -- Palette {{{1
 local p = setmetatable({
-  bg0_float = { 0x001217, 16 },
-  bg0 = { 0x071c22, 233 },
-  bg1 = { 0x09222a, 23 },
-  bg2 = { 0x122b35, 23 },
-  bg3 = { 0x1c353f, 24 },
-  bg4 = { 0x26404b, 31 },
-  bg5 = { 0x314b56, 66 },
-  bg_statusline0 = { 0x07262e, 24 },
-  bg_statusline1 = { 0x0a2d36, 237 },
+  bg0_float = { 0x00212b, 16 }, -- Deeper shift of Base03
+  bg0 = { 0x002d38, 233 }, -- Base03
+  bg1 = { 0x093946, 234 }, -- Base02
+  bg2 = { 0x0c4251, 235 }, -- Mid-step
+  bg3 = { 0x1a4d5c, 236 }, -- Mid-step
+  bg4 = { 0x2a5969, 237 }, -- Mid-step
+  bg5 = { 0x3b6676, 238 }, -- Base01 variant
+  bg_statusline0 = { 0x003542, 234 },
+  bg_statusline1 = { 0x073c4a, 235 },
 
-  fg0 = { 0x8da0a0, 247 },
-  fg1 = { 0x586e75, 243 },
+  fg0 = { 0x98a8a8, 248 }, -- Base0
+  fg1 = { 0x657377, 243 }, -- Base00
 
-  yellow = { 0x8f8032, 136 },
-  orange = { 0xc15f27, 166 },
-  red = { 0xd0464d, 167 },
-  magenta = { 0xbd588f, 162 },
-  violet = { 0x867ec4, 104 },
-  blue = { 0x4a84b2, 67 },
-  cyan = { 0x26928a, 30 },
-  green = { 0x708a3e, 107 },
+  yellow = { 0xac8300, 136 },
+  orange = { 0xd56500, 166 },
+  red = { 0xf23749, 160 },
+  magenta = { 0xdd459d, 162 },
+  violet = { 0x7d80d1, 104 },
+  blue = { 0x2b90d8, 33 },
+  cyan = { 0x259d94, 37 },
+  green = { 0x819500, 106 },
 
-  bg_diff_red = { 0x2f0f11, 52 },
-  bg_diff_green = { 0x1a1e00, 22 },
-  bg_diff_blue = { 0x001c2e, 17 },
+  bg_diff_red = { 0x481a1d, 52 },
+  bg_diff_green = { 0x263a13, 22 },
+  bg_diff_blue = { 0x0e3a50, 24 },
 
   pure_black = { 0x000000, 16 },
 }, p_mt)
