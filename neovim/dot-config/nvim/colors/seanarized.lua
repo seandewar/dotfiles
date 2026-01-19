@@ -96,7 +96,7 @@ hl_term {
   p.blue,
   p.violet,
   p.cyan,
-  p.bg5,
+  p.bg4,
   p.fg1,
   p.red,
   p.green,
@@ -156,7 +156,7 @@ hl("FloatTitle", "FloatBorder")
 hl("FloatFooter", "FloatTitle")
 hl("NormalNC", "Normal")
 hl("Pmenu", { fg = p.fg0, bg = p.bg3 })
-hl("PmenuSel", { fg = p.bg3, bg = p.fg1 })
+hl("PmenuSel", { fg = p.bg2, bg = p.fg1 })
 hl("PmenuKind", { fg = p.fg1 })
 hl("PmenuKindSel", "PmenuSel")
 hl("PmenuExtra", { fg = p.green })
@@ -202,11 +202,11 @@ hl("WinBarNC", "TabLine")
 
 -- Syntax groups (:h group-name) {{{1
 hl("Comment", { fg = syn_p.comment })
-hl("Constant", "Identifier")
+hl("Constant", { fg = syn_p.constant })
 hl("String", { fg = syn_p.string })
 hl("Character", "String")
-hl("Number", { fg = syn_p.constant })
-hl("Boolean", "Number")
+hl("Number", "Constant")
+hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })
 hl("Function", { fg = syn_p.fn })
@@ -304,8 +304,8 @@ hl("@character", "Character")
 hl("@character.special", "@operator")
 
 hl("@boolean", "Boolean")
-hl("@constant", "Number")
-hl("@constant.float", "Float")
+hl("@number", "Number")
+hl("@number.float", "Float")
 
 hl("@type", "Type")
 hl("@type.builtin", "@type")
@@ -427,6 +427,8 @@ hl("LspSignatureActiveParameter", "LspReferenceText")
 
 -- syntax/vim.vim overrides {{{1
 hl("vimCommentTitle", "SpecialComment")
+hl("vimFunctionName", "Function")
+hl("vimUserFunc", "Function")
 
 -- syntax/lua.vim overrides {{{1
 hl("luaFunction", "Keyword")
@@ -437,8 +439,8 @@ hl("CopilotSuggestion", "ComplHint")
 
 -- fzf-lua {{{1
 vim.g.fzf_colors = {
-  ["hl"] = { "fg", "String" },
-  ["hl+"] = { "fg", "String" },
+  ["hl"] = { "bg", "Search" },
+  ["hl+"] = { "bg", "IncSearch" },
 }
 
 -- }}}1
