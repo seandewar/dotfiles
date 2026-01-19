@@ -1,11 +1,11 @@
---- Slim, low-distraction colour scheme based on Selenized (Solarized variant),
---- with adjustments. https://github.com/jan-warchol/selenized
+--- Slim, low-distraction colour scheme based on Jellybeans, with adjustments.
+--- https://github.com/nanotech/jellybeans.vim
 
 local api = vim.api
 
 vim.cmd.highlight "clear"
 vim.o.background = "dark"
-vim.g.colors_name = "seanarized"
+vim.g.colors_name = "comfy"
 
 -- Helpers {{{1
 local function hl(name, val)
@@ -50,54 +50,52 @@ local p_mt = { -- To catch bugs.
 -- Palette {{{1
 local p = setmetatable({
   -- Backgrounds
-  bg0_float = { 0x0c323c, 16 },
-  bg0 = { 0x103c48, 237 }, -- bg_0
-  bg1 = { 0x14424f, 238 }, -- Mid-step
-  bg2 = { 0x184956, 239 }, -- bg_1
-  bg3 = { 0x22525f, 240 }, -- Mid-step
-  bg4 = { 0x2d5b69, 241 }, -- bg_2
-  bg5 = { 0x3e6774, 242 }, -- Mid-step toward dim_0
-  bg_statusline0 = { 0x12404d, 237 },
-  bg_statusline1 = { 0x244f5e, 241 },
+  bg0_float = { 0x0c0c0c, 232 },
+  bg0 = { 0x151515, 233 },
+  bg1 = { 0x1c1c1c, 234 },
+  bg2 = { 0x222222, 235 },
+  bg3 = { 0x282828, 235 },
+  bg4 = { 0x2e2e2e, 236 },
+  bg5 = { 0x353535, 236 },
 
   -- Foregrounds
-  fg0 = { 0xadbcbc, 250 }, -- fg_0
-  fg1 = { 0x72898f, 245 }, -- dim_0
+  fg0 = { 0xd2d2c1, 187 },
+  fg1 = { 0x808080, 244 },
 
   -- Accents
-  yellow = { 0xdbb32d, 178 },
-  orange = { 0xed8649, 208 },
-  red = { 0xfa5750, 203 },
-  magenta = { 0xf275be, 211 },
-  violet = { 0xaf88eb, 141 },
-  blue = { 0x4695f7, 33 },
-  cyan = { 0x41c7b9, 37 },
-  green = { 0x75b938, 107 },
+  yellow = { 0xe1b374, 179 },
+  orange = { 0xe2c08d, 180 },
+  red = { 0xbf725c, 131 },
+  magenta = { 0xdb9cb4, 182 },
+  violet = { 0xac96b1, 145 },
+  blue = { 0x8597b4, 103 },
+  cyan = { 0x8db0c3, 110 },
+  green = { 0x92a372, 107 },
 
   -- Bright Accents
-  br_yellow = { 0xebc13d, 220 },
-  br_orange = { 0xfd9456, 209 },
-  br_red = { 0xff665c, 203 },
-  br_magenta = { 0xff84cd, 212 },
-  br_violet = { 0xbd96fa, 147 },
-  br_blue = { 0x58a3ff, 39 },
-  br_cyan = { 0x53d6c7, 79 },
-  br_green = { 0x84c747, 113 },
+  br_yellow = { 0xedc48a, 216 },
+  br_orange = { 0xefcf9f, 223 },
+  br_red = { 0xd18571, 174 },
+  br_magenta = { 0xe9abc1, 218 },
+  br_violet = { 0xbda9c2, 182 },
+  br_blue = { 0x9eafca, 146 },
+  br_cyan = { 0xa6c3d4, 152 },
+  br_green = { 0xa7b78a, 144 },
 
   -- Diff
-  bg_diff_red = { 0x3a2023, 52 },
-  bg_diff_green = { 0x20321a, 22 },
-  bg_diff_blue = { 0x1a3040, 24 },
+  bg_diff_red = { 0x382020, 52 },
+  bg_diff_green = { 0x222d22, 22 },
+  bg_diff_blue = { 0x202535, 235 },
 
   pure_black = { 0x000000, 16 },
 }, p_mt)
 
 local syn_p = setmetatable({
   comment = p.fg1,
-  fn = p.br_blue,
-  constant = p.fg0,
+  fn = p.blue,
+  number = p.red,
   string = p.green,
-  type = p.br_violet,
+  type = p.yellow,
 }, p_mt)
 
 -- Terminal buffers (:h terminal-config) {{{1
@@ -195,8 +193,8 @@ hl("SpellBad", { sp = p.red, undercurl = true })
 hl("SpellCap", { sp = p.blue, undercurl = true })
 hl("SpellLocal", { sp = p.cyan, undercurl = true })
 hl("SpellRare", { sp = p.violet, undercurl = true })
-hl("StatusLine", { fg = p.fg0, bg = p.bg_statusline1 })
-hl("StatusLineNC", { fg = p.fg1, bg = p.bg_statusline0 })
+hl("StatusLine", { fg = p.fg0, bg = p.bg3 })
+hl("StatusLineNC", { fg = p.fg1, bg = p.bg2 })
 hl("StatusLineTerm", "StatusLine")
 hl("StatusLineTermNC", "StatusLineNC")
 hl("TabLine", "StatusLineNC")
@@ -215,10 +213,10 @@ hl("WinBarNC", "TabLine")
 
 -- Syntax groups (:h group-name) {{{1
 hl("Comment", { fg = syn_p.comment })
-hl("Constant", { fg = syn_p.constant })
+hl("Constant", "Identifier")
 hl("String", { fg = syn_p.string })
 hl("Character", "String")
-hl("Number", "Constant")
+hl("Number", { fg = syn_p.number })
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })

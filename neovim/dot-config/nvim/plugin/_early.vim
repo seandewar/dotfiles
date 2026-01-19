@@ -6,7 +6,7 @@ set rulerformat=%!v:lua.require'conf.statusline'.rulerformat()
 set statusline=%!v:lua.require'conf.statusline'.statusline()
 set tabline=%!v:lua.require'conf.statusline'.tabline()
 
-colorscheme seanarized
+colorscheme comfy
 
 " These options only apply to the non-bundled Zig ftplugin.
 let g:zig_fmt_autosave = 0
