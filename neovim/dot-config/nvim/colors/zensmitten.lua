@@ -1,11 +1,11 @@
---- Slim, low-distraction colour scheme based on Jellybeans, with adjustments.
---- https://github.com/nanotech/jellybeans.vim
+--- Slim, low-distraction colour scheme based on zenwritten, with adjustments.
+--- https://github.com/zenbones-theme/zenbones.nvim
 
 local api = vim.api
 
 vim.cmd.highlight "clear"
 vim.o.background = "dark"
-vim.g.colors_name = "comfy"
+vim.g.colors_name = "zensmitten"
 
 -- Helpers {{{1
 local function hl(name, val)
@@ -49,54 +49,44 @@ local p_mt = { -- To catch bugs.
 
 -- Palette {{{1
 local p = setmetatable({
-  -- Backgrounds
-  bg0_float = { 0x0c0c0c, 232 },
-  bg0 = { 0x151515, 233 },
-  bg1 = { 0x1c1c1c, 234 },
-  bg2 = { 0x222222, 235 },
-  bg3 = { 0x282828, 235 },
-  bg4 = { 0x2e2e2e, 236 },
-  bg5 = { 0x353535, 236 },
+  bg0_float = { 0x100e0d, 233 },
+  bg0_em = { 0x191617, 233 },
+  bg0 = { 0x1c1917, 234 },
+  bg1 = { 0x221e1b, 235 },
+  bg2 = { 0x28231f, 235 },
+  bg3 = { 0x322d28, 236 },
 
-  -- Foregrounds
-  fg0 = { 0xd2d2c1, 187 },
-  fg1 = { 0x808080, 244 },
+  fg0 = { 0xcbc0ab, 187 },
+  fg1 = { 0x958d7e, 245 },
+  fg2 = { 0x656056, 241 },
+  fg3 = { 0x565045, 240 },
 
-  -- Accents
-  yellow = { 0xe1b374, 179 },
-  orange = { 0xe2c08d, 180 },
-  red = { 0xbf725c, 131 },
-  magenta = { 0xdb9cb4, 182 },
-  violet = { 0xac96b1, 145 },
-  blue = { 0x8597b4, 103 },
-  cyan = { 0x8db0c3, 110 },
-  green = { 0x92a372, 107 },
+  red = { 0xde6e7c, 168 },
+  green = { 0x819b69, 107 },
+  yellow = { 0xb79a64, 137 },
+  blue = { 0x6099c0, 67 },
+  magenta = { 0xb279a7, 139 },
+  cyan = { 0x66a5ad, 73 },
 
-  -- Bright Accents
-  br_yellow = { 0xedc48a, 216 },
-  br_orange = { 0xefcf9f, 223 },
-  br_red = { 0xd18571, 174 },
-  br_magenta = { 0xe9abc1, 218 },
-  br_violet = { 0xbda9c2, 182 },
-  br_blue = { 0x9eafca, 146 },
-  br_cyan = { 0xa6c3d4, 152 },
-  br_green = { 0xa7b78a, 144 },
+  br_red = { 0xe8838f, 210 },
+  br_green = { 0x8bae68, 107 },
+  br_yellow = { 0xd6b667, 179 },
+  br_blue = { 0x61abda, 74 },
+  br_magenta = { 0xcf86c1, 175 },
+  br_cyan = { 0x65b8c1, 73 },
 
-  -- Diff
-  bg_diff_red = { 0x382020, 52 },
-  bg_diff_green = { 0x222d22, 22 },
-  bg_diff_blue = { 0x202535, 235 },
+  bg_diff_red = { 0x4d2d30, 52 },
+  bg_diff_green = { 0x333d2a, 22 },
+  bg_diff_blue = { 0x2b3b4a, 24 },
+  bg_diff_cyan = { 0x365459, 66 },
 
   pure_black = { 0x000000, 16 },
 }, p_mt)
 
-local syn_p = setmetatable({
-  comment = p.fg1,
-  fn = p.blue,
-  number = p.red,
-  string = p.green,
-  type = p.yellow,
-}, p_mt)
+p.fg_comment = p.fg2
+p.fg_delim = p.fg1
+p.fg_string = p.fg1
+p.bg_string = p.bg0_em
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
@@ -107,8 +97,8 @@ hl_term {
   p.blue,
   p.magenta,
   p.cyan,
-  p.fg1,
-  p.bg4,
+  p.fg2,
+  p.fg3,
   p.br_red,
   p.br_green,
   p.br_yellow,
@@ -127,29 +117,29 @@ hl("lCursor", "Cursor")
 hl("CursorIM", "Cursor")
 hl("CursorColumn", "CursorLine")
 hl("CursorLine", { bg = p.bg1 })
-hl("Directory", "String")
+hl("Directory", { fg = p.fg1 })
 hl("DiffAdd", { bg = p.bg_diff_green })
 hl("DiffChange", { bg = p.bg_diff_blue })
 hl("DiffDelete", { bg = p.bg_diff_red })
-hl("DiffText", { fg = p.bg0, bg = p.blue })
+hl("DiffText", { bg = p.bg_diff_cyan })
 hl("DiffTextAdd", "DiffText")
-hl("EndOfBuffer", { fg = p.bg4 })
+hl("EndOfBuffer", { fg = p.fg3 })
 hl("TermCursor", "Cursor")
 hl("OkMsg", { fg = p.green })
-hl("WarningMsg", { fg = p.yellow })
+hl("WarningMsg", { fg = p.br_yellow })
 hl("ErrorMsg", { fg = p.red })
 hl("StderrMsg", "ErrorMsg")
 hl("StdoutMsg", "Normal")
-hl("WinSeparator", { fg = p.bg5 })
-hl("Folded", { fg = p.fg1, bg = p.bg2 })
-hl("FoldColumn", { fg = p.bg5 })
+hl("WinSeparator", { fg = p.bg3 })
+hl("Folded", { fg = p.fg2, bg = p.bg2 })
+hl("FoldColumn", { fg = p.fg3 })
 hl("SignColumn", { fg = p.fg0 })
 hl("IncSearch", { fg = p.bg0, bg = p.magenta })
 hl("Substitute", "Search")
-hl("LineNr", { fg = p.bg5 })
+hl("LineNr", { fg = p.fg3 })
 hl("LineNrAbove", "LineNr")
 hl("LineNrBelow", "LineNrAbove")
-hl("CursorLineNr", { fg = p.cyan, bg = p.bg1 })
+hl("CursorLineNr", { fg = p.fg0, bg = p.bg1 })
 hl("CursorLineFold", "FoldColumn")
 hl("CursorLineSign", "SignColumn")
 hl("MatchParen", { fg = p.magenta, bold = true })
@@ -157,7 +147,7 @@ hl("ModeMsg", { fg = p.fg0, bold = true })
 hl("MsgArea", "Normal")
 hl("MsgSeparator", "StatusLine")
 hl("MoreMsg", "ModeMsg")
-hl("NonText", { fg = p.bg5 })
+hl("NonText", { fg = p.fg3 })
 hl("Normal", { fg = p.fg0, bg = p.bg0 })
 hl("NormalFloat", { bg = p.bg0_float })
 hl("FloatBorder", "NormalFloat")
@@ -167,10 +157,10 @@ hl("FloatTitle", "FloatBorder")
 hl("FloatFooter", "FloatTitle")
 hl("NormalNC", "Normal")
 hl("Pmenu", { fg = p.fg0, bg = p.bg3 })
-hl("PmenuSel", { fg = p.bg2, bg = p.fg1 })
+hl("PmenuSel", { fg = p.bg0, bg = p.fg1 })
 hl("PmenuKind", { fg = p.fg1 })
 hl("PmenuKindSel", "PmenuSel")
-hl("PmenuExtra", { fg = p.green })
+hl("PmenuExtra", { fg = p.fg2 })
 hl("PmenuExtraSel", "PmenuSel")
 hl("PmenuSbar", { bg = p.bg2 })
 hl("PmenuThumb", { bg = p.fg0 })
@@ -181,29 +171,29 @@ hl("PmenuShadow", "FloatShadow")
 hl("PmenuShadowThrough", "PmenuShadow")
 hl("ComplMatchIns", {})
 hl("PreInsert", "Added")
-hl("ComplHint", { fg = p.fg1 })
-hl("ComplHintMore", { fg = p.fg1, bold = true })
+hl("ComplHint", { fg = p.fg2 })
+hl("ComplHintMore", { fg = p.fg2, bold = true })
 hl("Question", "Title")
 hl("QuickFixLine", { bg = p.bg2 })
-hl("Search", { fg = p.bg0, bg = p.green })
+hl("Search", { fg = p.bg0, bg = p.yellow })
 hl("SnippetTabstop", "Visual")
 hl("SnippetTabstopActive", "SnippetTabstop")
 hl("SpecialKey", "SpecialChar")
 hl("SpellBad", { sp = p.red, undercurl = true })
 hl("SpellCap", { sp = p.blue, undercurl = true })
 hl("SpellLocal", { sp = p.cyan, undercurl = true })
-hl("SpellRare", { sp = p.violet, undercurl = true })
+hl("SpellRare", { sp = p.magenta, undercurl = true })
 hl("StatusLine", { fg = p.fg0, bg = p.bg3 })
-hl("StatusLineNC", { fg = p.fg1, bg = p.bg2 })
+hl("StatusLineNC", { fg = p.fg2, bg = p.bg2 })
 hl("StatusLineTerm", "StatusLine")
 hl("StatusLineTermNC", "StatusLineNC")
 hl("TabLine", "StatusLineNC")
 hl("TabLineFill", "StatusLineNC")
 hl("TabLineSel", "StatusLine")
 hl("Title", { fg = p.fg0, bold = true })
-hl("Visual", { bg = p.bg3 })
+hl("Visual", { fg = p.bg0, bg = p.fg1 })
 hl("VisualNOS", "Visual")
-hl("Whitespace", { fg = p.bg4 })
+hl("Whitespace", { fg = p.fg3 })
 hl("WildMenu", "Visual")
 hl("WinBar", "TabLineSel")
 hl("WinBarNC", "TabLine")
@@ -212,15 +202,15 @@ hl("WinBarNC", "TabLine")
 -- hl("Tooltip", "Pmenu") -- Unused
 
 -- Syntax groups (:h group-name) {{{1
-hl("Comment", { fg = syn_p.comment })
+hl("Comment", { fg = p.fg_comment })
 hl("Constant", "Identifier")
-hl("String", { fg = syn_p.string })
+hl("String", { fg = p.fg_string, bg = p.bg_string })
 hl("Character", "String")
-hl("Number", { fg = syn_p.number })
+hl("Number", "Constant")
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })
-hl("Function", { fg = syn_p.fn })
+hl("Function", "Identifier")
 hl("Statement", "Keyword")
 hl("Conditional", "Keyword")
 hl("Repeat", "Keyword")
@@ -233,15 +223,15 @@ hl("Include", "PreProc")
 hl("Define", "PreProc")
 hl("Macro", "PreProc")
 hl("PreCondit", "PreProc")
-hl("Type", { fg = syn_p.type })
+hl("Type", "Identifier")
 hl("StorageClass", "Keyword")
 hl("Structure", "Keyword")
 hl("Typedef", "Type")
 hl("Special", { fg = p.fg0 })
-hl("SpecialChar", { fg = syn_p.string, bold = true })
+hl("SpecialChar", { fg = p.fg_string, bg = p.bg_string, bold = true })
 hl("Tag", "Special")
-hl("Delimiter", { fg = p.fg0 })
-hl("SpecialComment", { fg = syn_p.comment, bold = true })
+hl("Delimiter", { fg = p.fg_delim })
+hl("SpecialComment", { fg = p.fg_comment, bold = true })
 hl("Debug", "Identifier")
 hl("Underlined", { underline = true })
 hl("Ignore", "Comment")
@@ -253,9 +243,9 @@ hl("Removed", { fg = p.red })
 
 -- Diagnostic groups (:h diagnostic-highlights) {{{1
 hl("DiagnosticError", { fg = p.red })
-hl("DiagnosticWarn", { fg = p.yellow })
+hl("DiagnosticWarn", { fg = p.br_yellow })
 hl("DiagnosticInfo", { fg = p.blue })
-hl("DiagnosticHint", { fg = p.violet })
+hl("DiagnosticHint", { fg = p.magenta })
 hl("DiagnosticOk", { fg = p.green })
 hl("DiagnosticVirtualTextError", "DiagnosticError")
 hl("DiagnosticVirtualTextWarn", "DiagnosticWarn")
@@ -268,9 +258,9 @@ hl("DiagnosticVirtualLinesInfo", "DiagnosticVirtualTextInfo")
 hl("DiagnosticVirtualLinesHint", "DiagnosticVirtualTextHint")
 hl("DiagnosticVirtualLinesOk", "DiagnosticVirtualTextOk")
 hl("DiagnosticUnderlineError", { sp = p.red, undercurl = true })
-hl("DiagnosticUnderlineWarn", { sp = p.yellow, undercurl = true })
+hl("DiagnosticUnderlineWarn", { sp = p.br_yellow, undercurl = true })
 hl("DiagnosticUnderlineInfo", { sp = p.blue, undercurl = true })
-hl("DiagnosticUnderlineHint", { sp = p.violet, undercurl = true })
+hl("DiagnosticUnderlineHint", { sp = p.magenta, undercurl = true })
 hl("DiagnosticUnderlineOk", { sp = p.green, undercurl = true })
 hl("DiagnosticFloatingError", "DiagnosticError")
 hl("DiagnosticFloatingWarn", "DiagnosticWarn")
@@ -364,7 +354,7 @@ hl("@comment", "Comment")
 hl("@comment.documentation", "@comment")
 
 hl("@comment.error", { fg = p.red, bold = true })
-hl("@comment.warning", { fg = p.yellow, bold = true })
+hl("@comment.warning", { fg = p.br_yellow, bold = true })
 hl("@comment.todo", "SpecialComment")
 hl("@comment.note", "SpecialComment")
 
@@ -433,7 +423,7 @@ hl("LspReferenceRead", "LspReferenceText")
 hl("LspReferenceWrite", "LspReferenceText")
 hl("LspReferenceTarget", "LspReferenceText")
 hl("LspInlayHint", "NonText")
-hl("LspCodeLens", { fg = p.fg1 })
+hl("LspCodeLens", { fg = p.fg2 })
 hl("LspCodeLensSeparator", "LspCodeLens")
 hl("LspSignatureActiveParameter", "LspReferenceText")
 
