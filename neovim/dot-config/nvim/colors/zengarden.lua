@@ -1,11 +1,12 @@
---- Slim, low-distraction colour scheme based on zenwritten, with adjustments.
+--- Slim, low-distraction colour scheme inspired by zenwritten and evergarden.
 --- https://github.com/zenbones-theme/zenbones.nvim
+--- https://github.com/everviolet/nvim
 
 local api = vim.api
 
 vim.cmd.highlight "clear"
 vim.o.background = "dark"
-vim.g.colors_name = "zensmitten"
+vim.g.colors_name = "zengarden"
 
 -- Helpers {{{1
 local function hl(name, val)
@@ -49,20 +50,19 @@ local p_mt = { -- To catch bugs.
 
 -- Palette {{{1
 local p = setmetatable({
-  bg0_float = { 0x100e0d, 233 },
-  bg0 = { 0x1c1917, 234 },
-  bg1 = { 0x221e1b, 235 },
-  bg2 = { 0x28231f, 235 },
-  bg3 = { 0x322d28, 236 },
+  bg0_float = { 0x101412, 233 },
+  bg0 = { 0x171c19, 234 },
+  bg1 = { 0x1d2420, 235 },
+  bg2 = { 0x232b27, 235 },
+  bg3 = { 0x2e3833, 236 },
 
-  fg0 = { 0xcbc0ab, 187 },
-  fg0_alt1 = { 0xb2a582, 144 },
-  fg0_alt2 = { 0xaf8d77, 137 },
-  fg0_alt3 = { 0xae9b7e, 180 },
-  fg1 = { 0x8c867a, 245 },
-  fg2 = { 0x656056, 241 },
-  fg2_alt = { 0x6b5f52, 59 },
-  fg3 = { 0x565045, 239 },
+  fg0 = { 0xe3e6d3, 187 },
+  fg0_alt1 = { 0xa6b08e, 144 },
+  fg0_alt2 = { 0xbdad76, 143 },
+  fg0_alt3 = { 0x969b82, 144 },
+  fg1 = { 0x76827a, 245 },
+  fg2 = { 0x56605a, 241 },
+  fg3 = { 0x3d4743, 239 },
 
   red = { 0xde6e7c, 168 },
   green = { 0x819b69, 107 },
@@ -78,20 +78,21 @@ local p = setmetatable({
   br_magenta = { 0xcf86c1, 175 },
   br_cyan = { 0x65b8c1, 73 },
 
-  bg_diff_red = { 0x4d2d30, 52 },
-  bg_diff_green = { 0x333d2a, 23 },
-  bg_diff_blue = { 0x2b3b4a, 17 },
-  bg_diff_cyan = { 0x365459, 24 },
+  bg_diff_red = { 0x3c2424, 52 },
+  bg_diff_green = { 0x323c24, 22 },
+  bg_diff_blue = { 0x24333c, 17 },
+  bg_diff_cyan = { 0x243c3a, 24 },
 
   pure_black = { 0x000000, 16 },
 }, p_mt)
 
 p.fg_comment = p.fg2
-p.fg_delim = p.fg2_alt
-p.fg_number = p.fg0_alt2
+p.fg_delim = p.fg1
 p.fg_kw = p.fg0_alt1
+p.fg_number = p.fg0_alt2
 p.fg_oper = p.fg0_alt3
 p.fg_string = p.fg0_alt2
+p.fg_type = p.fg0
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
@@ -221,14 +222,14 @@ hl("Conditional", "Keyword")
 hl("Repeat", "Keyword")
 hl("Label", "Keyword")
 hl("Operator", { fg = p.fg_oper })
-hl("Keyword", { fg = p.fg_kw, bold = true })
+hl("Keyword", { fg = p.fg_kw })
 hl("Exception", "Keyword")
 hl("PreProc", "Keyword")
 hl("Include", "PreProc")
 hl("Define", "PreProc")
 hl("Macro", "PreProc")
 hl("PreCondit", "PreProc")
-hl("Type", "Identifier")
+hl("Type", { fg = p.fg_type })
 hl("StorageClass", "Keyword")
 hl("Structure", "Keyword")
 hl("Typedef", "Type")
