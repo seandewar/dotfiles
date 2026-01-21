@@ -6,7 +6,7 @@ local api = vim.api
 
 vim.cmd.highlight "clear"
 vim.o.background = "dark"
-vim.g.colors_name = "zengarden"
+vim.g.colors_name = "zenjungle"
 
 -- Helpers {{{1
 local function hl(name, val)
@@ -50,14 +50,14 @@ local p_mt = { -- To catch bugs.
 
 -- Palette {{{1
 local p = setmetatable({
-  bg0_float = { 0x101412, 233 },
+  bg0_float = { 0x141816, 233 },
   bg0 = { 0x171c19, 234 },
   bg1 = { 0x1d2420, 235 },
   bg2 = { 0x232b27, 235 },
   bg3 = { 0x2e3833, 236 },
 
   fg0 = { 0xe3e6d3, 187 },
-  fg0_alt1 = { 0xa6b08e, 144 },
+  fg0_alt1 = { 0xb7c0a0, 144 },
   fg0_alt2 = { 0xbdad76, 143 },
   fg0_alt3 = { 0x969b82, 144 },
   fg1 = { 0x76827a, 245 },
@@ -87,10 +87,10 @@ local p = setmetatable({
 }, p_mt)
 
 p.fg_comment = p.fg2
-p.fg_delim = p.fg1
+p.fg_delim = p.fg0_alt3
 p.fg_kw = p.fg0_alt1
 p.fg_number = p.fg0_alt2
-p.fg_oper = p.fg0_alt3
+p.fg_oper = p.fg0_alt1
 p.fg_string = p.fg0_alt2
 p.fg_type = p.fg0
 
@@ -123,7 +123,7 @@ hl("lCursor", "Cursor")
 hl("CursorIM", "Cursor")
 hl("CursorColumn", "CursorLine")
 hl("CursorLine", { bg = p.bg1 })
-hl("Directory", { fg = p.fg0_alt1 })
+hl("Directory", { fg = p.fg0_alt2 })
 hl("DiffAdd", { bg = p.bg_diff_green })
 hl("DiffChange", { bg = p.bg_diff_blue })
 hl("DiffDelete", { bg = p.bg_diff_red })
