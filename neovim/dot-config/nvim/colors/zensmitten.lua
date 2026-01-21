@@ -57,8 +57,8 @@ local p = setmetatable({
 
   fg0 = { 0xcbc0ab, 187 },
   fg0_alt1 = { 0xb2a582, 144 },
-  fg0_alt2 = { 0xb58d72, 137 },
-  fg0_alt3 = { 0xa98d7b, 138 },
+  fg0_alt2 = { 0xaf8d77, 137 },
+  fg0_alt3 = { 0xae9b7e, 180 },
   fg1 = { 0x8c867a, 245 },
   fg2 = { 0x656056, 241 },
   fg2_alt = { 0x6b5f52, 59 },
