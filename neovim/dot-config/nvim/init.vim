@@ -184,4 +184,10 @@ if has('win32')
 endif
 " }}}1
 
+" Setup vim.pack now before loading plugin/ scripts, so that package plugin/
+" scripts are sourced in 'rtp' order. (after all of ours)
+if filereadable($'{stdpath('config')}/pack.lua')
+    execute 'source' $'{stdpath('config')}/pack.lua'
+endif
+
 " vim: fdm=marker

@@ -50,13 +50,15 @@ local p_mt = { -- To catch bugs.
 -- Palette {{{1
 local p = setmetatable({
   bg0_float = { 0x100e0d, 233 },
-  bg0_em = { 0x191617, 233 },
   bg0 = { 0x1c1917, 234 },
   bg1 = { 0x221e1b, 235 },
   bg2 = { 0x28231f, 235 },
   bg3 = { 0x322d28, 236 },
 
   fg0 = { 0xcbc0ab, 187 },
+  fg1_em1 = { 0xb2a582, 144 },
+  fg1_em2 = { 0xaa776e, 131 },
+  fg1_em3 = { 0xa98d7b, 138 },
   fg1 = { 0x958d7e, 245 },
   fg2 = { 0x656056, 241 },
   fg3 = { 0x565045, 240 },
@@ -85,8 +87,9 @@ local p = setmetatable({
 
 p.fg_comment = p.fg2
 p.fg_delim = p.fg1
-p.fg_string = p.fg1
-p.bg_string = p.bg0_em
+p.fg_kw = p.fg1_em1
+p.fg_oper = p.fg1_em3
+p.fg_string = p.fg1_em2
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
@@ -117,7 +120,7 @@ hl("lCursor", "Cursor")
 hl("CursorIM", "Cursor")
 hl("CursorColumn", "CursorLine")
 hl("CursorLine", { bg = p.bg1 })
-hl("Directory", { fg = p.fg1 })
+hl("Directory", { fg = p.fg1_em1 })
 hl("DiffAdd", { bg = p.bg_diff_green })
 hl("DiffChange", { bg = p.bg_diff_blue })
 hl("DiffDelete", { bg = p.bg_diff_red })
@@ -204,7 +207,7 @@ hl("WinBarNC", "TabLine")
 -- Syntax groups (:h group-name) {{{1
 hl("Comment", { fg = p.fg_comment })
 hl("Constant", "Identifier")
-hl("String", { fg = p.fg_string, bg = p.bg_string })
+hl("String", { fg = p.fg_string })
 hl("Character", "String")
 hl("Number", "Constant")
 hl("Boolean", "Constant")
@@ -215,8 +218,8 @@ hl("Statement", "Keyword")
 hl("Conditional", "Keyword")
 hl("Repeat", "Keyword")
 hl("Label", "Keyword")
-hl("Operator", { fg = p.fg0 })
-hl("Keyword", { fg = p.fg0, bold = true })
+hl("Operator", { fg = p.fg_oper })
+hl("Keyword", { fg = p.fg_kw, bold = true })
 hl("Exception", "Keyword")
 hl("PreProc", "Keyword")
 hl("Include", "PreProc")
@@ -228,7 +231,7 @@ hl("StorageClass", "Keyword")
 hl("Structure", "Keyword")
 hl("Typedef", "Type")
 hl("Special", { fg = p.fg0 })
-hl("SpecialChar", { fg = p.fg_string, bg = p.bg_string, bold = true })
+hl("SpecialChar", { fg = p.fg_string, bold = true })
 hl("Tag", "Special")
 hl("Delimiter", { fg = p.fg_delim })
 hl("SpecialComment", { fg = p.fg_comment, bold = true })
