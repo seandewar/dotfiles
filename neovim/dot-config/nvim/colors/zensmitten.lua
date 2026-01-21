@@ -56,12 +56,12 @@ local p = setmetatable({
   bg3 = { 0x322d28, 236 },
 
   fg0 = { 0xcbc0ab, 187 },
-  fg0_em1 = { 0xb2a582, 144 },
-  fg0_em2 = { 0xaa7f66, 137 },
-  fg0_em3 = { 0xa98d7b, 138 },
-  fg0_em4 = { 0x9db0a1, 151 },
-  fg1 = { 0x958d7e, 246 },
+  fg0_alt1 = { 0xb2a582, 144 },
+  fg0_alt2 = { 0xb58d72, 137 },
+  fg0_alt3 = { 0xa98d7b, 138 },
+  fg1 = { 0x8c867a, 245 },
   fg2 = { 0x656056, 241 },
+  fg2_alt = { 0x6b5f52, 59 },
   fg3 = { 0x565045, 239 },
 
   red = { 0xde6e7c, 168 },
@@ -87,11 +87,11 @@ local p = setmetatable({
 }, p_mt)
 
 p.fg_comment = p.fg2
-p.fg_delim = p.fg2
-p.fg_fn = p.fg0_em4
-p.fg_kw = p.fg0_em1
-p.fg_oper = p.fg0_em3
-p.fg_string = p.fg0_em2
+p.fg_delim = p.fg2_alt
+p.fg_number = p.fg0_alt2
+p.fg_kw = p.fg0_alt1
+p.fg_oper = p.fg0_alt3
+p.fg_string = p.fg0_alt2
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
@@ -122,7 +122,7 @@ hl("lCursor", "Cursor")
 hl("CursorIM", "Cursor")
 hl("CursorColumn", "CursorLine")
 hl("CursorLine", { bg = p.bg1 })
-hl("Directory", { fg = p.fg0_em1 })
+hl("Directory", { fg = p.fg0_alt1 })
 hl("DiffAdd", { bg = p.bg_diff_green })
 hl("DiffChange", { bg = p.bg_diff_blue })
 hl("DiffDelete", { bg = p.bg_diff_red })
@@ -207,15 +207,15 @@ hl("WinBarNC", "TabLine")
 -- hl("Tooltip", "Pmenu") -- Unused
 
 -- Syntax groups (:h group-name) {{{1
-hl("Comment", { fg = p.fg_comment, italic = true })
+hl("Comment", { fg = p.fg_comment })
 hl("Constant", "Identifier")
 hl("String", { fg = p.fg_string })
 hl("Character", "String")
-hl("Number", "Constant")
+hl("Number", { fg = p.fg_number })
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })
-hl("Function", { fg = p.fg_fn })
+hl("Function", "Identifier")
 hl("Statement", "Keyword")
 hl("Conditional", "Keyword")
 hl("Repeat", "Keyword")
@@ -236,7 +236,7 @@ hl("Special", { fg = p.fg0 })
 hl("SpecialChar", { fg = p.fg_string, bold = true })
 hl("Tag", "Special")
 hl("Delimiter", { fg = p.fg_delim })
-hl("SpecialComment", { fg = p.fg_comment, italic = true, bold = true })
+hl("SpecialComment", { fg = p.fg_comment, bold = true })
 hl("Debug", "Identifier")
 hl("Underlined", { underline = true })
 hl("Ignore", "Comment")
@@ -358,8 +358,8 @@ hl("@punctuation.special", "@punctuation")
 hl("@comment", "Comment")
 hl("@comment.documentation", "@comment")
 
-hl("@comment.error", { fg = p.red, italic = true, bold = true })
-hl("@comment.warning", { fg = p.br_yellow, italic = true, bold = true })
+hl("@comment.error", { fg = p.red, bold = true })
+hl("@comment.warning", { fg = p.br_yellow, bold = true })
 hl("@comment.todo", "SpecialComment")
 hl("@comment.note", "SpecialComment")
 
