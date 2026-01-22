@@ -115,8 +115,17 @@ augroup END
 function! s:TabEditDir(dir) abort
     execute 'Texplore' a:dir '| tcd' a:dir
 endfunction
+function! s:TabEditConfigDir(bang) abort
+    " I typically use GNU stow to create symlinks to my config.
+    " Try to find the real directory.
+    if empty(a:bang) && filereadable($MYVIMRC)
+        call s:TabEditDir(resolve($MYVIMRC)->fnamemodify(':h'))
+    else
+        call s:TabEditDir(stdpath('config'))
+    endif
+endfunction
 
-command! -bar ConfigDir call s:TabEditDir(stdpath('config'))
+command! -bar -bang ConfigDir call s:TabEditConfigDir(expand('<bang>'))
 command! -bar DataDir call s:TabEditDir(stdpath('data'))
 command! -bar StateDir call s:TabEditDir(stdpath('state'))
 command! -bar RuntimeDir call s:TabEditDir($VIMRUNTIME)

@@ -58,8 +58,9 @@ local p = setmetatable({
 
   fg0 = { 0xe3e6d3, 187 },
   fg0_alt1 = { 0xb7c0a0, 144 },
-  fg0_alt2 = { 0xbdad76, 143 },
+  fg0_alt2 = { 0xc7bc90, 143 },
   fg0_alt3 = { 0x969b82, 144 },
+  fg0_alt4 = { 0xb4a3bd, 146 },
   fg1 = { 0x76827a, 245 },
   fg2 = { 0x56605a, 241 },
   fg3 = { 0x3d4743, 239 },
@@ -89,7 +90,7 @@ local p = setmetatable({
 p.fg_comment = p.fg2
 p.fg_delim = p.fg0_alt3
 p.fg_kw = p.fg0_alt1
-p.fg_number = p.fg0_alt2
+p.fg_number = p.fg0_alt4
 p.fg_oper = p.fg0_alt1
 p.fg_string = p.fg0_alt2
 p.fg_type = p.fg0
@@ -434,13 +435,22 @@ hl("LspCodeLensSeparator", "LspCodeLens")
 hl("LspSignatureActiveParameter", "LspReferenceText")
 
 -- syntax/vim.vim overrides {{{1
+-- Mostly only overriding groups that have crap links.
+hl("vimAutocmdPattern", "String")
+hl("vimBracket", "SpecialChar") -- <>s in key notation.
 hl("vimCommentTitle", "SpecialComment")
+hl("vimEnvVar", "Identifier")
+hl("vimEscape", "SpecialChar")
+hl("vimFunctionMod", "Keyword")
 hl("vimFunctionName", "Function")
+hl("vimNotation", "SpecialChar")
+hl("vimOption", "Identifier")
 hl("vimUserFunc", "Function")
+hl("vimWildcardStar", "SpecialChar")
 
 -- syntax/lua.vim overrides {{{1
 hl("luaFunction", "Keyword")
-hl("luaTable", "Delimiter")
+hl("luaTable", {}) -- Most delimiters aren't highlighted.
 
 -- copilot.vim {{{1
 hl("CopilotSuggestion", "ComplHint")
