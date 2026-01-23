@@ -59,7 +59,7 @@ local p = setmetatable({
   fg0 = { 0xe3e6d3, 187 },
   fg0_alt1 = { 0xb7c0a0, 144 },
   fg0_alt2 = { 0xc7bc90, 143 },
-  fg0_alt3 = { 0x969b82, 144 },
+  fg0_alt3 = { 0xc4dbac, 151 },
   fg0_alt4 = { 0xb4a3bd, 146 },
   fg1 = { 0x76827a, 245 },
   fg2 = { 0x56605a, 241 },
@@ -88,7 +88,8 @@ local p = setmetatable({
 }, p_mt)
 
 p.fg_comment = p.fg2
-p.fg_delim = p.fg0_alt3
+p.fg_delim = p.fg0_alt1
+p.fg_fn = p.fg0
 p.fg_kw = p.fg0_alt1
 p.fg_number = p.fg0_alt4
 p.fg_oper = p.fg0_alt1
@@ -217,7 +218,7 @@ hl("Number", { fg = p.fg_number })
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })
-hl("Function", "Identifier")
+hl("Function", { fg = p.fg_fn })
 hl("Statement", "Keyword")
 hl("Conditional", "Keyword")
 hl("Repeat", "Keyword")
