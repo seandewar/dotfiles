@@ -9,11 +9,112 @@ vim.o.background = "dark"
 vim.g.colors_name = "zenjungle"
 
 -- Helpers {{{1
+local approx_cterm
+do
+  local cterm_lut = {
+    -- System colours (cterm 0-15)
+    { 0, 0, 0 },
+    { 128, 0, 0 },
+    { 0, 128, 0 },
+    { 128, 128, 0 },
+    { 0, 0, 128 },
+    { 128, 0, 128 },
+    { 0, 128, 128 },
+    { 192, 192, 192 },
+    { 128, 128, 128 },
+    { 255, 0, 0 },
+    { 0, 255, 0 },
+    { 255, 255, 0 },
+    { 0, 0, 255 },
+    { 255, 0, 255 },
+    { 0, 255, 255 },
+    { 255, 255, 255 },
+  }
+
+  -- 6x6x6 colour cube (cterm 16-231)
+  local levels = { 0, 95, 135, 175, 215, 255 }
+  for _, r in ipairs(levels) do
+    for _, g in ipairs(levels) do
+      for _, b in ipairs(levels) do
+        table.insert(cterm_lut, { r, g, b })
+      end
+    end
+  end
+  -- Grayscale ramp (cterm 232-255)
+  for i = 0, 23 do
+    local c = 8 + (i * 10)
+    table.insert(cterm_lut, { c, c, c })
+  end
+  assert(#cterm_lut == 256)
+
+  approx_cterm = function(r8, g8, b8)
+    local best_dist_sq = math.huge
+    local best_lut_i
+
+    for i, crgb8 in ipairs(cterm_lut) do
+      local cr8, cg8, cb8 = unpack(crgb8)
+      -- Calculate the squared redmean distance. Pick the closest cterm.
+      -- Apparently still more accurate than the Euclidean distance when
+      -- weighted to account for the distribution of cones in the human eye!
+      local r_delta_sq = (r8 - cr8) ^ 2
+      local g_delta_sq = (g8 - cg8) ^ 2
+      local b_delta_sq = (b8 - cb8) ^ 2
+      local r_mean = (r8 + cr8) * 0.5
+      local dist_sq = (2 + r_mean / 256) * r_delta_sq
+        + 4 * g_delta_sq
+        + (2 + (255 - r_mean) / 256) * b_delta_sq
+
+      if dist_sq < best_dist_sq then
+        best_dist_sq = dist_sq
+        best_lut_i = i
+      end
+    end
+    return best_lut_i - 1
+  end
+end
+
+--- https://bottosson.github.io/posts/oklab/
+--- @param lightness perceived lightness (0-1)
+--- @param chroma (typically 0-0.5, actually 0-inf)
+--- @param hue (degrees)
+local function oklch(lightness, chroma, hue)
+  assert(lightness >= 0 and lightness <= 1 and chroma >= 0)
+  -- Convert to OKLab.
+  local h = math.rad(hue)
+  local a = chroma * math.cos(h)
+  local b = chroma * math.sin(h)
+
+  -- Convert to LMS-like.
+  local l = (lightness + 0.3963377774 * a + 0.2158037573 * b) ^ 3
+  local m = (lightness - 0.1055613458 * a - 0.0638541728 * b) ^ 3
+  local s = (lightness - 0.0894841775 * a - 1.2914855480 * b) ^ 3
+
+  local function gamma(c)
+    return c <= 0.0031308 and (c * 12.92)
+      or (1.055 * (c ^ 0.4166666667) - 0.055)
+  end
+  -- Convert to linear sRGB, then gamma-correct to sRGB.
+  local r = gamma(04.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s)
+  local g = gamma(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s)
+  local b = gamma(-0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s)
+
+  -- Convert to 24-bit RGB for Nvim. Round the components.
+  local r8 = math.floor(r * 0xff + 0.5)
+  local g8 = math.floor(g * 0xff + 0.5)
+  local b8 = math.floor(b * 0xff + 0.5)
+  -- Some colours can't be represented.
+  assert(
+    (r8 >= 0 and r8 <= 0xff)
+      and (g8 >= 0 and g8 <= 0xff)
+      and (b8 >= 0 and b8 <= 0xff)
+  )
+  return { r8 * 0x010000 + g8 * 0x000100 + b8, approx_cterm(r8, g8, b8) }
+end
+
 local function hl(name, val)
   if type(val) == "string" then
     val = { link = val }
-  else
-    assert(type(val) == "table")
+  else -- table
     if type(val.fg) == "table" then
       local color = val.fg
       val.fg = color[1]
@@ -49,50 +150,53 @@ local p_mt = { -- To catch bugs.
 }
 
 -- Palette {{{1
+-- Some cterm values are assigned directly due to the approximations being bad.
+-- TODO: improve the algorithm?
+-- stylua: ignore
 local p = setmetatable({
-  bg0_float = { 0x141816, 233 },
-  bg0 = { 0x171c19, 234 },
-  bg1 = { 0x1d2420, 235 },
-  bg2 = { 0x232b27, 235 },
-  bg3 = { 0x2e3833, 236 },
+  bg0_float     =   oklch(0.240, 0.008, 169.61),
+  bg0           =   oklch(0.260, 0.010, 164.05),
+  bg1           =   oklch(0.285, 0.012, 160.51),
+  bg2           =   oklch(0.310, 0.015, 161.11),
+  bg3           =   oklch(0.335, 0.018, 161.60),
 
-  fg0 = { 0xe3e6d3, 187 },
-  fg0_alt1 = { 0xb7c0a0, 144 },
-  fg0_alt2 = { 0xc7bc90, 143 },
-  fg0_alt3 = { 0xc4dbac, 151 },
-  fg0_alt4 = { 0xb4a3bd, 146 },
-  fg1 = { 0x76827a, 245 },
-  fg2 = { 0x56605a, 241 },
-  fg3 = { 0x3d4743, 239 },
+  fg0           =   oklch(0.725, 0.025, 112.12),
+  fg0_alt1      = { oklch(0.725, 0.082, 125.11)[1], 108 },
+  fg0_alt2      = { oklch(0.725, 0.060,  96.79)[1], 143 },
+  fg0_alt3      = { oklch(0.725, 0.030, 175.15)[1], 146 },
+  fg0_alt4      = { oklch(0.725, 0.050, 330.00)[1], 139 },
+  fg1           =   oklch(0.655, 0.025, 112.12),
+  fg2           =   oklch(0.555, 0.025, 112.12),
+  fg3           =   oklch(0.455, 0.025, 112.12),
 
-  red = { 0xde6e7c, 168 },
-  green = { 0x819b69, 107 },
-  yellow = { 0xb79a64, 143 },
-  blue = { 0x6099c0, 67 },
-  magenta = { 0xb279a7, 139 },
-  cyan = { 0x66a5ad, 73 },
+  red           =   oklch(0.655, 0.140,  21.39),
+  green         =   oklch(0.655, 0.117, 138.32),
+  yellow        =   oklch(0.655, 0.117,  91.69),
+  blue          =   oklch(0.655, 0.096, 240.88),
+  magenta       =   oklch(0.655, 0.110, 337.84),
+  cyan          =   oklch(0.655, 0.077, 204.23),
 
-  br_red = { 0xe8838f, 174 },
-  br_green = { 0x8bae68, 107 },
-  br_yellow = { 0xd6b667, 179 },
-  br_blue = { 0x61abda, 74 },
-  br_magenta = { 0xcf86c1, 175 },
-  br_cyan = { 0x65b8c1, 73 },
+  br_red        =   oklch(0.725, 0.140,  21.39),
+  br_green      =   oklch(0.725, 0.117, 138.32),
+  br_yellow     =   oklch(0.725, 0.117,  91.69),
+  br_blue       =   oklch(0.725, 0.096, 240.88),
+  br_magenta    =   oklch(0.725, 0.110, 337.84),
+  br_cyan       =   oklch(0.725, 0.077, 204.23),
 
-  bg_diff_red = { 0x3c2424, 52 },
-  bg_diff_green = { 0x323c24, 22 },
-  bg_diff_blue = { 0x24333c, 17 },
-  bg_diff_cyan = { 0x243c3a, 24 },
+  bg_diff_red   = { oklch(0.355, 0.050,  18.32)[1], 52 },
+  bg_diff_green = { oklch(0.355, 0.050, 131.96)[1], 22 },
+  bg_diff_blue  = { oklch(0.355, 0.050, 232.21)[1], 17 },
+  bg_diff_cyan  = { oklch(0.415, 0.050, 183.42)[1], 24 },
 
-  pure_black = { 0x000000, 16 },
+  pure_black    = { 0x000000, 16  },
 }, p_mt)
 
 p.fg_comment = p.fg2
-p.fg_delim = p.fg0_alt1
-p.fg_fn = p.fg0
-p.fg_kw = p.fg0_alt1
+p.fg_delim = p.fg0
+p.fg_fn = p.fg0_alt1
+p.fg_kw = p.fg0_alt3
 p.fg_number = p.fg0_alt4
-p.fg_oper = p.fg0_alt1
+p.fg_oper = p.fg0
 p.fg_string = p.fg0_alt2
 p.fg_type = p.fg0
 
