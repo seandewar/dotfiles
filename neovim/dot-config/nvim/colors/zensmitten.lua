@@ -172,7 +172,6 @@ local p = setmetatable({
   fg0_3             = oklch(0.630, 0.000, 0),
   fg1               = oklch(0.520, 0.000, 0),
   fg2               = oklch(0.460, 0.000, 0),
-  fg3               = oklch(0.400, 0.000, 0),
 
   red               = oklch(0.735, 0.075, h.red),
   yellow            = oklch(0.735, 0.075, h.yellow),
@@ -196,7 +195,7 @@ local p = setmetatable({
   pure_black        = { 0x000000, 16 },
 }, p_mt)
 
-p.fg_comment = p.fg2
+p.fg_comment = p.yellow
 p.fg_delim = p.fg0
 p.fg_fn = p.fg0
 p.fg_kw = p.fg0
@@ -242,7 +241,7 @@ hl("DiffChange", { bg = p.bg_diff_change })
 hl("DiffDelete", { bg = p.bg_diff_delete })
 hl("DiffText", { bg = p.bg_diff_change_em })
 hl("DiffTextAdd", "DiffText")
-hl("EndOfBuffer", { fg = p.fg3 })
+hl("EndOfBuffer", { fg = p.fg2 })
 hl("TermCursor", "Cursor")
 hl("OkMsg", { fg = p.green })
 hl("WarningMsg", { fg = p.br_yellow })
@@ -251,11 +250,11 @@ hl("StderrMsg", "ErrorMsg")
 hl("StdoutMsg", "Normal")
 hl("WinSeparator", { fg = p.bg3 })
 hl("Folded", { fg = p.fg2, bg = p.bg2 })
-hl("FoldColumn", { fg = p.fg3 })
+hl("FoldColumn", { fg = p.fg2 })
 hl("SignColumn", { fg = p.fg0 })
 hl("IncSearch", { fg = p.bg0, bg = p.magenta })
 hl("Substitute", "Search")
-hl("LineNr", { fg = p.fg3 })
+hl("LineNr", { fg = p.fg2 })
 hl("LineNrAbove", "LineNr")
 hl("LineNrBelow", "LineNrAbove")
 hl("CursorLineNr", { fg = p.fg0, bg = p.bg1 })
@@ -266,7 +265,7 @@ hl("ModeMsg", { fg = p.fg0, bold = true })
 hl("MsgArea", "Normal")
 hl("MsgSeparator", "StatusLine")
 hl("MoreMsg", "ModeMsg")
-hl("NonText", { fg = p.fg3 })
+hl("NonText", { fg = p.fg2 })
 hl("Normal", { fg = p.fg0, bg = p.bg0 })
 hl("NormalFloat", { bg = p.bg0_float })
 hl("FloatBorder", "NormalFloat")
@@ -276,7 +275,7 @@ hl("FloatTitle", "FloatBorder")
 hl("FloatFooter", "FloatTitle")
 hl("NormalNC", "Normal")
 hl("Pmenu", { fg = p.fg0, bg = p.bg3 })
-hl("PmenuSel", { fg = p.bg0, bg = p.fg1 })
+hl("PmenuSel", { fg = p.bg0, bg = p.fg0_2 })
 hl("PmenuKind", { fg = p.fg1 })
 hl("PmenuKindSel", "PmenuSel")
 hl("PmenuExtra", { fg = p.fg2 })
@@ -290,8 +289,8 @@ hl("PmenuShadow", "FloatShadow")
 hl("PmenuShadowThrough", "PmenuShadow")
 hl("ComplMatchIns", {})
 hl("PreInsert", "Added")
-hl("ComplHint", { fg = p.fg3 })
-hl("ComplHintMore", { fg = p.fg3, bold = true })
+hl("ComplHint", { fg = p.fg2 })
+hl("ComplHintMore", { fg = p.fg2, bold = true })
 hl("Question", "Title")
 hl("QuickFixLine", { bg = p.bg2 })
 hl("Search", { fg = p.bg0, bg = p.yellow })
@@ -310,9 +309,9 @@ hl("TabLine", "StatusLineNC")
 hl("TabLineFill", "StatusLineNC")
 hl("TabLineSel", "StatusLine")
 hl("Title", { fg = p.fg0, bold = true })
-hl("Visual", { fg = p.bg0, bg = p.fg1 })
+hl("Visual", { fg = p.bg0, bg = p.fg0_2 })
 hl("VisualNOS", "Visual")
-hl("Whitespace", { fg = p.fg3 })
+hl("Whitespace", { fg = p.fg2 })
 hl("WildMenu", "Visual")
 hl("WinBar", "TabLineSel")
 hl("WinBarNC", "TabLine")
