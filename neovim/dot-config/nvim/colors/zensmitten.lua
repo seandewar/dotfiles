@@ -1,12 +1,11 @@
--- Slim, low-distraction colour scheme inspired by zenwritten and evergarden.
+-- Slim, low-distraction colour scheme inspired by zenwritten.
 -- https://github.com/zenbones-theme/zenbones.nvim
--- https://github.com/everviolet/nvim
 
 local api = vim.api
 
 vim.cmd.highlight "clear"
 vim.o.background = "dark"
-vim.g.colors_name = "zenjungle"
+vim.g.colors_name = "zensmitten"
 
 -- Helpers {{{1
 local approx_cterm
@@ -150,67 +149,75 @@ local p_mt = { -- To catch bugs.
 }
 
 -- Palette {{{1
--- stylua: ignore
-local p = setmetatable({
-  bg0_float         =   oklch(0.175, 0.014, 176.96),
-  bg0               =   oklch(0.190, 0.017, 176.96),
-  bg1               =   oklch(0.220, 0.020, 176.96),
-  bg2               =   oklch(0.250, 0.023, 176.96),
-  bg3               =   oklch(0.280, 0.026, 176.96),
-
-  fg0               =   oklch(0.800, 0.040, 176.96),
-  fg1               =   oklch(0.660, 0.038, 176.96),
-  fg2               =   oklch(0.520, 0.036, 176.96),
-  fg3               =   oklch(0.380, 0.034, 176.96),
-
-  red               =   oklch(0.725, 0.075,  25.00),
-  green             =   oklch(0.725, 0.080, 140.00),
-  yellow            =   oklch(0.725, 0.060, 105.00),
-  blue              =   oklch(0.725, 0.070, 240.00),
-  magenta           =   oklch(0.725, 0.055, 330.00),
-  cyan              =   oklch(0.725, 0.065, 195.00),
-
-  br_red            =   oklch(0.750, 0.075,  25.00),
-  br_green          =   oklch(0.750, 0.080, 140.00),
-  br_yellow         =   oklch(0.750, 0.060, 105.00),
-  br_blue           =   oklch(0.750, 0.070, 240.00),
-  br_magenta        =   oklch(0.750, 0.055, 330.00),
-  br_cyan           =   oklch(0.750, 0.065, 195.00),
-
-  bg_diff_add       =   oklch(0.280, 0.050, 142.00),
-  bg_diff_delete    =   oklch(0.280, 0.050,  25.00),
-  bg_diff_change    =   oklch(0.280, 0.050, 240.00),
-  bg_diff_change_em =   oklch(0.390, 0.060, 195.00),
-
-  pure_black        = { 0x000000, 16  },
+local h = setmetatable({
+  red = 29.23,
+  yellow = 109.7700,
+  green = 142.4953,
+  cyan = 194.769,
+  blue = 264.052,
+  magenta = 328.36,
 }, p_mt)
 
-p.fg0_alt1 = p.yellow
-p.fg0_alt2 = p.magenta
-p.fg0_alt3 = p.green
-p.fg0_alt4 = p.cyan
-p.fg0_alt5 = p.blue
+-- stylua: ignore
+local p = setmetatable({
+  bg0_float         = oklch(0.190, 0.000, 0),
+  bg0               = oklch(0.205, 0.000, 0),
+  bg1               = oklch(0.235, 0.000, 0),
+  bg2               = oklch(0.265, 0.000, 0),
+  bg3               = oklch(0.295, 0.000, 0),
+
+  fg0               = oklch(0.805, 0.000, 0),
+  fg0_1             = oklch(0.710, 0.000, 0),
+  fg0_2             = oklch(0.670, 0.000, 0),
+  fg0_3             = oklch(0.630, 0.000, 0),
+  fg1               = oklch(0.520, 0.000, 0),
+  fg2               = oklch(0.460, 0.000, 0),
+  fg3               = oklch(0.400, 0.000, 0),
+
+  red               = oklch(0.735, 0.075, h.red),
+  yellow            = oklch(0.735, 0.075, h.yellow),
+  green             = oklch(0.735, 0.075, h.green),
+  cyan              = oklch(0.735, 0.075, h.cyan),
+  blue              = oklch(0.735, 0.075, h.blue),
+  magenta           = oklch(0.735, 0.075, h.magenta),
+
+  br_red            = oklch(0.770, 0.075, h.red),
+  br_yellow         = oklch(0.770, 0.075, h.yellow),
+  br_green          = oklch(0.770, 0.075, h.green),
+  br_cyan           = oklch(0.770, 0.075, h.cyan),
+  br_blue           = oklch(0.770, 0.075, h.blue),
+  br_magenta        = oklch(0.770, 0.075, h.magenta),
+
+  bg_diff_add       = oklch(0.260, 0.020, h.green),
+  bg_diff_delete    = oklch(0.260, 0.020, h.red),
+  bg_diff_change    = oklch(0.260, 0.020, h.blue),
+  bg_diff_change_em = oklch(0.360, 0.030, h.yellow),
+
+  pure_black        = { 0x000000, 16 },
+}, p_mt)
 
 p.fg_comment = p.fg2
-p.fg_delim = p.fg1
-p.fg_fn = p.fg0_alt3
-p.fg_kw = p.fg0_alt5
-p.fg_number = p.fg0_alt2
-p.fg_oper = p.fg0
-p.fg_string = p.fg0_alt1
-p.fg_type = p.fg0_alt4
+p.fg_delim = p.fg0
+p.fg_fn = p.fg0
+p.fg_kw = p.fg0
+p.fg_number = p.fg0
+p.fg_oper = p.fg0_1
+p.fg_string = p.fg0_3
+p.fg_type = p.fg0_2
+
+p.fg_dir = p.fg0_2
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
-  p.bg2,
+  p.bg3,
   p.red,
   p.green,
   p.yellow,
   p.blue,
   p.magenta,
   p.cyan,
+  p.fg0_2,
   p.fg2,
-  p.fg3,
   p.br_red,
   p.br_green,
   p.br_yellow,
@@ -229,7 +236,7 @@ hl("lCursor", "Cursor")
 hl("CursorIM", "Cursor")
 hl("CursorColumn", "CursorLine")
 hl("CursorLine", { bg = p.bg1 })
-hl("Directory", { fg = p.magenta })
+hl("Directory", { fg = p.fg_dir })
 hl("DiffAdd", { bg = p.bg_diff_add })
 hl("DiffChange", { bg = p.bg_diff_change })
 hl("DiffDelete", { bg = p.bg_diff_delete })
@@ -283,8 +290,8 @@ hl("PmenuShadow", "FloatShadow")
 hl("PmenuShadowThrough", "PmenuShadow")
 hl("ComplMatchIns", {})
 hl("PreInsert", "Added")
-hl("ComplHint", { fg = p.fg2 })
-hl("ComplHintMore", { fg = p.fg2, bold = true })
+hl("ComplHint", { fg = p.fg3 })
+hl("ComplHintMore", { fg = p.fg3, bold = true })
 hl("Question", "Title")
 hl("QuickFixLine", { bg = p.bg2 })
 hl("Search", { fg = p.bg0, bg = p.yellow })
@@ -535,7 +542,7 @@ hl("LspReferenceRead", "LspReferenceText")
 hl("LspReferenceWrite", "LspReferenceText")
 hl("LspReferenceTarget", "LspReferenceText")
 hl("LspInlayHint", "NonText")
-hl("LspCodeLens", { fg = p.fg2 })
+hl("LspCodeLens", "NonText")
 hl("LspCodeLensSeparator", "LspCodeLens")
 hl("LspSignatureActiveParameter", "LspReferenceText")
 
