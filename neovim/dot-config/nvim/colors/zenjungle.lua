@@ -1,6 +1,6 @@
---- Slim, low-distraction colour scheme inspired by zenwritten and evergarden.
---- https://github.com/zenbones-theme/zenbones.nvim
---- https://github.com/everviolet/nvim
+-- Slim, low-distraction colour scheme inspired by zenwritten and evergarden.
+-- https://github.com/zenbones-theme/zenbones.nvim
+-- https://github.com/everviolet/nvim
 
 local api = vim.api
 
@@ -150,55 +150,55 @@ local p_mt = { -- To catch bugs.
 }
 
 -- Palette {{{1
--- Some cterm values are assigned directly due to the approximations being bad.
--- TODO: improve the algorithm?
 -- stylua: ignore
 local p = setmetatable({
-  bg0_float     =   oklch(0.240, 0.008, 169.61),
-  bg0           =   oklch(0.260, 0.010, 164.05),
-  bg1           =   oklch(0.285, 0.012, 160.51),
-  bg2           =   oklch(0.310, 0.015, 161.11),
-  bg3           =   oklch(0.335, 0.018, 161.60),
+  bg0_float         =   oklch(0.175, 0.014, 176.96),
+  bg0               =   oklch(0.190, 0.017, 176.96),
+  bg1               =   oklch(0.220, 0.020, 176.96),
+  bg2               =   oklch(0.250, 0.023, 176.96),
+  bg3               =   oklch(0.280, 0.026, 176.96),
 
-  fg0           =   oklch(0.725, 0.025, 112.12),
-  fg0_alt1      = { oklch(0.725, 0.082, 125.11)[1], 108 },
-  fg0_alt2      = { oklch(0.725, 0.060,  96.79)[1], 143 },
-  fg0_alt3      = { oklch(0.725, 0.030, 175.15)[1], 146 },
-  fg0_alt4      = { oklch(0.725, 0.050, 330.00)[1], 139 },
-  fg1           =   oklch(0.655, 0.025, 112.12),
-  fg2           =   oklch(0.555, 0.025, 112.12),
-  fg3           =   oklch(0.455, 0.025, 112.12),
+  fg0               =   oklch(0.800, 0.040, 176.96),
+  fg1               =   oklch(0.660, 0.038, 176.96),
+  fg2               =   oklch(0.520, 0.036, 176.96),
+  fg3               =   oklch(0.380, 0.034, 176.96),
 
-  red           =   oklch(0.655, 0.140,  21.39),
-  green         =   oklch(0.655, 0.117, 138.32),
-  yellow        =   oklch(0.655, 0.117,  91.69),
-  blue          =   oklch(0.655, 0.096, 240.88),
-  magenta       =   oklch(0.655, 0.110, 337.84),
-  cyan          =   oklch(0.655, 0.077, 204.23),
+  red               =   oklch(0.725, 0.075,  25.00),
+  green             =   oklch(0.725, 0.080, 140.00),
+  yellow            =   oklch(0.725, 0.060, 105.00),
+  blue              =   oklch(0.725, 0.070, 240.00),
+  magenta           =   oklch(0.725, 0.055, 330.00),
+  cyan              =   oklch(0.725, 0.065, 195.00),
 
-  br_red        =   oklch(0.725, 0.140,  21.39),
-  br_green      =   oklch(0.725, 0.117, 138.32),
-  br_yellow     =   oklch(0.725, 0.117,  91.69),
-  br_blue       =   oklch(0.725, 0.096, 240.88),
-  br_magenta    =   oklch(0.725, 0.110, 337.84),
-  br_cyan       =   oklch(0.725, 0.077, 204.23),
+  br_red            =   oklch(0.750, 0.075,  25.00),
+  br_green          =   oklch(0.750, 0.080, 140.00),
+  br_yellow         =   oklch(0.750, 0.060, 105.00),
+  br_blue           =   oklch(0.750, 0.070, 240.00),
+  br_magenta        =   oklch(0.750, 0.055, 330.00),
+  br_cyan           =   oklch(0.750, 0.065, 195.00),
 
-  bg_diff_red   = { oklch(0.355, 0.050,  18.32)[1], 52 },
-  bg_diff_green = { oklch(0.355, 0.050, 131.96)[1], 22 },
-  bg_diff_blue  = { oklch(0.355, 0.050, 232.21)[1], 17 },
-  bg_diff_cyan  = { oklch(0.415, 0.050, 183.42)[1], 24 },
+  bg_diff_add       =   oklch(0.280, 0.050, 142.00),
+  bg_diff_delete    =   oklch(0.280, 0.050,  25.00),
+  bg_diff_change    =   oklch(0.280, 0.050, 240.00),
+  bg_diff_change_em =   oklch(0.390, 0.060, 195.00),
 
-  pure_black    = { 0x000000, 16  },
+  pure_black        = { 0x000000, 16  },
 }, p_mt)
 
+p.fg0_alt1 = p.yellow
+p.fg0_alt2 = p.magenta
+p.fg0_alt3 = p.green
+p.fg0_alt4 = p.cyan
+p.fg0_alt5 = p.blue
+
 p.fg_comment = p.fg2
-p.fg_delim = p.fg0
-p.fg_fn = p.fg0_alt1
-p.fg_kw = p.fg0_alt3
-p.fg_number = p.fg0_alt4
+p.fg_delim = p.fg1
+p.fg_fn = p.fg0_alt3
+p.fg_kw = p.fg0_alt5
+p.fg_number = p.fg0_alt2
 p.fg_oper = p.fg0
-p.fg_string = p.fg0_alt2
-p.fg_type = p.fg0
+p.fg_string = p.fg0_alt1
+p.fg_type = p.fg0_alt4
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
@@ -229,17 +229,17 @@ hl("lCursor", "Cursor")
 hl("CursorIM", "Cursor")
 hl("CursorColumn", "CursorLine")
 hl("CursorLine", { bg = p.bg1 })
-hl("Directory", { fg = p.fg0_alt2 })
-hl("DiffAdd", { bg = p.bg_diff_green })
-hl("DiffChange", { bg = p.bg_diff_blue })
-hl("DiffDelete", { bg = p.bg_diff_red })
-hl("DiffText", { bg = p.bg_diff_cyan })
+hl("Directory", { fg = p.magenta })
+hl("DiffAdd", { bg = p.bg_diff_add })
+hl("DiffChange", { bg = p.bg_diff_change })
+hl("DiffDelete", { bg = p.bg_diff_delete })
+hl("DiffText", { bg = p.bg_diff_change_em })
 hl("DiffTextAdd", "DiffText")
 hl("EndOfBuffer", { fg = p.fg3 })
 hl("TermCursor", "Cursor")
 hl("OkMsg", { fg = p.green })
 hl("WarningMsg", { fg = p.br_yellow })
-hl("ErrorMsg", { fg = p.red })
+hl("ErrorMsg", { fg = p.br_red })
 hl("StderrMsg", "ErrorMsg")
 hl("StdoutMsg", "Normal")
 hl("WinSeparator", { fg = p.bg3 })
@@ -291,10 +291,10 @@ hl("Search", { fg = p.bg0, bg = p.yellow })
 hl("SnippetTabstop", "Visual")
 hl("SnippetTabstopActive", "SnippetTabstop")
 hl("SpecialKey", "SpecialChar")
-hl("SpellBad", { sp = p.red, undercurl = true })
-hl("SpellCap", { sp = p.blue, undercurl = true })
-hl("SpellLocal", { sp = p.cyan, undercurl = true })
-hl("SpellRare", { sp = p.magenta, undercurl = true })
+hl("SpellBad", { sp = p.br_red, undercurl = true })
+hl("SpellCap", { sp = p.br_blue, undercurl = true })
+hl("SpellLocal", { sp = p.br_cyan, undercurl = true })
+hl("SpellRare", { sp = p.br_magenta, undercurl = true })
 hl("StatusLine", { fg = p.fg0, bg = p.bg3 })
 hl("StatusLineNC", { fg = p.fg2, bg = p.bg2 })
 hl("StatusLineTerm", "StatusLine")
@@ -354,11 +354,11 @@ hl("Changed", { fg = p.blue })
 hl("Removed", { fg = p.red })
 
 -- Diagnostic groups (:h diagnostic-highlights) {{{1
-hl("DiagnosticError", { fg = p.red })
+hl("DiagnosticError", { fg = p.br_red })
 hl("DiagnosticWarn", { fg = p.br_yellow })
-hl("DiagnosticInfo", { fg = p.blue })
-hl("DiagnosticHint", { fg = p.magenta })
-hl("DiagnosticOk", { fg = p.green })
+hl("DiagnosticInfo", { fg = p.br_blue })
+hl("DiagnosticHint", { fg = p.br_magenta })
+hl("DiagnosticOk", { fg = p.br_green })
 hl("DiagnosticVirtualTextError", "DiagnosticError")
 hl("DiagnosticVirtualTextWarn", "DiagnosticWarn")
 hl("DiagnosticVirtualTextInfo", "DiagnosticInfo")
@@ -369,11 +369,11 @@ hl("DiagnosticVirtualLinesWarn", "DiagnosticVirtualTextWarn")
 hl("DiagnosticVirtualLinesInfo", "DiagnosticVirtualTextInfo")
 hl("DiagnosticVirtualLinesHint", "DiagnosticVirtualTextHint")
 hl("DiagnosticVirtualLinesOk", "DiagnosticVirtualTextOk")
-hl("DiagnosticUnderlineError", { sp = p.red, undercurl = true })
+hl("DiagnosticUnderlineError", { sp = p.br_red, undercurl = true })
 hl("DiagnosticUnderlineWarn", { sp = p.br_yellow, undercurl = true })
-hl("DiagnosticUnderlineInfo", { sp = p.blue, undercurl = true })
-hl("DiagnosticUnderlineHint", { sp = p.magenta, undercurl = true })
-hl("DiagnosticUnderlineOk", { sp = p.green, undercurl = true })
+hl("DiagnosticUnderlineInfo", { sp = p.br_blue, undercurl = true })
+hl("DiagnosticUnderlineHint", { sp = p.br_magenta, undercurl = true })
+hl("DiagnosticUnderlineOk", { sp = p.br_green, undercurl = true })
 hl("DiagnosticFloatingError", "DiagnosticError")
 hl("DiagnosticFloatingWarn", "DiagnosticWarn")
 hl("DiagnosticFloatingInfo", "DiagnosticInfo")
@@ -465,7 +465,7 @@ hl("@punctuation.special", "@punctuation")
 hl("@comment", "Comment")
 hl("@comment.documentation", "@comment")
 
-hl("@comment.error", { fg = p.red, bold = true })
+hl("@comment.error", { fg = p.br_red, bold = true })
 hl("@comment.warning", { fg = p.br_yellow, bold = true })
 hl("@comment.todo", "SpecialComment")
 hl("@comment.note", "SpecialComment")
