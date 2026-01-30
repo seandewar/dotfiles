@@ -1,5 +1,5 @@
--- Slim, low-distraction colour scheme inspired by zenwritten.
--- https://github.com/zenbones-theme/zenbones.nvim
+--- Slim, low-distraction colour scheme originally inspired by zenwritten.
+--- https://github.com/zenbones-theme/zenbones.nvim
 
 local api = vim.api
 
@@ -150,61 +150,61 @@ local p_mt = { -- To catch bugs.
 
 -- Palette {{{1
 local h = setmetatable({
-  red = 29.23,
-  yellow = 109.7700,
-  green = 142.4953,
-  cyan = 194.769,
-  blue = 264.052,
-  magenta = 328.36,
+  red = 25,
+  yellow = 100,
+  green = 135,
+  cyan = 200,
+  blue = 235,
+  magenta = 335,
 }, p_mt)
 
 -- stylua: ignore
 local p = setmetatable({
-  bg0_float         = oklch(0.190, 0.000, 0),
-  bg0               = oklch(0.205, 0.000, 0),
-  bg1               = oklch(0.235, 0.000, 0),
-  bg2               = oklch(0.265, 0.000, 0),
-  bg3               = oklch(0.295, 0.000, 0),
+  bg0_float         = oklch(0.200, 0.0095, 160),
+  bg0               = oklch(0.220, 0.0095, 160),
+  bg1               = oklch(0.250, 0.0125, 160),
+  bg2               = oklch(0.270, 0.0135, 164),
+  bg3               = oklch(0.330, 0.0160, 164),
 
-  fg0               = oklch(0.805, 0.000, 0),
-  fg0_1             = oklch(0.710, 0.000, 0),
-  fg0_2             = oklch(0.670, 0.000, 0),
-  fg0_3             = oklch(0.630, 0.000, 0),
-  fg1               = oklch(0.520, 0.000, 0),
-  fg2               = oklch(0.460, 0.000, 0),
+  fg0               = oklch(0.825, 0.0175, 115),
+  fg0_1             = oklch(0.735, 0.0450, 130),
+  fg0_2             = oklch(0.685, 0.0450, 125),
+  fg0_3             = oklch(0.595, 0.0400, 138),
+  fg1               = oklch(0.555, 0.0165, 138),
+  fg2               = oklch(0.480, 0.0180, 160),
 
-  red               = oklch(0.735, 0.075, h.red),
+  red               = oklch(0.735, 0.085, h.red),
   yellow            = oklch(0.735, 0.075, h.yellow),
-  green             = oklch(0.735, 0.075, h.green),
-  cyan              = oklch(0.735, 0.075, h.cyan),
-  blue              = oklch(0.735, 0.075, h.blue),
+  green             = oklch(0.735, 0.080, h.green),
+  cyan              = oklch(0.735, 0.065, h.cyan),
+  blue              = oklch(0.735, 0.065, h.blue),
   magenta           = oklch(0.735, 0.075, h.magenta),
 
-  br_red            = oklch(0.770, 0.075, h.red),
+  br_red            = oklch(0.770, 0.085, h.red),
   br_yellow         = oklch(0.770, 0.075, h.yellow),
-  br_green          = oklch(0.770, 0.075, h.green),
-  br_cyan           = oklch(0.770, 0.075, h.cyan),
-  br_blue           = oklch(0.770, 0.075, h.blue),
+  br_green          = oklch(0.770, 0.080, h.green),
+  br_cyan           = oklch(0.770, 0.065, h.cyan),
+  br_blue           = oklch(0.770, 0.065, h.blue),
   br_magenta        = oklch(0.770, 0.075, h.magenta),
 
-  bg_diff_add       = oklch(0.260, 0.020, h.green),
-  bg_diff_delete    = oklch(0.260, 0.020, h.red),
-  bg_diff_change    = oklch(0.260, 0.020, h.blue),
-  bg_diff_change_em = oklch(0.360, 0.030, h.yellow),
+  bg_diff_add       = oklch(0.310, 0.022, h.green),
+  bg_diff_delete    = oklch(0.310, 0.022, h.red),
+  bg_diff_change    = oklch(0.310, 0.022, h.blue),
+  bg_diff_change_em = oklch(0.400, 0.035, h.cyan),
 
   pure_black        = { 0x000000, 16 },
 }, p_mt)
 
-p.fg_comment = p.yellow
-p.fg_delim = p.fg0
-p.fg_fn = p.fg0
-p.fg_kw = p.fg0
-p.fg_number = p.fg0
-p.fg_oper = p.fg0_1
-p.fg_string = p.fg0_3
-p.fg_type = p.fg0_2
+p.fg_comment = p.fg1
+p.fg_delim = p.fg0_3
+p.fg_fn = p.yellow
+p.fg_kw = p.fg0_1
+p.fg_number = p.magenta
+p.fg_oper = p.fg0_2
+p.fg_string = p.green
+p.fg_type = p.fg0
 
-p.fg_dir = p.fg0_2
+p.fg_dir = p.blue
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
@@ -215,7 +215,7 @@ hl_term {
   p.blue,
   p.magenta,
   p.cyan,
-  p.fg0_2,
+  p.fg1,
   p.fg2,
   p.br_red,
   p.br_green,
@@ -275,7 +275,7 @@ hl("FloatTitle", "FloatBorder")
 hl("FloatFooter", "FloatTitle")
 hl("NormalNC", "Normal")
 hl("Pmenu", { fg = p.fg0, bg = p.bg3 })
-hl("PmenuSel", { fg = p.bg0, bg = p.fg0_2 })
+hl("PmenuSel", { fg = p.bg0, bg = p.fg1 })
 hl("PmenuKind", { fg = p.fg1 })
 hl("PmenuKindSel", "PmenuSel")
 hl("PmenuExtra", { fg = p.fg2 })
@@ -309,7 +309,7 @@ hl("TabLine", "StatusLineNC")
 hl("TabLineFill", "StatusLineNC")
 hl("TabLineSel", "StatusLine")
 hl("Title", { fg = p.fg0, bold = true })
-hl("Visual", { fg = p.bg0, bg = p.fg0_2 })
+hl("Visual", { fg = p.bg0, bg = p.fg1 })
 hl("VisualNOS", "Visual")
 hl("Whitespace", { fg = p.fg2 })
 hl("WildMenu", "Visual")
@@ -526,7 +526,7 @@ hl("@keyword.import.cpp", "Include")
 -- Lua parser overrides
 hl("@constructor.lua", {})
 
--- LSP semantic groups (:h lsp-semantic-highlight) {{{1
+-- LSP - semantic groups (:h lsp-semantic-highlight) {{{1
 -- Can refer to calls, but links @function by default, which is for definitions.
 hl("@lsp.type.function", "Function")
 -- Typically it's more useful to guess a more specific group based on where the
@@ -535,7 +535,7 @@ hl("@lsp.type.macro", {})
 -- Ensures the signs of numbers still use @constant.
 hl("@lsp.type.operator", {})
 
--- LSP other groups (:h lsp-highlight) {{{1
+-- LSP - other groups (:h lsp-highlight) {{{1
 hl("LspReferenceText", { bg = p.bg2 })
 hl("LspReferenceRead", "LspReferenceText")
 hl("LspReferenceWrite", "LspReferenceText")
@@ -545,7 +545,7 @@ hl("LspCodeLens", "NonText")
 hl("LspCodeLensSeparator", "LspCodeLens")
 hl("LspSignatureActiveParameter", "LspReferenceText")
 
--- syntax/vim.vim overrides {{{1
+-- $VIMRUNTIME/syntax/vim.vim {{{1
 -- Mostly only overriding groups that have crap links.
 hl("vimAutocmdPattern", "String")
 hl("vimBracket", "SpecialChar") -- <>s in key notation.
@@ -559,7 +559,7 @@ hl("vimOption", "Identifier")
 hl("vimUserFunc", "Function")
 hl("vimWildcardStar", "SpecialChar")
 
--- syntax/lua.vim overrides {{{1
+-- $VIMRUNTIME/syntax/lua.vim {{{1
 hl("luaFunction", "Keyword")
 hl("luaTable", {}) -- Most delimiters aren't highlighted.
 
@@ -573,4 +573,4 @@ vim.g.fzf_colors = {
 }
 
 -- }}}1
--- vim: fdm=marker
+-- vim: fdm=marker fdl=0
