@@ -167,8 +167,8 @@ local p = setmetatable({
   bg3               = oklch(0.330, 0.0160, 164),
 
   fg0               = oklch(0.825, 0.0175, 115),
-  fg0_1             = oklch(0.735, 0.0450, 130),
-  fg0_2             = oklch(0.685, 0.0450, 125),
+  fg0_1             = oklch(0.735, 0.0475, 120),
+  fg0_2             = oklch(0.640, 0.0435, 130),
   fg0_3             = oklch(0.595, 0.0400, 138),
   fg1               = oklch(0.555, 0.0165, 138),
   fg2               = oklch(0.480, 0.0180, 160),
@@ -177,14 +177,14 @@ local p = setmetatable({
   yellow            = oklch(0.735, 0.075, h.yellow),
   green             = oklch(0.735, 0.080, h.green),
   cyan              = oklch(0.735, 0.065, h.cyan),
-  blue              = oklch(0.735, 0.065, h.blue),
+  blue              = oklch(0.735, 0.060, h.blue),
   magenta           = oklch(0.735, 0.075, h.magenta),
 
   br_red            = oklch(0.770, 0.085, h.red),
   br_yellow         = oklch(0.770, 0.075, h.yellow),
   br_green          = oklch(0.770, 0.080, h.green),
   br_cyan           = oklch(0.770, 0.065, h.cyan),
-  br_blue           = oklch(0.770, 0.065, h.blue),
+  br_blue           = oklch(0.770, 0.060, h.blue),
   br_magenta        = oklch(0.770, 0.075, h.magenta),
 
   bg_diff_add       = oklch(0.310, 0.022, h.green),
@@ -197,11 +197,11 @@ local p = setmetatable({
 
 p.fg_comment = p.fg1
 p.fg_delim = p.fg0_3
-p.fg_fn = p.yellow
-p.fg_kw = p.fg0_1
+p.fg_fn = p.fg0_1
+p.fg_kw = p.fg0
 p.fg_number = p.magenta
 p.fg_oper = p.fg0_2
-p.fg_string = p.green
+p.fg_string = p.yellow
 p.fg_type = p.fg0
 
 p.fg_dir = p.blue
