@@ -152,7 +152,7 @@ local p_mt = { -- To catch bugs.
 local h = setmetatable({
   red = 25,
   yellow = 100,
-  green = 135,
+  green = 128,
   cyan = 200,
   blue = 235,
   magenta = 335,
@@ -573,4 +573,5 @@ vim.g.fzf_colors = {
 }
 
 -- }}}1
+
 -- vim: fdm=marker fdl=0
