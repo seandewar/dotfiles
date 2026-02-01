@@ -167,9 +167,9 @@ local p = setmetatable({
   bg3               = oklch(0.330, 0.0160, 164),
 
   fg0               = oklch(0.825, 0.0175, 115),
-  fg0_1             = oklch(0.735, 0.0475, 120),
-  fg0_2             = oklch(0.640, 0.0435, 130),
-  fg0_3             = oklch(0.595, 0.0400, 138),
+  fg0_1             = oklch(0.785, 0.0225, 230),
+  fg0_2             = oklch(0.735, 0.0475, 120),
+  fg0_3             = oklch(0.655, 0.0350, 135),
   fg1               = oklch(0.555, 0.0165, 138),
   fg2               = oklch(0.480, 0.0180, 160),
 
@@ -197,14 +197,14 @@ local p = setmetatable({
 
 p.fg_comment = p.fg1
 p.fg_delim = p.fg0_3
-p.fg_fn = p.fg0_1
+p.fg_fn = p.fg0
 p.fg_kw = p.fg0
 p.fg_number = p.magenta
 p.fg_oper = p.fg0_2
 p.fg_string = p.yellow
 p.fg_type = p.fg0
 
-p.fg_dir = p.blue
+p.fg_dir = p.green
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
@@ -430,7 +430,7 @@ hl("@type", "Type")
 hl("@type.builtin", "@type")
 hl("@type.definition", "@type")
 
-hl("@attribute", "Identifier")
+hl("@attribute", "Operator")
 hl("@attribute.builtin", "@attribute")
 hl("@property", "Identifier")
 
@@ -512,28 +512,54 @@ hl("@tag.builtin", "@tag")
 hl("@tag.attribute", "@tag")
 hl("@tag.delimiter", "@tag")
 
--- Comment parser overrides
-hl("@constant.comment", "Comment")
-hl("@constant.comment", "Comment")
-hl("@number.comment", "Comment")
-hl("@punctuation.bracket.comment", "Comment")
-hl("@punctuation.delimiter.comment", "Comment")
+-- comment parser overrides {{{1
+hl("@constant.comment", "@comment")
+hl("@constant.comment", "@comment")
+hl("@number.comment", "@comment")
+hl("@punctuation.bracket.comment", "@comment")
+hl("@punctuation.delimiter.comment", "@comment")
 
--- p, p++ parser overrides
-hl("@keyword.import.p", "Include")
-hl("@keyword.import.cpp", "Include")
-
--- Lua parser overrides
+-- lua parser overrides {{{1
 hl("@constructor.lua", {})
 
 -- LSP - semantic groups (:h lsp-semantic-highlight) {{{1
--- Can refer to calls, but links @function by default, which is for definitions.
-hl("@lsp.type.function", "Function")
+hl("@lsp.type.class", "@type")
+hl("@lsp.type.comment", "@comment")
+hl("@lsp.type.decorator", "@attribute")
+hl("@lsp.type.enum", "@type")
+hl("@lsp.type.enumMember", "@constant")
+hl("@lsp.type.event", "@type")
+hl("@lsp.type.function", "@function")
+hl("@lsp.type.interface", "@type")
+hl("@lsp.type.keyword", "@keyword")
 -- Typically it's more useful to guess a more specific group based on where the
 -- macro is being used. May still be useful for combined highlights, though.
 hl("@lsp.type.macro", {})
+hl("@lsp.type.method", "@function.method")
+hl("@lsp.type.modifier", "@type.qualifier")
+hl("@lsp.type.namespace", "@module")
+hl("@lsp.type.number", "@number")
 -- Ensures the signs of numbers still use @constant.
 hl("@lsp.type.operator", {})
+hl("@lsp.type.parameter", "@variable.parameter")
+hl("@lsp.type.property", "@property")
+hl("@lsp.type.regexp", "@string.regexp")
+hl("@lsp.type.string", "@string")
+hl("@lsp.type.struct", "@type")
+hl("@lsp.type.type", "@type")
+hl("@lsp.type.typeParameter", "@type")
+hl("@lsp.type.variable", "@variable")
+
+hl("@lsp.mod.abstract", {})
+hl("@lsp.mod.async", {})
+hl("@lsp.mod.declaration", {})
+hl("@lsp.mod.defaultLibrary", {})
+hl("@lsp.mod.definition", {})
+hl("@lsp.mod.deprecated", "DiagnosticDeprecated")
+hl("@lsp.mod.documentation", {})
+hl("@lsp.mod.modification", {})
+hl("@lsp.mod.readonly", {})
+hl("@lsp.mod.static", {})
 
 -- LSP - other groups (:h lsp-highlight) {{{1
 hl("LspReferenceText", { bg = p.bg2 })
@@ -545,7 +571,7 @@ hl("LspCodeLens", "NonText")
 hl("LspCodeLensSeparator", "LspCodeLens")
 hl("LspSignatureActiveParameter", "LspReferenceText")
 
--- $VIMRUNTIME/syntax/vim.vim {{{1
+-- $VIMRUNTIME/syntax/vim.vim overrides {{{1
 -- Mostly only overriding groups that have crap links.
 hl("vimAutocmdPattern", "String")
 hl("vimBracket", "SpecialChar") -- <>s in key notation.
@@ -559,7 +585,7 @@ hl("vimOption", "Identifier")
 hl("vimUserFunc", "Function")
 hl("vimWildcardStar", "SpecialChar")
 
--- $VIMRUNTIME/syntax/lua.vim {{{1
+-- $VIMRUNTIME/syntax/lua.vim overrides {{{1
 hl("luaFunction", "Keyword")
 hl("luaTable", {}) -- Most delimiters aren't highlighted.
 
