@@ -10,25 +10,8 @@ vim.g.colors_name = "zensmitten"
 -- Helpers {{{1
 local approx_cterm
 do
-  local cterm_lut = {
-    -- System colours (cterm 0-15)
-    { 0, 0, 0 },
-    { 128, 0, 0 },
-    { 0, 128, 0 },
-    { 128, 128, 0 },
-    { 0, 0, 128 },
-    { 128, 0, 128 },
-    { 0, 128, 128 },
-    { 192, 192, 192 },
-    { 128, 128, 128 },
-    { 255, 0, 0 },
-    { 0, 255, 0 },
-    { 255, 255, 0 },
-    { 0, 0, 255 },
-    { 255, 0, 255 },
-    { 0, 255, 255 },
-    { 255, 255, 255 },
-  }
+  -- Doesn't include system colours (cterm 0-15) as they're commonly customized.
+  local cterm_lut = {}
 
   -- 6x6x6 colour cube (cterm 16-231)
   local levels = { 0, 95, 135, 175, 215, 255 }
@@ -44,7 +27,7 @@ do
     local c = 8 + (i * 10)
     table.insert(cterm_lut, { c, c, c })
   end
-  assert(#cterm_lut == 256)
+  assert(#cterm_lut == 256 - 16)
 
   approx_cterm = function(r8, g8, b8)
     local best_dist_sq = math.huge
@@ -68,7 +51,7 @@ do
         best_lut_i = i
       end
     end
-    return best_lut_i - 1
+    return best_lut_i + 15
   end
 end
 
@@ -160,49 +143,50 @@ local h = setmetatable({
 
 -- stylua: ignore
 local p = setmetatable({
-  bg0_float         = oklch(0.200, 0.0095, 160),
-  bg0               = oklch(0.220, 0.0095, 160),
-  bg1               = oklch(0.250, 0.0125, 160),
-  bg2               = oklch(0.270, 0.0135, 164),
-  bg3               = oklch(0.330, 0.0160, 164),
+  bg0_float         = oklch(0.200, 0.0000, 160),
+  bg0               = oklch(0.220, 0.0010, 160),
+  bg1               = oklch(0.250, 0.0040, 160),
+  bg2               = oklch(0.270, 0.0050, 164),
+  bg3               = oklch(0.330, 0.0075, 164),
 
-  fg0               = oklch(0.825, 0.0175, 115),
-  fg0_1             = oklch(0.785, 0.0225, 230),
-  fg0_2             = oklch(0.735, 0.0475, 120),
-  fg0_3             = oklch(0.655, 0.0350, 135),
-  fg1               = oklch(0.555, 0.0165, 138),
-  fg2               = oklch(0.480, 0.0180, 160),
+  fg0               = oklch(0.795, 0.0150, 115),
+  fg0_1             = oklch(0.795, 0.0275, 280),
+  fg0_2             = oklch(0.785, 0.0305, 170),
+  fg0_3             = oklch(0.780, 0.0505, 120),
+  fg1               = oklch(0.555, 0.0155, 150),
+  fg2               = oklch(0.500, 0.0160, 160),
 
-  red               = oklch(0.735, 0.085, h.red),
-  yellow            = oklch(0.735, 0.075, h.yellow),
-  green             = oklch(0.735, 0.080, h.green),
-  cyan              = oklch(0.735, 0.065, h.cyan),
-  blue              = oklch(0.735, 0.060, h.blue),
-  magenta           = oklch(0.735, 0.075, h.magenta),
+  red               = oklch(0.735, 0.0475, h.red),
+  yellow            = oklch(0.735, 0.0500, h.yellow),
+  green             = oklch(0.735, 0.0500, h.green),
+  cyan              = oklch(0.735, 0.0475, h.cyan),
+  blue              = oklch(0.735, 0.0475, h.blue),
+  magenta           = oklch(0.735, 0.0475, h.magenta),
 
-  br_red            = oklch(0.770, 0.085, h.red),
-  br_yellow         = oklch(0.770, 0.075, h.yellow),
-  br_green          = oklch(0.770, 0.080, h.green),
-  br_cyan           = oklch(0.770, 0.065, h.cyan),
-  br_blue           = oklch(0.770, 0.060, h.blue),
-  br_magenta        = oklch(0.770, 0.075, h.magenta),
+  br_red            = oklch(0.770, 0.0475, h.red),
+  br_yellow         = oklch(0.770, 0.0500, h.yellow),
+  br_green          = oklch(0.770, 0.0500, h.green),
+  br_cyan           = oklch(0.770, 0.0475, h.cyan),
+  br_blue           = oklch(0.770, 0.0475, h.blue),
+  br_magenta        = oklch(0.770, 0.0475, h.magenta),
 
-  bg_diff_add       = oklch(0.310, 0.022, h.green),
-  bg_diff_delete    = oklch(0.310, 0.022, h.red),
-  bg_diff_change    = oklch(0.310, 0.022, h.blue),
-  bg_diff_change_em = oklch(0.400, 0.035, h.cyan),
+  bg_diff_add       = oklch(0.310, 0.0220, h.green),
+  bg_diff_delete    = oklch(0.310, 0.0220, h.red),
+  bg_diff_change    = oklch(0.310, 0.0220, h.blue),
+  bg_diff_change_em = oklch(0.400, 0.0350, h.cyan),
 
   pure_black        = { 0x000000, 16 },
 }, p_mt)
 
+p.fg_attrib = p.fg0_3
 p.fg_comment = p.fg1
-p.fg_delim = p.fg0_3
-p.fg_fn = p.fg0
-p.fg_kw = p.fg0
+p.fg_delim = p.fg0
+p.fg_fn = p.fg0_1
+p.fg_kw = p.fg0_3
 p.fg_number = p.magenta
-p.fg_oper = p.fg0_2
+p.fg_oper = p.fg0
 p.fg_string = p.yellow
-p.fg_type = p.fg0
+p.fg_type = p.fg0_2
 
 p.fg_dir = p.green
 
@@ -430,7 +414,7 @@ hl("@type", "Type")
 hl("@type.builtin", "@type")
 hl("@type.definition", "@type")
 
-hl("@attribute", "Operator")
+hl("@attribute", { fg = p.fg_attrib })
 hl("@attribute.builtin", "@attribute")
 hl("@property", "Identifier")
 
@@ -512,14 +496,14 @@ hl("@tag.builtin", "@tag")
 hl("@tag.attribute", "@tag")
 hl("@tag.delimiter", "@tag")
 
--- comment parser overrides {{{1
+-- comment parser {{{1
 hl("@constant.comment", "@comment")
 hl("@constant.comment", "@comment")
 hl("@number.comment", "@comment")
 hl("@punctuation.bracket.comment", "@comment")
 hl("@punctuation.delimiter.comment", "@comment")
 
--- lua parser overrides {{{1
+-- lua parser {{{1
 hl("@constructor.lua", {})
 
 -- LSP - semantic groups (:h lsp-semantic-highlight) {{{1
@@ -571,7 +555,7 @@ hl("LspCodeLens", "NonText")
 hl("LspCodeLensSeparator", "LspCodeLens")
 hl("LspSignatureActiveParameter", "LspReferenceText")
 
--- $VIMRUNTIME/syntax/vim.vim overrides {{{1
+-- $VIMRUNTIME/syntax/vim.vim {{{1
 -- Mostly only overriding groups that have crap links.
 hl("vimAutocmdPattern", "String")
 hl("vimBracket", "SpecialChar") -- <>s in key notation.
@@ -585,9 +569,13 @@ hl("vimOption", "Identifier")
 hl("vimUserFunc", "Function")
 hl("vimWildcardStar", "SpecialChar")
 
--- $VIMRUNTIME/syntax/lua.vim overrides {{{1
+-- $VIMRUNTIME/syntax/lua.vim {{{1
 hl("luaFunction", "Keyword")
 hl("luaTable", {}) -- Most delimiters aren't highlighted.
+
+-- zig.vim {{{1
+-- ""s in strings aren't highlighted as delimiters, so why these??
+hl("zigMultilineStringDelimiter", "String")
 
 -- copilot.vim {{{1
 hl("CopilotSuggestion", "ComplHint")
