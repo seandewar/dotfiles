@@ -1,0 +1,3 @@
+;; extends
+
+(lifetime "'" @punctuation.special)

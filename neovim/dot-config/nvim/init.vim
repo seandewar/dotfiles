@@ -36,7 +36,7 @@ set spelllang=en_gb spelloptions=camel
 set splitbelow splitright
 set textwidth=80
 set title
-set wildmode=list:longest,full
+set wildmode=list:longest,full wildoptions-=pum
 set winborder=single
 
 function! s:SetPumMaxWidth() abort

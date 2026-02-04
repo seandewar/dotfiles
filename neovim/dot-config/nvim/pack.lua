@@ -42,24 +42,13 @@ pack.add({
   confirm = false,
 })
 
--- Automatically delete plugins that we no longer call vim.pack.add() for.
-local inactive_plugins = vim
-  .iter(pack.get())
-  :filter(function(plugin)
-    return not plugin.active
-  end)
-  :map(function(plugin)
-    return plugin.spec.name
-  end)
-  :totable()
-
-if #inactive_plugins > 0 then
-  print "Deleting inactive plugins..."
-  pack.del(inactive_plugins)
-end
-
 api.nvim_create_user_command("PackUpdate", function(args)
-  pack.update(#args.fargs > 0 and args.fargs or nil, { force = args.bang })
+  local opts = { force = args.bang }
+  if args.fargs[1] == "++lockfile" then
+    opts.target = "lockfile"
+    table.remove(args.fargs, 1)
+  end
+  pack.update(#args.fargs > 0 and args.fargs or nil, opts)
 end, {
   nargs = "*",
   complete = function(lead, _, _)
@@ -77,3 +66,21 @@ end, {
   bar = true,
   desc = "Update plugins managed by vim.pack",
 })
+
+local inactive_plugins = vim
+  .iter(pack.get())
+  :filter(function(plugin)
+    return not plugin.active
+  end)
+  :map(function(plugin)
+    return plugin.spec.name
+  end)
+  :totable()
+
+if #inactive_plugins > 0 then
+  vim.notify(
+    "Inactive plugins found. Remove via :lua vim.pack.del"
+      .. vim.inspect(inactive_plugins),
+    vim.log.levels.WARN
+  )
+end

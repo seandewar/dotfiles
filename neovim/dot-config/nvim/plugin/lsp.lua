@@ -49,6 +49,8 @@ lsp.handlers["client/registerCapability"] =
 lsp.handlers["client/unregisterCapability"] =
   new_capability_change_handler(lsp.handlers["client/unregisterCapability"])
 
+lsp.codelens.enable()
+
 -- These mappings, like the Nvim defaults, mostly override "gr" for LSP stuff.
 -- (Many are set to use fzf-lua handlers instead)
 keymap.set({ "n", "x" }, "grf", function()
@@ -70,6 +72,8 @@ local function document_symbols()
 end
 keymap.set("n", "gO", document_symbols, { desc = "LSP Document Symbols" })
 keymap.set("n", "grd", document_symbols, { desc = "LSP Document Symbols" })
+
+keymap.set("n", "grl", lsp.codelens.run, { desc = "LSP Run Code Lens" })
 
 keymap.set("n", "<C-S>", lsp.buf.signature_help, {
   desc = "LSP Signature Help",
