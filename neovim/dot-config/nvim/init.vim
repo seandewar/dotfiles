@@ -10,7 +10,7 @@ end
 
 " Enable Nvim's experimental Lua loader and UI {{{1
 " The loader byte-compiles and caches Lua files; best to keep it near the top.
-lua vim.loader.enable() require("vim._extui").enable({})
+lua vim.loader.enable() require("vim._core.ui2").enable({})
 
 " General settings {{{1
 set cinoptions+=:0,g0,N-s,j1,l1
