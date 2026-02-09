@@ -5,11 +5,11 @@
       "src": "https://github.com/glacambre/firenvim"
     },
     "fzf-lua": {
-      "rev": "b4b1f05957a77f7662de834328827890c1a8c02b",
+      "rev": "fb8c50ba62a0daa433b7ac2b78834f318322b879",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "nvim-treesitter": {
-      "rev": "4967fa48b0fe7a7f92cee546c76bb4bb61bb14d5",
+      "rev": "45a07f869b0cffba342276f2c77ba7c116d35db8",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-textobjects": {
