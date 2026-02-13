@@ -150,9 +150,9 @@ local p = setmetatable({
   bg3               = oklch(0.330, 0.0075, 164),
 
   fg0               = oklch(0.795, 0.0150, 115),
-  fg0_1             = oklch(0.795, 0.0475, 280),
-  fg0_2             = oklch(0.785, 0.0475, 170),
-  fg0_3             = oklch(0.780, 0.0500, 120),
+  fg0_1             = oklch(0.790, 0.0450, h.blue),
+  fg0_2             = oklch(0.785, 0.0475, 165),
+  fg0_3             = oklch(0.780, 0.0500, h.green),
   fg1               = oklch(0.555, 0.0155, 150),
   fg2               = oklch(0.500, 0.0160, 160),
 
@@ -183,7 +183,7 @@ p.fg_comment = p.fg1
 p.fg_delim = p.fg0
 p.fg_fn = p.fg0_1
 p.fg_kw = p.fg0_3
-p.fg_number = p.magenta
+p.fg_number = p.yellow
 p.fg_oper = p.fg0
 p.fg_string = p.yellow
 p.fg_type = p.fg0_2

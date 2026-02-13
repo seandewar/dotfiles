@@ -49,14 +49,15 @@ fzf.setup {
 }
 fzf.register_ui_select()
 
-keymap.set("n", "<Leader>ff", "<Cmd>FzfLua files<CR>")
-keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
 keymap.set("n", "<Leader>f/", "<Cmd>FzfLua blines<CR>")
-keymap.set("n", "<Leader>fo", "<Cmd>FzfLua oldfiles<CR>")
-keymap.set("n", "<Leader>fg", "<Cmd>FzfLua live_grep<CR>")
 keymap.set("n", "<Leader>fG", "<Cmd>FzfLua grep_cword<CR>")
-keymap.set("n", "<Leader>ft", "<Cmd>FzfLua tags<CR>")
+keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
+keymap.set("n", "<Leader>ff", "<Cmd>FzfLua files<CR>")
+keymap.set("n", "<Leader>fg", "<Cmd>FzfLua live_grep<CR>")
+keymap.set("n", "<Leader>fj", "<Cmd>FzfLua jumps<CR>")
+keymap.set("n", "<Leader>fo", "<Cmd>FzfLua oldfiles<CR>")
 keymap.set("n", "<Leader>fr", "<Cmd>FzfLua resume<CR>")
+keymap.set("n", "<Leader>ft", "<Cmd>FzfLua tags<CR>")
 keymap.set("n", "<Leader>fu", "<Cmd>FzfLua undotree<CR>")
 
 keymap.set("n", "<Leader>gf", "<Cmd>FzfLua git_files<CR>")
