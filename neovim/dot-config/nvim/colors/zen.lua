@@ -1,11 +1,11 @@
---- Slim, low-distraction colour scheme originally inspired by zenwritten.
---- https://github.com/zenbones-theme/zenbones.nvim
+--- Low-distraction colour scheme inspired by mfd:
+--- https://github.com/kungfusheep/mfd.nvim
 
 local api = vim.api
 
 vim.cmd.highlight "clear"
-vim.o.background = "dark"
-vim.g.colors_name = "zensmitten"
+vim.o.background = "light"
+vim.g.colors_name = "zen"
 
 -- Helpers {{{1
 local approx_cterm
@@ -117,7 +117,7 @@ end
 local function hl_term(colors)
   assert(#colors == 16)
   for i, color in ipairs(colors) do
-    vim.g["terminal_color_" .. (i - 1)] = ("#%x"):format(color[1])
+    vim.g["terminal_color_" .. (i - 1)] = ("#%06x"):format(color[1])
   end
 end
 
@@ -133,80 +133,67 @@ local p_mt = { -- To catch bugs.
 
 -- Palette {{{1
 local h = setmetatable({
-  red = 25,
-  yellow = 100,
-  green = 128,
-  cyan = 200,
-  blue = 235,
-  magenta = 335,
+  red = 29.23,
+  yellow = 109.77,
+  green = 142.49,
+  cyan = 194.77,
+  blue = 264.05,
+  magenta = 328.36,
 }, p_mt)
 
 -- stylua: ignore
 local p = setmetatable({
-  bg0_float         = oklch(0.200, 0.0000, 160),
-  bg0               = oklch(0.220, 0.0010, 160),
-  bg1               = oklch(0.250, 0.0040, 160),
-  bg2               = oklch(0.270, 0.0050, 164),
-  bg3               = oklch(0.330, 0.0075, 164),
+  bg0_float         = oklch(0.650, 0.0000, 0),
+  bg0               = oklch(0.635, 0.0000, 0),
+  bg1               = oklch(0.620, 0.0000, 0),
+  bg2               = oklch(0.605, 0.0000, 0),
+  bg3               = oklch(0.590, 0.0000, 0),
 
-  fg0               = oklch(0.795, 0.0150, 115),
-  fg0_1             = oklch(0.790, 0.0450, h.blue),
-  fg0_2             = oklch(0.785, 0.0475, 165),
-  fg0_3             = oklch(0.780, 0.0500, h.green),
-  fg1               = oklch(0.555, 0.0155, 150),
-  fg2               = oklch(0.500, 0.0160, 160),
+  fg0               = oklch(0.275, 0.0000, 0),
+  fg0_1             = oklch(0.330, 0.0565, h.cyan),
+  fg1               = oklch(0.380, 0.0000, 0),
+  fg2               = oklch(0.435, 0.0000, 0),
 
-  red               = oklch(0.735, 0.0475, h.red),
-  yellow            = oklch(0.735, 0.0500, h.yellow),
-  green             = oklch(0.735, 0.0500, h.green),
-  cyan              = oklch(0.735, 0.0475, h.cyan),
-  blue              = oklch(0.735, 0.0475, h.blue),
-  magenta           = oklch(0.735, 0.0475, h.magenta),
+  red0              = oklch(0.380, 0.0831, h.red),
+  yellow0           = oklch(0.380, 0.0831, h.yellow),
+  green0            = oklch(0.380, 0.0860, h.green),
+  cyan0             = oklch(0.380, 0.0650, h.cyan),
+  blue0             = oklch(0.380, 0.0831, h.blue),
+  magenta0          = oklch(0.380, 0.0831, h.magenta),
 
-  br_red            = oklch(0.770, 0.0475, h.red),
-  br_yellow         = oklch(0.770, 0.0500, h.yellow),
-  br_green          = oklch(0.770, 0.0500, h.green),
-  br_cyan           = oklch(0.770, 0.0475, h.cyan),
-  br_blue           = oklch(0.770, 0.0475, h.blue),
-  br_magenta        = oklch(0.770, 0.0475, h.magenta),
+  red1              = oklch(0.435, 0.0950, h.red),
+  yellow1           = oklch(0.435, 0.0950, h.yellow),
+  green1            = oklch(0.435, 0.0981, h.green),
+  cyan1             = oklch(0.435, 0.0743, h.cyan),
+  blue1             = oklch(0.435, 0.0950, h.blue),
+  magenta1          = oklch(0.435, 0.0950, h.magenta),
 
-  bg_diff_add       = oklch(0.310, 0.0220, h.green),
-  bg_diff_delete    = oklch(0.310, 0.0220, h.red),
-  bg_diff_change    = oklch(0.310, 0.0220, h.blue),
-  bg_diff_change_em = oklch(0.400, 0.0350, h.cyan),
-
-  pure_black        = { 0x000000, 16 },
+  bg_diff_add       = oklch(0.605, 0.0200, h.green),
+  bg_diff_delete    = oklch(0.605, 0.0200, h.red),
+  bg_diff_change    = oklch(0.605, 0.0200, h.blue),
+  bg_diff_change_em = oklch(0.635, 0.0250, h.cyan),
 }, p_mt)
 
-p.fg_attrib = p.fg0_3
-p.fg_comment = p.fg1
-p.fg_delim = p.fg0
-p.fg_fn = p.fg0_1
-p.fg_kw = p.fg0_3
-p.fg_number = p.yellow
-p.fg_oper = p.fg0
-p.fg_string = p.yellow
-p.fg_type = p.fg0_2
-
-p.fg_dir = p.green
+local base_comment = { fg = p.fg1 }
+local base_string = { fg = p.fg0_1 }
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
   p.bg3,
-  p.red,
-  p.green,
-  p.yellow,
-  p.blue,
-  p.magenta,
-  p.cyan,
+  p.red0,
+  p.green0,
+  p.yellow0,
+  p.blue0,
+  p.magenta0,
+  p.cyan0,
   p.fg1,
   p.fg2,
-  p.br_red,
-  p.br_green,
-  p.br_yellow,
-  p.br_blue,
-  p.br_magenta,
-  p.br_cyan,
+  p.red1,
+  p.green1,
+  p.yellow1,
+  p.blue1,
+  p.magenta1,
+  p.cyan1,
   p.fg0,
 }
 
@@ -219,7 +206,7 @@ hl("lCursor", "Cursor")
 hl("CursorIM", "Cursor")
 hl("CursorColumn", "CursorLine")
 hl("CursorLine", { bg = p.bg1 })
-hl("Directory", { fg = p.fg_dir })
+hl("Directory", { fg = p.fg0, bold = true })
 hl("DiffAdd", { bg = p.bg_diff_add })
 hl("DiffChange", { bg = p.bg_diff_change })
 hl("DiffDelete", { bg = p.bg_diff_delete })
@@ -227,24 +214,24 @@ hl("DiffText", { bg = p.bg_diff_change_em })
 hl("DiffTextAdd", "DiffText")
 hl("EndOfBuffer", { fg = p.fg2 })
 hl("TermCursor", "Cursor")
-hl("OkMsg", { fg = p.green })
-hl("WarningMsg", { fg = p.br_yellow })
-hl("ErrorMsg", { fg = p.br_red })
+hl("OkMsg", { fg = p.green0 })
+hl("WarningMsg", { fg = p.yellow0 })
+hl("ErrorMsg", { fg = p.red0 })
 hl("StderrMsg", "ErrorMsg")
 hl("StdoutMsg", "Normal")
 hl("WinSeparator", { fg = p.bg3 })
-hl("Folded", { fg = p.fg2, bg = p.bg2 })
-hl("FoldColumn", { fg = p.fg2 })
+hl("Folded", { fg = p.fg1, bg = p.bg2 })
+hl("FoldColumn", { fg = p.fg1 })
 hl("SignColumn", { fg = p.fg0 })
-hl("IncSearch", { fg = p.bg0, bg = p.magenta })
+hl("IncSearch", { fg = p.bg0, bg = p.magenta1 })
 hl("Substitute", "Search")
-hl("LineNr", { fg = p.fg2 })
+hl("LineNr", { fg = p.fg1 })
 hl("LineNrAbove", "LineNr")
 hl("LineNrBelow", "LineNrAbove")
 hl("CursorLineNr", { fg = p.fg0, bg = p.bg1 })
 hl("CursorLineFold", "FoldColumn")
 hl("CursorLineSign", "SignColumn")
-hl("MatchParen", { fg = p.magenta, bold = true })
+hl("MatchParen", { bg = p.bg3, bold = true })
 hl("ModeMsg", { fg = p.fg0, bold = true })
 hl("MsgArea", "Normal")
 hl("MsgSeparator", "StatusLine")
@@ -253,7 +240,7 @@ hl("NonText", { fg = p.fg2 })
 hl("Normal", { fg = p.fg0, bg = p.bg0 })
 hl("NormalFloat", { bg = p.bg0_float })
 hl("FloatBorder", "NormalFloat")
-hl("FloatShadow", { bg = p.pure_black, blend = 80 })
+hl("FloatShadow", { bg = { 0x000000, 16 }, blend = 80 })
 hl("FloatShadowThrough", "FloatShadow")
 hl("FloatTitle", "FloatBorder")
 hl("FloatFooter", "FloatTitle")
@@ -277,16 +264,16 @@ hl("ComplHint", { fg = p.fg2 })
 hl("ComplHintMore", { fg = p.fg2, bold = true })
 hl("Question", "Title")
 hl("QuickFixLine", { bg = p.bg2 })
-hl("Search", { fg = p.bg0, bg = p.yellow })
+hl("Search", { fg = p.bg0, bg = p.blue0 })
 hl("SnippetTabstop", "Visual")
 hl("SnippetTabstopActive", "SnippetTabstop")
 hl("SpecialKey", "SpecialChar")
-hl("SpellBad", { sp = p.br_red, undercurl = true })
-hl("SpellCap", { sp = p.br_blue, undercurl = true })
-hl("SpellLocal", { sp = p.br_cyan, undercurl = true })
-hl("SpellRare", { sp = p.br_magenta, undercurl = true })
+hl("SpellBad", { sp = p.red0, undercurl = true })
+hl("SpellCap", { sp = p.blue0, undercurl = true })
+hl("SpellLocal", { sp = p.cyan0, undercurl = true })
+hl("SpellRare", { sp = p.magenta0, undercurl = true })
 hl("StatusLine", { fg = p.fg0, bg = p.bg3 })
-hl("StatusLineNC", { fg = p.fg2, bg = p.bg2 })
+hl("StatusLineNC", { fg = p.fg1, bg = p.bg2 })
 hl("StatusLineTerm", "StatusLine")
 hl("StatusLineTermNC", "StatusLineNC")
 hl("TabLine", "StatusLineNC")
@@ -299,56 +286,56 @@ hl("Whitespace", { fg = p.fg2 })
 hl("WildMenu", "Visual")
 hl("WinBar", "TabLineSel")
 hl("WinBarNC", "TabLine")
--- hl("Menu", "Pmenu") -- Unused
--- hl("Scrollbar", "PmenuSbar") -- Unused
--- hl("Tooltip", "Pmenu") -- Unused
+hl("Menu", "Pmenu") -- Unused
+hl("Scrollbar", "PmenuSbar") -- Unused
+hl("Tooltip", "Pmenu") -- Unused
 
 -- Syntax groups (:h group-name) {{{1
-hl("Comment", { fg = p.fg_comment })
+hl("Comment", base_comment)
 hl("Constant", "Identifier")
-hl("String", { fg = p.fg_string })
+hl("String", base_string)
 hl("Character", "String")
-hl("Number", { fg = p.fg_number })
+hl("Number", { fg = p.fg0 })
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })
-hl("Function", { fg = p.fg_fn })
+hl("Function", "Identifier")
 hl("Statement", "Keyword")
-hl("Conditional", "Keyword")
-hl("Repeat", "Keyword")
-hl("Label", "Keyword")
-hl("Operator", { fg = p.fg_oper })
-hl("Keyword", { fg = p.fg_kw })
-hl("Exception", "Keyword")
+hl("Conditional", "Statement")
+hl("Repeat", "Statement")
+hl("Label", "Statement")
+hl("Operator", { fg = p.fg0 })
+hl("Keyword", { fg = p.fg0, bold = true })
+hl("Exception", "Statement")
 hl("PreProc", "Keyword")
 hl("Include", "PreProc")
 hl("Define", "PreProc")
 hl("Macro", "PreProc")
 hl("PreCondit", "PreProc")
-hl("Type", { fg = p.fg_type })
+hl("Type", { fg = p.fg0 })
 hl("StorageClass", "Keyword")
 hl("Structure", "Keyword")
 hl("Typedef", "Type")
 hl("Special", { fg = p.fg0 })
-hl("SpecialChar", { fg = p.fg_string, bold = true })
+hl("SpecialChar", vim.tbl_extend("force", base_string, { bold = true }))
 hl("Tag", "Special")
-hl("Delimiter", { fg = p.fg_delim })
-hl("SpecialComment", { fg = p.fg_comment, bold = true })
+hl("Delimiter", { fg = p.fg0 })
+hl("SpecialComment", vim.tbl_extend("force", base_comment, { bold = true }))
 hl("Debug", "Identifier")
 hl("Underlined", { underline = true })
 hl("Ignore", "Comment")
-hl("Error", { fg = p.red })
+hl("Error", { fg = p.red0 })
 hl("Todo", "SpecialComment")
-hl("Added", { fg = p.green })
-hl("Changed", { fg = p.blue })
-hl("Removed", { fg = p.red })
+hl("Added", { fg = p.green0 })
+hl("Changed", { fg = p.blue0 })
+hl("Removed", { fg = p.red0 })
 
 -- Diagnostic groups (:h diagnostic-highlights) {{{1
-hl("DiagnosticError", { fg = p.br_red })
-hl("DiagnosticWarn", { fg = p.br_yellow })
-hl("DiagnosticInfo", { fg = p.br_blue })
-hl("DiagnosticHint", { fg = p.br_magenta })
-hl("DiagnosticOk", { fg = p.br_green })
+hl("DiagnosticError", { fg = p.red0 })
+hl("DiagnosticWarn", { fg = p.yellow0 })
+hl("DiagnosticInfo", { fg = p.blue0 })
+hl("DiagnosticHint", { fg = p.magenta0 })
+hl("DiagnosticOk", { fg = p.green0 })
 hl("DiagnosticVirtualTextError", "DiagnosticError")
 hl("DiagnosticVirtualTextWarn", "DiagnosticWarn")
 hl("DiagnosticVirtualTextInfo", "DiagnosticInfo")
@@ -359,11 +346,11 @@ hl("DiagnosticVirtualLinesWarn", "DiagnosticVirtualTextWarn")
 hl("DiagnosticVirtualLinesInfo", "DiagnosticVirtualTextInfo")
 hl("DiagnosticVirtualLinesHint", "DiagnosticVirtualTextHint")
 hl("DiagnosticVirtualLinesOk", "DiagnosticVirtualTextOk")
-hl("DiagnosticUnderlineError", { sp = p.br_red, undercurl = true })
-hl("DiagnosticUnderlineWarn", { sp = p.br_yellow, undercurl = true })
-hl("DiagnosticUnderlineInfo", { sp = p.br_blue, undercurl = true })
-hl("DiagnosticUnderlineHint", { sp = p.br_magenta, undercurl = true })
-hl("DiagnosticUnderlineOk", { sp = p.br_green, undercurl = true })
+hl("DiagnosticUnderlineError", { sp = p.red0, undercurl = true })
+hl("DiagnosticUnderlineWarn", { sp = p.yellow0, undercurl = true })
+hl("DiagnosticUnderlineInfo", { sp = p.blue0, undercurl = true })
+hl("DiagnosticUnderlineHint", { sp = p.magenta0, undercurl = true })
+hl("DiagnosticUnderlineOk", { sp = p.green0, undercurl = true })
 hl("DiagnosticFloatingError", "DiagnosticError")
 hl("DiagnosticFloatingWarn", "DiagnosticWarn")
 hl("DiagnosticFloatingInfo", "DiagnosticInfo")
@@ -414,7 +401,7 @@ hl("@type", "Type")
 hl("@type.builtin", "@type")
 hl("@type.definition", "@type")
 
-hl("@attribute", { fg = p.fg_attrib })
+hl("@attribute", "Identifier")
 hl("@attribute.builtin", "@attribute")
 hl("@property", "Identifier")
 
@@ -437,7 +424,7 @@ hl("@keyword.import", "@keyword")
 hl("@keyword.type", "@keyword")
 hl("@keyword.modifier", "StorageClass")
 hl("@keyword.repeat", "Repeat")
-hl("@keyword.return", "@keyword")
+hl("@keyword.return", "Statement")
 hl("@keyword.debug", "@keyword")
 hl("@keyword.exception", "Exception")
 
@@ -455,8 +442,14 @@ hl("@punctuation.special", "@punctuation")
 hl("@comment", "Comment")
 hl("@comment.documentation", "@comment")
 
-hl("@comment.error", { fg = p.br_red, bold = true })
-hl("@comment.warning", { fg = p.br_yellow, bold = true })
+hl(
+  "@comment.error",
+  vim.tbl_extend("force", base_comment, { fg = p.red1, bold = true })
+)
+hl(
+  "@comment.warning",
+  vim.tbl_extend("force", base_comment, { fg = p.yellow1, bold = true })
+)
 hl("@comment.todo", "SpecialComment")
 hl("@comment.note", "SpecialComment")
 
