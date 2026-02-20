@@ -134,43 +134,42 @@ local p_mt = { -- To catch bugs.
 -- Palette {{{1
 -- stylua: ignore
 local p = setmetatable({
-  bg0_float         = oklch(0.1850, 0.0097, 268.16),
-  bg0               = oklch(0.2100, 0.0100, 268.16),
-  bg1               = oklch(0.2350, 0.0103, 268.16),
-  bg2               = oklch(0.2600, 0.0106, 268.16),
-  bg3               = oklch(0.2850, 0.0109, 268.16),
+  bg0_float         = oklch(0.1785, 0.0160, 285.10),
+  bg0               = oklch(0.2035, 0.0160, 285.10),
+  bg1               = oklch(0.2285, 0.0160, 285.10),
+  bg2               = oklch(0.2535, 0.0160, 285.10),
+  bg3               = oklch(0.2785, 0.0160, 285.10),
 
-  fg0               = oklch(0.8250, 0.0097,  93.58),
-  fg0_fuji_white    = oklch(0.8000, 0.0391,  99.09),
-  fg0_dragon_orange = oklch(0.7750, 0.0495,  54.16),
-  fg0_wave_aqua     = oklch(0.7500, 0.0511, 181.30),
-  fg0_canvas_pink   = oklch(0.7500, 0.0538, 332.72),
-  fg0_dragon_blue   = oklch(0.7500, 0.0386, 231.52),
-  fg1               = oklch(0.6000, 0.0108, 188.88),
+  fg0               = oklch(0.8250, 0.0112,  93.58),
+  fg0_moe           = oklch(0.7500, 0.0681, 129.90),
+  fg0_matsu         = oklch(0.7500, 0.0588, 181.30),
+  fg0_nami          = oklch(0.7500, 0.0444, 231.52),
+  fg0_hasu          = oklch(0.7500, 0.0619, 332.72),
+  fg1               = oklch(0.6000, 0.0061, 115.88),
   fg2               = oklch(0.5000, 0.0038, 200.63),
 
-  red0              = oklch(0.7500, 0.1019,  24.86),
-  yellow0           = oklch(0.7500, 0.0578,  86.58),
-  green0            = oklch(0.7500, 0.0793, 144.55),
-  cyan0             = oklch(0.7500, 0.0261, 177.27),
-  blue0             = oklch(0.7500, 0.0428, 228.33),
-  magenta0          = oklch(0.7500, 0.0307, 324.11),
+  red0              = oklch(0.7500, 0.1172,  24.86),
+  yellow0           = oklch(0.7500, 0.0665,  86.58),
+  green0            = oklch(0.7500, 0.0912, 144.55),
+  cyan0             = oklch(0.7500, 0.0301, 177.27),
+  blue0             = oklch(0.7500, 0.0493, 228.33),
+  magenta0          = oklch(0.7500, 0.0354, 324.11),
 
-  red1              = oklch(0.6500, 0.1019,  24.86),
-  yellow1           = oklch(0.6500, 0.0578,  86.58),
-  green1            = oklch(0.6500, 0.0793, 144.55),
-  cyan1             = oklch(0.6500, 0.0261, 177.27),
-  blue1             = oklch(0.6500, 0.0428, 228.33),
-  magenta1          = oklch(0.6500, 0.0307, 324.11),
+  red1              = oklch(0.6500, 0.1172,  24.86),
+  yellow1           = oklch(0.6500, 0.0665,  86.58),
+  green1            = oklch(0.6500, 0.0912, 144.55),
+  cyan1             = oklch(0.6500, 0.0301, 177.27),
+  blue1             = oklch(0.6500, 0.0493, 228.33),
+  magenta1          = oklch(0.6500, 0.0354, 324.11),
 
-  bg_diff_add       = oklch(0.2500, 0.0396, 144.55),
-  bg_diff_delete    = oklch(0.2500, 0.0509,  24.86),
-  bg_diff_change    = oklch(0.2500, 0.0214, 228.33),
-  bg_diff_change_em = oklch(0.3500, 0.0400, 228.33),
+  bg_diff_add       = oklch(0.2500, 0.0456, 144.55),
+  bg_diff_delete    = oklch(0.2500, 0.0586,  24.86),
+  bg_diff_change    = oklch(0.2500, 0.0247, 228.33),
+  bg_diff_change_em = oklch(0.3500, 0.0461, 228.33),
 }, p_mt)
 
 local base_comment = { fg = p.fg1 }
-local base_string = { fg = p.fg0_dragon_orange }
+local base_string = { fg = p.fg0_moe }
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
@@ -201,7 +200,7 @@ hl("lCursor", "Cursor")
 hl("CursorIM", "Cursor")
 hl("CursorColumn", "CursorLine")
 hl("CursorLine", { bg = p.bg1 })
-hl("Directory", { fg = p.fg0_wave_aqua })
+hl("Directory", { fg = p.fg0_matsu })
 hl("DiffAdd", { bg = p.bg_diff_add })
 hl("DiffChange", { bg = p.bg_diff_change })
 hl("DiffDelete", { bg = p.bg_diff_delete })
@@ -287,27 +286,27 @@ hl("Tooltip", "Pmenu") -- Unused
 
 -- Syntax groups (:h group-name) {{{1
 hl("Comment", base_comment)
-hl("Constant", { fg = p.fg0_fuji_white })
+hl("Constant", "Identifier")
 hl("String", base_string)
 hl("Character", "String")
-hl("Number", { fg = p.fg0_fuji_white })
+hl("Number", { fg = p.fg0 })
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })
-hl("Function", { fg = p.fg0_dragon_blue })
+hl("Function", { fg = p.fg0_nami })
 hl("Statement", "Keyword")
 hl("Conditional", "Statement")
 hl("Repeat", "Statement")
 hl("Label", "Statement")
 hl("Operator", { fg = p.fg0 })
-hl("Keyword", { fg = p.fg0_canvas_pink })
+hl("Keyword", { fg = p.fg0_hasu })
 hl("Exception", "Statement")
 hl("PreProc", "Keyword")
 hl("Include", "PreProc")
 hl("Define", "PreProc")
 hl("Macro", "PreProc")
 hl("PreCondit", "PreProc")
-hl("Type", { fg = p.fg0_wave_aqua })
+hl("Type", { fg = p.fg0_matsu })
 hl("StorageClass", "Keyword")
 hl("Structure", "Keyword")
 hl("Typedef", "Type")
