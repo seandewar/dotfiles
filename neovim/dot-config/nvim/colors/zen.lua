@@ -1,10 +1,10 @@
---- Low-distraction colour scheme inspired by mfd:
---- https://github.com/kungfusheep/mfd.nvim
+--- Low-distraction colour scheme inspired by Kanagawa Paper:
+--- https://github.com/thesimonho/kanagawa-paper.nvim
 
 local api = vim.api
 
 vim.cmd.highlight "clear"
-vim.o.background = "light"
+vim.o.background = "dark"
 vim.g.colors_name = "zen"
 
 -- Helpers {{{1
@@ -132,68 +132,63 @@ local p_mt = { -- To catch bugs.
 }
 
 -- Palette {{{1
-local h = setmetatable({
-  red = 29.23,
-  yellow = 109.77,
-  green = 142.49,
-  cyan = 194.77,
-  blue = 264.05,
-  magenta = 328.36,
-}, p_mt)
-
 -- stylua: ignore
 local p = setmetatable({
-  bg0_float         = oklch(0.650, 0.0000, 0),
-  bg0               = oklch(0.635, 0.0000, 0),
-  bg1               = oklch(0.620, 0.0000, 0),
-  bg2               = oklch(0.605, 0.0000, 0),
-  bg3               = oklch(0.590, 0.0000, 0),
+  bg0_float         = oklch(0.1850, 0.0097, 268.16),
+  bg0               = oklch(0.2100, 0.0100, 268.16),
+  bg1               = oklch(0.2350, 0.0103, 268.16),
+  bg2               = oklch(0.2600, 0.0106, 268.16),
+  bg3               = oklch(0.2850, 0.0109, 268.16),
 
-  fg0               = oklch(0.275, 0.0000, 0),
-  fg0_1             = oklch(0.330, 0.0565, h.cyan),
-  fg1               = oklch(0.380, 0.0000, 0),
-  fg2               = oklch(0.435, 0.0000, 0),
+  fg0               = oklch(0.8250, 0.0097,  93.58),
+  fg0_fuji_white    = oklch(0.8000, 0.0391,  99.09),
+  fg0_dragon_orange = oklch(0.7750, 0.0495,  54.16),
+  fg0_wave_aqua     = oklch(0.7500, 0.0511, 181.30),
+  fg0_canvas_pink   = oklch(0.7500, 0.0538, 332.72),
+  fg0_dragon_blue   = oklch(0.7500, 0.0386, 231.52),
+  fg1               = oklch(0.6000, 0.0108, 188.88),
+  fg2               = oklch(0.5000, 0.0038, 200.63),
 
-  red0              = oklch(0.380, 0.0831, h.red),
-  yellow0           = oklch(0.380, 0.0831, h.yellow),
-  green0            = oklch(0.380, 0.0860, h.green),
-  cyan0             = oklch(0.380, 0.0650, h.cyan),
-  blue0             = oklch(0.380, 0.0831, h.blue),
-  magenta0          = oklch(0.380, 0.0831, h.magenta),
+  red0              = oklch(0.7500, 0.1019,  24.86),
+  yellow0           = oklch(0.7500, 0.0578,  86.58),
+  green0            = oklch(0.7500, 0.0793, 144.55),
+  cyan0             = oklch(0.7500, 0.0261, 177.27),
+  blue0             = oklch(0.7500, 0.0428, 228.33),
+  magenta0          = oklch(0.7500, 0.0307, 324.11),
 
-  red1              = oklch(0.435, 0.0950, h.red),
-  yellow1           = oklch(0.435, 0.0950, h.yellow),
-  green1            = oklch(0.435, 0.0981, h.green),
-  cyan1             = oklch(0.435, 0.0743, h.cyan),
-  blue1             = oklch(0.435, 0.0950, h.blue),
-  magenta1          = oklch(0.435, 0.0950, h.magenta),
+  red1              = oklch(0.6500, 0.1019,  24.86),
+  yellow1           = oklch(0.6500, 0.0578,  86.58),
+  green1            = oklch(0.6500, 0.0793, 144.55),
+  cyan1             = oklch(0.6500, 0.0261, 177.27),
+  blue1             = oklch(0.6500, 0.0428, 228.33),
+  magenta1          = oklch(0.6500, 0.0307, 324.11),
 
-  bg_diff_add       = oklch(0.605, 0.0200, h.green),
-  bg_diff_delete    = oklch(0.605, 0.0200, h.red),
-  bg_diff_change    = oklch(0.605, 0.0200, h.blue),
-  bg_diff_change_em = oklch(0.635, 0.0250, h.cyan),
+  bg_diff_add       = oklch(0.2500, 0.0396, 144.55),
+  bg_diff_delete    = oklch(0.2500, 0.0509,  24.86),
+  bg_diff_change    = oklch(0.2500, 0.0214, 228.33),
+  bg_diff_change_em = oklch(0.3500, 0.0400, 228.33),
 }, p_mt)
 
 local base_comment = { fg = p.fg1 }
-local base_string = { fg = p.fg0_1 }
+local base_string = { fg = p.fg0_dragon_orange }
 
 -- Terminal buffers (:h terminal-config) {{{1
 hl_term {
   p.bg3,
-  p.red0,
-  p.green0,
-  p.yellow0,
-  p.blue0,
-  p.magenta0,
-  p.cyan0,
-  p.fg1,
-  p.fg2,
   p.red1,
   p.green1,
   p.yellow1,
   p.blue1,
   p.magenta1,
   p.cyan1,
+  p.fg1,
+  p.fg2,
+  p.red0,
+  p.green0,
+  p.yellow0,
+  p.blue0,
+  p.magenta0,
+  p.cyan0,
   p.fg0,
 }
 
@@ -206,7 +201,7 @@ hl("lCursor", "Cursor")
 hl("CursorIM", "Cursor")
 hl("CursorColumn", "CursorLine")
 hl("CursorLine", { bg = p.bg1 })
-hl("Directory", { fg = p.fg0, bold = true })
+hl("Directory", { fg = p.fg0_wave_aqua })
 hl("DiffAdd", { bg = p.bg_diff_add })
 hl("DiffChange", { bg = p.bg_diff_change })
 hl("DiffDelete", { bg = p.bg_diff_delete })
@@ -292,27 +287,27 @@ hl("Tooltip", "Pmenu") -- Unused
 
 -- Syntax groups (:h group-name) {{{1
 hl("Comment", base_comment)
-hl("Constant", "Identifier")
+hl("Constant", { fg = p.fg0_fuji_white })
 hl("String", base_string)
 hl("Character", "String")
-hl("Number", { fg = p.fg0 })
+hl("Number", { fg = p.fg0_fuji_white })
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })
-hl("Function", "Identifier")
+hl("Function", { fg = p.fg0_dragon_blue })
 hl("Statement", "Keyword")
 hl("Conditional", "Statement")
 hl("Repeat", "Statement")
 hl("Label", "Statement")
 hl("Operator", { fg = p.fg0 })
-hl("Keyword", { fg = p.fg0, bold = true })
+hl("Keyword", { fg = p.fg0_canvas_pink })
 hl("Exception", "Statement")
 hl("PreProc", "Keyword")
 hl("Include", "PreProc")
 hl("Define", "PreProc")
 hl("Macro", "PreProc")
 hl("PreCondit", "PreProc")
-hl("Type", { fg = p.fg0 })
+hl("Type", { fg = p.fg0_wave_aqua })
 hl("StorageClass", "Keyword")
 hl("Structure", "Keyword")
 hl("Typedef", "Type")
@@ -373,8 +368,10 @@ hl("@variable.parameter", "@variable")
 hl("@variable.parameter.builtin", "@variable.parameter")
 hl("@variable.member", "@variable")
 
-hl("@constant", "Constant")
-hl("@constant.builtin", "@constant")
+-- Intention is to only highlight builtins specially; trying to highlight all is
+-- too noisy and often inconsistent without semantic info from language servers.
+hl("@constant", "Identifier")
+hl("@constant.builtin", "Constant")
 hl("@constant.macro", "@constant")
 
 hl("@module", "Identifier")
