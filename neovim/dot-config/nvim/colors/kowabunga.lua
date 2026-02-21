@@ -1,4 +1,4 @@
---- Low-distraction colour scheme inspired by Kanagawa Paper:
+--- Low(ish)-distraction colour scheme inspired by Kanagawa Paper:
 --- https://github.com/thesimonho/kanagawa-paper.nvim
 
 local api = vim.api
@@ -134,14 +134,14 @@ local p_mt = { -- To catch bugs.
 -- Palette {{{1
 -- stylua: ignore
 local p = setmetatable({
-  bg0_float         = oklch(0.1785, 0.0160, 285.10),
+  bg0_float         = oklch(0.1785, 0.0145, 285.10),
   bg0               = oklch(0.2035, 0.0160, 285.10),
-  bg1               = oklch(0.2285, 0.0160, 285.10),
-  bg2               = oklch(0.2535, 0.0160, 285.10),
-  bg3               = oklch(0.2785, 0.0160, 285.10),
+  bg1               = oklch(0.2285, 0.0175, 285.10),
+  bg2               = oklch(0.2535, 0.0190, 285.10),
+  bg3               = oklch(0.2785, 0.0205, 285.10),
 
   fg0               = oklch(0.8250, 0.0112,  93.58),
-  fg0_nami          = oklch(0.7750, 0.0279, 230.52),
+  fg0_nami          = oklch(0.7875, 0.0300, 230.52),
   fg0_matsu         = oklch(0.7500, 0.0564, 181.30),
   fg0_yamabuki      = oklch(0.7500, 0.0540,  79.86),
   fg0_moe           = oklch(0.7500, 0.0681, 129.90),
