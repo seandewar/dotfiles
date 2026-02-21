@@ -141,9 +141,9 @@ local p = setmetatable({
   bg3               = oklch(0.2785, 0.0160, 285.10),
 
   fg0               = oklch(0.8250, 0.0112,  93.58),
-  fg0_nami          = oklch(0.7500, 0.0404, 231.52),
+  fg0_nami          = oklch(0.7750, 0.0279, 230.52),
   fg0_matsu         = oklch(0.7500, 0.0564, 181.30),
-  fg0_yamabuki      = oklch(0.7500, 0.0580,  77.86),
+  fg0_yamabuki      = oklch(0.7500, 0.0540,  79.86),
   fg0_moe           = oklch(0.7500, 0.0681, 129.90),
   fg0_hasu          = oklch(0.7500, 0.0619, 332.72),
   fg1               = oklch(0.6000, 0.0061, 115.88),
@@ -290,7 +290,7 @@ hl("Comment", base_comment)
 hl("Constant", { fg = p.fg0_nami })
 hl("String", base_string)
 hl("Character", "String")
-hl("Number", { fg = p.fg0 })
+hl("Number", "Constant")
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })
