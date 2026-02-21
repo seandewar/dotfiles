@@ -5,7 +5,7 @@ local api = vim.api
 
 vim.cmd.highlight "clear"
 vim.o.background = "dark"
-vim.g.colors_name = "zen"
+vim.g.colors_name = "kowabunga"
 
 -- Helpers {{{1
 local approx_cterm
@@ -141,10 +141,10 @@ local p = setmetatable({
   bg3               = oklch(0.2785, 0.0160, 285.10),
 
   fg0               = oklch(0.8250, 0.0112,  93.58),
-  fg0_yamabuki      = oklch(0.7500, 0.0655,  82.86),
+  fg0_nami          = oklch(0.7500, 0.0404, 231.52),
+  fg0_matsu         = oklch(0.7500, 0.0564, 181.30),
+  fg0_yamabuki      = oklch(0.7500, 0.0580,  77.86),
   fg0_moe           = oklch(0.7500, 0.0681, 129.90),
-  fg0_matsu         = oklch(0.7500, 0.0588, 181.30),
-  fg0_nami          = oklch(0.7500, 0.0444, 231.52),
   fg0_hasu          = oklch(0.7500, 0.0619, 332.72),
   fg1               = oklch(0.6000, 0.0061, 115.88),
   fg2               = oklch(0.5000, 0.0038, 200.63),
@@ -287,14 +287,14 @@ hl("Tooltip", "Pmenu") -- Unused
 
 -- Syntax groups (:h group-name) {{{1
 hl("Comment", base_comment)
-hl("Constant", { fg = p.fg0_yamabuki })
+hl("Constant", { fg = p.fg0_nami })
 hl("String", base_string)
 hl("Character", "String")
 hl("Number", { fg = p.fg0 })
 hl("Boolean", "Constant")
 hl("Float", "Number")
 hl("Identifier", { fg = p.fg0 })
-hl("Function", { fg = p.fg0_nami })
+hl("Function", "Identifier")
 hl("Statement", "Keyword")
 hl("Conditional", "Statement")
 hl("Repeat", "Statement")
@@ -302,7 +302,7 @@ hl("Label", "Statement")
 hl("Operator", { fg = p.fg0 })
 hl("Keyword", { fg = p.fg0_hasu })
 hl("Exception", "Statement")
-hl("PreProc", "Keyword")
+hl("PreProc", { fg = p.fg0_yamabuki })
 hl("Include", "PreProc")
 hl("Define", "PreProc")
 hl("Macro", "PreProc")
@@ -398,7 +398,7 @@ hl("@type", "Type")
 hl("@type.builtin", "@type")
 hl("@type.definition", "@type")
 
-hl("@attribute", "Identifier")
+hl("@attribute", "Macro")
 hl("@attribute.builtin", "@attribute")
 hl("@property", "Identifier")
 
@@ -417,7 +417,7 @@ hl("@keyword", "Keyword")
 hl("@keyword.coroutine", "@keyword")
 hl("@keyword.function", "@keyword")
 hl("@keyword.operator", "@keyword")
-hl("@keyword.import", "@keyword")
+hl("@keyword.import", "Include")
 hl("@keyword.type", "@keyword")
 hl("@keyword.modifier", "StorageClass")
 hl("@keyword.repeat", "Repeat")
