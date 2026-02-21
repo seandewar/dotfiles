@@ -141,6 +141,7 @@ local p = setmetatable({
   bg3               = oklch(0.2785, 0.0160, 285.10),
 
   fg0               = oklch(0.8250, 0.0112,  93.58),
+  fg0_yamabuki      = oklch(0.7500, 0.0655,  82.86),
   fg0_moe           = oklch(0.7500, 0.0681, 129.90),
   fg0_matsu         = oklch(0.7500, 0.0588, 181.30),
   fg0_nami          = oklch(0.7500, 0.0444, 231.52),
@@ -286,7 +287,7 @@ hl("Tooltip", "Pmenu") -- Unused
 
 -- Syntax groups (:h group-name) {{{1
 hl("Comment", base_comment)
-hl("Constant", "Identifier")
+hl("Constant", { fg = p.fg0_yamabuki })
 hl("String", base_string)
 hl("Character", "String")
 hl("Number", { fg = p.fg0 })
