@@ -36,6 +36,7 @@ set spelllang=en_gb spelloptions=camel
 set splitbelow splitright
 set textwidth=80
 set title
+set undofile
 set wildmode=list:longest,full wildoptions-=pum
 set winborder=single
 
