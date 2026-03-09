@@ -356,8 +356,8 @@ hl("DiagnosticSignWarn", "DiagnosticWarn")
 hl("DiagnosticSignInfo", "DiagnosticInfo")
 hl("DiagnosticSignHint", "DiagnosticHint")
 hl("DiagnosticSignOk", "DiagnosticOk")
-hl("DiagnosticDeprecated", { sp = p.fg0, strikethrough = true })
-hl("DiagnosticUnnecessary", "Comment")
+hl("DiagnosticDeprecated", { sp = p.fg1, strikethrough = true })
+hl("DiagnosticUnnecessary", { sp = p.fg1, undercurl = true })
 
 -- Tree-sitter groups (:h treesitter-highlight-groups) {{{1
 -- Although tree-sitter-style groups implement a fallback mechanism, we
