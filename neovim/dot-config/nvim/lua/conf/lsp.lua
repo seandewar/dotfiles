@@ -21,26 +21,41 @@ api.nvim_create_autocmd("LspProgress", {
       return
     end
 
+    -- Only print in Normal mode for ui2, as other modes do not seem to always
+    -- replace the message. (which can end up opening the dialog, which eats my
+    -- input while I'm doing stuff!)
+    --
+    -- Still call nvim_echo so it has an up-to-date idea of what the status is.
+    local should_print = not require("vim._core.ui2").cfg.enable
+      or api.nvim_get_mode().mode == "n"
+
     local params = args.data.params.value
     local chunks = {}
-    if params.title then
-      chunks[#chunks + 1] = params.title
-    end
-    if params.message then
-      chunks[#chunks + 1] = params.message
-    end
-    if params.kind == "end" then
-      chunks[#chunks + 1] = "(done)"
+    if should_print then
+      if params.title then
+        chunks[#chunks + 1] = params.title
+      end
+      if params.message then
+        chunks[#chunks + 1] = params.message
+      end
+      if params.kind == "end" then
+        chunks[#chunks + 1] = "(done)"
+      end
     end
 
     local progress = client_id_to_progress[client_id]
-    local id = api.nvim_echo({ { table.concat(chunks, " ") } }, false, {
+    local echo_chunks = {}
+    local echo_opts = {
       id = progress and progress.id or nil,
       kind = "progress",
-      title = ("LSP[%s]"):format(client.name),
-      percent = params.percentage,
       status = params.kind ~= "end" and "running" or "success",
-    })
+    }
+    if should_print then
+      echo_chunks[1] = { table.concat(chunks, " ") }
+      echo_opts.title = ("LSP[%s]"):format(client.name)
+      echo_opts.percent = params.percentage
+    end
+    local id = api.nvim_echo(echo_chunks, false, echo_opts)
     assert(id ~= -1 and (not progress or id == progress.id))
     if not progress then
       progress = { id = id, running = false }

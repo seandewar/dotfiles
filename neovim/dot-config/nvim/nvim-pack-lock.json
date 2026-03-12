@@ -5,7 +5,7 @@
       "src": "https://github.com/glacambre/firenvim"
     },
     "fzf-lua": {
-      "rev": "d9508cc1d05ffcdc91a32dfd38fc1013a56b20da",
+      "rev": "30ba09afbc0eac5fc5ec8823418d1e45d0712b9f",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "nvim-treesitter": {
