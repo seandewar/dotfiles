@@ -21,41 +21,44 @@ api.nvim_create_autocmd("LspProgress", {
       return
     end
 
-    -- Only print in Normal mode for ui2, as other modes do not seem to always
-    -- replace the message. (which can end up opening the dialog, which eats my
-    -- input while I'm doing stuff!)
+    -- Only print to the command-line in Normal mode, as (especially in ui2)
+    -- other modes don't seem to always replace the message. (which can end up
+    -- opening the ui2 dialog, which eats my input while I'm doing stuff!)
     --
-    -- Still call nvim_echo so it has an up-to-date idea of what the status is.
-    local should_print = not require("vim._core.ui2").cfg.enable
-      or api.nvim_get_mode().mode == "n"
+    -- Still call nvim_echo so it has an up-to-date idea of what the status is;
+    -- just set &messagesopt instead.
+    local save_mopt = fn.mode() ~= "n" and vim.o.messagesopt or nil
 
     local params = args.data.params.value
     local chunks = {}
-    if should_print then
-      if params.title then
-        chunks[#chunks + 1] = params.title
-      end
-      if params.message then
-        chunks[#chunks + 1] = params.message
-      end
-      if params.kind == "end" then
-        chunks[#chunks + 1] = "(done)"
-      end
+    if params.title then
+      chunks[#chunks + 1] = params.title
+    end
+    if params.message then
+      chunks[#chunks + 1] = params.message
+    end
+    if params.kind == "end" then
+      chunks[#chunks + 1] = "(done)"
     end
 
     local progress = client_id_to_progress[client_id]
-    local echo_chunks = {}
-    local echo_opts = {
+    if save_mopt then
+      vim.opt.messagesopt:remove "progress:c"
+      vim.opt.messagesopt:append "progress:"
+    end
+
+    local id = api.nvim_echo({ { table.concat(chunks, " ") } }, false, {
       id = progress and progress.id or nil,
       kind = "progress",
       status = params.kind ~= "end" and "running" or "success",
-    }
-    if should_print then
-      echo_chunks[1] = { table.concat(chunks, " ") }
-      echo_opts.title = ("LSP[%s]"):format(client.name)
-      echo_opts.percent = params.percentage
+      title = ("LSP[%s]"):format(client.name),
+      percent = params.percentage,
+    })
+
+    if save_mopt then
+      vim.o.messagesopt = save_mopt
     end
-    local id = api.nvim_echo(echo_chunks, false, echo_opts)
+
     assert(id ~= -1 and (not progress or id == progress.id))
     if not progress then
       progress = { id = id, running = false }
