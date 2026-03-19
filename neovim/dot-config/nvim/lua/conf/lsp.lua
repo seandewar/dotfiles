@@ -126,26 +126,15 @@ function M.setup_attached_buffers(client_id, detaching)
     end
 
     --- @param option string
-    local buf_reset_option = vim.schedule_wrap(function(option)
-      -- Scheduled, as we can't use nvim_get_option_value with "filetype" set
-      -- in FileType autocmds, which LspAttach/Detach may be triggered from.
-      -- HACK: This is a bit fragile; will be properly fixed by
-      -- neovim/neovim#33919.
-      if api.nvim_buf_is_valid(buf) then
-        vim.bo[buf][option] =
-          vim.filetype.get_option(vim.bo[buf].filetype, option)
-      end
-    end)
-
+    local function buf_reset_option(option)
+      vim.bo[buf][option] =
+        vim.filetype.get_option(vim.bo[buf].filetype, option)
+    end
     --- @param option string
     --- @param value any
-    local buf_set_option = vim.schedule_wrap(function(option, value)
-      -- HACK: Scheduled for the same reason as above, as we want this to happen
-      -- after possibly resetting the option.
-      if api.nvim_buf_is_valid(buf) then
-        vim.bo[buf][option] = value
-      end
-    end)
+    local function buf_set_option(option, value)
+      vim.bo[buf][option] = value
+    end
 
     if buf_supports_method "textDocument/hover" then
       keymap.set("n", "K", lsp.buf.hover, { buffer = buf, desc = "LSP Hover" })
