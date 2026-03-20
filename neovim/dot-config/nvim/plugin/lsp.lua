@@ -76,8 +76,6 @@ end
 keymap.set("n", "gO", document_symbols, { desc = "LSP Document Symbols" })
 keymap.set("n", "grd", document_symbols, { desc = "LSP Document Symbols" })
 
-keymap.set("n", "grl", lsp.codelens.run, { desc = "LSP Run Code Lens" })
-
 keymap.set("n", "<C-S>", lsp.buf.signature_help, {
   desc = "LSP Signature Help",
 })
