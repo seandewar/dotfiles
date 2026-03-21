@@ -28,7 +28,6 @@ set notimeout
 set pumheight=12
 set scrolloff=1 sidescroll=5
 set sessionoptions-=blank sessionoptions-=buffers
-set shortmess+=I
 set showbreak=↳
 set smoothscroll
 set softtabstop=4 shiftwidth=4 expandtab
