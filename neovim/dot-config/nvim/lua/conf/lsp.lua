@@ -49,6 +49,7 @@ api.nvim_create_autocmd("LspProgress", {
 
     local id = api.nvim_echo({ { table.concat(chunks, " ") } }, false, {
       id = progress and progress.id or nil,
+      source = "conf_lsp",
       kind = "progress",
       status = params.kind ~= "end" and "running" or "success",
       title = ("LSP[%s]"):format(client.name),
@@ -225,6 +226,7 @@ function M.client_on_exit(_, _, client_id)
     vim.schedule(function()
       local id = api.nvim_echo({ { "client exited during work" } }, false, {
         id = progress.id,
+        source = "conf_lsp",
         kind = "progress",
         title = ("LSP[%s]"):format(client.name),
         status = "cancel",

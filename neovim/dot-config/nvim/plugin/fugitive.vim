@@ -15,4 +15,4 @@ nnoremap <Leader>gm <Cmd>Git mergetool<CR>
 nnoremap <Leader>gb <Cmd>Git blame<CR>
 nnoremap <Leader>gr :Git rebase -i<Space>
 nnoremap <Leader>gc <Cmd>Git commit<CR>
-nnoremap <Leader>gC <Cmd>Git commit --amend<CR>
+nnoremap <Leader>gC <Cmd>Git commit --amend --allow-empty<CR>
