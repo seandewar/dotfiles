@@ -22,7 +22,7 @@ pack.add({
   "https://github.com/ibhagwan/fzf-lua",
 
   -- Up-to-date filetype support for Zig.
-  "https://github.com/ziglang/zig.vim",
+  "https://codeberg.org/ziglang/zig.vim",
 
   -- Tree-sitter.
   "https://github.com/nvim-treesitter/nvim-treesitter",

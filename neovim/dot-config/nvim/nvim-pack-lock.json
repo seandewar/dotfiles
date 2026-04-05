@@ -5,11 +5,11 @@
       "src": "https://github.com/glacambre/firenvim"
     },
     "fzf-lua": {
-      "rev": "bde73a6886b607246095aa59f396de5e0d036890",
+      "rev": "abacb0693d7a37de9e85e6fcb2d22d848cb75cef",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "nvim-treesitter": {
-      "rev": "7caec274fd19c12b55902a5b795100d21531391f",
+      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-textobjects": {
@@ -41,8 +41,8 @@
       "src": "https://github.com/tpope/vim-vinegar"
     },
     "zig.vim": {
-      "rev": "1a1112eec20e28c832a06ddb1d0060f6ce652372",
-      "src": "https://github.com/ziglang/zig.vim"
+      "rev": "9e76c2843f6292dc9c804996d78244fe1028891a",
+      "src": "https://codeberg.org/ziglang/zig.vim"
     }
   }
 }
