@@ -34,7 +34,7 @@ end
 
 --- @param args vim.api.keyset.create_autocmd.callback_args
 function M.pack_changed(args)
-  if args.data.kind ~= "update" then
+  if args.data.kind ~= "install" and args.data.kind ~= "update" then
     return
   end
 
