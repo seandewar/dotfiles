@@ -231,6 +231,7 @@ hl("MatchParen", { bg = p.bg3, bold = true })
 hl("ModeMsg", { fg = p.fg0, bold = true })
 hl("MsgArea", "Normal")
 hl("MsgSeparator", "StatusLine")
+hl("MsgMore", { fg = p.fg0, bg = p.bg3, bold = true }) -- ui2
 hl("MoreMsg", "ModeMsg")
 hl("NonText", { fg = p.fg2 })
 hl("Normal", { fg = p.fg0, bg = p.bg0 })
@@ -562,7 +563,7 @@ hl("vimWildcardStar", "SpecialChar")
 
 -- $VIMRUNTIME/syntax/lua.vim {{{1
 hl("luaFunction", "Keyword")
-hl("luaTable", {}) -- Most delimiters aren't highlighted.
+hl("luaTable", "Delimiter")
 
 -- zig.vim {{{1
 -- ""s in strings aren't highlighted as delimiters, so why these??
