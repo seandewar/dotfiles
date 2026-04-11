@@ -19,13 +19,6 @@ lsp.config("*", {
   end,
 })
 
--- Preferring a Vim script command so split modifiers are respected.
-api.nvim_create_user_command(
-  "LspLog",
-  "<mods> split `=v:lua.vim.lsp.get_log_path()`",
-  { bar = true, desc = "Open LSP log file" }
-)
-
 local attach_group = api.nvim_create_augroup("conf_lsp_attach_detach", {})
 api.nvim_create_autocmd("LspAttach", {
   group = attach_group,
