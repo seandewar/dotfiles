@@ -6,13 +6,14 @@ augroup conf_fugitive_redraw_statusline
                 \ call timer_start(0, {-> execute('redrawstatus!', '')})
 augroup END
 
-nnoremap <Leader>gl :Git log -n 100 -- %<Left><Left><Left><Left><Left>
-nnoremap <Leader>gL :Git log -n 100
+nnoremap <Leader>gl :Git log --oneline -n 100 -- %<Left><Left><Left><Left><Left>
+nnoremap <Leader>gL :Git log --oneline -n 100
 nnoremap <Leader>gs <Cmd>Git show<CR>
 nnoremap <Leader>gd <Cmd>Gdiffsplit<CR>
 nnoremap <Leader>gD :Git diff<Space>
 nnoremap <Leader>gm <Cmd>Git mergetool<CR>
 nnoremap <Leader>gb <Cmd>Git blame<CR>
 nnoremap <Leader>gr :Git rebase -i<Space>
-nnoremap <Leader>gc <Cmd>Git commit<CR>
+nnoremap <Leader>gR :GMove %<Tab>
+nnoremap <Leader>gc <Cmd>Git commit --allow-empty<CR>
 nnoremap <Leader>gC <Cmd>Git commit --amend --allow-empty<CR>

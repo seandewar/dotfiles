@@ -565,12 +565,19 @@ hl("vimWildcardStar", "SpecialChar")
 hl("luaFunction", "Keyword")
 hl("luaTable", "Delimiter")
 
+-- $VIMRUNTIME/syntax/git.vim {{{1
+hl("gitHash", "Number") -- Was Identifier, which we don't specially highlight.
+
 -- zig.vim {{{1
 -- ""s in strings aren't highlighted as delimiters, so why these??
 hl("zigMultilineStringDelimiter", "String")
 
 -- copilot.vim {{{1
 hl("CopilotSuggestion", "ComplHint")
+
+
+-- vim-fugitive {{{1
+hl("fugitiveHash", "gitHash")
 
 -- fzf-lua {{{1
 vim.g.fzf_colors = {
