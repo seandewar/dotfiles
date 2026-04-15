@@ -1,6 +1,3 @@
-local fs = vim.fs
-local uv = vim.uv
-
 return {
   cmd = { "lua-language-server" },
   filetypes = { "lua" },
@@ -8,15 +5,11 @@ return {
     ".luarc.json",
     ".luarc.jsonc",
   },
+  workspace_required = false,
 
   on_init = function(client, _)
-    -- Configure for Nvim if there's no top-level luarc file in the workspace.
-    if
-      vim.iter(client.workspace_folders or {}):any(function(wf)
-        return uv.fs_stat(fs.joinpath(wf.name, ".luarc.json")) ~= nil
-          or uv.fs_stat(fs.joinpath(wf.name, ".luarc.jsonc")) ~= nil
-      end)
-    then
+    -- Only assume we're editing Nvim Lua scripts when not using a workspace.
+    if #(client.workspace_folders or {}) > 0 then
       return
     end
 
@@ -26,7 +19,7 @@ return {
           version = "LuaJIT",
         },
         workspace = {
-          checkThirdParty = false,
+          checkThirdParty = "Disable",
           library = {
             vim.env.VIMRUNTIME,
           },

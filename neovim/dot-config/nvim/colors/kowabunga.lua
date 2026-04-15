@@ -575,7 +575,6 @@ hl("zigMultilineStringDelimiter", "String")
 -- copilot.vim {{{1
 hl("CopilotSuggestion", "ComplHint")
 
-
 -- vim-fugitive {{{1
 hl("fugitiveHash", "gitHash")
 

@@ -13,8 +13,7 @@ return {
     if vim.system({ "cargo", "clippy", "--version" }):wait().code == 0 then
       init_params.initializationOptions = vim.tbl_extend(
         "force",
-        init_params.initializationOptions --[[@as table?]]
-          or {},
+        init_params.initializationOptions --[[@as table?]] or {},
         { check = { command = "clippy" } }
       )
     end
