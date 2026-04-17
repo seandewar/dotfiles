@@ -56,9 +56,9 @@ do
 end
 
 --- https://bottosson.github.io/posts/oklab/
---- @param lightness perceived lightness (0-1)
---- @param chroma (typically 0-0.5, actually 0-inf)
---- @param hue (degrees)
+--- @param lightness number perceived lightness (0-1)
+--- @param chroma number (typically 0-0.5, actually 0-inf)
+--- @param hue number (degrees)
 local function oklch(lightness, chroma, hue)
   assert(lightness >= 0 and lightness <= 1 and chroma >= 0)
   -- Convert to OKLab.
@@ -76,14 +76,14 @@ local function oklch(lightness, chroma, hue)
       or (1.055 * (c ^ 0.4166666667) - 0.055)
   end
   -- Convert to linear sRGB, then gamma-correct to sRGB.
-  local r = gamma(04.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s)
-  local g = gamma(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s)
-  local b = gamma(-0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s)
+  local rf = gamma(04.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s)
+  local gf = gamma(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s)
+  local bf = gamma(-0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s)
 
   -- Convert to 24-bit RGB for Nvim. Round the components.
-  local r8 = math.floor(r * 0xff + 0.5)
-  local g8 = math.floor(g * 0xff + 0.5)
-  local b8 = math.floor(b * 0xff + 0.5)
+  local r8 = math.floor(rf * 0xff + 0.5)
+  local g8 = math.floor(gf * 0xff + 0.5)
+  local b8 = math.floor(bf * 0xff + 0.5)
   -- Some colours can't be represented.
   assert(
     (r8 >= 0 and r8 <= 0xff)
@@ -231,7 +231,8 @@ hl("MatchParen", { bg = p.bg3, bold = true })
 hl("ModeMsg", { fg = p.fg0, bold = true })
 hl("MsgArea", "Normal")
 hl("MsgSeparator", "StatusLine")
-hl("MsgMore", { fg = p.fg0, bg = p.bg3, bold = true }) -- ui2
+-- ui2 TODO: remove for 0.13
+hl("MsgMore", { fg = p.fg0, bg = p.bg3, bold = true })
 hl("MoreMsg", "ModeMsg")
 hl("NonText", { fg = p.fg2 })
 hl("Normal", { fg = p.fg0, bg = p.bg0 })

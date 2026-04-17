@@ -21,6 +21,7 @@ local function post_update_nts()
     -- Extra parsers not bundled with Nvim:
     "cpp",
     "comment",
+    "diff", -- Useful for vim.pack commit hovers.
   }, { summary = true })
 
   -- Update all installed parsers, including those manually ":TSInstall"ed.

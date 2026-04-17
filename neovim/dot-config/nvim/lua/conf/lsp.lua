@@ -2,7 +2,6 @@ local api = vim.api
 local fn = vim.fn
 local keymap = vim.keymap
 local lsp = vim.lsp
-local log = vim.log
 
 local M = {}
 

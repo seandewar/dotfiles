@@ -1,11 +1,11 @@
 {
   "plugins": {
     "firenvim": {
-      "rev": "a18ef908ac06b52ad9333b70e3e630b0a56ecb3d",
+      "rev": "b68449b92dfea73a54e4c8f2307fc244a3a574bd",
       "src": "https://github.com/glacambre/firenvim"
     },
     "fzf-lua": {
-      "rev": "4be0a6923a64dc411489b57b77a6bf6f30404e66",
+      "rev": "83f7195972538beee3a40932b38ccd86c8cc0f06",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "nvim-treesitter": {
