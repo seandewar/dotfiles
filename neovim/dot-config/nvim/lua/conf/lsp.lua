@@ -104,12 +104,14 @@ function M.formatexpr()
   return 0
 end
 
-function M.setup_attached_buffers(client_id, detaching)
+--- @param client_id integer
+--- @param detached_buf integer?
+function M.setup_attached_buffers(client_id, detached_buf)
   local has_stylua = fn.executable "stylua" == 1
 
   for buf, _ in pairs(lsp.get_client_by_id(client_id).attached_buffers) do
     local buf_clients = vim.tbl_filter(function(c)
-      return not detaching or c.id ~= client_id
+      return buf ~= detached_buf or c.id ~= client_id
     end, lsp.get_clients { bufnr = buf })
 
     --- @param method string
@@ -209,7 +211,7 @@ end
 
 --- @param args vim.api.keyset.create_autocmd.callback_args
 function M.detach_buffer(args)
-  M.setup_attached_buffers(args.data.client_id, true)
+  M.setup_attached_buffers(args.data.client_id, args.buf)
   lsp.completion.enable(false, args.data.client_id, args.buf)
 
   -- Schedule, as the client hasn't finished detaching yet.
