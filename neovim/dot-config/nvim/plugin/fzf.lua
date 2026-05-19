@@ -56,6 +56,8 @@ keymap.set("n", "<Leader>ff", "<Cmd>FzfLua files<CR>")
 keymap.set("n", "<Leader>fg", "<Cmd>FzfLua live_grep<CR>")
 keymap.set("n", "<Leader>fj", "<Cmd>FzfLua jumps<CR>")
 keymap.set("n", "<Leader>fc", "<Cmd>FzfLua changes<CR>")
+-- ":browse oldfiles" uses vim.ui.select() since 0.13, but ":FzfLua oldfiles"
+-- is better as it shows a file preview.
 keymap.set("n", "<Leader>fo", "<Cmd>FzfLua oldfiles<CR>")
 keymap.set("n", "<Leader>fr", "<Cmd>FzfLua resume<CR>")
 keymap.set("n", "<Leader>ft", "<Cmd>FzfLua tags<CR>")
@@ -64,4 +66,6 @@ keymap.set("n", "<Leader>fu", "<Cmd>FzfLua undotree<CR>")
 
 keymap.set("n", "<Leader>gf", "<Cmd>FzfLua git_files<CR>")
 
-keymap.set("n", "z=", "<Cmd>FzfLua spell_suggest<CR>")
+if vim.fn.has "nvim-0.13" == 0 then -- Uses vim.ui.select() in 0.13.
+  keymap.set("n", "z=", "<Cmd>FzfLua spell_suggest<CR>")
+end

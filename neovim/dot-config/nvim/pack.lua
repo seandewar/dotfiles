@@ -39,31 +39,6 @@ pack.add({
   confirm = false,
 })
 
-api.nvim_create_user_command("PackUpdate", function(args)
-  local opts = { force = args.bang }
-  if args.fargs[1] == "++lockfile" then
-    opts.target = "lockfile"
-    table.remove(args.fargs, 1)
-  end
-  pack.update(#args.fargs > 0 and args.fargs or nil, opts)
-end, {
-  nargs = "*",
-  complete = function(lead, _, _)
-    return vim
-      .iter(pack.get())
-      :map(function(plugin)
-        return plugin.spec.name
-      end)
-      :filter(function(name)
-        return name:sub(1, #lead) == lead
-      end)
-      :totable()
-  end,
-  bang = true,
-  bar = true,
-  desc = "Update plugins managed by vim.pack",
-})
-
 local inactive_plugins = vim
   .iter(pack.get())
   :filter(function(plugin)
@@ -74,10 +49,46 @@ local inactive_plugins = vim
   end)
   :totable()
 
-if #inactive_plugins > 0 then
-  vim.notify(
-    "Inactive plugins found. Remove via :lua vim.pack.del"
-      .. vim.inspect(inactive_plugins),
-    vim.log.levels.WARN
-  )
+if vim.fn.has "nvim-0.13" == 1 then
+  if #inactive_plugins > 0 then
+    vim.notify(
+      ("Inactive plugins: %s. Remove via :packdel ++all"):format(
+        table.concat(inactive_plugins, ", ")
+      ),
+      vim.log.levels.WARN
+    )
+  end
+else
+  api.nvim_create_user_command("PackUpdate", function(args)
+    local opts = { force = args.bang }
+    if args.fargs[1] == "++lockfile" then
+      opts.target = "lockfile"
+      table.remove(args.fargs, 1)
+    end
+    pack.update(#args.fargs > 0 and args.fargs or nil, opts)
+  end, {
+    nargs = "*",
+    complete = function(lead, _, _)
+      return vim
+        .iter(pack.get())
+        :map(function(plugin)
+          return plugin.spec.name
+        end)
+        :filter(function(name)
+          return name:sub(1, #lead) == lead
+        end)
+        :totable()
+    end,
+    bang = true,
+    bar = true,
+    desc = "Update plugins managed by vim.pack",
+  })
+
+  if #inactive_plugins > 0 then
+    vim.notify(
+      "Inactive plugins found. Remove via :lua vim.pack.del"
+        .. vim.inspect(inactive_plugins),
+      vim.log.levels.WARN
+    )
+  end
 end

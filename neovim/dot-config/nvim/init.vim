@@ -2,6 +2,7 @@
 " configuration; useful when wanting to use a close-to-stock but familiar Nvim.
 
 " Version check {{{1
+" TODO: rename "buffer" to "buf" in API functions when dropping 0.12 support
 if !has('nvim-0.12')
     echohl WarningMsg
     echomsg '[init.vim] Unsupported Nvim version, expect issues!'
@@ -10,7 +11,7 @@ end
 
 " Enable Nvim's experimental Lua loader and UI {{{1
 " The loader byte-compiles and caches Lua files; best to keep it near the top.
-lua vim.loader.enable() require("vim._core.ui2").enable({})
+lua vim.loader.enable() require("vim._core.ui2").enable{}
 
 " General settings {{{1
 set cinoptions+=:0,g0,N-s,j1,l1
@@ -64,9 +65,13 @@ augroup conf_terminal_tailing
     autocmd ModeChanged t:nt call cursor('$', 1)
 augroup END
 
-augroup conf_highlight_yanked
+augroup conf_highlight_yank_put
     autocmd!
-    autocmd TextYankPost * lua vim.hl.on_yank()
+    if has('nvim-0.13')
+        autocmd TextYankPost,TextPutPost * lua vim.hl.hl_op()
+    else
+        autocmd TextYankPost * lua vim.hl.on_yank()
+    endif
 augroup END
 
 function! s:UpdateColorColumn() abort
